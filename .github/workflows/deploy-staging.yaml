@@ -123,7 +123,7 @@ jobs:
   deploy-tag-webapp:
     name: Deploy Webapp
     needs: publish-image-webapp
-    uses: Rhino-Energy/github-actions/.github/workflows/deploy-tag-monorepo-single-tag.yaml@main
+    uses: Rhino-Energy/github-actions/.github/workflows/deploy-tag-monorepo.yaml@main
     permissions:
       deployments: write
       contents: write
