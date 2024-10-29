@@ -1,8 +1,8 @@
+name: Deploy tag
+run-name: "Deploy Tag(${{ github.event.inputs.environment }}): ${{ github.event.inputs.tag }}"
+
 on:
   workflow_dispatch:
-    branches:
-      - main
-      - master
     inputs:
       tag:
         description: Tag to deploy
@@ -16,9 +16,6 @@ on:
         description: Select Service
         options:
           - webapp
-
-name: Deploy tag
-run-name: 'Deploy Tag(${{ github.event.inputs.environment }}): ${{ github.event.inputs.tag }}'
 
 jobs:
   deploy-tag:
