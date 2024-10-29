@@ -25,11 +25,14 @@ RUN npx nx build @app/webapp
 # Production stage
 FROM nginx:alpine
 
-# Copy the build output to replace the default nginx contents.
-COPY --from=build /app/apps/webapp/dist /usr/share/nginx/html
+# Copy assets to v1/assets directory
+COPY --from=build /app/apps/webapp/dist/assets /usr/share/nginx/html/v1/assets
+
+# Copy everything else to root
+COPY --from=build /app/apps/webapp/dist/ /usr/share/nginx/html/
 
 # Copy custom nginx configuration
-COPY apps/webapp/nginx.conf /etc/nginx/conf.d/default.conf
+COPY apps/webapp/nginx.conf /etc/nginx/nginx.conf
 
 # Expose port 3000
 EXPOSE 3000
