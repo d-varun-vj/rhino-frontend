@@ -41,7 +41,7 @@ jobs:
 
             const branch = process.env.BRANCH_NAME
             const serviceName = process.env.SERVICE_NAME
-            const releasePRRegex = new RegExp(`chore\\((${branch})\\): release (\\d+\\.\\d+\\.\\d+)`)
+            const releasePRRegex = new RegExp(`chore\\((${branch})\\): release ${serviceName} (\\d+\\.\\d+\\.\\d+)`)
 
             // Get the release PR
             var nextReleaseVersion = ''
@@ -68,7 +68,7 @@ jobs:
 
             const mergeTagSuffix = branch.startsWith('hotfix-') ? 'fix' : 'rc'
             const nextVersion = `${nextReleaseVersion}-${mergeTagSuffix}.${context.runNumber}`
-            var mergeTag = `v${nextVersion}`
+            var mergeTag = `${serviceName}-v${nextVersion}`
             var tagExists = false
 
             try {
