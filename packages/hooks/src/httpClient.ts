@@ -4,11 +4,13 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 
-let httpClient: AxiosInstance;
-let httpClientWithoutAccessor: AxiosInstance;
+// Change from let to const and provide initial values
+const httpClient: AxiosInstance = axios.create({});
+const httpClientWithoutAccessor: AxiosInstance = axios.create({});
 
-export const initHttpClient = async (baseURL?: string) => {
-  httpClient = axios.create({
+export const initHttpClient = (baseURL?: string) => {
+  // Instead of reassignment, update the instance configurations
+  Object.assign(httpClient.defaults, {
     baseURL: baseURL,
     headers: {
       'Content-Type': 'application/json',
@@ -16,7 +18,7 @@ export const initHttpClient = async (baseURL?: string) => {
     },
   });
 
-  httpClientWithoutAccessor = axios.create({
+  Object.assign(httpClientWithoutAccessor.defaults, {
     baseURL: baseURL,
     headers: {
       'Content-Type': 'application/json',
@@ -24,15 +26,13 @@ export const initHttpClient = async (baseURL?: string) => {
     },
   });
 
-  const requestInterceptor = async (
-    config: InternalAxiosRequestConfig<any>,
-  ) => {
+  const requestInterceptor = (config: InternalAxiosRequestConfig<unknown>) => {
     config.headers.Authorization = `Bearer`;
 
     return config;
   };
 
-  const responseInterceptor = (response: AxiosResponse<any, any>) => {
+  const responseInterceptor = (response: AxiosResponse<unknown, unknown>) => {
     return response;
   };
 

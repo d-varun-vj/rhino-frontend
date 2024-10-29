@@ -1,0 +1,134 @@
+on:
+    push:
+      branches:
+        - staging
+  
+  permissions:
+    contents: write
+    pull-requests: write
+  
+  name: Create tag & Deploy Staging
+  run-name: "Create tag & Deploy Staging"
+  
+  concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+  
+  jobs:
+    create-release-tag:
+      name: Create Release Tag
+      runs-on: self-hosted
+      outputs:
+        tag: ${{ steps.create-tag.outputs.next_tag }}
+        version: ${{ steps.create-tag.outputs.next_version }}
+      steps:
+        - uses: actions/github-script@v6
+          id: create-tag
+          env:
+            BRANCH_NAME: ${{ contains(github.ref_name, 'hotfix-') && github.ref_name ||  github.event.repository.default_branch }}
+          with:
+            script: |
+              const getRandomNumber = (min, max) => {
+                return Math.random() * (max - min) + min
+              }
+  
+              core.setOutput('tag_created', 'false')
+              const { data: pullRequests } = await github.rest.pulls.list({
+                 owner: context.repo.owner,
+                 repo: context.repo.repo,
+                 state: 'open',
+               });
+  
+               const branch = process.env.BRANCH_NAME
+               const serviceName = process.env.SERVICE_NAME
+               const releasePRRegex = new RegExp(`chore\\((${branch})\\): release (\\d+\\.\\d+\\.\\d+)`)
+  
+               // Get the release PR
+               var nextReleaseVersion = ''
+               var releasePR = pullRequests.filter((pr) => pr.user.login === 'github-actions[bot]' && releasePRRegex.test(pr.title))[0]
+               if(!releasePR) {
+                  core.warning(`No open release PR found for branch ${branch}`)
+                  const { data: pullRequests } = await github.rest.pulls.list({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    state: 'closed',
+                  });
+  
+                  releasePR = pullRequests.filter((pr) => pr.user.login === 'github-actions[bot]' && releasePRRegex.test(pr.title))[0]
+                  if(!releasePR) {
+                    core.warning(`No closed release PR found for branch ${branch}`)
+                    return
+                  }
+                  nextReleaseVersion = releasePR.title.match(releasePRRegex)[2]
+                  var versionSplitList = nextReleaseVersion.split(".")
+                  nextReleaseVersion = versionSplitList[0] + "." + versionSplitList[1] + "." + (Number(versionSplitList[2]) + 1)
+               } else {
+                  nextReleaseVersion = releasePR.title.match(releasePRRegex)[2]
+              }
+  
+               const mergeTagSuffix = branch.startsWith('hotfix-') ? 'fix' : 'rc'
+               const nextVersion = `${nextReleaseVersion}-${mergeTagSuffix}.${context.runNumber}`
+               var mergeTag = `v${nextVersion}`
+               var tagExists = false
+  
+               try {
+                 await github.rest.git.getRef({
+                   owner: context.repo.owner,
+                   repo: context.repo.repo,
+                   ref: `tags/${mergeTag}`,
+                 })
+                 tagExists = true
+               } catch(err) {
+               }
+  
+               if (tagExists) {
+                 core.info(`Tag ${mergeTag} already exist. Skipping creation`)
+                 mergeTag = `${mergeTag}-${getRandomNumber(1, 1000)}`
+               }
+  
+               await github.rest.git.createRef({
+                 owner: context.repo.owner,
+                 repo: context.repo.repo,
+                 ref: `refs/tags/${mergeTag}`,
+                 sha: context.sha
+               })
+               core.info(`Created new tag ${mergeTag}`)
+               core.setOutput('tag_created', 'true')
+               core.setOutput('next_version', nextVersion)
+               core.setOutput('next_tag', mergeTag)
+  
+    publish-image-webapp:
+      name: Publish Image Webapp
+      runs-on: self-hosted
+      needs: create-release-tag
+      outputs:
+        tag: ${{ needs.create-release-tag.outputs.tag }}
+        version: ${{ needs.create-release-tag.outputs.version }}
+      permissions:
+        contents: write
+        pull-requests: write
+      steps:
+        - name: Build and publish image
+          uses: Rhino-Energy/github-actions/.github/actions/javascript-monorepo@main
+          with:
+            aws-ecr-repo: 'rhino-webapp'
+            docker-file-path: 'apps/webapp/Dockerfile'
+            tag: ${{ needs.create-release-tag.outputs.tag }}
+            version: ${{ needs.create-release-tag.outputs.version }}
+            aws-region: ${{ vars.aws_region }}
+            aws-iam-role: ${{ secrets.aws_iam_role }}
+            aws-ecr-account-id: ${{ vars.aws_ecr_account_id }}
+  
+    deploy-tag-application:
+      name: Deploy application
+      needs: publish-image-application
+      uses: Rhino-Energy/github-actions/.github/workflows/deploy-tag-monorepo-single-tag.yaml@main
+      permissions:
+        deployments: write
+        contents: write
+        pull-requests: write
+      secrets: inherit
+      with:
+        tag: ${{ needs.publish-image-application.outputs.tag }}
+        environment: 'staging'
+        service-name: 'webapp'

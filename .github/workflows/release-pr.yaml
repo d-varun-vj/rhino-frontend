@@ -1,0 +1,49 @@
+on:
+    push:
+      branches:
+        - main
+        - master
+  
+  permissions:
+    contents: write
+    pull-requests: write
+  
+  name: Release PR Flow
+  run-name: "Create/Update Release PR & Push Image"
+  
+  jobs:
+    create-release-tag:
+      name: Create/Update Release PR
+      runs-on: self-hosted
+      outputs:
+        release-tag-name: ${{ steps.release.outputs.tag_name }}
+        release-version: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}
+        release-created: ${{ steps.release.outputs.release_created }}
+      steps:
+        - uses: google-github-actions/release-please-action@v4
+          id: release
+          with:
+            target-branch: ${{ contains(github.ref_name, 'hotfix-') && github.ref_name ||  github.event.repository.default_branch }}
+  
+    publish-image-webapp:
+      name: Publish Image webapp
+      runs-on: self-hosted
+      needs: create-release-tag
+      if: ${{ needs.create-release-tag.outputs.release-created == 'true' }}
+      outputs:
+        tag: ${{ needs.create-release-tag.outputs.release-tag-name }}
+        version: ${{ needs.create-release-tag.outputs.release-version }}
+      permissions:
+        contents: write
+        pull-requests: write
+      steps:
+        - name: Build and publish image
+          uses: Rhino-Energy/github-actions/.github/actions/javascript-monorepo@main
+          with:
+            aws-ecr-repo: 'rhino-webapp'
+            docker-file-path: 'apps/webapp/Dockerfile'
+            tag: ${{ needs.create-release-tag.outputs.release-tag-name }}
+            version: ${{ needs.create-release-tag.outputs.release-version }}
+            aws-region: ${{ vars.aws_region }}
+            aws-iam-role: ${{ secrets.aws_iam_role }}
+            aws-ecr-account-id: ${{ vars.aws_ecr_account_id }}
