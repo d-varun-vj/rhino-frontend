@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.0.0...webapp-v1.1.0) (2024-10-30)
+
+
+### Features
+
+* Add trigger release file for initiating release [PRD-1409] ([#16](https://github.com/Rhino-Energy/rhino-frontend/issues/16)) ([7ad9390](https://github.com/Rhino-Energy/rhino-frontend/commit/7ad9390d311a4e3b80597df06fbaaab9b90a9fff))
+
 ## 1.0.0 (2024-10-29)
 
 
