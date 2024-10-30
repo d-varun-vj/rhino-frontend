@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.2.0...webapp-v1.3.0) (2024-10-30)
+
+
+### Features
+
+* Fix webapp name in release step [PRD-1409] ([#20](https://github.com/Rhino-Energy/rhino-frontend/issues/20)) ([3352b30](https://github.com/Rhino-Energy/rhino-frontend/commit/3352b30479439d818ff41bb0738cd399b772be19))
+
 ## [1.2.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.1.0...webapp-v1.2.0) (2024-10-30)
 
 
