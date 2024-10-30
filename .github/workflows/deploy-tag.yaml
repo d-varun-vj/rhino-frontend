@@ -19,7 +19,7 @@ on:
 
 jobs:
   deploy-tag:
-    uses: Rhino-Energy/github-actions/.github/workflows/deploy-tag-monorepo-single-tag.yaml@main
+    uses: Rhino-Energy/github-actions/.github/workflows/deploy-tag-monorepo.yaml@main
     secrets: inherit
     with:
       tag: ${{ github.event.inputs.tag }}
