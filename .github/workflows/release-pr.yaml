@@ -24,6 +24,8 @@ jobs:
         id: release
         with:
           target-branch: ${{ contains(github.ref_name, 'hotfix-') && github.ref_name ||  github.event.repository.default_branch }}
+      - name: print filter output
+        run: echo '${{ toJSON(steps.release.outputs) }}'
 
   publish-image-webapp:
     name: Publish Image webapp
