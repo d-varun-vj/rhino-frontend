@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.1.0...webapp-v1.2.0) (2024-10-30)
+
+
+### Features
+
+* Print logs in release PR step [PRD-1409] ([#18](https://github.com/Rhino-Energy/rhino-frontend/issues/18)) ([f55f43d](https://github.com/Rhino-Energy/rhino-frontend/commit/f55f43d91cfb7871f26f1863c452f1ab3109351c))
+
 ## [1.1.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.0.0...webapp-v1.1.0) (2024-10-30)
 
 
