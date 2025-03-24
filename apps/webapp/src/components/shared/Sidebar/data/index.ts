@@ -49,8 +49,9 @@ export const MenuItems: MenuItemType[] = [
       {
         label: 'Dashboard',
         icon: FaTable,
-        key: 'dashboard',
-        route: '/dashboard',
+        key: 'wdashboard',
+        route: '/wdashboard',
+        wicketLink: VITE_WICKET_BASE_URL + 'dashboard',
       },
       {
         label: 'Energy dashboard',
@@ -61,7 +62,8 @@ export const MenuItems: MenuItemType[] = [
       {
         label: 'Dashboard (R)',
         icon: LuRectangleVertical,
-        key: 'tenant-dashboard',
+        key: 'dashboard',
+        route: '/dashboard',
       },
     ],
   },
