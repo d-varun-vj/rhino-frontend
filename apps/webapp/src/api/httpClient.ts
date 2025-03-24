@@ -7,6 +7,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig,
+  RawAxiosRequestHeaders,
 } from 'axios';
 
 import { getCookie } from '../utils';
@@ -33,7 +34,7 @@ const fetchAdapter: AxiosAdapter = async (
 
   const fetchOptions: RequestInit = {
     method: config.method?.toUpperCase() || 'GET',
-    headers: Object.fromEntries(headers.entries()) as HeadersInit,
+    headers: headers.toJSON() as HeadersInit,
     credentials: 'omit',
   };
 
@@ -55,7 +56,7 @@ const fetchAdapter: AxiosAdapter = async (
     data: responseData,
     status: response.status,
     statusText: response.statusText,
-    headers: Object.fromEntries(response.headers.entries()),
+    headers: response.headers as unknown as RawAxiosRequestHeaders,
     config: {
       ...config,
       headers,
