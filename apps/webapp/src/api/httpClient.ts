@@ -7,9 +7,14 @@ import axios, {
 import { getCookie } from '../utils';
 
 // Change from let to const and provide initial values
-const httpClient: AxiosInstance = axios.create({});
-const httpClientWithoutAccessor: AxiosInstance = axios.create({});
+const httpClient: AxiosInstance = axios.create({
+  withCredentials: false, // Prevent sending cookies
+});
+const httpClientWithoutAccessor: AxiosInstance = axios.create({
+  withCredentials: false, // Prevent sending cookies
+});
 
+// Read token from cookie once during initialization
 const token: string = getCookie('token') || '';
 
 export const initHttpClient = (baseURL?: string) => {
@@ -33,8 +38,10 @@ export const initHttpClient = (baseURL?: string) => {
   });
 
   const requestInterceptor = (config: InternalAxiosRequestConfig<unknown>) => {
+    // Ensure cookies are not sent with each request
+    config.withCredentials = false;
+    // Ensure token is in Authorization header
     config.headers.Authorization = `Bearer ${token}`;
-
     return config;
   };
 
