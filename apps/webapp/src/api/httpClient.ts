@@ -3,6 +3,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
+
 import { getCookie } from '../utils';
 
 // Change from let to const and provide initial values
@@ -15,6 +16,7 @@ export const initHttpClient = (baseURL?: string) => {
   // Instead of reassignment, update the instance configurations
   Object.assign(httpClient.defaults, {
     baseURL: baseURL,
+    withCredentials: false,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
@@ -23,6 +25,7 @@ export const initHttpClient = (baseURL?: string) => {
 
   Object.assign(httpClientWithoutAccessor.defaults, {
     baseURL: baseURL,
+    withCredentials: false,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
