@@ -1,10 +1,20 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
 import './index.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { FilterProvider } from './context/useFilter/index.tsx';
+import MainRoute from './appRouter/index.tsx';
+import { TokenProvider } from './context/useToken/index.tsx';
 
+const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <TokenProvider>
+        <FilterProvider>
+          <MainRoute />
+        </FilterProvider>
+      </TokenProvider>
+    </QueryClientProvider>
   </StrictMode>
 );

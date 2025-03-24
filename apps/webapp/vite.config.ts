@@ -4,5 +4,5 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: 'v1', // we need to set the base path for the assets, we should change this in the Dockerfile as well
+  base: '', // we need to set the base path for the assets, we should change this in the Dockerfile as well
 });

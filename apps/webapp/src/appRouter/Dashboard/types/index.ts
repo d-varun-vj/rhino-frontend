@@ -1,0 +1,30 @@
+type DictionaryDto = {
+  name: string;
+  translationEn: string;
+  translationPl: string;
+};
+export type DashboardType = {
+  id: string;
+  groupName: string;
+  localisationName: string;
+  measurementName: string | null;
+  factor: number | null;
+  value: string | null;
+  percentage: string | null;
+  currentMonthConsumption: string | null;
+  lastMonthSameDayConsumption: string | null;
+  lastMonthConsumption: string | null;
+  unit: string | null;
+  readTime: null | string;
+  translatedMedium: string | null;
+  serialNumber: string | null;
+  tenant: string | null;
+  incremental: boolean | null;
+  manual: boolean | null;
+  levelType: null | DictionaryDto;
+  loadType: null | DictionaryDto;
+  endUseArea: null | DictionaryDto;
+  percentageColor: string | null;
+  type: string | null;
+  action?: string;
+};
