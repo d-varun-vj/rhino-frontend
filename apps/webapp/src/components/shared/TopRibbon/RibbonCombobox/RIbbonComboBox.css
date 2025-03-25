@@ -27,6 +27,7 @@
   border-radius: 4px;
   word-wrap: normal;
 }
+
 .custom-icon {
   font-size: 0.8rem;
   transform: rotate(0deg); /* Rotate if needed */

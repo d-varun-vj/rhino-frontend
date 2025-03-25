@@ -15,12 +15,21 @@ import Table from '../../components/shared/Table';
 import ActionCell from '../../components/shared/Table/ActionCell';
 
 const Dashboard = () => {
+  const [filterLocation, setFilterLocation] = useState<string>();
+
+  // useEffect(() => {
+  //   console.log('SELECTED', filterLocation);
+  // });
+
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
     () => [
       {
         accessorFn: (row) => row.localisationName,
         header: 'Location',
         cell: (info) => info.getValue(),
+        meta: {
+          setFilterValue: setFilterLocation,
+        },
       },
       {
         accessorFn: (row) => row.groupName,
@@ -183,7 +192,7 @@ const Dashboard = () => {
   const [pageSize, setPageSize] = useState(5);
   const { client, location, group } = useFilter();
 
-  const { data: tableData } = useQuery({
+  const { data: tableData, isLoading } = useQuery({
     queryKey: [
       ...DATA_QUERY_KEYS.getDashboard(),
       page,
@@ -191,6 +200,7 @@ const Dashboard = () => {
       client,
       group,
       location,
+      filterLocation,
     ],
     queryFn: () =>
       getTableData({
@@ -199,6 +209,7 @@ const Dashboard = () => {
         clientId: client ? client.uuid : null,
         locationUuid: location ? location.uuid : null,
         groupUuid: group ? group.uuid : null,
+        locationName: filterLocation ? filterLocation : null,
       }),
   });
 
@@ -218,6 +229,7 @@ const Dashboard = () => {
           setPageSize: setPageSize,
           pageSize: pageSize,
         }}
+        isLoading={isLoading}
       />
     </MainLayout>
   );

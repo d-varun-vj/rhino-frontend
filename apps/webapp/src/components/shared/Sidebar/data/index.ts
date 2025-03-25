@@ -20,13 +20,13 @@ import { AiFillTool } from 'react-icons/ai';
 import { IconType } from 'react-icons/lib';
 import { LuRectangleVertical } from 'react-icons/lu';
 
-const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
+export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
+// export const VITE_WICKET_BASE_URL = 'http://localhost:8080/';
 
 export type SubItemType = {
   label: string;
   icon: IconType;
   key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
-  component?: React.ComponentType; // This shows the component when the item is active.
   wicketLink?: string;
   route?: string;
 };
@@ -77,7 +77,7 @@ export const MenuItems: MenuItemType[] = [
         label: 'Consumption',
         icon: FaChartLine,
         key: 'consumption',
-        wicketLink: VITE_WICKET_BASE_URL + 'consumptionChart', // https://app.stg.rhino.energy/
+        wicketLink: VITE_WICKET_BASE_URL + 'consumptionChart',
       },
       {
         label: 'Profile',
@@ -128,6 +128,7 @@ export const MenuItems: MenuItemType[] = [
         label: 'Immediate alarm',
         icon: FaBell,
         key: 'immediate-alarm',
+        wicketLink: VITE_WICKET_BASE_URL + 'alarms/immediate',
       },
     ],
   },
@@ -141,36 +142,43 @@ export const MenuItems: MenuItemType[] = [
         label: 'Measurements',
         icon: FaTachometerAlt,
         key: 'measurements',
+        wicketLink: VITE_WICKET_BASE_URL + 'measurements',
       },
       {
         label: 'External UPCs configuration',
         icon: IoSettingsSharp,
         key: 'external-upcs-configuration',
+        wicketLink: VITE_WICKET_BASE_URL + 'externalServicesConfiguration',
       },
       {
         label: 'Technical view',
         icon: AiFillTool,
         key: 'technical-view',
+        wicketLink: VITE_WICKET_BASE_URL + 'technical',
       },
       {
         label: 'Input management',
         icon: IoSettingsSharp,
         key: 'input-management',
+        wicketLink: VITE_WICKET_BASE_URL + 'inputManagement',
       },
       {
         label: 'System maintenance report',
         icon: FaFile,
         key: 'system-maintenance-report',
+        wicketLink: VITE_WICKET_BASE_URL + 'reports/maintenance',
       },
       {
         label: 'Meters values',
         icon: FaFile,
         key: 'meter-values',
+        wicketLink: VITE_WICKET_BASE_URL + 'metersValues',
       },
       {
         label: 'Favorite meters',
         icon: FaStar,
         key: 'favorite-meters',
+        wicketLink: VITE_WICKET_BASE_URL + 'favoritemeters',
       },
     ],
   },
@@ -184,16 +192,19 @@ export const MenuItems: MenuItemType[] = [
         label: 'Clients',
         icon: FaSuitcase,
         key: 'clients',
+        wicketLink: VITE_WICKET_BASE_URL + 'clients',
       },
       {
         label: 'Users management',
         icon: FaUser,
         key: 'users-management',
+        wicketLink: VITE_WICKET_BASE_URL + 'users',
       },
       {
         label: 'Tenants',
         icon: FaBuilding,
         key: 'tenants',
+        wicketLink: VITE_WICKET_BASE_URL + 'tenants',
       },
     ],
   },

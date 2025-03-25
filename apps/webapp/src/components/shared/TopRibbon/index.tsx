@@ -17,7 +17,7 @@ const TopRibbon = () => {
     location: selectedLocation,
   } = useFilter();
   const [clients, setClients] = useState<Client[]>();
-  const [locations, setLocations] = useState<Location[]>();
+  const [locations, setLocations] = useState<Location[]>([]);
   //   const [groups, setGroups] = useState<Group[]>();
 
   const { data: clientsData } = useQuery({
@@ -33,16 +33,6 @@ const TopRibbon = () => {
   });
 
   useEffect(() => {
-    console.log(
-      'CLIENT : ',
-      selectedClient,
-      '\n',
-      'GROUP :',
-      selectedGroup,
-      '\n',
-      'LOCATION :',
-      selectedLocation
-    );
     if (selectedClient?.name === null) {
       setSelectedGroup(null);
       setSelectedLocation(null);
@@ -86,8 +76,8 @@ const TopRibbon = () => {
               </div>
               <RibbonComboBox
                 options={
-                  clients
-                    ? clients?.map((client) => ({
+                  Array.isArray(clients)
+                    ? clients.map((client) => ({
                         name: client.name,
                         uuid: client.uuid,
                       }))

@@ -59,7 +59,7 @@ const RibbonComboBox = ({
       onMouseLeave={() => setIsDropdownOpen(false)}
     >
       <div
-        className={`${isDropdownOpen ? 'border-rhino-indigo-blue border-b-transparent custom-select-header' : 'custom-select-header'} ${disabled ? 'bg-[#eee]' : ''} focus-within:rounded-bl-none focus-within:rounded-br-none`}
+        className={`${isDropdownOpen ? '!border-rhino-indigo-blue !border-b-transparent custom-select-header' : 'custom-select-header'} ${disabled ? '!bg-[#eee]' : ''} focus-within:rounded-bl-none focus-within:rounded-br-none `}
         onClick={() =>
           disabled
             ? setIsDropdownOpen(false)

@@ -60,7 +60,16 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
   ) : (
     <DebouncedInput
       className="  rounded"
-      onChange={(value) => column.setFilterValue(value)}
+      onChange={(value) => {
+        // console.log(value);
+        // console.log(column.columnDef.meta?.setFilterValue);
+
+        if (column.columnDef.meta?.setFilterValue) {
+          column?.columnDef?.meta?.setFilterValue(value);
+        }
+
+        // column.setFilterValue(value);
+      }}
       placeholder={``}
       type="text"
       value={(columnFilterValue ?? '') as string}

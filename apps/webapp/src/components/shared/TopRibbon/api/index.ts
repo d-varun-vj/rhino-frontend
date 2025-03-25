@@ -1,5 +1,6 @@
 import API_URLS, { BASE_URL } from '../../../../api/endpoints';
 import { initHttpClient } from '../../../../api/httpClient';
+import { VITE_WICKET_BASE_URL } from '../../Sidebar/data';
 import { Client, Location } from '../types';
 
 export const getLocations = ({
@@ -10,29 +11,31 @@ export const getLocations = ({
   if (clientId === null) {
     return Promise.resolve([]);
   }
-  return new Promise<Location[]>((resolve) => {
+  return new Promise<Location[]>((resolve, reject) => {
     initHttpClient(BASE_URL)
       .httpClient.get<Location[]>(API_URLS.getLocations({ clientId: clientId }))
       .then((response) => {
         resolve(response.data);
       })
       .catch((error) => {
-        console.log(error);
-        // reject(error.response?.data || error);
+        window.location.href = VITE_WICKET_BASE_URL + 'login';
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
+        reject(error.response?.data);
       });
   });
 };
 
 export const getClients = (): Promise<Client[]> => {
-  return new Promise<Client[]>((resolve) => {
+  return new Promise<Client[]>((resolve, reject) => {
     initHttpClient(BASE_URL)
       .httpClient.get<Client[]>(API_URLS.getClients())
       .then((response) => {
         resolve(response.data);
       })
       .catch((error) => {
-        console.log(error);
-        // reject(error.response?.data || error);
+        window.location.href = VITE_WICKET_BASE_URL + 'login';
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
+        reject(error.response?.data || error);
       });
   });
 };

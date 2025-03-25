@@ -11,6 +11,7 @@ import axios, {
 } from 'axios';
 
 import { getCookie } from '../utils';
+import { VITE_WICKET_BASE_URL } from '../components/shared/Sidebar/data';
 
 // Create a custom adapter using fetch
 const fetchAdapter: AxiosAdapter = async (
@@ -43,6 +44,11 @@ const fetchAdapter: AxiosAdapter = async (
   }
 
   const response = await fetch(url!, fetchOptions);
+
+  if (response.status === 401 || response.status === 500) {
+    window.location.href = VITE_WICKET_BASE_URL + 'login';
+  }
+
   let responseData: unknown;
 
   try {
@@ -98,6 +104,13 @@ export const initHttpClient = (baseURL?: string) => {
   const requestInterceptor = (config: InternalAxiosRequestConfig<unknown>) => {
     // Ensure cookies are not sent with each request
     config.withCredentials = false;
+
+    // Check if token exists
+    if (!token) {
+      // Redirect to login if token is missing
+      window.location.href = VITE_WICKET_BASE_URL + 'login';
+    }
+
     // Ensure token is in Authorization header
     config.headers.Authorization = `Bearer ${token}`;
     return config;
@@ -107,9 +120,24 @@ export const initHttpClient = (baseURL?: string) => {
     return response;
   };
 
+  const errorInterceptor = (error: any) => {
+    console.log('Error: ', error);
+
+    if (error.response) {
+      const { status } = error.response || {};
+      if (status === 401 || status === 500) {
+        window.location.href = VITE_WICKET_BASE_URL + 'login';
+      }
+    } else {
+      console.error('Unexpected Error:', error.message);
+      window.location.href = VITE_WICKET_BASE_URL + 'login';
+    }
+    return Promise.reject(error);
+  };
+
   httpClient.interceptors.request.use(requestInterceptor);
   httpClientWithoutAccessor.interceptors.request.use(requestInterceptor);
-  httpClient.interceptors.response.use(responseInterceptor);
+  httpClient.interceptors.response.use(responseInterceptor, errorInterceptor);
 
   return { httpClient, httpClientWithoutAccessor };
 };

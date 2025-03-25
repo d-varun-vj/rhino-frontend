@@ -19,6 +19,8 @@ import TableFooter from './Footer';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setFilterValue?: React.Dispatch<React.SetStateAction<any>>;
 }
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -40,9 +42,10 @@ type TableProps<T> = {
   columns: ColumnDef<T, unknown>[];
   data: T[];
   footer?: FooterType;
+  isLoading?: boolean;
 };
 
-const Table = <T,>({ columns, data, footer }: TableProps<T>) => {
+const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -151,6 +154,10 @@ const Table = <T,>({ columns, data, footer }: TableProps<T>) => {
                 );
               })}
             </tbody>
+          ) : isLoading ? (
+            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
+              Loading...
+            </div>
           ) : (
             <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
               Not Found

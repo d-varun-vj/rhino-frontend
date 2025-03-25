@@ -46,7 +46,7 @@ const ComboBox = ({
       onMouseLeave={() => setIsDropdownOpen(false)}
     >
       <div
-        className={`${isDropdownOpen ? 'border-rhino-indigo-blue border-b-transparent select-header' : 'select-header'} ${disabled ? 'bg-[#eee]' : ''} ${customStyle?.header}`}
+        className={`${isDropdownOpen ? '!border-rhino-indigo-blue !border-b-transparent select-header' : 'select-header'} ${disabled ? '!bg-[#eee]' : ''} ${customStyle?.header}`}
         onClick={() =>
           disabled
             ? setIsDropdownOpen(false)

@@ -1,5 +1,6 @@
 import { FooterType } from '..';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useFilter } from '../../../../context/useFilter';
 
 type Footer = {
   pagination: FooterType;
@@ -10,6 +11,22 @@ const TableFooter = ({ pagination }: Footer) => {
     from: number;
     to: number;
   }>({ from: 1, to: pagination.pageSize });
+
+  const { client, location, group } = useFilter();
+
+  useEffect(() => {
+    setShowIndex({ from: 1, to: pagination.pageSize });
+    pagination.setCurrentPage(0);
+    pagination.setPageSize(5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    client,
+    location,
+    group,
+    pagination.setCurrentPage,
+    pagination.setPageSize,
+  ]);
+
   return (
     <div className="flex justify-between  my-5 flex-col gap-5 mt-10 lg:flex-row lg:items-center">
       {/* Page show filter */}
@@ -89,7 +106,7 @@ const TableFooter = ({ pagination }: Footer) => {
           {'Previous'}
         </button>
 
-        <>
+        {/* <>
           {[...(Array(pagination.totalCount) as number[])]
             .slice(
               Math.floor(pagination.currentPage / 10) * 10,
@@ -125,7 +142,45 @@ const TableFooter = ({ pagination }: Footer) => {
                 </button>
               );
             })}
+        </> */}
+        <>
+          {/* Create an array of page numbers */}
+          {Array(Math.ceil(pagination.totalCount / pagination.pageSize))
+            .fill(null) // Fill array with placeholders
+            .map((_, index) => index) // Map placeholders to page indices
+            .slice(
+              Math.floor(pagination.currentPage / 10) * 10, // Start of current chunk
+              Math.floor(pagination.currentPage / 10) * 10 + 10 // End of current chunk
+            )
+            .map((pageIndex) => {
+              return (
+                <button
+                  key={pageIndex}
+                  className={`border px-2 py-1 ${
+                    pagination.currentPage === pageIndex
+                      ? 'text-[#808080]'
+                      : 'text-rhino-indigo-blue'
+                  }`}
+                  onClick={() => {
+                    pagination.setPageSize(
+                      pagination.pageSize ? pagination.pageSize : 5
+                    );
+                    setShowIndex({
+                      from: pageIndex * pagination.pageSize + 1,
+                      to: Math.min(
+                        (pageIndex + 1) * pagination.pageSize,
+                        pagination.totalCount
+                      ),
+                    });
+                    pagination.setCurrentPage(pageIndex);
+                  }}
+                >
+                  {pageIndex + 1} {/* Display page number */}
+                </button>
+              );
+            })}
         </>
+
         <button
           className="border  p-1"
           onClick={() => {
@@ -144,7 +199,7 @@ const TableFooter = ({ pagination }: Footer) => {
                   : showIndex.to,
             });
           }}
-          // disabled={!table.getCanNextPage()}
+          disabled={showIndex.to >= pagination.totalCount ? true : false}
         >
           {'Next'}
         </button>
