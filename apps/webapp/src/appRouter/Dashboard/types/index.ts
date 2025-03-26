@@ -1,4 +1,4 @@
-type DictionaryDto = {
+export type DictionaryDto = {
   name: string;
   translationEn: string;
   translationPl: string;

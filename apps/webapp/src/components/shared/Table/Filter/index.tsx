@@ -42,33 +42,34 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
       selectedValue={selectValue}
       setReturnValue={(value) => {
         if (value === 'all') {
+          if (column.columnDef.meta?.setFilterValue) {
+            column?.columnDef?.meta?.setFilterValue(null);
+          }
           column.setFilterValue(null);
           setSelectedValue('');
         } else {
+          if (column.columnDef.meta?.setFilterValue) {
+            column?.columnDef?.meta?.setFilterValue(value);
+          }
           column.setFilterValue(value);
           setSelectedValue(value ? value : '');
         }
       }}
       customStyle={{
         header:
-          'mb-[16px] h-auto py-[5.5px] rounded px-[10px] focus-within:rounded-bl-none focus-within:rounded-br-none !w-[9rem]',
-        dropdown: 'mt-[-16px]  !w-[9rem]',
+          'mb-[16px] h-auto py-[5.5px] rounded px-[10px] focus-within:rounded-bl-none focus-within:rounded-br-none !min-w-[9rem] overflow-hidden  whitespace-nowrap',
+        dropdown: 'mt-[-16px]  !min-w-[9rem]',
       }}
     />
   ) : filterVariant === null ? (
     <input type="text" className=" " disabled />
   ) : (
     <DebouncedInput
-      className="  rounded"
+      className="rounded"
       onChange={(value) => {
-        // console.log(value);
-        // console.log(column.columnDef.meta?.setFilterValue);
-
         if (column.columnDef.meta?.setFilterValue) {
           column?.columnDef?.meta?.setFilterValue(value);
         }
-
-        // column.setFilterValue(value);
       }}
       placeholder={``}
       type="text"

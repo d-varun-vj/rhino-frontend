@@ -21,6 +21,9 @@ interface CustomColumnMeta {
   selectionOptions?: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilterValue?: React.Dispatch<React.SetStateAction<any>>;
+  isSortable: boolean;
+  setSortedField?: React.Dispatch<React.SetStateAction<string>>;
+  sortKey?: string;
 }
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -94,10 +97,19 @@ const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
                               className: header.column.getCanSort()
                                 ? 'cursor-pointer select-none text-rhino-indigo-blue py-[1rem] pr-[1.2rem] flex   text-[13px]  whitespace-wrap gap-3 min-h-[80px] h-[90px] justify-start'
                                 : '',
-                              onClick:
-                                header.id === 'action'
-                                  ? () => null
-                                  : header.column.getToggleSortingHandler(),
+                              onClick: header.column.columnDef.meta?.isSortable
+                                ? () => {
+                                    if (
+                                      header.column.columnDef.meta
+                                        ?.setSortedField
+                                    ) {
+                                      header.column.columnDef.meta.setSortedField(
+                                        header.column.columnDef.meta.sortKey ||
+                                          ''
+                                      );
+                                    }
+                                  }
+                                : () => null,
                             }}
                           >
                             <div className="h-full text-start overflow-y-auto ">
@@ -107,7 +119,7 @@ const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
                               )}{' '}
                             </div>
                             <div
-                              className={`${header.id === 'action' ? 'hidden' : 'text-[#808080]'} `}
+                              className={`${header.column.columnDef.meta?.isSortable ? 'text-[#808080]' : 'hidden'} `}
                             >
                               {{
                                 asc: '↿',

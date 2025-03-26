@@ -35,7 +35,7 @@ const ComboBox = ({
 
   useEffect(() => {
     setReturnValue(
-      selectedOption === defaultPlaceholder ? null : selectedOption
+      selectedOption === defaultPlaceholder ? 'all' : selectedOption
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption]);
