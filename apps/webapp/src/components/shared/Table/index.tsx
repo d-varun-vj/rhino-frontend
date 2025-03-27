@@ -16,6 +16,7 @@ import {
 
 import Filter from './Filter';
 import TableFooter from './Footer';
+import { SortDirection } from '../../../appRouter/Dashboard/api';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
@@ -23,7 +24,9 @@ interface CustomColumnMeta {
   setFilterValue?: React.Dispatch<React.SetStateAction<any>>;
   isSortable: boolean;
   setSortedField?: React.Dispatch<React.SetStateAction<string>>;
-  sortKey?: string;
+  sortKey?: string; // Same as backend sorting field name
+  setSortDirection?: React.Dispatch<React.SetStateAction<string>>;
+  sortDirection?: string;
 }
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -91,11 +94,11 @@ const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
                       className="font-thin "
                     >
                       {header.isPlaceholder ? null : (
-                        <div className=" flex flex-col  justify-start">
+                        <div className=" flex flex-col justify-start ">
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none text-rhino-indigo-blue py-[1rem] pr-[1.2rem] flex   text-[13px]  whitespace-wrap gap-3 min-h-[80px] h-[90px] justify-start'
+                                ? 'cursor-pointer select-none text-rhino-indigo-blue py-[1rem] pr-[1.2rem] flex   text-[13px]  whitespace-wrap gap-3 min-h-[80px] h-[90px] justify-start '
                                 : '',
                               onClick: header.column.columnDef.meta?.isSortable
                                 ? () => {
@@ -106,6 +109,21 @@ const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
                                       header.column.columnDef.meta.setSortedField(
                                         header.column.columnDef.meta.sortKey ||
                                           ''
+                                      );
+                                    }
+                                    if (
+                                      header.column.columnDef.meta
+                                        ?.setSortDirection
+                                    ) {
+                                      header.column.columnDef.meta.setSortDirection(
+                                        header.column.columnDef.meta
+                                          .sortDirection === ''
+                                          ? SortDirection.ASC
+                                          : header.column.columnDef.meta
+                                                .sortDirection ===
+                                              SortDirection.ASC
+                                            ? SortDirection.DESC
+                                            : ''
                                       );
                                     }
                                   }
@@ -121,10 +139,15 @@ const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
                             <div
                               className={`${header.column.columnDef.meta?.isSortable ? 'text-[#808080]' : 'hidden'} `}
                             >
-                              {{
-                                asc: '↿',
-                                desc: '⇂',
-                              }[header.column.getIsSorted() as string] ?? '⇅'}
+                              {header.column.columnDef.meta?.setSortDirection
+                                ? header.column.columnDef.meta.sortDirection ===
+                                  SortDirection.DESC
+                                  ? '⇂'
+                                  : header.column.columnDef.meta
+                                        .sortDirection === SortDirection.ASC
+                                    ? '↿'
+                                    : '⇅'
+                                : '⇅'}
                             </div>
                           </div>
                           <div className="flex  justify-start">

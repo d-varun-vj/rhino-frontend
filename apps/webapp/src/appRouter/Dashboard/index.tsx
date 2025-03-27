@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Title from '../../components/shared/Title';
 import MainLayout from '../../layouts/MainLayout';
@@ -13,6 +13,7 @@ import { useFilter } from '../../context/useFilter';
 import { DATA_QUERY_KEYS } from '../../api/data-query-keys';
 import Table from '../../components/shared/Table';
 import ActionCell from '../../components/shared/Table/ActionCell';
+import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/data';
 
 const Dashboard = () => {
   const [filterLocation, setFilterLocation] = useState<string>();
@@ -25,6 +26,7 @@ const Dashboard = () => {
   const [filterLoadType, setFilterLoadType] = useState<string>();
   const [filterEndUseAreaType, setFilterEndUseAreaType] = useState<string>();
   const [sortedField, setSortedField] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<string>('');
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
@@ -48,6 +50,7 @@ const Dashboard = () => {
       filterLoadType,
       filterEndUseAreaType,
       sortedField,
+      sortDirection,
     ],
     queryFn: () =>
       getTableData({
@@ -66,6 +69,7 @@ const Dashboard = () => {
         loadType: filterLoadType ? filterLoadType : null,
         endUserAreaType: filterEndUseAreaType ? filterEndUseAreaType : null,
         sortedField: sortedField ? sortedField : null,
+        sortDirection: sortDirection ? sortDirection : null,
       }),
   });
 
@@ -80,6 +84,8 @@ const Dashboard = () => {
           isSortable: true,
           setSortedField: setSortedField,
           sortKey: 'localisationName',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -89,6 +95,10 @@ const Dashboard = () => {
         meta: {
           setFilterValue: setFilterGroup,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'groupName',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -98,6 +108,10 @@ const Dashboard = () => {
         meta: {
           setFilterValue: setFilterMeasurement,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'measurementName',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -107,6 +121,10 @@ const Dashboard = () => {
         meta: {
           setFilterValue: setFilterSerialNumber,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'serialNumber',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -125,6 +143,10 @@ const Dashboard = () => {
         meta: {
           setFilterValue: setFilterMedium,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'translatedMedium',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -134,6 +156,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'factor',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -143,6 +169,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'value',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -152,6 +182,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'readTime',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -161,6 +195,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'currentMonthConsumption',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -170,6 +208,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'lastMonthSameDayConsumption',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -179,6 +221,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'percentage',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -188,6 +234,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'lastMonthConsumption',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -197,6 +247,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'unit',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -206,6 +260,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: 'select',
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'levelType',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
           selectionOptions: tableData?.options?.levelTypes.map(
             (type) => type.translationEn
           ),
@@ -228,6 +286,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: 'select',
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'loadType',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
           selectionOptions: tableData?.options?.loadTypes.map(
             (type) => type.translationEn
           ),
@@ -250,6 +312,10 @@ const Dashboard = () => {
         meta: {
           filterVariant: 'select',
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'endUseArea',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
           selectionOptions: tableData?.options?.endUserAreaTypes.map(
             (type) => type.translationEn
           ),
@@ -276,14 +342,21 @@ const Dashboard = () => {
         cell: ({ row }) => (
           <ActionCell>
             <IconButton
-              action={() => console.log(row.original)}
+              action={() => {
+                window.location.href =
+                  VITE_WICKET_BASE_URL + 'consumptionProfileChart';
+              }}
               popupContent="Go to profile"
               style="bg-rhino-energy-green text-white"
             >
               <FaChartBar />
             </IconButton>
             <IconButton
-              action={() => console.log(row.original)}
+              action={() => {
+                console.log(row.original);
+                window.location.href =
+                  VITE_WICKET_BASE_URL + 'consumptionChart';
+              }}
               popupContent="Go to comsumptions to compare measurement comsumptions"
               style="bg-rhino-energy-green text-white"
             >
@@ -293,12 +366,8 @@ const Dashboard = () => {
         ),
       },
     ],
-    [tableData]
+    [tableData, sortDirection]
   );
-
-  useEffect(() => {
-    console.log('SortedField', sortedField);
-  });
 
   return (
     <MainLayout>

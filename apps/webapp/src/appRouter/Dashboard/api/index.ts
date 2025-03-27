@@ -16,6 +16,11 @@ type TableData = {
   options?: Options;
 };
 
+export enum SortDirection {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
+
 export const getTableData = ({
   page,
   size,
@@ -32,6 +37,7 @@ export const getTableData = ({
   loadType,
   endUserAreaType,
   sortedField,
+  sortDirection,
 }: {
   page?: number | null;
   size?: number | null;
@@ -48,6 +54,7 @@ export const getTableData = ({
   loadType?: string | null;
   endUserAreaType?: string | null;
   sortedField?: string | null;
+  sortDirection?: string | null;
 }): Promise<TableData> => {
   return new Promise<TableData>((resolve, reject) => {
     const queryParams = new URLSearchParams({
@@ -66,6 +73,7 @@ export const getTableData = ({
       loadType: loadType || '',
       endUserAreaType: endUserAreaType || '',
       sortedField: sortedField || '',
+      sortDirection: sortDirection || '',
     });
 
     initHttpClient(BASE_URL)
