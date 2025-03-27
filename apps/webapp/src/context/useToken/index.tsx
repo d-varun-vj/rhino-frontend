@@ -17,7 +17,7 @@ export const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const tokenFromCookie: string = getCookie('TOKEN') || '';
+    const tokenFromCookie: string = getCookie('token') || '';
     setToken(tokenFromCookie);
   }, []);
 

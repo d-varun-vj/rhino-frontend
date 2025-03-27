@@ -73,6 +73,8 @@ const Dashboard = () => {
       }),
   });
 
+  // const { data } = useQuery({ queryKey: ['test'], queryFn: getTokenTest });
+
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
     () => [
       {

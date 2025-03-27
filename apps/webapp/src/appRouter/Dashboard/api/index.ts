@@ -92,3 +92,18 @@ export const getTableData = ({
       });
   });
 };
+
+export const getTokenTest = (): Promise<string> => {
+  return new Promise<string>((resolve) => {
+    initHttpClient(BASE_URL)
+      .httpClient.get<string>(API_URLS.getTokenTest())
+      .then((res) => {
+        console.log('TOKEN TEST', res.data);
+
+        resolve(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+};

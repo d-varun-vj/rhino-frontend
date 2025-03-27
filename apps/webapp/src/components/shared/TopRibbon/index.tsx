@@ -1,4 +1,4 @@
-import { FaArrowRight, FaUserCircle } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 
 import { Client, Location } from './types';
@@ -6,6 +6,7 @@ import { getClients, getLocations } from './api';
 import { useQuery } from '@tanstack/react-query';
 import RibbonComboBox from './RibbonCombobox';
 import { useFilter } from '../../../context/useFilter';
+import UserDropDown from './UserDropDown';
 
 const TopRibbon = () => {
   const {
@@ -156,9 +157,9 @@ const TopRibbon = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-end mt-[.25rem] px-[.75rem] items-center h-[4.125rem] pr-[2.5rem]">
-        <FaUserCircle className="text-[#036983] text-[21px]" />
-      </div>
+
+      {/* User Drop down */}
+      <UserDropDown />
     </header>
   );
 };
