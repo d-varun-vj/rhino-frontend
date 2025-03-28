@@ -3,8 +3,10 @@ import { useFilter } from '../../../../context/useFilter';
 import UuidCombobox from '../UuidCombobox';
 import { useQuery } from '@tanstack/react-query';
 import { getLocations, Location } from './api';
+import { useTranslation } from 'react-i18next';
 
 const LocationCombobox = () => {
+  const { t } = useTranslation();
   const {
     setLocation: setSelectedLocation,
     setGroup: setSelectedGroup,
@@ -56,7 +58,7 @@ const LocationCombobox = () => {
             }))
           : []
       }
-      defaultPlaceholder="All locations"
+      defaultPlaceholder={t('comboBox.locationNull')}
       disabled={selectedClient == null ? true : false}
       setReturnValue={setSelectedLocation}
       selectedValue={selectedLocation}

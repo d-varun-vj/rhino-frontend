@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { useUser } from '../../../../context/useUser';
-import { User } from '../../../../api/User/types';
+import { useTranslation } from 'react-i18next';
+import { changeLanguage } from 'i18next';
 
 type Items = {
   label: string;
@@ -10,37 +11,56 @@ type Items = {
 
 const items: Items[] = [
   {
-    label: 'Terms of Use',
+    label: 'topRibbon.user.terms',
     action: () => console.log('Terms of Use'),
   },
   {
-    label: 'Manual',
+    label: 'topRibbon.user.manual',
     action: () => console.log('Manual'),
   },
   {
-    label: 'Logout',
+    label: 'topRibbon.user.logout',
     action: () => console.log('Logout'),
   },
 ];
 
 const LanguageButton = ({
   language,
-  user,
+  selectedlanguage,
 }: {
   language: string;
-  user: User | null;
+  selectedlanguage: string;
 }) => (
-  <a
-    href=""
-    className={`w-[35px] h-[35px] flex justify-center items-center rounded-[50%] bg-white mr-[10px] cursor-pointer hover:text-rhino-indigo-blue-light ${language.toLowerCase() === user?.language ? 'text-rhino-indigo-blue border-[2px] border-rhino-indigo-blue' : 'text-black  border-black opacity-[0.2]'}`}
+  <div
+    className={`w-[35px] h-[35px] flex justify-center items-center rounded-[50%] bg-white mr-[10px] cursor-pointer hover:text-rhino-indigo-blue-light ${language.toLowerCase() === selectedlanguage ? 'text-rhino-indigo-blue border-[2px] border-rhino-indigo-blue' : 'text-black  border-black opacity-[0.2]'}`}
+    onClick={() => {
+      changeLanguage(language.toLowerCase()).catch((err) => {
+        console.error('Failed to change language:', err);
+      });
+    }}
   >
     {language.toUpperCase()}
-  </a>
+  </div>
 );
 
 const UserDropDown = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { user } = useUser();
+  const {
+    t,
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    i18n: { changeLanguage, language },
+  } = useTranslation();
+
+  useEffect(() => {
+    if (user?.language !== language) {
+      changeLanguage(user?.language).catch((err) => {
+        console.error('Failed to change language:', err);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   return (
     <div className="flex justify-end mt-[.25rem] px-[.75rem] items-center h-[4.125rem] pr-[2.5rem] cursor-pointer">
       <div
@@ -72,7 +92,7 @@ const UserDropDown = () => {
                 className="cursor-pointer w-full py-[0.75rem] px-[1.5rem] bg-transparent text-[#212529] whitespace-nowrap font-medium block hover:bg-gray-50 hover:text-rhino-indigo-blue"
                 onClick={item.action}
               >
-                {item.label}
+                {t(item.label)}
               </div>
             </React.Fragment>
           ))}
@@ -81,13 +101,13 @@ const UserDropDown = () => {
           <div className="flex justify-between flex-row py-[0.75rem] px-[1.5rem]">
             <p className="mt-0 mb-[1rem]">
               <label className="pt-[5px] leading-[1.47] inline-block">
-                Language
+                {t('topRibbon.user.language')}
               </label>
             </p>
             <div className="">
               <div className="pl-[2rem] flex ">
-                <LanguageButton language="EN" user={user} />
-                <LanguageButton language="PL" user={user} />
+                <LanguageButton language="EN" selectedlanguage={language} />
+                <LanguageButton language="PL" selectedlanguage={language} />
               </div>
             </div>
           </div>

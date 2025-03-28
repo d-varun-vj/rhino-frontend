@@ -3,36 +3,38 @@ import UserDropDown from './UserDropDown';
 import ClientCombobox from '../Comboboxes/ClientCombobox';
 import LocationCombobox from '../Comboboxes/LocationCombobox';
 import GroupCombobox from '../Comboboxes/GroupCombobox';
+import { useTranslation } from 'react-i18next';
 
 const Label = ({ label }: { label: string }) => (
   <div className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]">{label}</div>
 );
 
 const TopRibbon = () => {
+  const { t } = useTranslation();
   return (
     <header className="flex basis-auto h-auto relative z-40 justify-between">
       <div className="mt-[1rem] relative px-[.75rem] ">
         <div className="flex flex-row ">
           <div className="pl-[1rem] mt-[.25rem] items-baseline flex flex-row flex-wrap gap-10">
             <div className="flex items-center">
-              <Label label="Client:" />
+              <Label label={t('topRibbon.client')} />
               <ClientCombobox />
             </div>
             <div className="flex items-center">
-              <Label label="Location:" />
+              <Label label={t('topRibbon.location')} />
               <LocationCombobox />
             </div>
             <div className="flex items-center">
-              <Label label="Group:" />
+              <Label label={t('topRibbon.group')} />
               <GroupCombobox />
             </div>
             <div className="flex items-center">
-              <Label label="Favorite meters:" />
+              <Label label={t('topRibbon.favoriteMeters')} />
               <a
                 href="#"
                 className="cursor-pointer min-w-[14rem] max-w-[14rem] flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-white font-bold bg-rhino-energy-green border-rhino-energy-green-light rounded-[4px] text-[13px]"
               >
-                Select favorite <FaArrowRight />
+                {t('topRibbon.favoriteMeterButton')} <FaArrowRight />
               </a>
             </div>
           </div>

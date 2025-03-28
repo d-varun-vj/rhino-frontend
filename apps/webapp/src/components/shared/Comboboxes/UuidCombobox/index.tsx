@@ -49,9 +49,12 @@ const UuidCombobox = ({
 
   useEffect(() => {
     setReturnValue(
-      selectedOption?.name === defaultPlaceholder ? null : selectedOption
+      selectedOption?.name === defaultPlaceholder.toString()
+        ? null
+        : selectedOption
     );
-  }, [defaultPlaceholder, selectedOption, setReturnValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption]);
 
   return (
     <div
@@ -92,7 +95,7 @@ const UuidCombobox = ({
                     uuid: 'placeholder',
                   })
                 }
-                className={`${defaultPlaceholder == selectedOption?.name ? 'bg-[#036983] text-white custom-select-option' : 'custom-select-option'} `}
+                className={`${defaultPlaceholder.toString() == selectedOption?.name ? 'bg-[#036983] text-white custom-select-option' : 'custom-select-option'} `}
               >
                 {defaultPlaceholder}
               </li>
@@ -122,7 +125,7 @@ const UuidCombobox = ({
                   key={index}
                   onClick={() =>
                     handleSelect({
-                      name: option.name || defaultPlaceholder,
+                      name: option.name || defaultPlaceholder.toString(),
                       uuid: option.uuid,
                     })
                   }

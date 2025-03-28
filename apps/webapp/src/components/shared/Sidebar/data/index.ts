@@ -24,7 +24,7 @@ export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
 // export const VITE_WICKET_BASE_URL = 'http://localhost:8080/';
 
 export type SubItemType = {
-  label: string;
+  label: string; // label from i18n translation (check src/i18n/...json)
   icon: IconType;
   key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
   wicketLink?: string;
@@ -32,7 +32,7 @@ export type SubItemType = {
 };
 
 export type MenuItemType = {
-  label: string;
+  label: string; // label from i18n translation (check src/i18n/...json)
   icon: IconType;
   subItems?: SubItemType[];
   key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
@@ -42,25 +42,25 @@ export type MenuItemType = {
 export const MenuItems: MenuItemType[] = [
   // Dashboards
   {
-    label: 'Dashboards',
+    label: 'sideMenu.dashboards', // label from i18n translation (check src/i18n/...json)
     icon: FaTable,
     key: 'dashboards',
     subItems: [
       {
-        label: 'Dashboard',
+        label: 'sideMenu.dashboard',
         icon: FaTable,
         key: 'wdashboard',
         route: '/wdashboard',
         wicketLink: VITE_WICKET_BASE_URL + 'dashboard',
       },
       {
-        label: 'Energy dashboard',
+        label: 'sideMenu.energyDashboard',
         icon: FaTable,
         key: 'energy-dashboard',
         wicketLink: VITE_WICKET_BASE_URL + 'energyDashboard',
       },
       {
-        label: 'Dashboard (R)',
+        label: 'sideMenu.dashboardR',
         icon: LuRectangleVertical,
         key: 'dashboard',
         route: '/dashboard',
@@ -69,49 +69,49 @@ export const MenuItems: MenuItemType[] = [
   },
   //   Analysis and reports
   {
-    label: 'Analysis and reports',
+    label: 'sideMenu.analysisReports',
     icon: FaLightbulb,
     key: 'analysis-and-reports',
     subItems: [
       {
-        label: 'Consumption',
+        label: 'sideMenu.consumptionChart',
         icon: FaChartLine,
         key: 'consumption',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionChart',
       },
       {
-        label: 'Profile',
+        label: 'sideMenu.consumptionProfileChart',
         icon: FaChartBar,
         key: 'profile',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionProfileChart',
       },
       {
-        label: 'Load Chart',
+        label: 'sideMenu.heatMap',
         icon: FaLightbulb,
         key: 'load-chart',
         wicketLink: VITE_WICKET_BASE_URL + 'heatmap',
       },
       {
-        label: 'Structures',
+        label: 'sideMenu.measurementStructures',
         icon: BiSolidNetworkChart,
         key: 'structures',
         wicketLink: VITE_WICKET_BASE_URL + 'measurementStructures',
       },
       {
-        label: 'Balance module',
+        label: 'sideMenu.balanceModule',
         icon: FaBalanceScale,
         key: 'balance',
         route: '/balance',
         wicketLink: VITE_WICKET_BASE_URL + 'balanceModule',
       },
       {
-        label: 'Reports',
+        label: 'sideMenu.report',
         icon: FaFile,
         key: 'reports',
         wicketLink: VITE_WICKET_BASE_URL + 'reports',
       },
       {
-        label: 'Utility costs',
+        label: 'sideMenu.utilityCosts',
         icon: FaWallet,
         key: 'utils-cost',
         wicketLink: VITE_WICKET_BASE_URL + 'utilityCosts',
@@ -120,12 +120,12 @@ export const MenuItems: MenuItemType[] = [
   },
   //   Alarms and notifications
   {
-    label: 'Alarms and notifications',
+    label: 'sideMenu.alarmsAndNotifications',
     icon: FaBell,
     key: 'alarms-and-notifications',
     subItems: [
       {
-        label: 'Immediate alarm',
+        label: 'sideMenu.immediateAlarm',
         icon: FaBell,
         key: 'immediate-alarm',
         wicketLink: VITE_WICKET_BASE_URL + 'alarms/immediate',
@@ -134,48 +134,48 @@ export const MenuItems: MenuItemType[] = [
   },
   //   Configuration
   {
-    label: 'Configuration',
+    label: 'sideMenu.configuration',
     icon: IoSettingsSharp,
     key: 'configuration',
     subItems: [
       {
-        label: 'Measurements',
+        label: 'sideMenu.measurements',
         icon: FaTachometerAlt,
         key: 'measurements',
         wicketLink: VITE_WICKET_BASE_URL + 'measurements',
       },
       {
-        label: 'External UPCs configuration',
+        label: 'sideMenu.externalServiceConfiguration',
         icon: IoSettingsSharp,
         key: 'external-upcs-configuration',
         wicketLink: VITE_WICKET_BASE_URL + 'externalServicesConfiguration',
       },
       {
-        label: 'Technical view',
+        label: 'sideMenu.technicalView',
         icon: AiFillTool,
         key: 'technical-view',
         wicketLink: VITE_WICKET_BASE_URL + 'technical',
       },
       {
-        label: 'Input management',
+        label: 'sideMenu.inputManagement',
         icon: IoSettingsSharp,
         key: 'input-management',
         wicketLink: VITE_WICKET_BASE_URL + 'inputManagement',
       },
       {
-        label: 'System maintenance report',
+        label: 'sideMenu.maintenanceReport',
         icon: FaFile,
         key: 'system-maintenance-report',
         wicketLink: VITE_WICKET_BASE_URL + 'reports/maintenance',
       },
       {
-        label: 'Meters values',
+        label: 'sideMenu.meterStates',
         icon: FaFile,
         key: 'meter-values',
         wicketLink: VITE_WICKET_BASE_URL + 'metersValues',
       },
       {
-        label: 'Favorite meters',
+        label: 'sideMenu.favoriteMeters',
         icon: FaStar,
         key: 'favorite-meters',
         wicketLink: VITE_WICKET_BASE_URL + 'favoritemeters',
@@ -184,24 +184,24 @@ export const MenuItems: MenuItemType[] = [
   },
   //   Administration
   {
-    label: 'Administration',
+    label: 'sideMenu.administration',
     icon: FaSuitcase,
     key: 'administration',
     subItems: [
       {
-        label: 'Clients',
+        label: 'sideMenu.clients',
         icon: FaSuitcase,
         key: 'clients',
         wicketLink: VITE_WICKET_BASE_URL + 'clients',
       },
       {
-        label: 'Users management',
+        label: 'sideMenu.users',
         icon: FaUser,
         key: 'users-management',
         wicketLink: VITE_WICKET_BASE_URL + 'users',
       },
       {
-        label: 'Tenants',
+        label: 'sideMenu.tenants',
         icon: FaBuilding,
         key: 'tenants',
         wicketLink: VITE_WICKET_BASE_URL + 'tenants',
@@ -210,7 +210,7 @@ export const MenuItems: MenuItemType[] = [
   },
   //   Support
   {
-    label: 'Support',
+    label: 'sideMenu.support',
     icon: FaQuestionCircle,
     key: 'support',
     link: 'https://support.rhino.energy/login_page.php',

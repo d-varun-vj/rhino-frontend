@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { MenuItemType } from '../data';
 import './MenuItem.css';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type menuItem = {
   menuItem: MenuItemType;
@@ -9,14 +10,15 @@ type menuItem = {
   activeMenu: string;
 };
 const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
-  const [title, setTitle] = useState('Dashboard');
+  const { t } = useTranslation();
+  const [title, setTitle] = useState(t(menuItem.label));
   const location = useLocation();
   useEffect(() => {
     document.title = title;
     menuItem.subItems?.map((item) => {
       if (item.route === location.pathname) {
         setActiveMenu(menuItem.key);
-        setTitle(item.label);
+        setTitle(t(item.label));
         return;
       }
     });
@@ -26,6 +28,7 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
     setActiveMenu,
     menuItem.key,
     menuItem.subItems,
+    t,
   ]);
 
   return (
@@ -45,7 +48,7 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
           <menuItem.icon />
         </i>
         <span className={`${activeMenu == menuItem.key ? 'nav-active' : ''}`}>
-          {menuItem.label}
+          {t(menuItem.label)}
         </span>
       </a>
       {/* Sub Menu Item */}
@@ -73,7 +76,7 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
                 <span
                   className={`${location.pathname == subItem.route ? 'nav-active' : ''}`}
                 >
-                  {subItem.label}
+                  {t(subItem.label)}
                 </span>
               </p>
             </li>

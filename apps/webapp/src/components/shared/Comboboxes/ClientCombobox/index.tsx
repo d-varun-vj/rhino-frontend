@@ -3,8 +3,10 @@ import UuidCombobox from '../UuidCombobox';
 import { useFilter } from '../../../../context/useFilter';
 import { useQuery } from '@tanstack/react-query';
 import { Client, getClients } from './api';
+import { useTranslation } from 'react-i18next';
 
 const ClientCombobox = () => {
+  const { t } = useTranslation();
   const {
     setClient: setSelectedClient,
     setLocation: setSelectedLocation,
@@ -38,7 +40,7 @@ const ClientCombobox = () => {
             }))
           : []
       }
-      defaultPlaceholder="Select"
+      defaultPlaceholder={t('comboBox.select')}
       disabled={false}
       setReturnValue={(client) => {
         if (client?.name !== selectedClient?.name) {

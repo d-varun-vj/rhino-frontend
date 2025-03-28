@@ -1,0 +1,95 @@
+{
+  "translation": {
+    "sideMenu": {
+      "dashboards": "Dashboardy",
+      "dashboard": "Dashboard",
+      "energyDashboard": "Dashboard energii",
+      "dashboardR": "Panel (R)",
+
+      "analysisReports": "Analiza i raporty",
+      "consumptionChart": "ZuÅ¼ycie",
+      "consumptionProfileChart": "Profil",
+      "heatMap": "Mapa zuÅ¼ycia",
+      "measurementStructures": "Struktury",
+      "balanceModule": "ModuÅ bilansÃ³w",
+      "report": "Raporty",
+      "utilityCosts": "Koszty mediÃ³w",
+
+      "alarmsAndNotifications": "Alarmy i powiadomienia",
+      "immediateAlarm": "Alarm natychmiastowy",
+
+      "configuration": "Konfiguracja",
+      "measurements": "Liczniki",
+      "externalServiceConfiguration": "Konfiguracja zewnÄtrznych UPC",
+      "technicalView": "Widok instalatora",
+      "inputManagement": "ZarzÄdzanie pomiarami",
+      "maintenanceReport": "Raport utrzymania systemu",
+      "meterStates": "Stany licznikowe",
+      "favoriteMeters": "Ulubione liczniki",
+
+      "administration": "Administracja ",
+      "clients": "Klienci",
+      "users": "UÅ¼ytkownicy",
+      "tenants": "Najemcy",
+
+      "support": "Wsparcie"
+    },
+    "topRibbon": {
+      "client": "Klient:",
+      "location": "Lokalizacja:",
+      "group": "Grupa:",
+      "favoriteMeters": "Ulubione liczniki:",
+      "favoriteMeterButton": "Wybierz",
+      "user": {
+        "terms": "Regulamin",
+        "manual": "Instrukcja",
+        "logout": "Wyloguj",
+        "language": "Język"
+      }
+    },
+    "comboBox": {
+      "select": "Wybierać",
+      "locationNull": "Wszystkie lokalizacje",
+      "groupNull": "Wszystkie grupy"
+    },
+    "table": {
+      "footer": {
+        "show": "Pokaż",
+        "positions": "pozycji",
+        "showing": "Pozycje od ",
+        "to": "do",
+        "of": "z",
+        "previous": "Poprzednia",
+        "next": "Następna"
+      }
+    },
+    "pages": {
+      "dashboard": {
+        "mainHeader": "Dashboard",
+        "subHeader": "Tylko automatyczne liczniki",
+        "table": {
+          "header": {
+            "groupName": "Grupa",
+            "localisationName": "Lokalizacja",
+            "translatedMedium": "Medium",
+            "measurementName": "Nazwa Licznika",
+            "serialNumber": "Numer seryjny",
+            "factor": "MnoÅ¼na",
+            "value": "Odczyt",
+            "readTime": "Data ostatniego odczytu",
+            "currentMonthConsumption": "ZuÅ¼ycie w tym miesiÄcu",
+            "lastMonthSameDayConsumption": "ZuÅ¼ycie na ten sam dzieÅ w poprzednim miesiÄcu",
+            "percentage": "PorÃ³wnanie w %",
+            "lastMonthConsumption": "ZuÅ¼ycie w poprzednim miesiÄcu",
+            "unit": "Jednostka",
+            "tenant": "Najemcy",
+            "actions": "Akcje",
+            "levelType": "Poziom licznika",
+            "loadType": "Typ pomiaru",
+            "endUseArea": "Mierzony obszar"
+          }
+        }
+      }
+    }
+  }
+}
