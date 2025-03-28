@@ -73,8 +73,6 @@ const Dashboard = () => {
       }),
   });
 
-  // const { data } = useQuery({ queryKey: ['test'], queryFn: getTokenTest });
-
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
     () => [
       {
@@ -370,7 +368,6 @@ const Dashboard = () => {
     ],
     [tableData, sortDirection]
   );
-
   return (
     <MainLayout>
       <Title title="Dashboard" />

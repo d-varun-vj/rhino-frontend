@@ -11,7 +11,8 @@ const API_URLS = {
   //   Dashboard
   getDashboardTableData: ({ queryParams }: { queryParams: string }) =>
     `dashboard?${queryParams}`,
-  getTokenTest: () => '/auth/user',
+
+  getUser: () => 'user',
 };
 
 export default API_URLS;

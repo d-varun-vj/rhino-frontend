@@ -1,7 +1,7 @@
 import { Column } from '@tanstack/react-table';
 import { useState } from 'react';
 import DebouncedInput from './DebouncedInput';
-import ComboBox from '../../Combobox';
+import ComboBox from '../../Comboboxes';
 
 const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
   const columnFilterValue = column.getFilterValue();

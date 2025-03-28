@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { FilterProvider } from './context/useFilter/index.tsx';
 import MainRoute from './appRouter/index.tsx';
 import { TokenProvider } from './context/useToken/index.tsx';
+import { UserProvider } from './context/useUser/index.tsx';
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
@@ -12,7 +13,9 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <TokenProvider>
         <FilterProvider>
-          <MainRoute />
+          <UserProvider>
+            <MainRoute />
+          </UserProvider>
         </FilterProvider>
       </TokenProvider>
     </QueryClientProvider>

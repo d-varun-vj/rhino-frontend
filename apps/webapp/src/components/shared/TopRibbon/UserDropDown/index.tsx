@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
+import { useUser } from '../../../../context/useUser';
+import { User } from '../../../../api/User/types';
 
 type Items = {
   label: string;
@@ -21,8 +23,24 @@ const items: Items[] = [
   },
 ];
 
+const LanguageButton = ({
+  language,
+  user,
+}: {
+  language: string;
+  user: User | null;
+}) => (
+  <a
+    href=""
+    className={`w-[35px] h-[35px] flex justify-center items-center rounded-[50%] bg-white mr-[10px] cursor-pointer hover:text-rhino-indigo-blue-light ${language.toLowerCase() === user?.language ? 'text-rhino-indigo-blue border-[2px] border-rhino-indigo-blue' : 'text-black  border-black opacity-[0.2]'}`}
+  >
+    {language.toUpperCase()}
+  </a>
+);
+
 const UserDropDown = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const { user } = useUser();
   return (
     <div className="flex justify-end mt-[.25rem] px-[.75rem] items-center h-[4.125rem] pr-[2.5rem] cursor-pointer">
       <div
@@ -40,10 +58,10 @@ const UserDropDown = () => {
           {/* Head */}
           <div className="bg-rhino-indigo-blue-light rounded-tl rounded-tr p-[1.5rem] text-[#868e96] text-[.75rem] whitespace-nowrap">
             <div className="text-[#fff] text-[0.875rem] max-w-[200px] font-bold overflow-hidden text-ellipsis whitespace-nowrap ">
-              Szymon Piotrowski
+              {user ? user?.firstName + user?.lastName : ''}
             </div>
             <div className="text-rhino-energy-green text-[0.75rem] max-w-[200px]  overflow-hidden text-ellipsis whitespace-nowrap">
-              stagingtestgroup+72c9ba2153582c2@rhino.energy
+              {user?.email}
             </div>
           </div>
           {/* Body */}
@@ -68,18 +86,8 @@ const UserDropDown = () => {
             </p>
             <div className="">
               <div className="pl-[2rem] flex ">
-                <a
-                  href=""
-                  className="w-[35px] h-[35px] flex justify-center items-center rounded-[50%] text-rhino-indigo-blue border-[2px] border-rhino-indigo-blue bg-white mr-[10px] cursor-pointer hover:text-rhino-indigo-blue-light"
-                >
-                  EN
-                </a>
-                <a
-                  href=""
-                  className="w-[35px] h-[35px] flex justify-center items-center rounded-[50%] text-black  border-black bg-white mr-[10px] cursor-pointer opacity-[0.2] hover:text-rhino-indigo-blue-light"
-                >
-                  PL
-                </a>
+                <LanguageButton language="EN" user={user} />
+                <LanguageButton language="PL" user={user} />
               </div>
             </div>
           </div>
