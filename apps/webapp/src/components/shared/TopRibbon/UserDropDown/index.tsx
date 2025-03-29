@@ -3,54 +3,52 @@ import { FaUserCircle } from 'react-icons/fa';
 import { useUser } from '../../../../context/useUser';
 import { useTranslation } from 'react-i18next';
 import { changeLanguage } from 'i18next';
+import { useLocation } from 'react-router-dom';
+import { VITE_WICKET_BASE_URL } from '../../Sidebar/data';
+
+import Langaugae from './Language';
 
 type Items = {
   label: string;
-  action: () => void;
+  action: ({ url }: { url?: string }) => void;
 };
 
 const items: Items[] = [
   {
     label: 'topRibbon.user.terms',
-    action: () => console.log('Terms of Use'),
+    action: () => {
+      window.open(
+        import.meta.env.VITE_TERMS_OF_USER_URL
+          ? (import.meta.env.VITE_TERMS_OF_USER_URL as string)
+          : '#'
+      );
+    },
   },
   {
     label: 'topRibbon.user.manual',
-    action: () => console.log('Manual'),
+    action: () => {
+      window.open('https://rhino.energy/en-us/analytics');
+    },
   },
   {
     label: 'topRibbon.user.logout',
-    action: () => console.log('Logout'),
+    action: ({ url }) => {
+      document.cookie =
+        'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+      window.location.href =
+        VITE_WICKET_BASE_URL + url?.split('/')[1] + '?-2.-logout';
+    },
   },
 ];
-
-const LanguageButton = ({
-  language,
-  selectedlanguage,
-}: {
-  language: string;
-  selectedlanguage: string;
-}) => (
-  <div
-    className={`w-[35px] h-[35px] flex justify-center items-center rounded-[50%] bg-white mr-[10px] cursor-pointer hover:text-rhino-indigo-blue-light ${language.toLowerCase() === selectedlanguage ? 'text-rhino-indigo-blue border-[2px] border-rhino-indigo-blue' : 'text-black  border-black opacity-[0.2]'}`}
-    onClick={() => {
-      changeLanguage(language.toLowerCase()).catch((err) => {
-        console.error('Failed to change language:', err);
-      });
-    }}
-  >
-    {language.toUpperCase()}
-  </div>
-);
 
 const UserDropDown = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { user } = useUser();
   const {
     t,
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    i18n: { changeLanguage, language },
+    i18n: { language },
   } = useTranslation();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (user?.language !== language) {
@@ -90,7 +88,7 @@ const UserDropDown = () => {
               <div className="m-0 h-0 overflow-hidden border-t-[#f3f3f3] border-t-[1px]"></div>
               <div
                 className="cursor-pointer w-full py-[0.75rem] px-[1.5rem] bg-transparent text-[#212529] whitespace-nowrap font-medium block hover:bg-gray-50 hover:text-rhino-indigo-blue"
-                onClick={item.action}
+                onClick={() => item.action({ url: pathname })}
               >
                 {t(item.label)}
               </div>
@@ -98,19 +96,7 @@ const UserDropDown = () => {
           ))}
 
           {/* Language section */}
-          <div className="flex justify-between flex-row py-[0.75rem] px-[1.5rem]">
-            <p className="mt-0 mb-[1rem]">
-              <label className="pt-[5px] leading-[1.47] inline-block">
-                {t('topRibbon.user.language')}
-              </label>
-            </p>
-            <div className="">
-              <div className="pl-[2rem] flex ">
-                <LanguageButton language="EN" selectedlanguage={language} />
-                <LanguageButton language="PL" selectedlanguage={language} />
-              </div>
-            </div>
-          </div>
+          <Langaugae />
         </div>
       )}
     </div>

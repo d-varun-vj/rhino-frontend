@@ -15,3 +15,23 @@ export const getUser = (): Promise<User> => {
       });
   });
 };
+
+export const changeUserLanguage = ({ lang }: { lang: string }) => {
+  return new Promise((resolve, reject) => {
+    const queryParams = new URLSearchParams({
+      language: lang?.toString() || '',
+    });
+    initHttpClient(BASE_URL)
+      .httpClient.get(
+        API_URLS.changeLanguage({ queryParams: queryParams.toString() })
+      )
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
+        reject(err.response?.data);
+        console.log(err);
+      });
+  });
+};

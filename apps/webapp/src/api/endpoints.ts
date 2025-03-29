@@ -13,6 +13,8 @@ const API_URLS = {
     `dashboard?${queryParams}`,
 
   getUser: () => 'user',
+  changeLanguage: ({ queryParams }: { queryParams: string }) =>
+    `user/language?${queryParams}`,
 };
 
 export default API_URLS;
