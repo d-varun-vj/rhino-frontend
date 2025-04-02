@@ -40,7 +40,7 @@ const fetchAdapter: AxiosAdapter = async (
   };
 
   if (config.data) {
-    fetchOptions.body = JSON.stringify(config.data);
+    fetchOptions.body = config.data;
   }
 
   const response = await fetch(url!, fetchOptions);

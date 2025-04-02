@@ -7,6 +7,7 @@ import { FilterProvider } from './context/useFilter/index.tsx';
 import MainRoute from './appRouter/index.tsx';
 import { TokenProvider } from './context/useToken/index.tsx';
 import { UserProvider } from './context/useUser/index.tsx';
+import { FavoriteMeterProvider } from './context/useFavoriteMeter/index.tsx';
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')!).render(
       <TokenProvider>
         <FilterProvider>
           <UserProvider>
-            <MainRoute />
+            <FavoriteMeterProvider>
+              <MainRoute />
+            </FavoriteMeterProvider>
           </UserProvider>
         </FilterProvider>
       </TokenProvider>

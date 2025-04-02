@@ -9,7 +9,7 @@ const SideBar = () => {
   const [activeMenu, setActiveMenu] = useState('dashboards');
 
   return (
-    <aside className="max-w-[15.2rem] bg-rhino-indigo-blue relative flex-grow flex-shrink-0 basis-auto w-[300px] flex-col flex z-50 will-change-scroll manu-background max-sm:hidden">
+    <aside className="max-w-[15.2rem] bg-rhino-indigo-blue relative flex-grow flex-shrink-0 basis-auto w-[300px] flex-col flex z-40 will-change-scroll manu-background max-sm:hidden">
       {/* Minimize Button */}
       <ul className="p-0 m-0">
         <li className="mb-0 relative">

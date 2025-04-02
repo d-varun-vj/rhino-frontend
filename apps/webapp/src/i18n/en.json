@@ -39,7 +39,7 @@
       "location": "Location:",
       "group": "Group:",
       "favoriteMeters": "Favorite meters:",
-      "favoriteMeterButton": "Select favorite",
+      "favoriteMeterButton": "Select",
       "user": {
         "terms": "Terms of Use",
         "manual": "Manual",
@@ -61,6 +61,19 @@
         "of": "of",
         "previous": "Previous",
         "next": "Next"
+      }
+    },
+    "favoriteMeterModel": {
+      "mainHeader": "Choose favorite meters",
+      "table": {
+        "header": {
+          "name": "Name",
+          "author": "Author",
+          "createdDate": "Created Date",
+          "updatedDate": "Updated Date",
+          "actions": "Actions"
+        },
+        "popup": "Select"
       }
     },
     "pages": {
@@ -87,6 +100,10 @@
             "levelType": "Level Type",
             "loadType": "Load Type",
             "endUseArea": "End Use Area"
+          },
+          "popup": {
+            "goToProfile": "Go to profile",
+            "goToComsumptions": "Go to comsumptions to compare measurement comsumptions"
           }
         }
       }

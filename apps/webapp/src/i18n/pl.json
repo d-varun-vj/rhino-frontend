@@ -38,7 +38,7 @@
       "client": "Klient:",
       "location": "Lokalizacja:",
       "group": "Grupa:",
-      "favoriteMeters": "Ulubione liczniki:",
+      "favoriteMeters": "Wybierać",
       "favoriteMeterButton": "Wybierz",
       "user": {
         "terms": "Regulamin",
@@ -61,6 +61,19 @@
         "of": "z",
         "previous": "Poprzednia",
         "next": "Następna"
+      }
+    },
+    "favoriteMeterModel": {
+      "mainHeader": "Wybierz ulubione liczniki",
+      "table": {
+        "header": {
+          "name": "Nazwa",
+          "author": "Autor",
+          "createdDate": "Data utworzenia",
+          "updatedDate": "Data edycji",
+          "actions": "Akcje"
+        },
+        "popup": "Wybierać"
       }
     },
     "pages": {
@@ -87,6 +100,10 @@
             "levelType": "Poziom licznika",
             "loadType": "Typ pomiaru",
             "endUseArea": "Mierzony obszar"
+          },
+          "popup": {
+            "goToProfile": "Przejdź do profilu",
+            "goToComsumptions": "Przejdź do zużycia, aby porównać zużycie pomiarowe"
           }
         }
       }

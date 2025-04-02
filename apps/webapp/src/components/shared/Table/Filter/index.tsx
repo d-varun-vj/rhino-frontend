@@ -2,8 +2,10 @@ import { Column } from '@tanstack/react-table';
 import { useState } from 'react';
 import DebouncedInput from './DebouncedInput';
 import ComboBox from '../../Comboboxes';
+import { useTranslation } from 'react-i18next';
 
 const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
+  const { t } = useTranslation();
   const columnFilterValue = column.getFilterValue();
 
   const { filterVariant } = column.columnDef.meta ?? {};
@@ -37,7 +39,7 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
   ) : filterVariant === 'select' ? (
     <ComboBox
       options={options}
-      defaultPlaceholder="select"
+      defaultPlaceholder={t('comboBox.select')}
       disabled={false}
       selectedValue={selectValue}
       setReturnValue={(value) => {

@@ -23,7 +23,6 @@ const Langaugae = () => {
               changeLanguage(languageName.toLowerCase()).catch((err) => {
                 console.error('Failed to change language:', err);
               });
-              console.log('Successfully changed language:');
             },
             onError: (error) => {
               console.error('Failed to change language:', error);

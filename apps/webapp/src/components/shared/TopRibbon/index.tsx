@@ -1,9 +1,9 @@
-import { FaArrowRight } from 'react-icons/fa';
 import UserDropDown from './UserDropDown';
 import ClientCombobox from '../Comboboxes/ClientCombobox';
 import LocationCombobox from '../Comboboxes/LocationCombobox';
 import GroupCombobox from '../Comboboxes/GroupCombobox';
 import { useTranslation } from 'react-i18next';
+import FavoriteMeter from './FavoriteMeter';
 
 const Label = ({ label }: { label: string }) => (
   <div className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]">{label}</div>
@@ -30,12 +30,7 @@ const TopRibbon = () => {
             </div>
             <div className="flex items-center">
               <Label label={t('topRibbon.favoriteMeters')} />
-              <a
-                href="#"
-                className="cursor-pointer min-w-[14rem] max-w-[14rem] flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-white font-bold bg-rhino-energy-green border-rhino-energy-green-light rounded-[4px] text-[13px]"
-              >
-                {t('topRibbon.favoriteMeterButton')} <FaArrowRight />
-              </a>
+              <FavoriteMeter />
             </div>
           </div>
         </div>

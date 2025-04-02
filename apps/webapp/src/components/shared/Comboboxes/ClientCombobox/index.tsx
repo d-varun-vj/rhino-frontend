@@ -4,6 +4,7 @@ import { useFilter } from '../../../../context/useFilter';
 import { useQuery } from '@tanstack/react-query';
 import { Client, getClients } from './api';
 import { useTranslation } from 'react-i18next';
+import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
 
 const ClientCombobox = () => {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ const ClientCombobox = () => {
     client: selectedClient,
   } = useFilter();
   const [clients, setClients] = useState<Client[]>();
+  const { clearFavoriteMeter } = useFavoriteMeter();
 
   const { data: clientsData } = useQuery({
     queryKey: ['clents'],
@@ -44,6 +46,7 @@ const ClientCombobox = () => {
       disabled={false}
       setReturnValue={(client) => {
         if (client?.name !== selectedClient?.name) {
+          clearFavoriteMeter();
           setSelectedClient(client);
           setSelectedGroup(null);
           setSelectedLocation(null);

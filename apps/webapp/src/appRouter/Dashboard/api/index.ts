@@ -38,6 +38,7 @@ export const getTableData = ({
   endUserAreaType,
   sortedField,
   sortDirection,
+  measurementUuids,
 }: {
   page?: number | null;
   size?: number | null;
@@ -55,6 +56,7 @@ export const getTableData = ({
   endUserAreaType?: string | null;
   sortedField?: string | null;
   sortDirection?: string | null;
+  measurementUuids?: string[] | [];
 }): Promise<TableData> => {
   return new Promise<TableData>((resolve, reject) => {
     const queryParams = new URLSearchParams({
@@ -77,8 +79,9 @@ export const getTableData = ({
     });
 
     initHttpClient(BASE_URL)
-      .httpClient.get<TableData>(
-        API_URLS.getDashboardTableData({ queryParams: queryParams.toString() })
+      .httpClient.post<TableData>(
+        API_URLS.getDashboardTableData({ queryParams: queryParams.toString() }),
+        measurementUuids
       )
       .then((response) => {
         // console.log(response.data);

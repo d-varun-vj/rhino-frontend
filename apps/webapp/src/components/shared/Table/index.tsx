@@ -49,9 +49,18 @@ type TableProps<T> = {
   data: T[];
   footer?: FooterType;
   isLoading?: boolean;
+  extraStyles?: string;
+  emptyText?: string;
 };
 
-const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
+const Table = <T,>({
+  columns,
+  data,
+  footer,
+  isLoading,
+  extraStyles,
+  emptyText,
+}: TableProps<T>) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -80,7 +89,7 @@ const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
   return (
     <div>
       <div
-        className={`p-2 overflow-auto  ${table.getRowModel().rows.length == 0 ? 'pb-[150px]' : ''}`}
+        className={`p-2 overflow-auto  ${table.getRowModel().rows.length == 0 ? 'pb-[150px]' : ''}  ${extraStyles}`}
       >
         <table className="relative">
           <thead>
@@ -195,7 +204,7 @@ const Table = <T,>({ columns, data, footer, isLoading }: TableProps<T>) => {
             </div>
           ) : (
             <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
-              Not Found
+              {emptyText || 'Not Found'}
             </div>
           )}
         </table>

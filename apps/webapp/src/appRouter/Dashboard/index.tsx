@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 
+import { ColumnDef } from '@tanstack/react-table';
+import { FaChartBar, FaChartLine } from 'react-icons/fa';
+import IconButton from '../../components/shared/Buttons/IconButton';
 import Title from '../../components/shared/Title';
 import MainLayout from '../../layouts/MainLayout';
-import { ColumnDef } from '@tanstack/react-table';
 import { DashboardType } from './types';
-import IconButton from '../../components/shared/Buttons/IconButton';
-import { FaChartBar, FaChartLine } from 'react-icons/fa';
-
-import { getTableData } from './api';
 import { useQuery } from '@tanstack/react-query';
-import { useFilter } from '../../context/useFilter';
+import { useTranslation } from 'react-i18next';
 import { DATA_QUERY_KEYS } from '../../api/data-query-keys';
+import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/data';
 import Table from '../../components/shared/Table';
 import ActionCell from '../../components/shared/Table/ActionCell';
-import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/data';
-import { useTranslation } from 'react-i18next';
+import { useFilter } from '../../context/useFilter';
+import { getTableData } from './api';
+import { useFavoriteMeter } from '../../context/useFavoriteMeter';
 
 const Dashboard = () => {
   const [filterLocation, setFilterLocation] = useState<string>();
@@ -32,8 +32,9 @@ const Dashboard = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
   const { client, location, group } = useFilter();
+  const { favoriteMeter } = useFavoriteMeter();
   const { t } = useTranslation();
-  const translationBaseRoute = 'pages.dashboard.table.header.';
+  const translationBaseRoute = 'pages.dashboard.table.';
 
   const { data: tableData, isLoading } = useQuery({
     queryKey: [
@@ -54,6 +55,7 @@ const Dashboard = () => {
       filterEndUseAreaType,
       sortedField,
       sortDirection,
+      favoriteMeter,
     ],
     queryFn: () =>
       getTableData({
@@ -73,6 +75,7 @@ const Dashboard = () => {
         endUserAreaType: filterEndUseAreaType ? filterEndUseAreaType : null,
         sortedField: sortedField ? sortedField : null,
         sortDirection: sortDirection ? sortDirection : null,
+        measurementUuids: favoriteMeter ? favoriteMeter.measurementUuids : [],
       }),
   });
 
@@ -80,7 +83,7 @@ const Dashboard = () => {
     () => [
       {
         accessorFn: (row) => row.localisationName,
-        header: t(translationBaseRoute + 'localisationName'),
+        header: t(translationBaseRoute + 'header.localisationName'),
         cell: (info) => info.getValue(),
         meta: {
           setFilterValue: setFilterLocation,
@@ -93,7 +96,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.groupName,
-        header: t(translationBaseRoute + 'groupName'),
+        header: t(translationBaseRoute + 'header.groupName'),
         cell: (info) => info.getValue(),
         meta: {
           setFilterValue: setFilterGroup,
@@ -106,7 +109,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.measurementName,
-        header: t(translationBaseRoute + 'measurementName'),
+        header: t(translationBaseRoute + 'header.measurementName'),
         cell: (info) => info.getValue(),
         meta: {
           setFilterValue: setFilterMeasurement,
@@ -119,7 +122,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.serialNumber,
-        header: t(translationBaseRoute + 'serialNumber'),
+        header: t(translationBaseRoute + 'header.serialNumber'),
         cell: (info) => info.getValue(),
         meta: {
           setFilterValue: setFilterSerialNumber,
@@ -132,7 +135,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.tenant,
-        header: t(translationBaseRoute + 'tenant'),
+        header: t(translationBaseRoute + 'header.tenant'),
         cell: (info) => info.getValue(),
         meta: {
           setFilterValue: setFilterTenant,
@@ -141,7 +144,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.translatedMedium,
-        header: t(translationBaseRoute + 'translatedMedium'),
+        header: t(translationBaseRoute + 'header.translatedMedium'),
         cell: (info) => info.getValue(),
         meta: {
           setFilterValue: setFilterMedium,
@@ -154,7 +157,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.factor,
-        header: t(translationBaseRoute + 'factor'),
+        header: t(translationBaseRoute + 'header.factor'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
@@ -167,7 +170,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.value,
-        header: t(translationBaseRoute + 'value'),
+        header: t(translationBaseRoute + 'header.value'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
@@ -180,7 +183,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.readTime,
-        header: t(translationBaseRoute + 'readTime'),
+        header: t(translationBaseRoute + 'header.readTime'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
@@ -193,7 +196,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.currentMonthConsumption,
-        header: t(translationBaseRoute + 'currentMonthConsumption'),
+        header: t(translationBaseRoute + 'header.currentMonthConsumption'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
@@ -206,7 +209,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.lastMonthSameDayConsumption,
-        header: t(translationBaseRoute + 'lastMonthSameDayConsumption'),
+        header: t(translationBaseRoute + 'header.lastMonthSameDayConsumption'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
@@ -219,7 +222,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.percentage,
-        header: t(translationBaseRoute + 'percentage'),
+        header: t(translationBaseRoute + 'header.percentage'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
@@ -232,7 +235,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.lastMonthConsumption,
-        header: t(translationBaseRoute + 'lastMonthConsumption'),
+        header: t(translationBaseRoute + 'header.lastMonthConsumption'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
@@ -245,7 +248,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.unit,
-        header: t(translationBaseRoute + 'unit'),
+        header: t(translationBaseRoute + 'header.unit'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
@@ -258,7 +261,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.levelType?.translationEn,
-        header: t(translationBaseRoute + 'levelType'),
+        header: t(translationBaseRoute + 'header.levelType'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
@@ -284,7 +287,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.loadType?.translationEn,
-        header: t(translationBaseRoute + 'loadType'),
+        header: t(translationBaseRoute + 'header.loadType'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
@@ -310,7 +313,7 @@ const Dashboard = () => {
       },
       {
         accessorFn: (row) => row.endUseArea?.translationEn,
-        header: t(translationBaseRoute + 'endUseArea'),
+        header: t(translationBaseRoute + 'header.endUseArea'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
@@ -337,7 +340,7 @@ const Dashboard = () => {
       {
         id: 'action',
         accessorFn: (row) => row.action,
-        header: t(translationBaseRoute + 'actions'),
+        header: t(translationBaseRoute + 'header.actions'),
         meta: {
           filterVariant: null,
           isSortable: false,
@@ -349,7 +352,7 @@ const Dashboard = () => {
                 window.location.href =
                   VITE_WICKET_BASE_URL + 'consumptionProfileChart';
               }}
-              popupContent="Go to profile"
+              popupContent={t(translationBaseRoute + 'popup.goToProfile')}
               style="bg-rhino-energy-green text-white"
             >
               <FaChartBar />
@@ -360,7 +363,7 @@ const Dashboard = () => {
                 window.location.href =
                   VITE_WICKET_BASE_URL + 'consumptionChart';
               }}
-              popupContent="Go to comsumptions to compare measurement comsumptions"
+              popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
               style="bg-rhino-energy-green text-white"
             >
               <FaChartLine />
