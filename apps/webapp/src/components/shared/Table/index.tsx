@@ -107,7 +107,7 @@ const Table = <T,>({
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none text-rhino-indigo-blue py-[1rem] pr-[1.2rem] flex   text-[13px]  whitespace-wrap gap-3 min-h-[80px] h-[90px] justify-start '
+                                ? 'cursor-pointer select-none text-rhino-indigo-blue  pr-[1.2rem] flex   text-[13px]  whitespace-wrap gap-3 min-h-[80px] h-[100px] justify-start '
                                 : '',
                               onClick: header.column.columnDef.meta?.isSortable
                                 ? () => {
@@ -139,7 +139,7 @@ const Table = <T,>({
                                 : () => null,
                             }}
                           >
-                            <div className="h-full text-start overflow-y-auto ">
+                            <div className="h-full text-start  overflow-y-auto">
                               {flexRender(
                                 header.column.columnDef.header,
                                 header.getContext()
@@ -179,13 +179,14 @@ const Table = <T,>({
             <tbody>
               {table.getRowModel().rows.map((row) => {
                 return (
-                  <tr key={row.id} className="odd:bg-[#03030405]">
+                  <tr key={row.id} className="odd:bg-[#03030405] ">
                     {row.getVisibleCells().map((cell) => {
                       return (
-                        <td key={cell.id} className="p-[.75rem] align-top">
-                          <div
-                            className={`ml-[.3rem] text-[13px] text-wrap  w-auto `}
-                          >
+                        <td
+                          key={cell.id}
+                          className="p-[.75rem] align-top pl-0 first:pl-[.75rem]"
+                        >
+                          <div className={` text-[13px] text-wrap  w-auto `}>
                             {flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext()

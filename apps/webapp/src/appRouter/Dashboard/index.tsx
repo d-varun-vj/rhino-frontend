@@ -350,7 +350,8 @@ const Dashboard = () => {
             <IconButton
               action={() => {
                 window.location.href =
-                  VITE_WICKET_BASE_URL + 'consumptionProfileChart';
+                  VITE_WICKET_BASE_URL +
+                  `consumptionProfileChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
               }}
               popupContent={t(translationBaseRoute + 'popup.goToProfile')}
               style="bg-rhino-energy-green text-white"
@@ -361,7 +362,8 @@ const Dashboard = () => {
               action={() => {
                 console.log(row.original);
                 window.location.href =
-                  VITE_WICKET_BASE_URL + 'consumptionChart';
+                  VITE_WICKET_BASE_URL +
+                  `consumptionChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
               }}
               popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
               style="bg-rhino-energy-green text-white"

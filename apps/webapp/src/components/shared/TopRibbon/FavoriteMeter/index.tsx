@@ -19,6 +19,10 @@ const FavoriteMeter = () => {
   const { user } = useUser();
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
+  const [sortedField, setSortedField] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<string>('');
+  const [filterName, setFilterName] = useState<string>('');
+  const [filterAuthorEmail, setFilterAuthorEmail] = useState<string>('');
 
   const [isModelOpen, setModelOpen] = useState(false);
   const { favoriteMeter, setFavoriteMeter } = useFavoriteMeter();
@@ -31,7 +35,12 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.name'),
         cell: (info) => info.getValue(),
         meta: {
+          setFilterValue: setFilterName,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'name',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -39,7 +48,12 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.author'),
         cell: (info) => info.getValue(),
         meta: {
+          setFilterValue: setFilterAuthorEmail,
           isSortable: true,
+          setSortedField: setSortedField,
+          sortKey: 'user.email',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -49,6 +63,10 @@ const FavoriteMeter = () => {
         meta: {
           isSortable: true,
           filterVariant: null,
+          setSortedField: setSortedField,
+          sortKey: 'createdAt',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -58,6 +76,10 @@ const FavoriteMeter = () => {
         meta: {
           isSortable: true,
           filterVariant: null,
+          setSortedField: setSortedField,
+          sortKey: 'updatedAt',
+          setSortDirection: setSortDirection,
+          sortDirection: sortDirection,
         },
       },
       {
@@ -84,15 +106,30 @@ const FavoriteMeter = () => {
         ),
       },
     ],
-    [setFavoriteMeter, t]
+    [setFavoriteMeter, t, sortDirection]
   );
 
   const { data: tableData } = useQuery({
-    queryKey: [...DATA_QUERY_KEYS.getFavoriteMeters(), client],
+    queryKey: [
+      ...DATA_QUERY_KEYS.getFavoriteMeters(),
+      client,
+      page,
+      pageSize,
+      filterName,
+      filterAuthorEmail,
+      sortDirection,
+      sortedField,
+    ],
     queryFn: () =>
       getAllFavoriteMeters({
+        page: page,
+        size: pageSize,
         userUuid: user ? user?.uuid : '',
         clientUuid: client ? client.uuid : '',
+        name: filterName ? filterName : null,
+        authorEmail: filterAuthorEmail ? filterAuthorEmail : null,
+        sortedField: sortedField ? sortedField : null,
+        sortDirection: sortDirection ? sortDirection : null,
       }),
     enabled: user?.uuid ? true : false,
   });
@@ -128,7 +165,7 @@ const FavoriteMeter = () => {
                   {t('favoriteMeterModel.mainHeader')}
                 </h4>
                 <button
-                  className="p-[1.25rem] my-[-1.25rem] ml-auto mr-[-1.25rem] cursor-pointer text-[#000] leading-[1] opacity-50 font-bold text-[1.21875rem] "
+                  className="p-[1.25rem] my-[-1.25rem] ml-auto mr-[-1.25rem]  text-[#000] leading-[1] opacity-50 font-bold text-[1.21875rem] "
                   onClick={() => setModelOpen(false)}
                 >
                   ×
@@ -137,10 +174,10 @@ const FavoriteMeter = () => {
               <div className="relative flex-grow flex-shrink basis-auto p-[1.25rem] overflow-auto ">
                 <Table
                   columns={columns}
-                  data={tableData ? tableData : []}
+                  data={tableData ? tableData.results : []}
                   footer={{
                     currentPage: page,
-                    totalCount: tableData ? tableData.length : 0,
+                    totalCount: tableData ? tableData.totalCount : 0,
                     setCurrentPage: setPage,
                     setPageSize: setPageSize,
                     pageSize: pageSize,
