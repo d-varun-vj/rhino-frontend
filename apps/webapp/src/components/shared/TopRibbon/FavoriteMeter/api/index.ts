@@ -1,6 +1,7 @@
-import API_URLS, { BASE_URL } from '../../../../../api/endpoints';
-import { initHttpClient } from '../../../../../api/httpClient';
-import { FavType } from '../types';
+import API_URLS from '../../../../../api/endpoints';
+import { httpClient } from '../../../../../api/httpClient';
+import { Sort } from '../../../../../appRouter/Dashboard/types';
+import { FavFilter, FavType } from '../types';
 
 type TableData = {
   results: FavType[];
@@ -12,19 +13,15 @@ export const getAllFavoriteMeters = ({
   size,
   userUuid,
   clientUuid,
-  name,
-  authorEmail,
-  sortedField,
-  sortDirection,
+  filters,
+  sort,
 }: {
   page?: number | null;
   size?: number | null;
   userUuid: string;
   clientUuid: string;
-  name?: string | null;
-  authorEmail?: string | null;
-  sortedField?: string | null;
-  sortDirection?: string | null;
+  filters?: FavFilter | null;
+  sort?: Sort | null;
 }) => {
   return new Promise<TableData>((resolve, reject) => {
     const queryParams = new URLSearchParams({
@@ -32,13 +29,13 @@ export const getAllFavoriteMeters = ({
       size: size?.toString() || '',
       userUuid: userUuid?.toString() || '',
       clientUuid: clientUuid?.toString() || '',
-      name: name || '',
-      authorEmail: authorEmail || '',
-      sortedField: sortedField || '',
-      sortDirection: sortDirection || '',
+      name: filters?.name || '',
+      authorEmail: filters?.authorEmail || '',
+      sortedField: sort?.field || '',
+      sortDirection: sort?.direction || '',
     });
-    initHttpClient(BASE_URL)
-      .httpClient.get(
+    httpClient
+      .get(
         API_URLS.getAllFavoriteMeters({
           queryParams: queryParams.toString(),
         })

@@ -5,8 +5,13 @@ import { useQuery } from '@tanstack/react-query';
 import { Client, getClients } from './api';
 import { useTranslation } from 'react-i18next';
 import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
+import { initHttpClient } from '../../../../api/httpClient';
+import { BASE_URL } from '../../../../api/endpoints';
 
 const ClientCombobox = () => {
+  useEffect(() => {
+    initHttpClient(BASE_URL);
+  }, []);
   const { t } = useTranslation();
   const {
     setClient: setSelectedClient,
@@ -18,7 +23,7 @@ const ClientCombobox = () => {
   const { clearFavoriteMeter } = useFavoriteMeter();
 
   const { data: clientsData } = useQuery({
-    queryKey: ['clents'],
+    queryKey: ['clients'],
     queryFn: () => getClients(),
   });
 
@@ -32,6 +37,7 @@ const ClientCombobox = () => {
       setClients(clientsData);
     }
   }, [selectedClient, clientsData, setSelectedLocation, setSelectedGroup]);
+
   return (
     <UuidCombobox
       options={

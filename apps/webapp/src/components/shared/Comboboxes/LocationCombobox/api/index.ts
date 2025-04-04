@@ -1,5 +1,5 @@
-import API_URLS, { BASE_URL } from '../../../../../api/endpoints';
-import { initHttpClient } from '../../../../../api/httpClient';
+import API_URLS from '../../../../../api/endpoints';
+import { httpClient } from '../../../../../api/httpClient';
 import { VITE_WICKET_BASE_URL } from '../../../Sidebar/data';
 
 export type Location = {
@@ -20,8 +20,8 @@ export const getLocations = ({
     return Promise.resolve([]);
   }
   return new Promise<Location[]>((resolve, reject) => {
-    initHttpClient(BASE_URL)
-      .httpClient.get<Location[]>(API_URLS.getLocations({ clientId: clientId }))
+    httpClient
+      .get<Location[]>(API_URLS.getLocations({ clientId: clientId }))
       .then((response) => {
         resolve(response.data);
       })

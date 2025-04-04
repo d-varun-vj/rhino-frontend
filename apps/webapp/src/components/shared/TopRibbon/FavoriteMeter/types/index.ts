@@ -10,3 +10,8 @@ export type FavType = {
   editorUuid: string | null;
   action?: string;
 };
+
+export type FavFilter = {
+  name: string;
+  authorEmail: string;
+};

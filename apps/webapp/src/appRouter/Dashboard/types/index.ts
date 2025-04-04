@@ -28,3 +28,25 @@ export type DashboardType = {
   type: string | null;
   action?: string;
 };
+
+export type Filter = {
+  locationName: string;
+  groupName: string;
+  measurementName: string;
+  serialNumber: string;
+  tenant: string;
+  medium: string;
+  levelType: string;
+  loadType: string;
+  endUserAreaType: string;
+};
+
+export type Sort = {
+  field: string;
+  direction: string;
+};
+
+export type Pagination = {
+  page: number;
+  size: number;
+};

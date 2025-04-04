@@ -45,7 +45,7 @@ const fetchAdapter: AxiosAdapter = async (
 
   const response = await fetch(url!, fetchOptions);
 
-  if (response.status === 401) {
+  if (response.status === 401 || response.status === 500) {
     window.location.href = VITE_WICKET_BASE_URL + 'login';
   }
 
@@ -76,7 +76,7 @@ const fetchAdapter: AxiosAdapter = async (
 const httpClient: AxiosInstance = axios.create({
   adapter: fetchAdapter,
 });
-const httpClientWithoutAccessor: AxiosInstance = axios.create({
+const httpClientWithoutAuthorization: AxiosInstance = axios.create({
   adapter: fetchAdapter,
 });
 
@@ -95,7 +95,7 @@ export const initHttpClient = (baseURL?: string) => {
     headers: defaultHeaders,
   });
 
-  Object.assign(httpClientWithoutAccessor.defaults, {
+  Object.assign(httpClientWithoutAuthorization.defaults, {
     baseURL: baseURL,
     withCredentials: false,
     headers: defaultHeaders,
@@ -136,10 +136,10 @@ export const initHttpClient = (baseURL?: string) => {
   };
 
   httpClient.interceptors.request.use(requestInterceptor);
-  httpClientWithoutAccessor.interceptors.request.use(requestInterceptor);
+  httpClientWithoutAuthorization.interceptors.request.use(requestInterceptor);
   httpClient.interceptors.response.use(responseInterceptor, errorInterceptor);
 
-  return { httpClient, httpClientWithoutAccessor };
+  return { httpClient, httpClientWithoutAuthorization };
 };
 
-export { httpClient, httpClientWithoutAccessor };
+export { httpClient, httpClientWithoutAuthorization };

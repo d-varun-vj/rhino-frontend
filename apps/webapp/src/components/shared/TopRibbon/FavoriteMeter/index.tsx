@@ -3,7 +3,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import Table from '../../Table';
 import React, { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { FavType } from './types';
+import { FavFilter, FavType } from './types';
 import ActionCell from '../../Table/ActionCell';
 import IconButton from '../../Buttons/IconButton';
 import { useQuery } from '@tanstack/react-query';
@@ -13,20 +13,26 @@ import { useUser } from '../../../../context/useUser';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
 import { useFilter } from '../../../../context/useFilter';
+import { Sort } from '../../../../appRouter/Dashboard/types';
 
 const FavoriteMeter = () => {
   const { t } = useTranslation();
   const { user } = useUser();
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
-  const [sortedField, setSortedField] = useState<string>('');
-  const [sortDirection, setSortDirection] = useState<string>('');
-  const [filterName, setFilterName] = useState<string>('');
-  const [filterAuthorEmail, setFilterAuthorEmail] = useState<string>('');
-
-  const [isModelOpen, setModelOpen] = useState(false);
   const { favoriteMeter, setFavoriteMeter } = useFavoriteMeter();
   const { client } = useFilter();
+
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const [sort, setSort] = useState<Sort>({
+    field: '',
+    direction: '',
+  });
+  const [filters, setFilters] = useState<FavFilter>({
+    name: '',
+    authorEmail: '',
+  });
+  const [isModelOpen, setModelOpen] = useState(false);
+
   const translationBaseRoute = 'favoriteMeterModel.table.';
   const columns = React.useMemo<ColumnDef<FavType, unknown>[]>(
     () => [
@@ -35,12 +41,24 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.name'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: setFilterName,
+          setFilterValue: (val: string) => {
+            setFilters((prev) => {
+              return { ...prev, name: val };
+            });
+          },
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'name',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -48,12 +66,24 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.author'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: setFilterAuthorEmail,
+          setFilterValue: (val: string) => {
+            setFilters((prev) => {
+              return { ...prev, authorEmail: val };
+            });
+          },
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'user.email',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -63,10 +93,18 @@ const FavoriteMeter = () => {
         meta: {
           isSortable: true,
           filterVariant: null,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'createdAt',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -76,10 +114,18 @@ const FavoriteMeter = () => {
         meta: {
           isSortable: true,
           filterVariant: null,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'updatedAt',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -106,7 +152,7 @@ const FavoriteMeter = () => {
         ),
       },
     ],
-    [setFavoriteMeter, t, sortDirection]
+    [setFavoriteMeter, t, sort.direction]
   );
 
   const { data: tableData } = useQuery({
@@ -115,10 +161,9 @@ const FavoriteMeter = () => {
       client,
       page,
       pageSize,
-      filterName,
-      filterAuthorEmail,
-      sortDirection,
-      sortedField,
+      ...Object.entries(filters).map(([key, value]) => ({ [key]: value })),
+      sort.direction,
+      sort.field,
     ],
     queryFn: () =>
       getAllFavoriteMeters({
@@ -126,10 +171,8 @@ const FavoriteMeter = () => {
         size: pageSize,
         userUuid: user ? user?.uuid : '',
         clientUuid: client ? client.uuid : '',
-        name: filterName ? filterName : null,
-        authorEmail: filterAuthorEmail ? filterAuthorEmail : null,
-        sortedField: sortedField ? sortedField : null,
-        sortDirection: sortDirection ? sortDirection : null,
+        filters: filters,
+        sort: sort,
       }),
     enabled: user?.uuid ? true : false,
   });

@@ -1,11 +1,11 @@
-import API_URLS, { BASE_URL } from '../endpoints';
-import { initHttpClient } from '../httpClient';
+import API_URLS from '../endpoints';
+import { httpClient } from '../httpClient';
 import { User } from './types';
 
 export const getUser = (): Promise<User> => {
   return new Promise<User>((resolve, reject) => {
-    initHttpClient(BASE_URL)
-      .httpClient.get<User>(API_URLS.getUser())
+    httpClient
+      .get<User>(API_URLS.getUser())
       .then((response) => {
         resolve(response.data);
       })
@@ -21,10 +21,8 @@ export const changeUserLanguage = ({ lang }: { lang: string }) => {
     const queryParams = new URLSearchParams({
       language: lang?.toString() || '',
     });
-    initHttpClient(BASE_URL)
-      .httpClient.get(
-        API_URLS.changeLanguage({ queryParams: queryParams.toString() })
-      )
+    httpClient
+      .get(API_URLS.changeLanguage({ queryParams: queryParams.toString() }))
       .then((res) => {
         resolve(res.data);
       })

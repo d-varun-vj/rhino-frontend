@@ -11,6 +11,7 @@ const Label = ({ label }: { label: string }) => (
 
 const TopRibbon = () => {
   const { t } = useTranslation();
+
   return (
     <header className="flex basis-auto h-auto relative z-40 justify-between">
       <div className="mt-[1rem] relative px-[.75rem] ">

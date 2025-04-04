@@ -1,7 +1,7 @@
-import API_URLS, { BASE_URL } from '../../../api/endpoints';
-import { initHttpClient } from '../../../api/httpClient';
+import API_URLS from '../../../api/endpoints';
+import { httpClient } from '../../../api/httpClient';
 import { VITE_WICKET_BASE_URL } from '../../../components/shared/Sidebar/data';
-import { DashboardType, DictionaryDto } from '../types';
+import { DashboardType, DictionaryDto, Filter, Sort } from '../types';
 
 type Options = {
   levelTypes: DictionaryDto[];
@@ -27,36 +27,18 @@ export const getTableData = ({
   clientId,
   locationUuid,
   groupUuid,
-  locationName,
-  groupName,
-  measurementName,
-  serialNumber,
-  tenant,
-  medium,
-  levelType,
-  loadType,
-  endUserAreaType,
-  sortedField,
-  sortDirection,
   measurementUuids,
+  filters,
+  sort,
 }: {
   page?: number | null;
   size?: number | null;
   clientId?: string | null;
   locationUuid?: string | null;
   groupUuid?: string | null;
-  locationName?: string | null;
-  groupName?: string | null;
-  measurementName?: string | null;
-  serialNumber?: string | null;
-  tenant?: string | null;
-  medium?: string | null;
-  levelType?: string | null;
-  loadType?: string | null;
-  endUserAreaType?: string | null;
-  sortedField?: string | null;
-  sortDirection?: string | null;
+  sort?: Sort | null;
   measurementUuids?: string[] | [];
+  filters?: Filter | null;
 }): Promise<TableData> => {
   return new Promise<TableData>((resolve, reject) => {
     const queryParams = new URLSearchParams({
@@ -65,21 +47,21 @@ export const getTableData = ({
       clientId: clientId || '',
       locationUuid: locationUuid || '',
       groupUuid: groupUuid || '',
-      locationName: locationName || '',
-      groupName: groupName || '',
-      measurementName: measurementName || '',
-      serialNumber: serialNumber || '',
-      tenant: tenant || '',
-      medium: medium || '',
-      levelType: levelType || '',
-      loadType: loadType || '',
-      endUserAreaType: endUserAreaType || '',
-      sortedField: sortedField || '',
-      sortDirection: sortDirection || '',
+      locationName: filters?.locationName || '',
+      groupName: filters?.groupName || '',
+      measurementName: filters?.measurementName || '',
+      serialNumber: filters?.serialNumber || '',
+      tenant: filters?.tenant || '',
+      medium: filters?.medium || '',
+      levelType: filters?.levelType || '',
+      loadType: filters?.loadType || '',
+      endUserAreaType: filters?.endUserAreaType || '',
+      sortedField: sort?.field || '',
+      sortDirection: sort?.direction || '',
     });
 
-    initHttpClient(BASE_URL)
-      .httpClient.post<TableData>(
+    httpClient
+      .post<TableData>(
         API_URLS.getDashboardTableData({ queryParams: queryParams.toString() }),
         measurementUuids
       )

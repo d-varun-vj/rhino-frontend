@@ -1,5 +1,5 @@
-import API_URLS, { BASE_URL } from '../../../../../api/endpoints';
-import { initHttpClient } from '../../../../../api/httpClient';
+import API_URLS from '../../../../../api/endpoints';
+import { httpClient } from '../../../../../api/httpClient';
 import { VITE_WICKET_BASE_URL } from '../../../Sidebar/data';
 
 export type Client = {
@@ -10,8 +10,8 @@ export type Client = {
 
 export const getClients = (): Promise<Client[]> => {
   return new Promise<Client[]>((resolve, reject) => {
-    initHttpClient(BASE_URL)
-      .httpClient.get<Client[]>(API_URLS.getClients())
+    httpClient
+      .get<Client[]>(API_URLS.getClients())
       .then((response) => {
         resolve(response.data);
       })

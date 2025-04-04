@@ -5,7 +5,7 @@ import { FaChartBar, FaChartLine } from 'react-icons/fa';
 import IconButton from '../../components/shared/Buttons/IconButton';
 import Title from '../../components/shared/Title';
 import MainLayout from '../../layouts/MainLayout';
-import { DashboardType } from './types';
+import { DashboardType, Filter, Sort } from './types';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { DATA_QUERY_KEYS } from '../../api/data-query-keys';
@@ -17,20 +17,24 @@ import { getTableData } from './api';
 import { useFavoriteMeter } from '../../context/useFavoriteMeter';
 
 const Dashboard = () => {
-  const [filterLocation, setFilterLocation] = useState<string>();
-  const [filterGroup, setFilterGroup] = useState<string>();
-  const [filterMeasurement, setFilterMeasurement] = useState<string>();
-  const [filterSerialNumber, setFilterSerialNumber] = useState<string>();
-  const [filterTenant, setFilterTenant] = useState<string>();
-  const [filterMedium, setFilterMedium] = useState<string>();
-  const [filterLevelType, setFilterLevelType] = useState<string>();
-  const [filterLoadType, setFilterLoadType] = useState<string>();
-  const [filterEndUseAreaType, setFilterEndUseAreaType] = useState<string>();
-  const [sortedField, setSortedField] = useState<string>('');
-  const [sortDirection, setSortDirection] = useState<string>('');
-
+  const [filters, setFilters] = useState<Filter>({
+    locationName: '',
+    groupName: '',
+    measurementName: '',
+    serialNumber: '',
+    tenant: '',
+    medium: '',
+    levelType: '',
+    loadType: '',
+    endUserAreaType: '',
+  });
+  const [sort, setSort] = useState<Sort>({
+    field: '',
+    direction: '',
+  });
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
+
   const { client, location, group } = useFilter();
   const { favoriteMeter } = useFavoriteMeter();
   const { t } = useTranslation();
@@ -44,17 +48,8 @@ const Dashboard = () => {
       client,
       group,
       location,
-      filterLocation,
-      filterGroup,
-      filterMeasurement,
-      filterSerialNumber,
-      filterTenant,
-      filterMedium,
-      filterLevelType,
-      filterLoadType,
-      filterEndUseAreaType,
-      sortedField,
-      sortDirection,
+      ...Object.entries(filters).map(([key, value]) => ({ [key]: value })),
+      ...Object.entries(sort).map(([key, value]) => ({ [key]: value })),
       favoriteMeter,
     ],
     queryFn: () =>
@@ -64,17 +59,8 @@ const Dashboard = () => {
         clientId: client ? client.uuid : null,
         locationUuid: location ? location.uuid : null,
         groupUuid: group ? group.uuid : null,
-        locationName: filterLocation ? filterLocation : null,
-        groupName: filterGroup ? filterGroup : null,
-        measurementName: filterMeasurement ? filterMeasurement : null,
-        serialNumber: filterSerialNumber ? filterSerialNumber : null,
-        tenant: filterTenant ? filterTenant : null,
-        medium: filterMedium ? filterMedium : null,
-        levelType: filterLevelType ? filterLevelType : null,
-        loadType: filterLoadType ? filterLoadType : null,
-        endUserAreaType: filterEndUseAreaType ? filterEndUseAreaType : null,
-        sortedField: sortedField ? sortedField : null,
-        sortDirection: sortDirection ? sortDirection : null,
+        filters: filters,
+        sort: sort,
         measurementUuids: favoriteMeter ? favoriteMeter.measurementUuids : [],
       }),
   });
@@ -86,12 +72,24 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.localisationName'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: setFilterLocation,
+          setFilterValue: (val: string) => {
+            setFilters((prev: Filter) => {
+              return { ...prev, locationName: val };
+            });
+          },
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'localisationName',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -99,12 +97,24 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.groupName'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: setFilterGroup,
+          setFilterValue: (val: string) => {
+            setFilters((prev: Filter) => {
+              return { ...prev, groupName: val };
+            });
+          },
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'groupName',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -112,12 +122,24 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.measurementName'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: setFilterMeasurement,
+          setFilterValue: (val: string) => {
+            setFilters((prev: Filter) => {
+              return { ...prev, measurementName: val };
+            });
+          },
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'measurementName',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -125,12 +147,24 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.serialNumber'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: setFilterSerialNumber,
+          setFilterValue: (val: string) => {
+            setFilters((prev: Filter) => {
+              return { ...prev, serialNumber: val };
+            });
+          },
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'serialNumber',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -138,7 +172,11 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.tenant'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: setFilterTenant,
+          setFilterValue: (val: string) => {
+            setFilters((prev: Filter) => {
+              return { ...prev, tenant: val };
+            });
+          },
           isSortable: false,
         },
       },
@@ -147,12 +185,24 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.translatedMedium'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: setFilterMedium,
+          setFilterValue: (val: string) => {
+            setFilters((prev: Filter) => {
+              return { ...prev, medium: val };
+            });
+          },
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'translatedMedium',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -162,10 +212,18 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'factor',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -175,10 +233,18 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'value',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -188,10 +254,18 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'readTime',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -201,10 +275,18 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'currentMonthConsumption',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -214,10 +296,18 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'lastMonthSameDayConsumption',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -227,10 +317,18 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'percentage',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -240,10 +338,18 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'lastMonthConsumption',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -253,10 +359,18 @@ const Dashboard = () => {
         meta: {
           filterVariant: null,
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'unit',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
         },
       },
       {
@@ -266,20 +380,32 @@ const Dashboard = () => {
         meta: {
           filterVariant: 'select',
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'levelType',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
           selectionOptions: tableData?.options?.levelTypes.map(
             (type) => type.translationEn
           ),
           setFilterValue: (value: string) => {
             if (value === null) {
-              return setFilterLevelType('');
+              return setFilters((prev: Filter) => {
+                return { ...prev, levelType: '' };
+              });
             }
             tableData?.options?.levelTypes.filter((type) => {
               if (type.translationEn === value) {
-                setFilterLevelType(type.name);
+                setFilters((prev: Filter) => {
+                  return { ...prev, levelType: type.name };
+                });
               }
             });
           },
@@ -292,20 +418,32 @@ const Dashboard = () => {
         meta: {
           filterVariant: 'select',
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'loadType',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
           selectionOptions: tableData?.options?.loadTypes.map(
             (type) => type.translationEn
           ),
           setFilterValue: (value: string) => {
             if (value === null) {
-              return setFilterLoadType('');
+              return setFilters((prev: Filter) => {
+                return { ...prev, loadType: '' };
+              });
             }
             tableData?.options?.loadTypes.filter((type) => {
               if (type.translationEn === value) {
-                setFilterLoadType(type.name);
+                setFilters((prev: Filter) => {
+                  return { ...prev, loadType: type.name };
+                });
               }
             });
           },
@@ -318,20 +456,32 @@ const Dashboard = () => {
         meta: {
           filterVariant: 'select',
           isSortable: true,
-          setSortedField: setSortedField,
+          setSortedField: (val) => {
+            setSort((prev) => {
+              return { ...prev, field: val as string };
+            });
+          },
           sortKey: 'endUseArea',
-          setSortDirection: setSortDirection,
-          sortDirection: sortDirection,
+          setSortDirection: (val) => {
+            setSort((prev) => {
+              return { ...prev, direction: val as string };
+            });
+          },
+          sortDirection: sort.direction,
           selectionOptions: tableData?.options?.endUserAreaTypes.map(
             (type) => type.translationEn
           ),
           setFilterValue: (value: string) => {
             if (value === null) {
-              return setFilterEndUseAreaType('');
+              return setFilters((prev: Filter) => {
+                return { ...prev, endUserAreaType: '' };
+              });
             }
             tableData?.options?.endUserAreaTypes.filter((type) => {
               if (type.translationEn === value) {
-                setFilterEndUseAreaType(type.name);
+                setFilters((prev: Filter) => {
+                  return { ...prev, endUserAreaType: type.name };
+                });
               }
             });
           },
@@ -374,7 +524,7 @@ const Dashboard = () => {
         ),
       },
     ],
-    [tableData, sortDirection, t]
+    [tableData, sort.direction, t]
   );
   return (
     <MainLayout>
