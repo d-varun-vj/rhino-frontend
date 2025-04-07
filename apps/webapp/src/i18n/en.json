@@ -1,67 +1,9 @@
 {
   "translation": {
-    "sideMenu": {
-      "dashboards": "Dashboards",
-      "dashboard": "Dashboard",
-      "energyDashboard": " Energy dashboard",
-      "dashboardR": "Dashboard (R)",
-
-      "analysisReports": "Analysis and reports",
-      "consumptionChart": "Consumption",
-      "consumptionProfileChart": "Profile",
-      "heatMap": "Load Chart",
-      "measurementStructures": "Structures",
-      "balanceModule": "Balance module",
-      "report": "Reports",
-      "utilityCosts": "Utility costs",
-
-      "alarmsAndNotifications": "Alarms and notifications",
-      "immediateAlarm": "Immediate alarm",
-
-      "configuration": "Configuration",
-      "measurements": "Measurements",
-      "externalServiceConfiguration": "External UPCs configuration",
-      "technicalView": "Technical view",
-      "inputManagement": "Input management",
-      "maintenanceReport": "System maintenance report",
-      "meterStates": "Meters values",
-      "favoriteMeters": "Favorite meters",
-
-      "administration": "Administration",
-      "clients": "Clients",
-      "users": "Users management",
-      "tenants": "Tenants",
-
-      "support": "Support"
-    },
-    "topRibbon": {
-      "client": "Client:",
-      "location": "Location:",
-      "group": "Group:",
-      "favoriteMeters": "Favorite meters:",
-      "favoriteMeterButton": "Select",
-      "user": {
-        "terms": "Terms of Use",
-        "manual": "Manual",
-        "logout": "Logout",
-        "language": "Language"
-      }
-    },
     "comboBox": {
       "select": "Select",
       "locationNull": "All locations",
       "groupNull": "All groups"
-    },
-    "table": {
-      "footer": {
-        "show": "Show",
-        "positions": "positions",
-        "showing": "Showing",
-        "to": "to",
-        "of": "of",
-        "previous": "Previous",
-        "next": "Next"
-      }
     },
     "favoriteMeterModel": {
       "mainHeader": "Choose favorite meters",
@@ -106,6 +48,64 @@
             "goToComsumptions": "Go to comsumptions to compare measurement comsumptions"
           }
         }
+      }
+    },
+    "sideMenu": {
+      "dashboards": "Dashboards",
+      "dashboard": "Dashboard",
+      "energyDashboard": " Energy dashboard",
+      "dashboardR": "Dashboard (R)",
+
+      "analysisReports": "Analysis and reports",
+      "consumptionChart": "Consumption",
+      "consumptionProfileChart": "Profile",
+      "heatMap": "Load Chart",
+      "measurementStructures": "Structures",
+      "balanceModule": "Balance module",
+      "report": "Reports",
+      "utilityCosts": "Utility costs",
+
+      "alarmsAndNotifications": "Alarms and notifications",
+      "immediateAlarm": "Immediate alarm",
+
+      "configuration": "Configuration",
+      "measurements": "Measurements",
+      "externalServiceConfiguration": "External UPCs configuration",
+      "technicalView": "Technical view",
+      "inputManagement": "Input management",
+      "maintenanceReport": "System maintenance report",
+      "meterStates": "Meters values",
+      "favoriteMeters": "Favorite meters",
+
+      "administration": "Administration",
+      "clients": "Clients",
+      "users": "Users management",
+      "tenants": "Tenants",
+
+      "support": "Support"
+    },
+    "table": {
+      "footer": {
+        "show": "Show",
+        "positions": "positions",
+        "showing": "Showing",
+        "to": "to",
+        "of": "of",
+        "previous": "Previous",
+        "next": "Next"
+      }
+    },
+    "topRibbon": {
+      "client": "Client:",
+      "location": "Location:",
+      "group": "Group:",
+      "favoriteMeters": "Favorite meters:",
+      "favoriteMeterButton": "Select",
+      "user": {
+        "terms": "Terms of Use",
+        "manual": "Manual",
+        "logout": "Logout",
+        "language": "Language"
       }
     }
   }

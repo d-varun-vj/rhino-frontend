@@ -16,13 +16,24 @@ export const getUser = (): Promise<User> => {
   });
 };
 
-export const changeUserLanguage = ({ lang }: { lang: string }) => {
+export const changeUserLanguage = ({
+  userId,
+  lang,
+}: {
+  userId: string;
+  lang: string;
+}) => {
   return new Promise((resolve, reject) => {
     const queryParams = new URLSearchParams({
       language: lang?.toString() || '',
     });
     httpClient
-      .get(API_URLS.changeLanguage({ queryParams: queryParams.toString() }))
+      .put(
+        API_URLS.changeLanguage({
+          userId,
+          queryParams: queryParams.toString(),
+        })
+      )
       .then((res) => {
         resolve(res.data);
       })

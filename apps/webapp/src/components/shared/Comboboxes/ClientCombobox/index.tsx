@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
 import { initHttpClient } from '../../../../api/httpClient';
 import { BASE_URL } from '../../../../api/endpoints';
+import { useUser } from '../../../../context/useUser';
 
 const ClientCombobox = () => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const ClientCombobox = () => {
   } = useFilter();
   const [clients, setClients] = useState<Client[]>();
   const { clearFavoriteMeter } = useFavoriteMeter();
+  const { user } = useUser();
 
   const { data: clientsData } = useQuery({
     queryKey: ['clients'],
@@ -33,10 +35,25 @@ const ClientCombobox = () => {
       setSelectedLocation(null);
     }
 
+    // if (user?.clients) {
+    //   const filteredClients = clientsData?.filter((client) =>
+    //     user.clients?.includes(client.uuid)
+    //   );
+    //   setClients(filteredClients);
+    // } else {
+    //   setClients(clientsData);
+    // }
+
     if (clientsData) {
       setClients(clientsData);
     }
-  }, [selectedClient, clientsData, setSelectedLocation, setSelectedGroup]);
+  }, [
+    selectedClient,
+    clientsData,
+    setSelectedLocation,
+    setSelectedGroup,
+    user,
+  ]);
 
   return (
     <UuidCombobox

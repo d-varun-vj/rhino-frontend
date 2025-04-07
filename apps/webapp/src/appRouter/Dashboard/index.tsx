@@ -13,7 +13,7 @@ import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/data';
 import Table from '../../components/shared/Table';
 import ActionCell from '../../components/shared/Table/ActionCell';
 import { useFilter } from '../../context/useFilter';
-import { getTableData } from './api';
+import { getOptions, getTableData } from './api';
 import { useFavoriteMeter } from '../../context/useFavoriteMeter';
 
 const Dashboard = () => {
@@ -63,6 +63,11 @@ const Dashboard = () => {
         sort: sort,
         measurementUuids: favoriteMeter ? favoriteMeter.measurementUuids : [],
       }),
+  });
+
+  const { data: Options } = useQuery({
+    queryKey: [DATA_QUERY_KEYS.getDashboardOptions()],
+    queryFn: () => getOptions(),
   });
 
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
@@ -392,7 +397,7 @@ const Dashboard = () => {
             });
           },
           sortDirection: sort.direction,
-          selectionOptions: tableData?.options?.levelTypes.map(
+          selectionOptions: Options?.levelTypes.map(
             (type) => type.translationEn
           ),
           setFilterValue: (value: string) => {
@@ -401,7 +406,7 @@ const Dashboard = () => {
                 return { ...prev, levelType: '' };
               });
             }
-            tableData?.options?.levelTypes.filter((type) => {
+            Options?.levelTypes.filter((type) => {
               if (type.translationEn === value) {
                 setFilters((prev: Filter) => {
                   return { ...prev, levelType: type.name };
@@ -430,7 +435,7 @@ const Dashboard = () => {
             });
           },
           sortDirection: sort.direction,
-          selectionOptions: tableData?.options?.loadTypes.map(
+          selectionOptions: Options?.loadTypes.map(
             (type) => type.translationEn
           ),
           setFilterValue: (value: string) => {
@@ -439,7 +444,7 @@ const Dashboard = () => {
                 return { ...prev, loadType: '' };
               });
             }
-            tableData?.options?.loadTypes.filter((type) => {
+            Options?.loadTypes.filter((type) => {
               if (type.translationEn === value) {
                 setFilters((prev: Filter) => {
                   return { ...prev, loadType: type.name };
@@ -468,7 +473,7 @@ const Dashboard = () => {
             });
           },
           sortDirection: sort.direction,
-          selectionOptions: tableData?.options?.endUserAreaTypes.map(
+          selectionOptions: Options?.endUserAreaTypes.map(
             (type) => type.translationEn
           ),
           setFilterValue: (value: string) => {
@@ -477,7 +482,7 @@ const Dashboard = () => {
                 return { ...prev, endUserAreaType: '' };
               });
             }
-            tableData?.options?.endUserAreaTypes.filter((type) => {
+            Options?.endUserAreaTypes.filter((type) => {
               if (type.translationEn === value) {
                 setFilters((prev: Filter) => {
                   return { ...prev, endUserAreaType: type.name };
@@ -524,11 +529,15 @@ const Dashboard = () => {
         ),
       },
     ],
-    [tableData, sort.direction, t]
+    [Options, sort.direction, t]
   );
   return (
     <MainLayout>
-      <Title title={t('pages.dashboard.mainHeader')} />
+      <Title
+        title={t('pages.dashboard.mainHeader')}
+        guide={true}
+        guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
+      />
       <p className="text-[15px] text-[#666666] mb-[8px] mt-[19px]">
         {t('pages.dashboard.subHeader')}
       </p>

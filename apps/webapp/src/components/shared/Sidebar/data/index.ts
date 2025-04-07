@@ -18,10 +18,9 @@ import { BiSolidNetworkChart } from 'react-icons/bi';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { AiFillTool } from 'react-icons/ai';
 import { IconType } from 'react-icons/lib';
-import { LuRectangleVertical } from 'react-icons/lu';
 
-export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
-// export const VITE_WICKET_BASE_URL = 'http://localhost:8080/';
+// export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
+export const VITE_WICKET_BASE_URL = 'http://localhost:8080/';
 
 export type SubItemType = {
   label: string; // label from i18n translation (check src/i18n/...json)
@@ -46,12 +45,18 @@ export const MenuItems: MenuItemType[] = [
     icon: FaTable,
     key: 'dashboards',
     subItems: [
+      // {
+      //   label: 'sideMenu.dashboard',
+      //   icon: FaTable,
+      //   key: 'wdashboard',
+      //   route: '/wdashboard',
+      //   wicketLink: VITE_WICKET_BASE_URL + 'dashboard',
+      // },
       {
         label: 'sideMenu.dashboard',
         icon: FaTable,
-        key: 'wdashboard',
-        route: '/wdashboard',
-        wicketLink: VITE_WICKET_BASE_URL + 'dashboard',
+        key: 'dashboard',
+        route: '/dashboard',
       },
       {
         label: 'sideMenu.energyDashboard',
@@ -59,12 +64,12 @@ export const MenuItems: MenuItemType[] = [
         key: 'energy-dashboard',
         wicketLink: VITE_WICKET_BASE_URL + 'energyDashboard',
       },
-      {
-        label: 'sideMenu.dashboardR',
-        icon: LuRectangleVertical,
-        key: 'dashboard',
-        route: '/dashboard',
-      },
+      // {
+      //   label: 'sideMenu.dashboardR',
+      //   icon: LuRectangleVertical,
+      //   key: 'dashboard',
+      //   route: '/dashboard',
+      // },
     ],
   },
   //   Analysis and reports

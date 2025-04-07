@@ -13,7 +13,6 @@ type TableData = {
   results: DashboardType[];
   totalCount: number;
   countPerPage: number;
-  options?: Options;
 };
 
 export enum SortDirection {
@@ -72,6 +71,21 @@ export const getTableData = ({
       .catch((error) => {
         console.log(error);
         window.location.href = VITE_WICKET_BASE_URL + 'login';
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
+        reject(error.response?.data);
+      });
+  });
+};
+
+export const getOptions = () => {
+  return new Promise<Options>((resolve, reject) => {
+    httpClient
+      .get<Options>(API_URLS.getDashboardTableDataOptions())
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
         reject(error.response?.data);
       });
