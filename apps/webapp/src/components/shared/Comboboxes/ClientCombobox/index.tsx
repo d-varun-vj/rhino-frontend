@@ -42,7 +42,10 @@ const ClientCombobox = () => {
       setClients(clientsData);
     }
 
-    if (user && user.userType === UserType.ClientAdmin) {
+    if (
+      (user && user.userType === UserType.ClientAdmin) ||
+      user?.userType === UserType.LocalisationAdmin
+    ) {
       setDisableDropdown(true);
     }
   }, [

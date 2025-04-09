@@ -5,7 +5,7 @@ import TopRibbon from '../../components/shared/TopRibbon';
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <div className="flex items-stretch flex-auto w-full min-h-full">
+      <div className="flex items-stretch flex-auto w-full min-h-screen">
         {/* Navigation */}
         <SideBar />
         {/* Main Panel */}

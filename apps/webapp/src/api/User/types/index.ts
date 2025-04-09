@@ -51,5 +51,6 @@ export enum UserViewPermissions {
   METER_STATES_ROLE = 'METER_STATES',
   SUPPORT_ROLE = 'SUPPORT',
   API_ROLE = 'API',
+  CLIENT_ADMIN_ROLE = 'CLIENT_ADMIN',
   GLOBEL_ROLE = 'GLOBEL',
 }

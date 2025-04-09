@@ -30,7 +30,7 @@ export type SubItemType = {
   wicketLink?: string;
   route?: string;
   viewPermissions?: UserViewPermissions[]; // This is used to check if the user has permission to access this item.
-  allowesUserType?: UserType[]; // This is used to check if the user has permission to access this item.
+  allowedUserType?: UserType[]; // This is used to check if the user has permission to access this item.
 };
 
 export type MenuItemType = {
@@ -40,7 +40,7 @@ export type MenuItemType = {
   key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
   link?: string; // This is mostly used when there are no sub-items and only serves to redirect to other links.
   viewPermissions?: UserViewPermissions[]; // This is used to check if the user has permission to access this item.
-  allowesUserType?: UserType[]; // This is used to check if the user has permission to access this item.
+  allowedUserType?: UserType[]; // This is used to check if the user has permission to access this item.
 };
 
 export const MenuItems: MenuItemType[] = [
@@ -55,17 +55,41 @@ export const MenuItems: MenuItemType[] = [
         icon: FaTable,
         key: 'dashboard',
         route: '/dashboard',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
-        allowesUserType: [UserType.PartnerAdmin],
       },
       {
         label: 'sideMenu.energyDashboard',
         icon: FaTable,
         key: 'energy-dashboard',
         wicketLink: VITE_WICKET_BASE_URL + 'energyDashboard',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
     ],
+    allowedUserType: [
+      UserType.SuperAdmin,
+      UserType.ClientAdmin,
+      UserType.LocalisationAdmin,
+      UserType.Tenant,
+      UserType.RegularUser,
+      UserType.PartnerAdmin,
+    ],
+    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
   },
   //   Analysis and reports
   {
@@ -78,25 +102,68 @@ export const MenuItems: MenuItemType[] = [
         icon: FaChartLine,
         key: 'consumption',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionChart',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
+        viewPermissions: [
+          UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.CONSUMPTION_CHART_ROLE,
+        ],
       },
       {
         label: 'sideMenu.consumptionProfileChart',
         icon: FaChartBar,
         key: 'profile',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionProfileChart',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
+        viewPermissions: [
+          UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.CONSUMPTION_PROFILE_CHART_ROLE,
+        ],
       },
       {
         label: 'sideMenu.heatMap',
         icon: FaLightbulb,
         key: 'load-chart',
         wicketLink: VITE_WICKET_BASE_URL + 'heatmap',
-        viewPermissions: [UserViewPermissions.HEAT_MAP_ROLE],
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
+        viewPermissions: [
+          UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.HEAT_MAP_ROLE,
+        ],
       },
       {
         label: 'sideMenu.measurementStructures',
         icon: BiSolidNetworkChart,
         key: 'structures',
         wicketLink: VITE_WICKET_BASE_URL + 'measurementStructures',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE],
       },
       {
@@ -105,6 +172,14 @@ export const MenuItems: MenuItemType[] = [
         key: 'balance',
         route: '/balance',
         wicketLink: VITE_WICKET_BASE_URL + 'balanceModule',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [UserViewPermissions.BALANCE_MODULE_ROLE],
       },
       {
@@ -112,7 +187,16 @@ export const MenuItems: MenuItemType[] = [
         icon: FaFile,
         key: 'reports',
         wicketLink: VITE_WICKET_BASE_URL + 'reports',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [
+          UserViewPermissions.CLIENT_ADMIN_ROLE,
           UserViewPermissions.CONSUMPTION_REPORT_ROLE,
           UserViewPermissions.CONSUMPTION_PROFILE_REPORT_ROLE,
           UserViewPermissions.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
@@ -125,9 +209,26 @@ export const MenuItems: MenuItemType[] = [
         icon: FaWallet,
         key: 'utils-cost',
         wicketLink: VITE_WICKET_BASE_URL + 'utilityCosts',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [UserViewPermissions.UTILITY_COSTS_ROLE],
       },
     ],
+    allowedUserType: [
+      UserType.SuperAdmin,
+      UserType.ClientAdmin,
+      UserType.LocalisationAdmin,
+      UserType.Tenant,
+      UserType.RegularUser,
+      UserType.PartnerAdmin,
+    ],
+    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
   },
   //   Alarms and notifications
   {
@@ -140,9 +241,29 @@ export const MenuItems: MenuItemType[] = [
         icon: FaBell,
         key: 'immediate-alarm',
         wicketLink: VITE_WICKET_BASE_URL + 'alarms/immediate',
-        viewPermissions: [UserViewPermissions.IMMEDIATE_ALARM_ROLE],
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
+        viewPermissions: [
+          UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.IMMEDIATE_ALARM_ROLE,
+        ],
       },
     ],
+    allowedUserType: [
+      UserType.SuperAdmin,
+      UserType.ClientAdmin,
+      UserType.LocalisationAdmin,
+      UserType.Tenant,
+      UserType.RegularUser,
+      UserType.PartnerAdmin,
+    ],
+    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
   },
   //   Configuration
   {
@@ -155,46 +276,98 @@ export const MenuItems: MenuItemType[] = [
         icon: FaTachometerAlt,
         key: 'measurements',
         wicketLink: VITE_WICKET_BASE_URL + 'measurements',
-        viewPermissions: [UserViewPermissions.MEASUREMENT_ROLE],
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
+        viewPermissions: [
+          UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.MEASUREMENT_ROLE,
+        ],
       },
       {
         label: 'sideMenu.externalServiceConfiguration',
         icon: IoSettingsSharp,
         key: 'external-upcs-configuration',
         wicketLink: VITE_WICKET_BASE_URL + 'externalServicesConfiguration',
+        allowedUserType: [UserType.SuperAdmin, UserType.PartnerAdmin],
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
       {
         label: 'sideMenu.technicalView',
         icon: AiFillTool,
         key: 'technical-view',
         wicketLink: VITE_WICKET_BASE_URL + 'technical',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.PartnerAdmin,
+          UserType.TechnicalUser,
+        ],
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
       {
         label: 'sideMenu.inputManagement',
         icon: IoSettingsSharp,
         key: 'input-management',
         wicketLink: VITE_WICKET_BASE_URL + 'inputManagement',
+        allowedUserType: [UserType.SuperAdmin],
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
       {
         label: 'sideMenu.maintenanceReport',
         icon: FaFile,
         key: 'system-maintenance-report',
         wicketLink: VITE_WICKET_BASE_URL + 'reports/maintenance',
+        allowedUserType: [UserType.SuperAdmin],
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
       {
         label: 'sideMenu.meterStates',
         icon: FaFile,
         key: 'meter-values',
         wicketLink: VITE_WICKET_BASE_URL + 'metersValues',
-        viewPermissions: [UserViewPermissions.METER_STATES_ROLE],
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
+        viewPermissions: [
+          UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.METER_STATES_ROLE,
+        ],
       },
       {
         label: 'sideMenu.favoriteMeters',
         icon: FaStar,
         key: 'favorite-meters',
         wicketLink: VITE_WICKET_BASE_URL + 'favoritemeters',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
     ],
+    allowedUserType: [
+      UserType.SuperAdmin,
+      UserType.ClientAdmin,
+      UserType.LocalisationAdmin,
+      UserType.Tenant,
+      UserType.RegularUser,
+      UserType.PartnerAdmin,
+    ],
+    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
   },
   //   Administration
   {
@@ -207,6 +380,11 @@ export const MenuItems: MenuItemType[] = [
         icon: FaSuitcase,
         key: 'clients',
         wicketLink: VITE_WICKET_BASE_URL + 'clients',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
       {
@@ -214,6 +392,11 @@ export const MenuItems: MenuItemType[] = [
         icon: FaUser,
         key: 'users-management',
         wicketLink: VITE_WICKET_BASE_URL + 'users',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
       {
@@ -221,9 +404,20 @@ export const MenuItems: MenuItemType[] = [
         icon: FaBuilding,
         key: 'tenants',
         wicketLink: VITE_WICKET_BASE_URL + 'tenants',
+        allowedUserType: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.PartnerAdmin,
+        ],
         viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
     ],
+    allowedUserType: [
+      UserType.SuperAdmin,
+      UserType.ClientAdmin,
+      UserType.PartnerAdmin,
+    ],
+    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
   },
   //   Support
   {
@@ -231,6 +425,14 @@ export const MenuItems: MenuItemType[] = [
     icon: FaQuestionCircle,
     key: 'support',
     link: 'https://support.rhino.energy/login_page.php',
+    allowedUserType: [
+      UserType.SuperAdmin,
+      UserType.ClientAdmin,
+      UserType.LocalisationAdmin,
+      UserType.Tenant,
+      UserType.RegularUser,
+      UserType.PartnerAdmin,
+    ],
     viewPermissions: [UserViewPermissions.SUPPORT_ROLE],
   },
 ];

@@ -4,10 +4,12 @@ import { FaAngleDoubleLeft } from 'react-icons/fa';
 import { useState } from 'react';
 import { MenuItems } from './data';
 import MenuItem from './MenuItem';
+import { useUser } from '../../../context/useUser';
+import { UserType, UserViewPermissions } from '../../../api/User/types';
 
 const SideBar = () => {
   const [activeMenu, setActiveMenu] = useState('dashboards');
-
+  const { user } = useUser();
   return (
     <aside className="max-w-[15.2rem] bg-rhino-indigo-blue relative flex-grow flex-shrink-0 basis-auto w-[300px] flex-col flex z-40 will-change-scroll manu-background max-sm:hidden">
       {/* Minimize Button */}
@@ -35,14 +37,46 @@ const SideBar = () => {
       <nav className="overflow-auto overflow-x-hidden block">
         <ul className="m-0 p-0">
           {/* Main Menu Item*/}
-          {MenuItems.map((menuItem) => (
-            <MenuItem
-              key={menuItem.key}
-              menuItem={menuItem}
-              activeMenu={activeMenu}
-              setActiveMenu={setActiveMenu}
-            />
-          ))}
+          {MenuItems.map((menuItem) => {
+            if (user?.userType === UserType.SuperAdmin) {
+              return (
+                <MenuItem
+                  key={menuItem.key}
+                  menuItem={menuItem}
+                  activeMenu={activeMenu}
+                  setActiveMenu={setActiveMenu}
+                />
+              );
+            }
+            return menuItem.allowedUserType?.some((uType) => {
+              if (uType === user?.userType) {
+                return menuItem.viewPermissions?.some((permission) => {
+                  if (permission === UserViewPermissions.GLOBEL_ROLE) {
+                    return true;
+                  } else {
+                    return user?.permissions?.some((userPermission) => {
+                      if (userPermission === permission) {
+                        return true;
+                      }
+                    });
+                  }
+                });
+              } else return false;
+            }) ? (
+              <MenuItem
+                key={menuItem.key}
+                menuItem={menuItem}
+                activeMenu={activeMenu}
+                setActiveMenu={setActiveMenu}
+              />
+            ) : null;
+            // <MenuItem
+            //   key={menuItem.key}
+            //   menuItem={menuItem}
+            //   activeMenu={activeMenu}
+            //   setActiveMenu={setActiveMenu}
+            // />;
+          })}
         </ul>
       </nav>
     </aside>

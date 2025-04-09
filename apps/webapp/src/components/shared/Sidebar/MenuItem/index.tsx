@@ -111,26 +111,43 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
               />
             );
           }
-          return user?.permissions?.some((permission) =>
-            subItem.viewPermissions?.includes(permission)
-          ) ||
-            subItem.allowesUserType?.some((u) => {
-              console.log('User', u);
-              if (u === user?.userType) {
-                return true;
+          if (user?.userType === UserType.ClientAdmin) {
+            return subItem.allowedUserType?.some((uType) => {
+              if (uType === user?.userType) {
+                return subItem.viewPermissions?.some((permission) => {
+                  if (permission === UserViewPermissions.GLOBEL_ROLE) {
+                    return true;
+                  } else if (
+                    permission === UserViewPermissions.CLIENT_ADMIN_ROLE
+                  ) {
+                    return true;
+                  }
+                });
               } else return false;
             }) ? (
-            <Item
-              subItem={subItem}
-              t={t}
-              key={subItem.key}
-              location={location}
-            />
-          ) : subItem.viewPermissions?.some((permission) => {
-              if (permission === UserViewPermissions.GLOBEL_ROLE) {
-                return true;
-              }
-            }) ? (
+              <Item
+                subItem={subItem}
+                t={t}
+                key={subItem.key}
+                location={location}
+              />
+            ) : null;
+          }
+          return subItem.allowedUserType?.some((uType) => {
+            if (uType === user?.userType) {
+              return subItem.viewPermissions?.some((permission) => {
+                if (permission === UserViewPermissions.GLOBEL_ROLE) {
+                  return true;
+                } else {
+                  return user?.permissions?.some((userPermission) => {
+                    if (userPermission === permission) {
+                      return true;
+                    }
+                  });
+                }
+              });
+            } else return false;
+          }) ? (
             <Item
               subItem={subItem}
               t={t}
@@ -138,10 +155,6 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
               location={location}
             />
           ) : null;
-
-          // return (
-          //   <Item subItem={subItem} t={t} key={subItem.key} />
-          // );
         })}
       </ul>
     </li>

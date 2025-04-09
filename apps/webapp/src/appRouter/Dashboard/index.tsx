@@ -75,12 +75,22 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    if (user && user.userType === UserType.ClientAdmin) {
+    if (
+      (user && user.userType === UserType.ClientAdmin) ||
+      user?.userType === UserType.LocalisationAdmin ||
+      user?.userType === UserType.PartnerAdmin
+    ) {
       setClient({
         name: user.clients ? user.clients[0].name : '',
         uuid: user.clients ? user.clients[0].uuid : '',
       });
     }
+    // if (user && user.userType === UserType.LocalisationAdmin) {
+    //   setClient({
+    //     name: user.clients ? user.clients[0].name : '',
+    //     uuid: user.clients ? user.clients[0].uuid : '',
+    //   });
+    // }
   }, [user, setClient]);
 
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(

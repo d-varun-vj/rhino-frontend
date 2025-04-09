@@ -4,11 +4,13 @@ import UuidCombobox from '../UuidCombobox';
 import { useQuery } from '@tanstack/react-query';
 import { getLocations, Location } from '../LocationCombobox/api';
 import { useTranslation } from 'react-i18next';
+import { useUser } from '../../../../context/useUser';
 
 const GroupCombobox = () => {
   const { t } = useTranslation();
+  const { user } = useUser();
+
   const {
-    setLocation: setSelectedLocation,
     setGroup: setSelectedGroup,
     client: selectedClient,
     group: selectedGroup,
@@ -24,10 +26,33 @@ const GroupCombobox = () => {
       }),
   });
 
+  // useEffect(() => {
+  //   if (
+  //     selectedLocation !== null &&
+  //     !locations
+  //       ?.filter((location) => location.name === selectedLocation.name)
+  //       .some((location) =>
+  //         location.groups?.some((group) => group.name === selectedGroup?.name)
+  //       )
+  //   ) {
+  //     setSelectedGroup(null);
+  //   }
+  //   if (locationsData) {
+  //     setLocations(locationsData);
+  //   }
+  // }, [
+  //   selectedClient,
+  //   selectedGroup,
+  //   selectedLocation,
+  //   locationsData,
+  //   locations,
+  //   setSelectedLocation,
+  //   setSelectedGroup,
+  // ]);
   useEffect(() => {
     if (
       selectedLocation !== null &&
-      !locations
+      !locationsData
         ?.filter((location) => location.name === selectedLocation.name)
         .some((location) =>
           location.groups?.some((group) => group.name === selectedGroup?.name)
@@ -35,7 +60,12 @@ const GroupCombobox = () => {
     ) {
       setSelectedGroup(null);
     }
-    if (locationsData) {
+    if ((user?.adminPermittedLocalisations ?? []).length > 0 && locationsData) {
+      const filteredLocations = locationsData.filter((location) =>
+        user?.adminPermittedLocalisations?.includes(location.uuid)
+      );
+      setLocations(filteredLocations);
+    } else if (locationsData) {
       setLocations(locationsData);
     }
   }, [
@@ -43,9 +73,8 @@ const GroupCombobox = () => {
     selectedGroup,
     selectedLocation,
     locationsData,
-    locations,
-    setSelectedLocation,
     setSelectedGroup,
+    user?.adminPermittedLocalisations,
   ]);
 
   return (
