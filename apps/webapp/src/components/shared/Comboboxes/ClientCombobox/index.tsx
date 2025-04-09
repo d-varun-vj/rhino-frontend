@@ -8,6 +8,7 @@ import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
 import { initHttpClient } from '../../../../api/httpClient';
 import { BASE_URL } from '../../../../api/endpoints';
 import { useUser } from '../../../../context/useUser';
+import { UserType } from '../../../../api/User/types';
 
 const ClientCombobox = () => {
   useEffect(() => {
@@ -21,12 +22,14 @@ const ClientCombobox = () => {
     client: selectedClient,
   } = useFilter();
   const [clients, setClients] = useState<Client[]>();
+  const [disableDropdown, setDisableDropdown] = useState<boolean>();
   const { clearFavoriteMeter } = useFavoriteMeter();
   const { user } = useUser();
 
   const { data: clientsData } = useQuery({
     queryKey: ['clients'],
-    queryFn: () => getClients(),
+    queryFn: () => getClients({ userUuid: user ? user?.uuid : '' }),
+    enabled: user?.uuid ? true : false,
   });
 
   useEffect(() => {
@@ -35,17 +38,12 @@ const ClientCombobox = () => {
       setSelectedLocation(null);
     }
 
-    // if (user?.clients) {
-    //   const filteredClients = clientsData?.filter((client) =>
-    //     user.clients?.includes(client.uuid)
-    //   );
-    //   setClients(filteredClients);
-    // } else {
-    //   setClients(clientsData);
-    // }
-
     if (clientsData) {
       setClients(clientsData);
+    }
+
+    if (user && user.userType === UserType.ClientAdmin) {
+      setDisableDropdown(true);
     }
   }, [
     selectedClient,
@@ -66,7 +64,7 @@ const ClientCombobox = () => {
           : []
       }
       defaultPlaceholder={t('comboBox.select')}
-      disabled={false}
+      disabled={disableDropdown || false}
       setReturnValue={(client) => {
         if (client?.name !== selectedClient?.name) {
           clearFavoriteMeter();

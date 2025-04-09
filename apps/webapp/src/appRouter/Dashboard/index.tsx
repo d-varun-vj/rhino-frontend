@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ColumnDef } from '@tanstack/react-table';
 import { FaChartBar, FaChartLine } from 'react-icons/fa';
@@ -15,6 +15,8 @@ import ActionCell from '../../components/shared/Table/ActionCell';
 import { useFilter } from '../../context/useFilter';
 import { getOptions, getTableData } from './api';
 import { useFavoriteMeter } from '../../context/useFavoriteMeter';
+import { useUser } from '../../context/useUser';
+import { UserType } from '../../api/User/types';
 
 const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
@@ -35,8 +37,9 @@ const Dashboard = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
 
-  const { client, location, group } = useFilter();
+  const { client, location, group, setClient } = useFilter();
   const { favoriteMeter } = useFavoriteMeter();
+  const { user } = useUser();
   const { t } = useTranslation();
   const translationBaseRoute = 'pages.dashboard.table.';
 
@@ -63,12 +66,22 @@ const Dashboard = () => {
         sort: sort,
         measurementUuids: favoriteMeter ? favoriteMeter.measurementUuids : [],
       }),
+    enabled: user ? true : false,
   });
 
   const { data: Options } = useQuery({
     queryKey: [DATA_QUERY_KEYS.getDashboardOptions()],
     queryFn: () => getOptions(),
   });
+
+  useEffect(() => {
+    if (user && user.userType === UserType.ClientAdmin) {
+      setClient({
+        name: user.clients ? user.clients[0].name : '',
+        uuid: user.clients ? user.clients[0].uuid : '',
+      });
+    }
+  }, [user, setClient]);
 
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
     () => [

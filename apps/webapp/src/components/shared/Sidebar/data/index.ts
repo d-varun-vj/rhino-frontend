@@ -18,6 +18,7 @@ import { BiSolidNetworkChart } from 'react-icons/bi';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { AiFillTool } from 'react-icons/ai';
 import { IconType } from 'react-icons/lib';
+import { UserType, UserViewPermissions } from '../../../../api/User/types';
 
 // export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
 export const VITE_WICKET_BASE_URL = 'http://localhost:8080/';
@@ -28,6 +29,8 @@ export type SubItemType = {
   key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
   wicketLink?: string;
   route?: string;
+  viewPermissions?: UserViewPermissions[]; // This is used to check if the user has permission to access this item.
+  allowesUserType?: UserType[]; // This is used to check if the user has permission to access this item.
 };
 
 export type MenuItemType = {
@@ -36,6 +39,8 @@ export type MenuItemType = {
   subItems?: SubItemType[];
   key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
   link?: string; // This is mostly used when there are no sub-items and only serves to redirect to other links.
+  viewPermissions?: UserViewPermissions[]; // This is used to check if the user has permission to access this item.
+  allowesUserType?: UserType[]; // This is used to check if the user has permission to access this item.
 };
 
 export const MenuItems: MenuItemType[] = [
@@ -45,31 +50,21 @@ export const MenuItems: MenuItemType[] = [
     icon: FaTable,
     key: 'dashboards',
     subItems: [
-      // {
-      //   label: 'sideMenu.dashboard',
-      //   icon: FaTable,
-      //   key: 'wdashboard',
-      //   route: '/wdashboard',
-      //   wicketLink: VITE_WICKET_BASE_URL + 'dashboard',
-      // },
       {
         label: 'sideMenu.dashboard',
         icon: FaTable,
         key: 'dashboard',
         route: '/dashboard',
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        allowesUserType: [UserType.PartnerAdmin],
       },
       {
         label: 'sideMenu.energyDashboard',
         icon: FaTable,
         key: 'energy-dashboard',
         wicketLink: VITE_WICKET_BASE_URL + 'energyDashboard',
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
-      // {
-      //   label: 'sideMenu.dashboardR',
-      //   icon: LuRectangleVertical,
-      //   key: 'dashboard',
-      //   route: '/dashboard',
-      // },
     ],
   },
   //   Analysis and reports
@@ -95,12 +90,14 @@ export const MenuItems: MenuItemType[] = [
         icon: FaLightbulb,
         key: 'load-chart',
         wicketLink: VITE_WICKET_BASE_URL + 'heatmap',
+        viewPermissions: [UserViewPermissions.HEAT_MAP_ROLE],
       },
       {
         label: 'sideMenu.measurementStructures',
         icon: BiSolidNetworkChart,
         key: 'structures',
         wicketLink: VITE_WICKET_BASE_URL + 'measurementStructures',
+        viewPermissions: [UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE],
       },
       {
         label: 'sideMenu.balanceModule',
@@ -108,18 +105,27 @@ export const MenuItems: MenuItemType[] = [
         key: 'balance',
         route: '/balance',
         wicketLink: VITE_WICKET_BASE_URL + 'balanceModule',
+        viewPermissions: [UserViewPermissions.BALANCE_MODULE_ROLE],
       },
       {
         label: 'sideMenu.report',
         icon: FaFile,
         key: 'reports',
         wicketLink: VITE_WICKET_BASE_URL + 'reports',
+        viewPermissions: [
+          UserViewPermissions.CONSUMPTION_REPORT_ROLE,
+          UserViewPermissions.CONSUMPTION_PROFILE_REPORT_ROLE,
+          UserViewPermissions.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
+          UserViewPermissions.POWER_REPORTS_ROLE,
+          UserViewPermissions.METER_VALUES_REPORT_ROLE,
+        ],
       },
       {
         label: 'sideMenu.utilityCosts',
         icon: FaWallet,
         key: 'utils-cost',
         wicketLink: VITE_WICKET_BASE_URL + 'utilityCosts',
+        viewPermissions: [UserViewPermissions.UTILITY_COSTS_ROLE],
       },
     ],
   },
@@ -134,6 +140,7 @@ export const MenuItems: MenuItemType[] = [
         icon: FaBell,
         key: 'immediate-alarm',
         wicketLink: VITE_WICKET_BASE_URL + 'alarms/immediate',
+        viewPermissions: [UserViewPermissions.IMMEDIATE_ALARM_ROLE],
       },
     ],
   },
@@ -148,6 +155,7 @@ export const MenuItems: MenuItemType[] = [
         icon: FaTachometerAlt,
         key: 'measurements',
         wicketLink: VITE_WICKET_BASE_URL + 'measurements',
+        viewPermissions: [UserViewPermissions.MEASUREMENT_ROLE],
       },
       {
         label: 'sideMenu.externalServiceConfiguration',
@@ -178,6 +186,7 @@ export const MenuItems: MenuItemType[] = [
         icon: FaFile,
         key: 'meter-values',
         wicketLink: VITE_WICKET_BASE_URL + 'metersValues',
+        viewPermissions: [UserViewPermissions.METER_STATES_ROLE],
       },
       {
         label: 'sideMenu.favoriteMeters',
@@ -198,18 +207,21 @@ export const MenuItems: MenuItemType[] = [
         icon: FaSuitcase,
         key: 'clients',
         wicketLink: VITE_WICKET_BASE_URL + 'clients',
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
       {
         label: 'sideMenu.users',
         icon: FaUser,
         key: 'users-management',
         wicketLink: VITE_WICKET_BASE_URL + 'users',
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
       {
         label: 'sideMenu.tenants',
         icon: FaBuilding,
         key: 'tenants',
         wicketLink: VITE_WICKET_BASE_URL + 'tenants',
+        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
       },
     ],
   },
@@ -219,5 +231,6 @@ export const MenuItems: MenuItemType[] = [
     icon: FaQuestionCircle,
     key: 'support',
     link: 'https://support.rhino.energy/login_page.php',
+    viewPermissions: [UserViewPermissions.SUPPORT_ROLE],
   },
 ];

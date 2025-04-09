@@ -4,7 +4,8 @@ export const BASE_URL: string = 'http://localhost:8090/api/';
 
 const API_URLS = {
   //   Top Ribbon
-  getClients: () => 'clients',
+  getClients: ({ userUuid }: { userUuid: string }) =>
+    `clients/user/${userUuid}`,
   getLocations: ({ clientId }: { clientId: string | null }) =>
     `locations/${clientId}`,
   getUser: () => 'user',

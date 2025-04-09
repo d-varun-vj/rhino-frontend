@@ -8,10 +8,16 @@ export type Client = {
   useAggregateData: boolean;
 };
 
-export const getClients = (): Promise<Client[]> => {
+export const getClients = ({
+  userUuid,
+}: {
+  userUuid: string;
+}): Promise<Client[]> => {
+  console.log('user: ', userUuid);
+
   return new Promise<Client[]>((resolve, reject) => {
     httpClient
-      .get<Client[]>(API_URLS.getClients())
+      .get<Client[]>(API_URLS.getClients({ userUuid: userUuid }))
       .then((response) => {
         resolve(response.data);
       })

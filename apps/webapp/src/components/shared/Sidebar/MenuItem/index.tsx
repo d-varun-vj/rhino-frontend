@@ -1,18 +1,65 @@
 import { useEffect, useState } from 'react';
-import { MenuItemType } from '../data';
+import { MenuItemType, SubItemType } from '../data';
 import './MenuItem.css';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Location, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useUser } from '../../../../context/useUser';
+import { UserType, UserViewPermissions } from '../../../../api/User/types';
+import { TFunction } from 'i18next';
 
 type menuItem = {
   menuItem: MenuItemType;
   setActiveMenu: React.Dispatch<React.SetStateAction<string>>;
   activeMenu: string;
 };
+
+const Item = ({
+  subItem,
+  t,
+  key,
+  location,
+}: {
+  subItem: SubItemType;
+  t: TFunction<'translation', undefined>;
+  key?: string;
+  location: Location<string>;
+}) => (
+  <Link to={subItem.wicketLink || subItem.route || '#'} key={key}>
+    <li className="relative">
+      <p
+        className={`${
+          location.pathname === subItem.route
+            ? 'nav-active nav-sub-menu-a'
+            : 'nav-sub-menu-a'
+        }`}
+      >
+        <i
+          className={`${
+            location.pathname === subItem.route ? 'nav-active' : ''
+          }`}
+        >
+          <subItem.icon className="text-[15px]" />
+        </i>
+        <span
+          className={`${
+            location.pathname === subItem.route ? 'nav-active' : ''
+          }`}
+        >
+          {t(subItem.label)}
+        </span>
+      </p>
+    </li>
+  </Link>
+);
+
 const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
   const { t } = useTranslation();
   const [title, setTitle] = useState(t(menuItem.label));
   const location = useLocation();
+  const { user } = useUser();
+
+  console.log(user);
+
   useEffect(() => {
     document.title = title;
     menuItem.subItems?.map((item) => {
@@ -53,35 +100,49 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
       </a>
       {/* Sub Menu Item */}
       <ul className="m-0 p-0 py-[10px] nav-sub-menu">
-        {menuItem.subItems?.map((subItem) => (
-          <Link
-            to={
-              subItem.wicketLink
-                ? subItem.wicketLink
-                : subItem.route
-                  ? subItem.route
-                  : '#'
-            }
-            key={subItem.key}
-          >
-            <li className="relative">
-              <p
-                className={`${location.pathname == subItem.route ? 'nav-active nav-sub-menu-a' : 'nav-sub-menu-a'}`}
-              >
-                <i
-                  className={`${location.pathname == subItem.route ? 'nav-active' : ''}`}
-                >
-                  <subItem.icon className="text-[15px]" />
-                </i>
-                <span
-                  className={`${location.pathname == subItem.route ? 'nav-active' : ''}`}
-                >
-                  {t(subItem.label)}
-                </span>
-              </p>
-            </li>
-          </Link>
-        ))}
+        {menuItem.subItems?.map((subItem) => {
+          if (user?.userType === UserType.SuperAdmin) {
+            return (
+              <Item
+                subItem={subItem}
+                t={t}
+                key={subItem.key}
+                location={location}
+              />
+            );
+          }
+          return user?.permissions?.some((permission) =>
+            subItem.viewPermissions?.includes(permission)
+          ) ||
+            subItem.allowesUserType?.some((u) => {
+              console.log('User', u);
+              if (u === user?.userType) {
+                return true;
+              } else return false;
+            }) ? (
+            <Item
+              subItem={subItem}
+              t={t}
+              key={subItem.key}
+              location={location}
+            />
+          ) : subItem.viewPermissions?.some((permission) => {
+              if (permission === UserViewPermissions.GLOBEL_ROLE) {
+                return true;
+              }
+            }) ? (
+            <Item
+              subItem={subItem}
+              t={t}
+              key={subItem.key}
+              location={location}
+            />
+          ) : null;
+
+          // return (
+          //   <Item subItem={subItem} t={t} key={subItem.key} />
+          // );
+        })}
       </ul>
     </li>
   );

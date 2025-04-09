@@ -9,12 +9,12 @@ export type User = {
   phoneNumber: string;
   language: string;
   active: boolean;
-  userType: string;
+  userType: UserType;
   created: string;
   measurements: string[] | null;
-  clients: string[] | null;
+  clients: { name: string; uuid: string }[] | null;
   adminPermittedLocalisations: string[] | null;
-  permissions: string[] | null;
+  permissions: UserViewPermissions[] | null;
   tenants: string[] | null;
   licences: string[] | null;
   lastLogin: string | null;
@@ -23,3 +23,33 @@ export type User = {
     assignedClientUuid: string | null;
   };
 };
+
+export enum UserType {
+  SuperAdmin = 'SUPER_ADMIN',
+  ClientAdmin = 'CLIENT_ADMIN',
+  LocalisationAdmin = 'LOCALISATION_ADMIN',
+  Tenant = 'TENANT',
+  RegularUser = 'REGULAR_USER',
+  TechnicalUser = 'TECHNICAL_USER',
+  PartnerAdmin = 'PARTNER_ADMIN',
+}
+
+export enum UserViewPermissions {
+  HEAT_MAP_ROLE = 'HEAT_MAP',
+  CONSUMPTION_CHART_ROLE = 'CONSUMPTION_CHART',
+  CONSUMPTION_PROFILE_CHART_ROLE = 'CONSUMPTION_PROFILE_CHART',
+  CONSUMPTION_REPORT_ROLE = 'CONSUMPTION_REPORT',
+  CONSUMPTION_PROFILE_REPORT_ROLE = 'CONSUMPTION_PROFILE_REPORT',
+  SIMPLIFIED_CONSUMPTION_REPORTS_ROLE = 'SIMPLIFIED_CONSUMPTION_REPORTS',
+  POWER_REPORTS_ROLE = 'POWER_REPORTS',
+  METER_VALUES_REPORT_ROLE = 'METER_VALUES_REPORT',
+  MEASUREMENT_STRUCTURE_ROLE = 'MEASUREMENT_STRUCTURE',
+  MEASUREMENT_ROLE = 'MEASUREMENT',
+  UTILITY_COSTS_ROLE = 'UTILITY_COSTS',
+  BALANCE_MODULE_ROLE = 'BALANCE_MODULE',
+  IMMEDIATE_ALARM_ROLE = 'IMMEDIATE_ALARM',
+  METER_STATES_ROLE = 'METER_STATES',
+  SUPPORT_ROLE = 'SUPPORT',
+  API_ROLE = 'API',
+  GLOBEL_ROLE = 'GLOBEL',
+}
