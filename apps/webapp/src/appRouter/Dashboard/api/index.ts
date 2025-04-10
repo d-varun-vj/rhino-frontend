@@ -20,13 +20,19 @@ export enum SortDirection {
   DESC = 'DESC',
 }
 
+export type DashboardTableRequestBody = {
+  measurementUuids: string[];
+  clientUuids: string[];
+  localisationUuids: string[];
+};
+
 export const getTableData = ({
   page,
   size,
   clientId,
   locationUuid,
   groupUuid,
-  measurementUuids,
+  requestBody,
   filters,
   sort,
 }: {
@@ -36,7 +42,7 @@ export const getTableData = ({
   locationUuid?: string | null;
   groupUuid?: string | null;
   sort?: Sort | null;
-  measurementUuids?: string[] | [];
+  requestBody?: DashboardTableRequestBody;
   filters?: Filter | null;
 }): Promise<TableData> => {
   return new Promise<TableData>((resolve, reject) => {
@@ -62,7 +68,7 @@ export const getTableData = ({
     httpClient
       .post<TableData>(
         API_URLS.getDashboardTableData({ queryParams: queryParams.toString() }),
-        measurementUuids
+        requestBody
       )
       .then((response) => {
         // console.log(response.data);

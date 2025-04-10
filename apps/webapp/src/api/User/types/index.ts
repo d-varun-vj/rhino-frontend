@@ -52,5 +52,29 @@ export enum UserViewPermissions {
   SUPPORT_ROLE = 'SUPPORT',
   API_ROLE = 'API',
   CLIENT_ADMIN_ROLE = 'CLIENT_ADMIN',
-  GLOBEL_ROLE = 'GLOBEL',
+  PARTNER_ADMIN_ROLE = 'PARTNER_ADMIN',
+  GLOBAL_ROLE = 'GLOBAL',
 }
+
+export const getAnalysisViewPermissions = () => {
+  return [
+    UserViewPermissions.HEAT_MAP_ROLE,
+    UserViewPermissions.CONSUMPTION_CHART_ROLE,
+    UserViewPermissions.CONSUMPTION_PROFILE_CHART_ROLE,
+    UserViewPermissions.CONSUMPTION_REPORT_ROLE,
+    UserViewPermissions.CONSUMPTION_PROFILE_REPORT_ROLE,
+    UserViewPermissions.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
+    UserViewPermissions.POWER_REPORTS_ROLE,
+    UserViewPermissions.METER_VALUES_REPORT_ROLE,
+    UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE,
+    UserViewPermissions.BALANCE_MODULE_ROLE,
+    UserViewPermissions.UTILITY_COSTS_ROLE,
+  ];
+};
+
+export const getConfigurtionViewPermissions = () => {
+  return [
+    UserViewPermissions.MEASUREMENT_ROLE,
+    UserViewPermissions.METER_STATES_ROLE,
+  ];
+};

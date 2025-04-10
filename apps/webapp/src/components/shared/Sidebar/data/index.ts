@@ -18,7 +18,12 @@ import { BiSolidNetworkChart } from 'react-icons/bi';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { AiFillTool } from 'react-icons/ai';
 import { IconType } from 'react-icons/lib';
-import { UserType, UserViewPermissions } from '../../../../api/User/types';
+import {
+  getAnalysisViewPermissions,
+  getConfigurtionViewPermissions,
+  UserType,
+  UserViewPermissions,
+} from '../../../../api/User/types';
 
 // export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
 export const VITE_WICKET_BASE_URL = 'http://localhost:8080/';
@@ -63,7 +68,7 @@ export const MenuItems: MenuItemType[] = [
           UserType.RegularUser,
           UserType.PartnerAdmin,
         ],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
       {
         label: 'sideMenu.energyDashboard',
@@ -78,7 +83,7 @@ export const MenuItems: MenuItemType[] = [
           UserType.RegularUser,
           UserType.PartnerAdmin,
         ],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
     ],
     allowedUserType: [
@@ -89,7 +94,7 @@ export const MenuItems: MenuItemType[] = [
       UserType.RegularUser,
       UserType.PartnerAdmin,
     ],
-    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+    viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
   },
   //   Analysis and reports
   {
@@ -112,6 +117,7 @@ export const MenuItems: MenuItemType[] = [
         ],
         viewPermissions: [
           UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.PARTNER_ADMIN_ROLE,
           UserViewPermissions.CONSUMPTION_CHART_ROLE,
         ],
       },
@@ -130,6 +136,7 @@ export const MenuItems: MenuItemType[] = [
         ],
         viewPermissions: [
           UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.PARTNER_ADMIN_ROLE,
           UserViewPermissions.CONSUMPTION_PROFILE_CHART_ROLE,
         ],
       },
@@ -148,6 +155,7 @@ export const MenuItems: MenuItemType[] = [
         ],
         viewPermissions: [
           UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.PARTNER_ADMIN_ROLE,
           UserViewPermissions.HEAT_MAP_ROLE,
         ],
       },
@@ -164,7 +172,10 @@ export const MenuItems: MenuItemType[] = [
           UserType.RegularUser,
           UserType.PartnerAdmin,
         ],
-        viewPermissions: [UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE],
+        viewPermissions: [
+          UserViewPermissions.PARTNER_ADMIN_ROLE,
+          UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE,
+        ],
       },
       {
         label: 'sideMenu.balanceModule',
@@ -197,6 +208,7 @@ export const MenuItems: MenuItemType[] = [
         ],
         viewPermissions: [
           UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.PARTNER_ADMIN_ROLE,
           UserViewPermissions.CONSUMPTION_REPORT_ROLE,
           UserViewPermissions.CONSUMPTION_PROFILE_REPORT_ROLE,
           UserViewPermissions.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
@@ -228,7 +240,7 @@ export const MenuItems: MenuItemType[] = [
       UserType.RegularUser,
       UserType.PartnerAdmin,
     ],
-    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+    viewPermissions: [...getAnalysisViewPermissions()],
   },
   //   Alarms and notifications
   {
@@ -251,6 +263,7 @@ export const MenuItems: MenuItemType[] = [
         ],
         viewPermissions: [
           UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.PARTNER_ADMIN_ROLE,
           UserViewPermissions.IMMEDIATE_ALARM_ROLE,
         ],
       },
@@ -263,7 +276,7 @@ export const MenuItems: MenuItemType[] = [
       UserType.RegularUser,
       UserType.PartnerAdmin,
     ],
-    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+    viewPermissions: [UserViewPermissions.IMMEDIATE_ALARM_ROLE],
   },
   //   Configuration
   {
@@ -286,6 +299,7 @@ export const MenuItems: MenuItemType[] = [
         ],
         viewPermissions: [
           UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.PARTNER_ADMIN_ROLE,
           UserViewPermissions.MEASUREMENT_ROLE,
         ],
       },
@@ -295,7 +309,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'external-upcs-configuration',
         wicketLink: VITE_WICKET_BASE_URL + 'externalServicesConfiguration',
         allowedUserType: [UserType.SuperAdmin, UserType.PartnerAdmin],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
       {
         label: 'sideMenu.technicalView',
@@ -307,7 +321,7 @@ export const MenuItems: MenuItemType[] = [
           UserType.PartnerAdmin,
           UserType.TechnicalUser,
         ],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
       {
         label: 'sideMenu.inputManagement',
@@ -315,7 +329,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'input-management',
         wicketLink: VITE_WICKET_BASE_URL + 'inputManagement',
         allowedUserType: [UserType.SuperAdmin],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
       {
         label: 'sideMenu.maintenanceReport',
@@ -323,7 +337,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'system-maintenance-report',
         wicketLink: VITE_WICKET_BASE_URL + 'reports/maintenance',
         allowedUserType: [UserType.SuperAdmin],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
       {
         label: 'sideMenu.meterStates',
@@ -340,6 +354,7 @@ export const MenuItems: MenuItemType[] = [
         ],
         viewPermissions: [
           UserViewPermissions.CLIENT_ADMIN_ROLE,
+          UserViewPermissions.PARTNER_ADMIN_ROLE,
           UserViewPermissions.METER_STATES_ROLE,
         ],
       },
@@ -356,7 +371,7 @@ export const MenuItems: MenuItemType[] = [
           UserType.RegularUser,
           UserType.PartnerAdmin,
         ],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
     ],
     allowedUserType: [
@@ -367,7 +382,7 @@ export const MenuItems: MenuItemType[] = [
       UserType.RegularUser,
       UserType.PartnerAdmin,
     ],
-    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+    viewPermissions: [...getConfigurtionViewPermissions()],
   },
   //   Administration
   {
@@ -385,7 +400,7 @@ export const MenuItems: MenuItemType[] = [
           UserType.ClientAdmin,
           UserType.PartnerAdmin,
         ],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
       {
         label: 'sideMenu.users',
@@ -397,7 +412,7 @@ export const MenuItems: MenuItemType[] = [
           UserType.ClientAdmin,
           UserType.PartnerAdmin,
         ],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
       {
         label: 'sideMenu.tenants',
@@ -409,7 +424,7 @@ export const MenuItems: MenuItemType[] = [
           UserType.ClientAdmin,
           UserType.PartnerAdmin,
         ],
-        viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+        viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
       },
     ],
     allowedUserType: [
@@ -417,7 +432,7 @@ export const MenuItems: MenuItemType[] = [
       UserType.ClientAdmin,
       UserType.PartnerAdmin,
     ],
-    viewPermissions: [UserViewPermissions.GLOBEL_ROLE],
+    viewPermissions: [UserViewPermissions.GLOBAL_ROLE],
   },
   //   Support
   {
@@ -428,11 +443,13 @@ export const MenuItems: MenuItemType[] = [
     allowedUserType: [
       UserType.SuperAdmin,
       UserType.ClientAdmin,
-      UserType.LocalisationAdmin,
       UserType.Tenant,
       UserType.RegularUser,
       UserType.PartnerAdmin,
     ],
-    viewPermissions: [UserViewPermissions.SUPPORT_ROLE],
+    viewPermissions: [
+      UserViewPermissions.PARTNER_ADMIN_ROLE,
+      UserViewPermissions.SUPPORT_ROLE,
+    ],
   },
 ];

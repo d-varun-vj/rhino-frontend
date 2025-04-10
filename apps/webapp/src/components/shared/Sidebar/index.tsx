@@ -48,10 +48,41 @@ const SideBar = () => {
                 />
               );
             }
+            const isMenuItemAllowed = (
+              userType: UserType,
+              permissions: UserViewPermissions[]
+            ) => {
+              return menuItem.allowedUserType?.includes(userType) &&
+                permissions.some((permission) =>
+                  menuItem.viewPermissions?.includes(permission)
+                ) ? (
+                <MenuItem
+                  key={menuItem.key}
+                  menuItem={menuItem}
+                  activeMenu={activeMenu}
+                  setActiveMenu={setActiveMenu}
+                />
+              ) : null;
+            };
+
+            if (user?.userType === UserType.ClientAdmin) {
+              return isMenuItemAllowed(user.userType, [
+                UserViewPermissions.GLOBAL_ROLE,
+                UserViewPermissions.CLIENT_ADMIN_ROLE,
+              ]);
+            }
+
+            if (user?.userType === UserType.PartnerAdmin) {
+              return isMenuItemAllowed(user.userType, [
+                UserViewPermissions.GLOBAL_ROLE,
+                UserViewPermissions.PARTNER_ADMIN_ROLE,
+              ]);
+            }
+
             return menuItem.allowedUserType?.some((uType) => {
               if (uType === user?.userType) {
                 return menuItem.viewPermissions?.some((permission) => {
-                  if (permission === UserViewPermissions.GLOBEL_ROLE) {
+                  if (permission === UserViewPermissions.GLOBAL_ROLE) {
                     return true;
                   } else {
                     return user?.permissions?.some((userPermission) => {
@@ -70,12 +101,6 @@ const SideBar = () => {
                 setActiveMenu={setActiveMenu}
               />
             ) : null;
-            // <MenuItem
-            //   key={menuItem.key}
-            //   menuItem={menuItem}
-            //   activeMenu={activeMenu}
-            //   setActiveMenu={setActiveMenu}
-            // />;
           })}
         </ul>
       </nav>

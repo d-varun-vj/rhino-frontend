@@ -44,15 +44,15 @@ const LocationCombobox = () => {
       );
       setLocations(filteredLocations);
 
-      if (
-        selectedLocation?.name === undefined ||
-        selectedLocation?.uuid === undefined
-      ) {
-        setSelectedLocation({
-          name: filteredLocations[0]?.name,
-          uuid: filteredLocations[0]?.uuid,
-        });
-      }
+      // if (
+      //   selectedLocation?.name === undefined ||
+      //   selectedLocation?.uuid === undefined
+      // ) {
+      //   setSelectedLocation({
+      //     name: filteredLocations[0]?.name,
+      //     uuid: filteredLocations[0]?.uuid,
+      //   });
+      // }
     } else if (locationsData) {
       setLocations(locationsData);
     }

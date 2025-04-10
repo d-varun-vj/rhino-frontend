@@ -111,20 +111,14 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
               />
             );
           }
-          if (user?.userType === UserType.ClientAdmin) {
-            return subItem.allowedUserType?.some((uType) => {
-              if (uType === user?.userType) {
-                return subItem.viewPermissions?.some((permission) => {
-                  if (permission === UserViewPermissions.GLOBEL_ROLE) {
-                    return true;
-                  } else if (
-                    permission === UserViewPermissions.CLIENT_ADMIN_ROLE
-                  ) {
-                    return true;
-                  }
-                });
-              } else return false;
-            }) ? (
+          const isSubItemAllowed = (
+            userType: UserType,
+            permissions: UserViewPermissions[]
+          ) => {
+            return subItem.allowedUserType?.includes(userType) &&
+              permissions.some((permission) =>
+                subItem.viewPermissions?.includes(permission)
+              ) ? (
               <Item
                 subItem={subItem}
                 t={t}
@@ -132,11 +126,26 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
                 location={location}
               />
             ) : null;
+          };
+
+          if (user?.userType === UserType.ClientAdmin) {
+            return isSubItemAllowed(user.userType, [
+              UserViewPermissions.GLOBAL_ROLE,
+              UserViewPermissions.CLIENT_ADMIN_ROLE,
+            ]);
           }
+
+          if (user?.userType === UserType.PartnerAdmin) {
+            return isSubItemAllowed(user.userType, [
+              UserViewPermissions.GLOBAL_ROLE,
+              UserViewPermissions.PARTNER_ADMIN_ROLE,
+            ]);
+          }
+
           return subItem.allowedUserType?.some((uType) => {
             if (uType === user?.userType) {
               return subItem.viewPermissions?.some((permission) => {
-                if (permission === UserViewPermissions.GLOBEL_ROLE) {
+                if (permission === UserViewPermissions.GLOBAL_ROLE) {
                   return true;
                 } else {
                   return user?.permissions?.some((userPermission) => {

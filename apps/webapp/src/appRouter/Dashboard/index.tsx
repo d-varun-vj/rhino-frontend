@@ -64,7 +64,19 @@ const Dashboard = () => {
         groupUuid: group ? group.uuid : null,
         filters: filters,
         sort: sort,
-        measurementUuids: favoriteMeter ? favoriteMeter.measurementUuids : [],
+        requestBody: {
+          measurementUuids: favoriteMeter
+            ? favoriteMeter.measurementUuids
+            : user?.measurements
+              ? user.measurements
+              : [],
+          clientUuids: user?.clients
+            ? user.clients?.map((client) => client.uuid)
+            : [],
+          localisationUuids: user?.adminPermittedLocalisations
+            ? user?.adminPermittedLocalisations
+            : [],
+        },
       }),
     enabled: user ? true : false,
   });
@@ -78,19 +90,14 @@ const Dashboard = () => {
     if (
       (user && user.userType === UserType.ClientAdmin) ||
       user?.userType === UserType.LocalisationAdmin ||
-      user?.userType === UserType.PartnerAdmin
+      user?.userType === UserType.RegularUser ||
+      user?.userType === UserType.Tenant
     ) {
       setClient({
         name: user.clients ? user.clients[0].name : '',
         uuid: user.clients ? user.clients[0].uuid : '',
       });
     }
-    // if (user && user.userType === UserType.LocalisationAdmin) {
-    //   setClient({
-    //     name: user.clients ? user.clients[0].name : '',
-    //     uuid: user.clients ? user.clients[0].uuid : '',
-    //   });
-    // }
   }, [user, setClient]);
 
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(

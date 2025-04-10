@@ -44,7 +44,9 @@ const ClientCombobox = () => {
 
     if (
       (user && user.userType === UserType.ClientAdmin) ||
-      user?.userType === UserType.LocalisationAdmin
+      user?.userType === UserType.LocalisationAdmin ||
+      user?.userType === UserType.RegularUser ||
+      user?.userType === UserType.Tenant
     ) {
       setDisableDropdown(true);
     }
