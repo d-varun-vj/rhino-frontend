@@ -69,6 +69,8 @@ export const getAnalysisViewPermissions = () => {
     UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE,
     UserViewPermissions.BALANCE_MODULE_ROLE,
     UserViewPermissions.UTILITY_COSTS_ROLE,
+    UserViewPermissions.CLIENT_ADMIN_ROLE,
+    UserViewPermissions.PARTNER_ADMIN_ROLE,
   ];
 };
 
@@ -76,5 +78,6 @@ export const getConfigurtionViewPermissions = () => {
   return [
     UserViewPermissions.MEASUREMENT_ROLE,
     UserViewPermissions.METER_STATES_ROLE,
+    UserViewPermissions.CLIENT_ADMIN_ROLE,
   ];
 };
