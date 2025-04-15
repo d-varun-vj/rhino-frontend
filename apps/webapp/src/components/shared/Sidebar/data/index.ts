@@ -42,27 +42,18 @@ export type MenuItemType = {
   label: string; // label from i18n translation (check src/i18n/...json)
   icon: IconType;
   subItems?: SubItemType[];
-  key: MENU_KEYS; // This is for identifying which item is active (label in lowercase, connected with hyphens).
+  key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
   link?: string; // This is mostly used when there are no sub-items and only serves to redirect to other links.
   viewPermissions?: UserViewPermissions[]; // This is used to check if the user has permission to access this item.
   allowedUserType?: UserType[]; // This is used to check if the user has permission to access this item.
 };
-
-export enum MENU_KEYS {
-  DASHBOARD = 'dashboards',
-  ANALYSIS_AND_REPORTS = 'analysis-and-reports',
-  ALARMS_AND_NOTIFICATIONS = 'alarms-and-notifications',
-  CONFIGURATION = 'configuration',
-  ADMINISTRATION = 'administration',
-  SUPPORT = 'support',
-}
 
 export const MenuItems: MenuItemType[] = [
   // Dashboards
   {
     label: 'sideMenu.dashboards', // label from i18n translation (check src/i18n/...json)
     icon: FaTable,
-    key: MENU_KEYS.DASHBOARD,
+    key: 'dashboards',
     subItems: [
       {
         label: 'sideMenu.dashboard',
@@ -109,7 +100,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.analysisReports',
     icon: FaLightbulb,
-    key: MENU_KEYS.ANALYSIS_AND_REPORTS,
+    key: 'analysis-and-reports',
     subItems: [
       {
         label: 'sideMenu.consumptionChart',
@@ -183,7 +174,6 @@ export const MenuItems: MenuItemType[] = [
         ],
         viewPermissions: [
           UserViewPermissions.PARTNER_ADMIN_ROLE,
-          UserViewPermissions.CLIENT_ADMIN_ROLE,
           UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE,
         ],
       },
@@ -256,7 +246,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.alarmsAndNotifications',
     icon: FaBell,
-    key: MENU_KEYS.ALARMS_AND_NOTIFICATIONS,
+    key: 'alarms-and-notifications',
     subItems: [
       {
         label: 'sideMenu.immediateAlarm',
@@ -286,17 +276,13 @@ export const MenuItems: MenuItemType[] = [
       UserType.RegularUser,
       UserType.PartnerAdmin,
     ],
-    viewPermissions: [
-      UserViewPermissions.IMMEDIATE_ALARM_ROLE,
-      UserViewPermissions.CLIENT_ADMIN_ROLE,
-      UserViewPermissions.PARTNER_ADMIN_ROLE,
-    ],
+    viewPermissions: [UserViewPermissions.IMMEDIATE_ALARM_ROLE],
   },
   //   Configuration
   {
     label: 'sideMenu.configuration',
     icon: IoSettingsSharp,
-    key: MENU_KEYS.CONFIGURATION,
+    key: 'configuration',
     subItems: [
       {
         label: 'sideMenu.measurements',
@@ -402,7 +388,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.administration',
     icon: FaSuitcase,
-    key: MENU_KEYS.ADMINISTRATION,
+    key: 'administration',
     subItems: [
       {
         label: 'sideMenu.clients',
@@ -452,7 +438,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.support',
     icon: FaQuestionCircle,
-    key: MENU_KEYS.SUPPORT,
+    key: 'support',
     link: 'https://support.rhino.energy/login_page.php',
     allowedUserType: [
       UserType.SuperAdmin,

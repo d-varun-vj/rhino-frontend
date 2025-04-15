@@ -201,7 +201,7 @@ const FavoriteMeter = () => {
       </div>
       {isModelOpen && (
         <div className=" w-full h-full fixed top-0 left-0 z-50 transition-opacity bg-black/15 ">
-          <div className="lg:w-fit  my-[1.75rem] mx-auto flex items-center relative z-50 h-[-webkit-fill-available] max-w-[700px] lg:max-w-max">
+          <div className="w-fit  my-[1.75rem] mx-auto flex items-center relative z-50 h-[-webkit-fill-available]">
             <div className="border-t-[.5rem] border-t-rhino-energy-green shadow-xl relative flex flex-col w-full bg-[#fff] border-transparent border-[1px] rounded ">
               <div className="flex items-start justify-between p-[1.25rem] ">
                 <h4 className="text-[2rem] font-bold text-rhino-indigo-blue my-0 leading-[1.47] ">

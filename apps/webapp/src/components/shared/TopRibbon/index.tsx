@@ -13,7 +13,7 @@ const TopRibbon = () => {
   const { t } = useTranslation();
 
   return (
-    <header className="flex basis-auto h-auto relative z-30 justify-between">
+    <header className="flex basis-auto h-auto relative z-40 justify-between">
       <div className="mt-[1rem] relative px-[.75rem] ">
         <div className="flex flex-row ">
           <div className="pl-[1rem] mt-[.25rem] items-baseline flex flex-row flex-wrap gap-10">
