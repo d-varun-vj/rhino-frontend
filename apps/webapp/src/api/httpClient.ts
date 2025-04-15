@@ -46,7 +46,9 @@ const fetchAdapter: AxiosAdapter = async (
   const response = await fetch(url!, fetchOptions);
 
   if (response.status === 401 || response.status === 500) {
-    window.location.href = VITE_WICKET_BASE_URL + 'login';
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    window.location.href = VITE_WICKET_BASE_URL + 'dashboard?-2.-logout';
+    // window.location.href = VITE_WICKET_BASE_URL + 'login';
     console.log('Unauthorized or server error:', response);
   }
 
