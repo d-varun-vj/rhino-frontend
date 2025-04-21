@@ -4,7 +4,7 @@ import './MenuItem.css';
 import { Link, Location, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
-import { UserType, UserViewPermissions } from '../../../../api/User/types';
+import { UserType, ViewPermissionsType } from '../../../../api/User/types';
 import { TFunction } from 'i18next';
 
 type menuItem = {
@@ -84,12 +84,6 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
         href={`${menuItem.link ? menuItem.link : '#'}`}
         target={`${menuItem.link ? 'blank' : ''}`}
         className="nav-menu-a"
-        // onClick={() => {
-        //   setActiveMenu(menuItem.key);
-        //   setActiveSubmenuItem(
-        //     menuItem.subItems ? menuItem.subItems[0].key : menuItem.key
-        //   );
-        // }}
       >
         <i className={`${activeMenu == menuItem.key ? 'nav-active' : ''}`}>
           <menuItem.icon />
@@ -111,52 +105,29 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
               />
             );
           }
-          const isSubItemAllowed = (
-            userType: UserType,
-            permissions: UserViewPermissions[]
-          ) => {
-            return subItem.allowedUserType?.includes(userType) &&
-              permissions.some((permission) =>
-                subItem.viewPermissions?.includes(permission)
-              ) ? (
-              <Item
-                subItem={subItem}
-                t={t}
-                key={subItem.key}
-                location={location}
-              />
-            ) : null;
-          };
-
-          if (user?.userType === UserType.ClientAdmin) {
-            return isSubItemAllowed(user.userType, [
-              UserViewPermissions.GLOBAL_ROLE,
-              UserViewPermissions.CLIENT_ADMIN_ROLE,
-            ]);
-          }
-
-          if (user?.userType === UserType.PartnerAdmin) {
-            return isSubItemAllowed(user.userType, [
-              UserViewPermissions.GLOBAL_ROLE,
-              UserViewPermissions.PARTNER_ADMIN_ROLE,
-            ]);
-          }
-
-          return subItem.allowedUserType?.some((uType) => {
-            if (uType === user?.userType) {
-              return subItem.viewPermissions?.some((permission) => {
-                if (permission === UserViewPermissions.GLOBAL_ROLE) {
+          return subItem.viewPermissionType ===
+            ViewPermissionsType.UserTypeBased &&
+            subItem.allowedUserTypes?.some((uType) => {
+              if (uType === user?.userType) {
+                console.log(uType, ': true');
+                return true;
+              }
+            }) ? (
+            <Item
+              subItem={subItem}
+              t={t}
+              key={subItem.key}
+              location={location}
+            />
+          ) : subItem.viewPermissionType ===
+              ViewPermissionsType.ViewRoleBased &&
+            subItem.viewPermissions?.some((permission) => {
+              return user?.permissions?.some((userPermission) => {
+                if (userPermission === permission) {
                   return true;
-                } else {
-                  return user?.permissions?.some((userPermission) => {
-                    if (userPermission === permission) {
-                      return true;
-                    }
-                  });
                 }
               });
-            } else return false;
-          }) ? (
+            }) ? (
             <Item
               subItem={subItem}
               t={t}

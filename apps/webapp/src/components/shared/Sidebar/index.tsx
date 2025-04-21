@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { MenuItems } from './data';
 import MenuItem from './MenuItem';
 import { useUser } from '../../../context/useUser';
-import { UserType, UserViewPermissions } from '../../../api/User/types';
+import { UserType, ViewPermissionsType } from '../../../api/User/types';
 
 const SideBar = () => {
   const [activeMenu, setActiveMenu] = useState('dashboards');
@@ -48,52 +48,28 @@ const SideBar = () => {
                 />
               );
             }
-            const isMenuItemAllowed = (
-              userType: UserType,
-              permissions: UserViewPermissions[]
-            ) => {
-              return menuItem.allowedUserType?.includes(userType) &&
-                permissions.some((permission) =>
-                  menuItem.viewPermissions?.includes(permission)
-                ) ? (
-                <MenuItem
-                  key={menuItem.key}
-                  menuItem={menuItem}
-                  activeMenu={activeMenu}
-                  setActiveMenu={setActiveMenu}
-                />
-              ) : null;
-            };
-
-            if (user?.userType === UserType.ClientAdmin) {
-              return isMenuItemAllowed(user.userType, [
-                UserViewPermissions.GLOBAL_ROLE,
-                UserViewPermissions.CLIENT_ADMIN_ROLE,
-              ]);
-            }
-
-            if (user?.userType === UserType.PartnerAdmin) {
-              return isMenuItemAllowed(user.userType, [
-                UserViewPermissions.GLOBAL_ROLE,
-                UserViewPermissions.PARTNER_ADMIN_ROLE,
-              ]);
-            }
-
-            return menuItem.allowedUserType?.some((uType) => {
-              if (uType === user?.userType) {
-                return menuItem.viewPermissions?.some((permission) => {
-                  if (permission === UserViewPermissions.GLOBAL_ROLE) {
+            return menuItem.viewPermissionType ===
+              ViewPermissionsType.UserTypeBased &&
+              menuItem.allowedUserTypes?.some((uType) => {
+                if (uType === user?.userType) {
+                  return true;
+                }
+              }) ? (
+              <MenuItem
+                key={menuItem.key}
+                menuItem={menuItem}
+                activeMenu={activeMenu}
+                setActiveMenu={setActiveMenu}
+              />
+            ) : menuItem.viewPermissionType ===
+                ViewPermissionsType.ViewRoleBased &&
+              menuItem.viewPermissions?.some((permission) => {
+                return user?.permissions?.some((userPermission) => {
+                  if (userPermission === permission) {
                     return true;
-                  } else {
-                    return user?.permissions?.some((userPermission) => {
-                      if (userPermission === permission) {
-                        return true;
-                      }
-                    });
                   }
                 });
-              } else return false;
-            }) ? (
+              }) ? (
               <MenuItem
                 key={menuItem.key}
                 menuItem={menuItem}

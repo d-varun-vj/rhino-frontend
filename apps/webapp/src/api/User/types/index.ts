@@ -34,6 +34,11 @@ export enum UserType {
   PartnerAdmin = 'PARTNER_ADMIN',
 }
 
+export enum ViewPermissionsType {
+  UserTypeBased = 'USER_TYPE',
+  ViewRoleBased = 'VIEW_ROLE',
+}
+
 export enum UserViewPermissions {
   HEAT_MAP_ROLE = 'HEAT_MAP',
   CONSUMPTION_CHART_ROLE = 'CONSUMPTION_CHART',
