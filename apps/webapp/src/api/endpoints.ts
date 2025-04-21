@@ -21,8 +21,7 @@ const API_URLS = {
     `favoritemeter?${queryParams}`,
 
   //   Dashboard
-  getDashboardTableData: ({ queryParams }: { queryParams: string }) =>
-    `dashboard?${queryParams}`,
+  getDashboardTableData: () => `dashboard`,
   getDashboardTableDataOptions: () => 'dashboard/options',
 };
 

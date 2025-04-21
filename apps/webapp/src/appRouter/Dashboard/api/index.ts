@@ -1,7 +1,7 @@
 import API_URLS from '../../../api/endpoints';
 import { httpClient } from '../../../api/httpClient';
 import { VITE_WICKET_BASE_URL } from '../../../components/shared/Sidebar/data';
-import { DashboardType, DictionaryDto, Filter, Sort } from '../types';
+import { DashboardType, DictionaryDto } from '../types';
 
 type Options = {
   levelTypes: DictionaryDto[];
@@ -24,52 +24,32 @@ export type DashboardTableRequestBody = {
   measurementUuids: string[];
   clientUuids: string[];
   localisationUuids: string[];
-};
-
-export const getTableData = ({
-  page,
-  size,
-  clientId,
-  locationUuid,
-  groupUuid,
-  requestBody,
-  filters,
-  sort,
-}: {
   page?: number | null;
   size?: number | null;
   clientId?: string | null;
   locationUuid?: string | null;
   groupUuid?: string | null;
-  sort?: Sort | null;
+  sortedField: string;
+  sortDirection: string;
+  locationName: string;
+  groupName: string;
+  measurementName: string;
+  serialNumber: string;
+  tenant: string;
+  medium: string;
+  levelType: string;
+  loadType: string;
+  endUserAreaType: string;
+};
+
+export const getTableData = ({
+  requestBody,
+}: {
   requestBody?: DashboardTableRequestBody;
-  filters?: Filter | null;
 }): Promise<TableData> => {
   return new Promise<TableData>((resolve, reject) => {
-    const queryParams = new URLSearchParams({
-      page: page?.toString() || '',
-      size: size?.toString() || '',
-      clientId: clientId || '',
-      locationUuid: locationUuid || '',
-      groupUuid: groupUuid || '',
-      locationName: filters?.locationName || '',
-      groupName: filters?.groupName || '',
-      measurementName: filters?.measurementName || '',
-      serialNumber: filters?.serialNumber || '',
-      tenant: filters?.tenant || '',
-      medium: filters?.medium || '',
-      levelType: filters?.levelType || '',
-      loadType: filters?.loadType || '',
-      endUserAreaType: filters?.endUserAreaType || '',
-      sortedField: sort?.field || '',
-      sortDirection: sort?.direction || '',
-    });
-
     httpClient
-      .post<TableData>(
-        API_URLS.getDashboardTableData({ queryParams: queryParams.toString() }),
-        requestBody
-      )
+      .post<TableData>(API_URLS.getDashboardTableData(), requestBody)
       .then((response) => {
         resolve(response.data);
       })

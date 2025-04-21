@@ -57,22 +57,24 @@ const Dashboard = () => {
     ],
     queryFn: () =>
       getTableData({
-        page: page,
-        size: pageSize,
-        clientId: client ? client.uuid : null,
-        locationUuid: location ? location.uuid : null,
-        groupUuid: group ? group.uuid : null,
-        filters: filters,
-        sort: sort,
         requestBody: {
+          page: page,
+          size: pageSize,
+          clientId: client ? client.uuid : null,
+          locationUuid: location ? location.uuid : null,
+          groupUuid: group ? group.uuid : null,
+          sortDirection: sort.direction,
+          sortedField: sort.field,
+          ...filters,
           measurementUuids: favoriteMeter
             ? favoriteMeter.measurementUuids
             : user?.measurements
               ? user.measurements
               : [],
-          clientUuids: user?.clients
-            ? user.clients?.map((client) => client.uuid)
-            : [],
+          clientUuids:
+            favoriteMeter === null && user?.clients
+              ? user.clients?.map((client) => client.uuid)
+              : [],
           localisationUuids: user?.adminPermittedLocalisations
             ? user?.adminPermittedLocalisations
             : [],
