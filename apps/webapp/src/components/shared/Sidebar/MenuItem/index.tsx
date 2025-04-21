@@ -1,36 +1,46 @@
-import { useEffect, useState } from 'react';
-import { MenuItemType, SubItemType } from '../data';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { MENU_KEYS, MenuItemType, SubItemType } from '../data';
 import './MenuItem.css';
 import { Link, Location, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
 import { UserType, ViewPermissionsType } from '../../../../api/User/types';
 import { TFunction } from 'i18next';
+import MinimizePopup from '../MinimizePopup';
 
-type menuItem = {
+export type menuItem = {
   menuItem: MenuItemType;
-  setActiveMenu: React.Dispatch<React.SetStateAction<string>>;
-  activeMenu: string;
+  setActiveMenu: React.Dispatch<React.SetStateAction<MENU_KEYS>>;
+  activeMenu: MENU_KEYS;
+  minimize: {
+    isMinimize: boolean;
+    item: MENU_KEYS | '';
+    setItem: Dispatch<
+      SetStateAction<{
+        isMinimize: boolean;
+        item: MENU_KEYS | '';
+      }>
+    >;
+  };
 };
 
-const Item = ({
-  subItem,
-  t,
-  key,
-  location,
-}: {
+export type ItemType = {
   subItem: SubItemType;
   t: TFunction<'translation', undefined>;
-  key?: string;
   location: Location<string>;
-}) => (
-  <Link to={subItem.wicketLink || subItem.route || '#'} key={key}>
+  isMinimize?: boolean;
+};
+
+const Item = ({ subItem, t, location, isMinimize = false }: ItemType) => (
+  <Link to={subItem.wicketLink || subItem.route || '#'}>
     <li className="relative">
       <p
         className={`${
           location.pathname === subItem.route
             ? 'nav-active nav-sub-menu-a'
-            : 'nav-sub-menu-a'
+            : isMinimize
+              ? 'hover:!bg-rhino-indigo-blue nav-sub-menu-a'
+              : 'nav-sub-menu-a'
         }`}
       >
         <i
@@ -52,13 +62,16 @@ const Item = ({
   </Link>
 );
 
-const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
+const MenuItem = ({
+  menuItem,
+  setActiveMenu,
+  activeMenu,
+  minimize,
+}: menuItem) => {
   const { t } = useTranslation();
   const [title, setTitle] = useState(t(menuItem.label));
   const location = useLocation();
   const { user } = useUser();
-
-  console.log(user);
 
   useEffect(() => {
     document.title = title;
@@ -79,64 +92,70 @@ const MenuItem = ({ menuItem, setActiveMenu, activeMenu }: menuItem) => {
   ]);
 
   return (
-    <li className="relative" key={menuItem.key}>
+    <li
+      className=""
+      key={menuItem.key}
+      onMouseEnter={() =>
+        minimize.setItem({
+          isMinimize: minimize.isMinimize,
+          item: menuItem.key,
+        })
+      }
+    >
       <a
         href={`${menuItem.link ? menuItem.link : '#'}`}
         target={`${menuItem.link ? 'blank' : ''}`}
-        className="nav-menu-a"
+        className={`nav-menu-a  ${minimize.isMinimize ? '!px-0 !text-center !flex !items-center !justify-center py-[12px]' : ''}`}
       >
         <i className={`${activeMenu == menuItem.key ? 'nav-active' : ''}`}>
           <menuItem.icon />
         </i>
-        <span className={`${activeMenu == menuItem.key ? 'nav-active' : ''}`}>
-          {t(menuItem.label)}
-        </span>
+        {!minimize.isMinimize && (
+          <span className={`${activeMenu == menuItem.key ? 'nav-active' : ''}`}>
+            {t(menuItem.label)}
+          </span>
+        )}
       </a>
+
       {/* Sub Menu Item */}
-      <ul className="m-0 p-0 py-[10px] nav-sub-menu">
-        {menuItem.subItems?.map((subItem) => {
-          if (user?.userType === UserType.SuperAdmin) {
-            return (
-              <Item
-                subItem={subItem}
-                t={t}
-                key={subItem.key}
-                location={location}
-              />
-            );
-          }
-          return subItem.viewPermissionType ===
-            ViewPermissionsType.UserTypeBased &&
-            subItem.allowedUserTypes?.some((uType) => {
-              if (uType === user?.userType) {
-                console.log(uType, ': true');
-                return true;
-              }
-            }) ? (
-            <Item
-              subItem={subItem}
-              t={t}
-              key={subItem.key}
-              location={location}
-            />
-          ) : subItem.viewPermissionType ===
-              ViewPermissionsType.ViewRoleBased &&
-            subItem.viewPermissions?.some((permission) => {
-              return user?.permissions?.some((userPermission) => {
-                if (userPermission === permission) {
+      {!minimize.isMinimize && (
+        <ul className="m-0 p-0 py-[10px] nav-sub-menu">
+          {menuItem.subItems?.map((subItem) => {
+            if (user?.userType === UserType.SuperAdmin) {
+              return (
+                <Item
+                  subItem={subItem}
+                  t={t}
+                  key={subItem.key}
+                  location={location}
+                />
+              );
+            }
+            return subItem.viewPermissionType ===
+              ViewPermissionsType.UserTypeBased &&
+              subItem.allowedUserTypes?.some((uType) => {
+                if (uType === user?.userType) {
                   return true;
                 }
-              });
-            }) ? (
-            <Item
-              subItem={subItem}
-              t={t}
-              key={subItem.key}
-              location={location}
-            />
-          ) : null;
-        })}
-      </ul>
+              }) ? (
+              <Item subItem={subItem} t={t} location={location} />
+            ) : subItem.viewPermissionType ===
+                ViewPermissionsType.ViewRoleBased &&
+              subItem.viewPermissions?.some((permission) => {
+                return user?.permissions?.some((userPermission) => {
+                  if (userPermission === permission) {
+                    return true;
+                  }
+                });
+              }) ? (
+              <Item subItem={subItem} t={t} location={location} />
+            ) : null;
+          })}
+        </ul>
+      )}
+      {minimize.isMinimize && minimize.item === menuItem.key && (
+        <MinimizePopup menuItem={menuItem} Item={Item} />
+      )}
     </li>
   );
 };

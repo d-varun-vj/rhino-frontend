@@ -13,8 +13,6 @@ export const getClients = ({
 }: {
   userUuid: string;
 }): Promise<Client[]> => {
-  console.log('user: ', userUuid);
-
   return new Promise<Client[]>((resolve, reject) => {
     httpClient
       .get<Client[]>(API_URLS.getClients({ userUuid: userUuid }))

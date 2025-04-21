@@ -71,7 +71,6 @@ export const getTableData = ({
         requestBody
       )
       .then((response) => {
-        // console.log(response.data);
         resolve(response.data);
       })
       .catch((error) => {

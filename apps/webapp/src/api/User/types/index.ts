@@ -55,10 +55,6 @@ export enum UserViewPermissions {
   IMMEDIATE_ALARM_ROLE = 'IMMEDIATE_ALARM',
   METER_STATES_ROLE = 'METER_STATES',
   SUPPORT_ROLE = 'SUPPORT',
-  API_ROLE = 'API',
-  CLIENT_ADMIN_ROLE = 'CLIENT_ADMIN',
-  PARTNER_ADMIN_ROLE = 'PARTNER_ADMIN',
-  GLOBAL_ROLE = 'GLOBAL',
 }
 
 export const getAnalysisViewPermissions = () => {

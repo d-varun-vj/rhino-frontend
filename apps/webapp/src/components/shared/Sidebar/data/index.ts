@@ -44,19 +44,28 @@ export type MenuItemType = {
   label: string; // label from i18n translation (check src/i18n/...json)
   icon: IconType;
   subItems?: SubItemType[];
-  key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
+  key: MENU_KEYS; // This is for identifying which item is active (label in lowercase, connected with hyphens).
   link?: string; // This is mostly used when there are no sub-items and only serves to redirect to other links.
   viewPermissionType: ViewPermissionsType;
   viewPermissions?: UserViewPermissions[]; // This is used to check if the user has permission to access this item.
   allowedUserTypes?: UserType[]; // This is used to check if the user has permission to access this item.
 };
 
+export enum MENU_KEYS {
+  DASHBOARD = 'dashboards',
+  ANALYSIS_AND_REPORTS = 'analysis-and-reports',
+  ALARMS_AND_NOTIFICATIONS = 'alarms-and-notifications',
+  CONFIGURATION = 'configuration',
+  ADMINISTRATION = 'administration',
+  SUPPORT = 'support',
+}
+
 export const MenuItems: MenuItemType[] = [
   // Dashboards
   {
-    label: 'sideMenu.dashboards', // label from i18n translation (check src/i18n/...json)
+    label: 'sideMenu.dashboards', // label from i18n (check src/i18n/...json)
     icon: FaTable,
-    key: 'dashboards',
+    key: MENU_KEYS.DASHBOARD,
     subItems: [
       {
         label: 'sideMenu.dashboard',
@@ -103,7 +112,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.analysisReports',
     icon: FaLightbulb,
-    key: 'analysis-and-reports',
+    key: MENU_KEYS.ANALYSIS_AND_REPORTS,
     subItems: [
       {
         label: 'sideMenu.consumptionChart',
@@ -111,11 +120,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'consumption',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionChart',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [
-          UserViewPermissions.CLIENT_ADMIN_ROLE,
-          UserViewPermissions.PARTNER_ADMIN_ROLE,
-          UserViewPermissions.CONSUMPTION_CHART_ROLE,
-        ],
+        viewPermissions: [UserViewPermissions.CONSUMPTION_CHART_ROLE],
       },
       {
         label: 'sideMenu.consumptionProfileChart',
@@ -123,11 +128,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'profile',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionProfileChart',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [
-          UserViewPermissions.CLIENT_ADMIN_ROLE,
-          UserViewPermissions.PARTNER_ADMIN_ROLE,
-          UserViewPermissions.CONSUMPTION_PROFILE_CHART_ROLE,
-        ],
+        viewPermissions: [UserViewPermissions.CONSUMPTION_PROFILE_CHART_ROLE],
       },
       {
         label: 'sideMenu.heatMap',
@@ -135,11 +136,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'load-chart',
         wicketLink: VITE_WICKET_BASE_URL + 'heatmap',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [
-          UserViewPermissions.CLIENT_ADMIN_ROLE,
-          UserViewPermissions.PARTNER_ADMIN_ROLE,
-          UserViewPermissions.HEAT_MAP_ROLE,
-        ],
+        viewPermissions: [UserViewPermissions.HEAT_MAP_ROLE],
       },
       {
         label: 'sideMenu.measurementStructures',
@@ -147,10 +144,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'structures',
         wicketLink: VITE_WICKET_BASE_URL + 'measurementStructures',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [
-          UserViewPermissions.PARTNER_ADMIN_ROLE,
-          UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE,
-        ],
+        viewPermissions: [UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE],
       },
       {
         label: 'sideMenu.balanceModule',
@@ -168,8 +162,6 @@ export const MenuItems: MenuItemType[] = [
         wicketLink: VITE_WICKET_BASE_URL + 'reports',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
         viewPermissions: [
-          UserViewPermissions.CLIENT_ADMIN_ROLE,
-          UserViewPermissions.PARTNER_ADMIN_ROLE,
           UserViewPermissions.CONSUMPTION_REPORT_ROLE,
           UserViewPermissions.CONSUMPTION_PROFILE_REPORT_ROLE,
           UserViewPermissions.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
@@ -193,7 +185,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.alarmsAndNotifications',
     icon: FaBell,
-    key: 'alarms-and-notifications',
+    key: MENU_KEYS.ALARMS_AND_NOTIFICATIONS,
     subItems: [
       {
         label: 'sideMenu.immediateAlarm',
@@ -201,11 +193,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'immediate-alarm',
         wicketLink: VITE_WICKET_BASE_URL + 'alarms/immediate',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [
-          UserViewPermissions.CLIENT_ADMIN_ROLE,
-          UserViewPermissions.PARTNER_ADMIN_ROLE,
-          UserViewPermissions.IMMEDIATE_ALARM_ROLE,
-        ],
+        viewPermissions: [UserViewPermissions.IMMEDIATE_ALARM_ROLE],
       },
     ],
     viewPermissionType: ViewPermissionsType.ViewRoleBased,
@@ -215,7 +203,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.configuration',
     icon: IoSettingsSharp,
-    key: 'configuration',
+    key: MENU_KEYS.CONFIGURATION,
     subItems: [
       {
         label: 'sideMenu.measurements',
@@ -223,11 +211,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'measurements',
         wicketLink: VITE_WICKET_BASE_URL + 'measurements',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [
-          UserViewPermissions.CLIENT_ADMIN_ROLE,
-          UserViewPermissions.PARTNER_ADMIN_ROLE,
-          UserViewPermissions.MEASUREMENT_ROLE,
-        ],
+        viewPermissions: [UserViewPermissions.MEASUREMENT_ROLE],
       },
       {
         label: 'sideMenu.externalServiceConfiguration',
@@ -271,11 +255,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'meter-values',
         wicketLink: VITE_WICKET_BASE_URL + 'metersValues',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [
-          UserViewPermissions.CLIENT_ADMIN_ROLE,
-          UserViewPermissions.PARTNER_ADMIN_ROLE,
-          UserViewPermissions.METER_STATES_ROLE,
-        ],
+        viewPermissions: [UserViewPermissions.METER_STATES_ROLE],
       },
       {
         label: 'sideMenu.favoriteMeters',
@@ -308,7 +288,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.administration',
     icon: FaSuitcase,
-    key: 'administration',
+    key: MENU_KEYS.ADMINISTRATION,
     subItems: [
       {
         label: 'sideMenu.clients',
@@ -358,19 +338,9 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.support',
     icon: FaQuestionCircle,
-    key: 'support',
+    key: MENU_KEYS.SUPPORT,
     link: 'https://support.rhino.energy/login_page.php',
-    viewPermissionType: ViewPermissionsType.UserTypeBased,
-    allowedUserTypes: [
-      UserType.SuperAdmin,
-      UserType.ClientAdmin,
-      UserType.Tenant,
-      UserType.RegularUser,
-      UserType.PartnerAdmin,
-    ],
-    viewPermissions: [
-      UserViewPermissions.PARTNER_ADMIN_ROLE,
-      UserViewPermissions.SUPPORT_ROLE,
-    ],
+    viewPermissionType: ViewPermissionsType.ViewRoleBased,
+    viewPermissions: [UserViewPermissions.SUPPORT_ROLE],
   },
 ];

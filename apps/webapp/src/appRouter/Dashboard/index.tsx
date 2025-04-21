@@ -545,7 +545,6 @@ const Dashboard = () => {
             </IconButton>
             <IconButton
               action={() => {
-                console.log(row.original);
                 window.location.href =
                   VITE_WICKET_BASE_URL +
                   `consumptionChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
