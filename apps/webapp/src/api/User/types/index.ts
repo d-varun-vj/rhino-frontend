@@ -16,7 +16,7 @@ export type User = {
   adminPermittedLocalisations: string[] | null;
   permissions: UserViewPermissions[] | null;
   tenants: string[] | null;
-  licences: string[] | null;
+  licences: UserViewPermissions[] | null;
   lastLogin: string | null;
   structureAccess: {
     resourceAccesses: string[] | null;

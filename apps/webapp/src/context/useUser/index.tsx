@@ -25,6 +25,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setUser(userData ? userData : null);
   }, [userData]);
+  console.log(user);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
