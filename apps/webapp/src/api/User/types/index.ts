@@ -19,7 +19,13 @@ export type User = {
   licences: UserViewPermissions[] | null;
   lastLogin: string | null;
   structureAccess: {
-    resourceAccesses: string[] | null;
+    resourceAccesses:
+      | {
+          empty_access: boolean;
+          source_type: string;
+          source_uuid: string;
+        }[]
+      | null;
     assignedClientUuid: string | null;
   };
 };

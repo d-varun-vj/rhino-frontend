@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getLocations, Location } from './api';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
+import { UserType } from '../../../../api/User/types';
 
 const LocationCombobox = () => {
   const { t } = useTranslation();
@@ -43,16 +44,18 @@ const LocationCombobox = () => {
         user?.adminPermittedLocalisations?.includes(location.uuid)
       );
       setLocations(filteredLocations);
-
-      // if (
-      //   selectedLocation?.name === undefined ||
-      //   selectedLocation?.uuid === undefined
-      // ) {
-      //   setSelectedLocation({
-      //     name: filteredLocations[0]?.name,
-      //     uuid: filteredLocations[0]?.uuid,
-      //   });
-      // }
+    } else if (
+      (user?.structureAccess.resourceAccesses ?? []).length > 0 &&
+      user?.userType === UserType.LocalisationAdmin &&
+      locationsData
+    ) {
+      const filterLocationUuid = user?.structureAccess?.resourceAccesses
+        ?.filter((resource) => resource.source_type === 'LOCALISATION')
+        .map((resource) => resource.source_uuid);
+      const filteredLocations = locationsData.filter((location) =>
+        filterLocationUuid?.includes(location.uuid)
+      );
+      setLocations(filteredLocations);
     } else if (locationsData) {
       setLocations(locationsData);
     }
@@ -65,6 +68,8 @@ const LocationCombobox = () => {
     user?.adminPermittedLocalisations,
     setLocations,
     setSelectedLocation,
+    user?.structureAccess.resourceAccesses,
+    user?.userType,
   ]);
 
   return (

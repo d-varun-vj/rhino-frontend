@@ -76,8 +76,13 @@ const Dashboard = () => {
               ? user.clients?.map((client) => client.uuid)
               : [],
           localisationUuids: user?.adminPermittedLocalisations
-            ? user?.adminPermittedLocalisations
-            : [],
+            ? user.adminPermittedLocalisations
+            : user?.structureAccess?.resourceAccesses &&
+                user?.userType === UserType.LocalisationAdmin
+              ? user.structureAccess.resourceAccesses
+                  .filter((resource) => resource.source_type === 'LOCALISATION')
+                  .map((resource) => resource.source_uuid)
+              : [],
         },
       }),
     enabled: user ? true : false,

@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getLocations, Location } from '../LocationCombobox/api';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
+import { UserType } from '../../../../api/User/types';
 
 const GroupCombobox = () => {
   const { t } = useTranslation();
@@ -26,29 +27,6 @@ const GroupCombobox = () => {
       }),
   });
 
-  // useEffect(() => {
-  //   if (
-  //     selectedLocation !== null &&
-  //     !locations
-  //       ?.filter((location) => location.name === selectedLocation.name)
-  //       .some((location) =>
-  //         location.groups?.some((group) => group.name === selectedGroup?.name)
-  //       )
-  //   ) {
-  //     setSelectedGroup(null);
-  //   }
-  //   if (locationsData) {
-  //     setLocations(locationsData);
-  //   }
-  // }, [
-  //   selectedClient,
-  //   selectedGroup,
-  //   selectedLocation,
-  //   locationsData,
-  //   locations,
-  //   setSelectedLocation,
-  //   setSelectedGroup,
-  // ]);
   useEffect(() => {
     if (
       selectedLocation !== null &&
@@ -65,6 +43,18 @@ const GroupCombobox = () => {
         user?.adminPermittedLocalisations?.includes(location.uuid)
       );
       setLocations(filteredLocations);
+    } else if (
+      (user?.structureAccess.resourceAccesses ?? []).length > 0 &&
+      user?.userType === UserType.LocalisationAdmin &&
+      locationsData
+    ) {
+      const filterLocationUuid = user?.structureAccess?.resourceAccesses
+        ?.filter((resource) => resource.source_type === 'LOCALISATION')
+        .map((resource) => resource.source_uuid);
+      const filteredLocations = locationsData.filter((location) =>
+        filterLocationUuid?.includes(location.uuid)
+      );
+      setLocations(filteredLocations);
     } else if (locationsData) {
       setLocations(locationsData);
     }
@@ -75,6 +65,8 @@ const GroupCombobox = () => {
     locationsData,
     setSelectedGroup,
     user?.adminPermittedLocalisations,
+    user?.userType,
+    user?.structureAccess.resourceAccesses,
   ]);
 
   return (
