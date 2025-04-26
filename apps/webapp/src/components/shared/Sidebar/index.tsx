@@ -130,7 +130,7 @@ const SideBar = () => {
             ) : menuItem.viewPermissionType ===
                 ViewPermissionsType.ViewRoleBased &&
               menuItem.viewPermissions?.some((permission) => {
-                return user?.licences?.some((userPermission) => {
+                return user?.permissions?.some((userPermission) => {
                   if (userPermission === permission) {
                     return true;
                   }

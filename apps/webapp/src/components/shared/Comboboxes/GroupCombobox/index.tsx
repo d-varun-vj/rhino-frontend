@@ -38,13 +38,8 @@ const GroupCombobox = () => {
     ) {
       setSelectedGroup(null);
     }
-    if ((user?.adminPermittedLocalisations ?? []).length > 0 && locationsData) {
-      const filteredLocations = locationsData.filter((location) =>
-        user?.adminPermittedLocalisations?.includes(location.uuid)
-      );
-      setLocations(filteredLocations);
-    } else if (
-      (user?.structureAccess.resourceAccesses ?? []).length > 0 &&
+    if (
+      (user?.structureAccess?.resourceAccesses ?? []).length > 0 &&
       user?.userType === UserType.LocalisationAdmin &&
       locationsData
     ) {
@@ -64,9 +59,8 @@ const GroupCombobox = () => {
     selectedLocation,
     locationsData,
     setSelectedGroup,
-    user?.adminPermittedLocalisations,
     user?.userType,
-    user?.structureAccess.resourceAccesses,
+    user?.structureAccess?.resourceAccesses,
   ]);
 
   return (

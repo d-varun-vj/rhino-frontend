@@ -142,7 +142,7 @@ const MenuItem = ({
             ) : subItem.viewPermissionType ===
                 ViewPermissionsType.ViewRoleBased &&
               subItem.viewPermissions?.some((permission) => {
-                return user?.licences?.some((userPermission) => {
+                return user?.permissions?.some((userPermission) => {
                   if (userPermission === permission) {
                     return true;
                   }

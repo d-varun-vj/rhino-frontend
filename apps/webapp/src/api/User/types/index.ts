@@ -5,19 +5,22 @@ export type User = {
   email: string;
   firstName: string;
   lastName: string;
-  password: string;
   phoneNumber: string;
   language: string;
   active: boolean;
   userType: UserType;
-  created: string;
   measurements: string[] | null;
-  clients: { name: string; uuid: string }[] | null;
-  adminPermittedLocalisations: string[] | null;
+  clients: { name: string; uuid: string; useAggregateData: boolean }[] | null;
+  selectedLocation: { name: string; uuid: string } | null;
   permissions: UserViewPermissions[] | null;
-  tenants: string[] | null;
-  licences: UserViewPermissions[] | null;
-  lastLogin: string | null;
+  selectedClient: {
+    name: string;
+    uuid: string;
+    useAggregateData: boolean;
+  } | null;
+  selectedGroup: { name: string; uuid: string } | null;
+  zoneId: 'Europe/Warsaw';
+  inactive: false;
   structureAccess: {
     resourceAccesses:
       | {
@@ -26,8 +29,8 @@ export type User = {
           source_uuid: string;
         }[]
       | null;
-    assignedClientUuid: string | null;
-  };
+    assignedClientUuid: null;
+  } | null;
 };
 
 export enum UserType {
