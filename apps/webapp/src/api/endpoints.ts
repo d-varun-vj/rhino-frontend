@@ -9,13 +9,7 @@ const API_URLS = {
   getLocations: ({ clientId }: { clientId: string | null }) =>
     `locations/${clientId}`,
   getUser: () => 'user',
-  changeLanguage: ({
-    userId,
-    queryParams,
-  }: {
-    userId: string;
-    queryParams: string;
-  }) => `user/${userId}?${queryParams}`,
+  changeLanguage: ({ userId }: { userId: string }) => `user/${userId}/language`,
 
   getAllFavoriteMeters: ({ queryParams }: { queryParams: string }) =>
     `favoritemeter?${queryParams}`,

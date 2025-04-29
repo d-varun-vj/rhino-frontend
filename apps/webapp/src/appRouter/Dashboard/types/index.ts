@@ -30,15 +30,15 @@ export type DashboardType = {
 };
 
 export type Filter = {
-  locationName: string;
-  groupName: string;
-  measurementName: string;
-  serialNumber: string;
-  tenant: string;
-  medium: string;
-  levelType: string;
-  loadType: string;
-  endUserAreaType: string;
+  locationName: string | null;
+  groupName: string | null;
+  measurementName: string | null;
+  serialNumber: string | null;
+  tenant: string | null;
+  medium: string | null;
+  levelType: string | null;
+  loadType: string | null;
+  endUserAreaType: string | null;
 };
 
 export type Sort = {

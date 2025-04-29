@@ -17,20 +17,20 @@ const ComboBox = ({
   selectedValue,
   customStyle,
 }: ComboBoxProps) => {
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(
     selectedValue ? selectedValue : defaultPlaceholder
   );
 
   const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(search.toLowerCase())
+    option.toLowerCase().includes(search ? search.toLowerCase() : '')
   );
 
   const handleSelect = (option: string) => {
     setSelectedOption(option);
     setIsDropdownOpen(false);
-    setSearch('');
+    setSearch(null);
   };
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const ComboBox = ({
           <input
             type="text"
             placeholder="Search..."
-            value={search}
+            value={search ? search : ''}
             onChange={(e) => setSearch(e.target.value)}
             className="select-search"
           />

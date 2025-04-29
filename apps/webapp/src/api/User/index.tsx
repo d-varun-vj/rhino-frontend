@@ -24,15 +24,14 @@ export const changeUserLanguage = ({
   lang: string;
 }) => {
   return new Promise((resolve, reject) => {
-    const queryParams = new URLSearchParams({
-      language: lang?.toString() || '',
-    });
     httpClient
       .put(
         API_URLS.changeLanguage({
           userId,
-          queryParams: queryParams.toString(),
-        })
+        }),
+        {
+          language: lang?.toString() || null,
+        }
       )
       .then((res) => {
         resolve(res.data);

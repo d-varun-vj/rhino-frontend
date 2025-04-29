@@ -9,7 +9,7 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
   const columnFilterValue = column.getFilterValue();
 
   const { filterVariant } = column.columnDef.meta ?? {};
-  const [selectValue, setSelectedValue] = useState<string>('');
+  const [selectValue, setSelectedValue] = useState<string | null>(null);
   const options = column?.columnDef?.meta?.selectionOptions || [];
 
   return filterVariant === 'range' ? (
@@ -17,7 +17,7 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
       <div className="flex space-x-2">
         <DebouncedInput
           type="number"
-          value={(columnFilterValue as [number, number])?.[0] ?? ''}
+          value={(columnFilterValue as [number, number])?.[0] ?? null}
           onChange={(value) =>
             column.setFilterValue((old: [number, number]) => [value, old?.[1]])
           }
@@ -26,7 +26,7 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
         />
         <DebouncedInput
           type="number"
-          value={(columnFilterValue as [number, number])?.[1] ?? ''}
+          value={(columnFilterValue as [number, number])?.[1] ?? null}
           onChange={(value) =>
             column.setFilterValue((old: [number, number]) => [old?.[0], value])
           }
@@ -48,13 +48,13 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
             column?.columnDef?.meta?.setFilterValue(null);
           }
           column.setFilterValue(null);
-          setSelectedValue('');
+          setSelectedValue(null);
         } else {
           if (column.columnDef.meta?.setFilterValue) {
             column?.columnDef?.meta?.setFilterValue(value);
           }
           column.setFilterValue(value);
-          setSelectedValue(value ? value : '');
+          setSelectedValue(value ? value : null);
         }
       }}
       customStyle={{

@@ -20,15 +20,15 @@ import { UserType } from '../../api/User/types';
 
 const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
-    locationName: '',
-    groupName: '',
-    measurementName: '',
-    serialNumber: '',
-    tenant: '',
-    medium: '',
-    levelType: '',
-    loadType: '',
-    endUserAreaType: '',
+    locationName: null,
+    groupName: null,
+    measurementName: null,
+    serialNumber: null,
+    tenant: null,
+    medium: null,
+    levelType: null,
+    loadType: null,
+    endUserAreaType: null,
   });
   const [sort, setSort] = useState<Sort>({
     field: '',
@@ -63,14 +63,26 @@ const Dashboard = () => {
           clientId: client ? client.uuid : null,
           locationUuid: location ? location.uuid : null,
           groupUuid: group ? group.uuid : null,
-          sortDirection: sort.direction,
-          sortedField: sort.field,
-          ...filters,
+          sortDirection: sort.direction ? sort.direction : null,
+          sortedField: sort.field ? sort.field : null,
+          locationName: filters.locationName ? filters.locationName : null,
+          groupName: filters.groupName ? filters.groupName : null,
+          measurementName: filters.measurementName
+            ? filters.measurementName
+            : null,
+          serialNumber: filters.serialNumber ? filters.serialNumber : null,
+          tenant: filters.tenant ? filters.tenant : null,
+          medium: filters.medium ? filters.medium : null,
+          levelType: filters.levelType ? filters.levelType : null,
+          loadType: filters.loadType ? filters.loadType : null,
+          endUserAreaType: filters.endUserAreaType
+            ? filters.endUserAreaType
+            : null,
           measurementUuids: favoriteMeter
             ? favoriteMeter.measurementUuids
             : user?.measurements
               ? user.measurements
-              : [],
+              : null,
           clientUuids:
             favoriteMeter === null && user?.clients
               ? user.clients?.map((client) => client.uuid)

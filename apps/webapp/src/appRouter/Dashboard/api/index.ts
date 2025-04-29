@@ -21,25 +21,25 @@ export enum SortDirection {
 }
 
 export type DashboardTableRequestBody = {
-  measurementUuids: string[];
-  clientUuids: string[];
-  localisationUuids: string[];
+  measurementUuids: string[] | null;
+  clientUuids: string[] | null;
+  localisationUuids: string[] | null;
   page?: number | null;
   size?: number | null;
   clientId?: string | null;
   locationUuid?: string | null;
   groupUuid?: string | null;
-  sortedField: string;
-  sortDirection: string;
-  locationName: string;
-  groupName: string;
-  measurementName: string;
-  serialNumber: string;
-  tenant: string;
-  medium: string;
-  levelType: string;
-  loadType: string;
-  endUserAreaType: string;
+  sortedField: string | null;
+  sortDirection: string | null;
+  locationName: string | null;
+  groupName: string | null;
+  measurementName: string | null;
+  serialNumber: string | null;
+  tenant: string | null;
+  medium: string | null;
+  levelType: string | null;
+  loadType: string | null;
+  endUserAreaType: string | null;
 };
 
 export const getTableData = ({

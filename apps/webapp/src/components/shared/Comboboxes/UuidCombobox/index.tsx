@@ -22,7 +22,7 @@ const UuidCombobox = ({
   setReturnValue,
   selectedValue,
 }: Props) => {
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<{
     name: string;
@@ -33,18 +33,18 @@ const UuidCombobox = ({
   });
 
   const filteredOptions = options.filter((option) =>
-    option.name.toLowerCase().includes(search.toLowerCase())
+    option.name.toLowerCase().includes(search ? search.toLowerCase() : '')
   );
   const GroupfilteredOptions = options.map((option) =>
     option.groups?.filter((group) =>
-      group.name.toLowerCase().includes(search.toLowerCase())
+      group.name.toLowerCase().includes(search ? search.toLowerCase() : '')
     )
   );
 
   const handleSelect = (option: { name: string; uuid: string }) => {
     setSelectedOption(option);
     setIsDropdownOpen(false);
-    setSearch('');
+    setSearch(null);
   };
 
   useEffect(() => {
@@ -80,12 +80,12 @@ const UuidCombobox = ({
           <input
             type="text"
             placeholder="Search..."
-            value={search}
+            value={search ? search : ''}
             onChange={(e) => setSearch(e.target.value)}
             className="custom-select-search"
           />
           <ul className="custom-select-options">
-            {search === '' &&
+            {search === null &&
             defaultPlaceholder &&
             filteredOptions.length !== 0 ? (
               <li
