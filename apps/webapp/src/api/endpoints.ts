@@ -1,6 +1,6 @@
 // export const BASE_URL: string = import.meta.env.VITE_API_BASE_URL as string;
-// export const BASE_URL: string = 'https://app.stg.rhino.energy/api/';
-export const BASE_URL: string = 'http://localhost:8090/api/';
+// export const BASE_URL: string = 'https://app.stg.rhino.energy/api/app/';
+export const BASE_URL: string = 'http://localhost:8090/api/app/';
 
 const API_URLS = {
   //   Top Ribbon
@@ -17,7 +17,7 @@ const API_URLS = {
   //   Dashboard
   getDashboardTableData: () => `dashboard`,
   getDashboardTableDataOptions: ({ locale }: { locale: string }) =>
-    `dashboard/options?locale=${locale}`,
+    `metadata?locale=${locale}`,
 };
 
 export default API_URLS;
