@@ -69,7 +69,7 @@ const ComboBox = ({
             className="select-search"
           />
           <ul className="select-options">
-            {search === '' &&
+            {search === null &&
             defaultPlaceholder &&
             filteredOptions.length !== 0 ? (
               <li

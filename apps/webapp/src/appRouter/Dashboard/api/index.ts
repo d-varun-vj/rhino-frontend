@@ -62,10 +62,14 @@ export const getTableData = ({
   });
 };
 
-export const getOptions = () => {
+export const getOptions = ({ locale }: { locale: string | null }) => {
   return new Promise<Options>((resolve, reject) => {
     httpClient
-      .get<Options>(API_URLS.getDashboardTableDataOptions())
+      .get<Options>(
+        API_URLS.getDashboardTableDataOptions({
+          locale: locale ? locale : 'en',
+        })
+      )
       .then((response) => {
         resolve(response.data);
       })

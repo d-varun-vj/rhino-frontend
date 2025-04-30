@@ -16,7 +16,8 @@ const API_URLS = {
 
   //   Dashboard
   getDashboardTableData: () => `dashboard`,
-  getDashboardTableDataOptions: () => 'dashboard/options',
+  getDashboardTableDataOptions: ({ locale }: { locale: string }) =>
+    `dashboard/options?locale=${locale}`,
 };
 
 export default API_URLS;

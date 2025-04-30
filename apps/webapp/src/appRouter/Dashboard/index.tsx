@@ -101,7 +101,8 @@ const Dashboard = () => {
 
   const { data: Options } = useQuery({
     queryKey: [DATA_QUERY_KEYS.getDashboardOptions()],
-    queryFn: () => getOptions(),
+    queryFn: () =>
+      getOptions({ locale: user?.language ? user.language : null }),
   });
 
   useEffect(() => {
