@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from 'react';
-
-import { ColumnDef } from '@tanstack/react-table';
-import { FaChartBar, FaChartLine } from 'react-icons/fa';
-import IconButton from '../../components/shared/Buttons/IconButton';
-import Title from '../../components/shared/Title';
-import MainLayout from '../../layouts/MainLayout';
 import { DashboardType, Filter, Sort } from './types';
-import { useQuery } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
-import { DATA_QUERY_KEYS } from '../../api/data-query-keys';
-import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/data';
-import Table from '../../components/shared/Table';
+import { FaChartBar, FaChartLine } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { useGetOptions, useGetTableData } from './api';
 import ActionCell from '../../components/shared/Table/ActionCell';
-import { useFilter } from '../../context/useFilter';
-import { getOptions, getTableData } from './api';
-import { useFavoriteMeter } from '../../context/useFavoriteMeter';
-import { useUser } from '../../context/useUser';
+import { ColumnDef } from '@tanstack/react-table';
+import IconButton from '../../components/shared/Buttons/IconButton';
+import MainLayout from '../../layouts/MainLayout';
+import Table from '../../components/shared/Table';
+import Title from '../../components/shared/Title';
 import { UserType } from '../../api/User/types';
+import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/data';
+import { useFavoriteMeter } from '../../context/useFavoriteMeter';
+import { useFilter } from '../../context/useFilter';
+import { useTranslation } from 'react-i18next';
+import { useUser } from '../../context/useUser';
 
 const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
@@ -37,72 +34,59 @@ const Dashboard = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
 
+  // const [pagination, setPagination] = useState({
+  //   page: 0,
+  //   pageSize: 5,
+  // });
+
   const { client, location, group, setClient } = useFilter();
   const { favoriteMeter } = useFavoriteMeter();
   const { user } = useUser();
   const { t } = useTranslation();
   const translationBaseRoute = 'pages.dashboard.table.';
 
-  const { data: tableData, isLoading } = useQuery({
-    queryKey: [
-      ...DATA_QUERY_KEYS.getDashboard(),
+  const { data: tableData, isLoading } = useGetTableData({
+    requestBody: {
+      page: page,
+      size: pageSize,
+      clientId: client ? client.uuid : null,
+      locationUuid: location ? location.uuid : null,
+      groupUuid: group ? group.uuid : null,
+      sortDirection: sort.direction ? sort.direction : null,
+      sortedField: sort.field ? sort.field : null,
+      ...filters,
+      measurementUuids: favoriteMeter
+        ? favoriteMeter.measurementUuids
+        : user?.measurements
+          ? user.measurements
+          : null,
+      clientUuids:
+        favoriteMeter === null && user?.clients
+          ? user.clients?.map((client) => client.uuid)
+          : [],
+      localisationUuids:
+        user?.structureAccess?.resourceAccesses &&
+        user?.userType === UserType.LocalisationAdmin
+          ? user.structureAccess.resourceAccesses
+              .filter((resource) => resource.source_type === 'LOCALISATION')
+              .map((resource) => resource.source_uuid)
+          : [],
+    },
+    queryKeys: [
       page,
       pageSize,
       client,
       group,
       location,
-      ...Object.entries(filters).map(([key, value]) => ({ [key]: value })),
-      ...Object.entries(sort).map(([key, value]) => ({ [key]: value })),
+      JSON.stringify(filters),
+      JSON.stringify(sort),
       favoriteMeter,
     ],
-    queryFn: () =>
-      getTableData({
-        requestBody: {
-          page: page,
-          size: pageSize,
-          clientId: client ? client.uuid : null,
-          locationUuid: location ? location.uuid : null,
-          groupUuid: group ? group.uuid : null,
-          sortDirection: sort.direction ? sort.direction : null,
-          sortedField: sort.field ? sort.field : null,
-          locationName: filters.locationName ? filters.locationName : null,
-          groupName: filters.groupName ? filters.groupName : null,
-          measurementName: filters.measurementName
-            ? filters.measurementName
-            : null,
-          serialNumber: filters.serialNumber ? filters.serialNumber : null,
-          tenant: filters.tenant ? filters.tenant : null,
-          medium: filters.medium ? filters.medium : null,
-          levelType: filters.levelType ? filters.levelType : null,
-          loadType: filters.loadType ? filters.loadType : null,
-          endUserAreaType: filters.endUserAreaType
-            ? filters.endUserAreaType
-            : null,
-          measurementUuids: favoriteMeter
-            ? favoriteMeter.measurementUuids
-            : user?.measurements
-              ? user.measurements
-              : null,
-          clientUuids:
-            favoriteMeter === null && user?.clients
-              ? user.clients?.map((client) => client.uuid)
-              : [],
-          localisationUuids:
-            user?.structureAccess?.resourceAccesses &&
-            user?.userType === UserType.LocalisationAdmin
-              ? user.structureAccess.resourceAccesses
-                  .filter((resource) => resource.source_type === 'LOCALISATION')
-                  .map((resource) => resource.source_uuid)
-              : [],
-        },
-      }),
-    enabled: user ? true : false,
+    user,
   });
 
-  const { data: Options } = useQuery({
-    queryKey: [DATA_QUERY_KEYS.getDashboardOptions()],
-    queryFn: () =>
-      getOptions({ locale: user?.language ? user.language : null }),
+  const { data: Options } = useGetOptions({
+    locale: user?.language ? user.language : null,
   });
 
   useEffect(() => {
@@ -579,6 +563,7 @@ const Dashboard = () => {
     ],
     [Options, sort.direction, t]
   );
+
   return (
     <MainLayout>
       <Title
@@ -586,7 +571,7 @@ const Dashboard = () => {
         guide={true}
         guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
       />
-      <p className="text-[15px] text-[#666666] mb-[8px] mt-[19px]">
+      <p className="text-[15px] text-[#666666] mb-2 mt-[19px]">
         {t('pages.dashboard.subHeader')}
       </p>
       <Table

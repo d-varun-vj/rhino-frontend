@@ -1,7 +1,10 @@
+import { useQuery } from '@tanstack/react-query';
 import API_URLS from '../../../api/endpoints';
 import { httpClient } from '../../../api/httpClient';
 import { VITE_WICKET_BASE_URL } from '../../../components/shared/Sidebar/data';
 import { DashboardType, DictionaryDto } from '../types';
+import { DATA_QUERY_KEYS } from '../../../api/data-query-keys';
+import { User } from '../../../api/User/types';
 
 type Options = {
   levelTypes: DictionaryDto[];
@@ -62,21 +65,57 @@ export const getTableData = ({
   });
 };
 
-export const getOptions = ({ locale }: { locale: string | null }) => {
-  return new Promise<Options>((resolve, reject) => {
-    httpClient
-      .get<Options>(
+export const useGetTableData = ({
+  requestBody,
+  queryKeys,
+  user,
+}: {
+  requestBody?: DashboardTableRequestBody;
+  queryKeys: unknown[];
+  user: User | null;
+}) => {
+  return useQuery({
+    queryKey: [...DATA_QUERY_KEYS.dashboard, ...queryKeys],
+    queryFn: async () => {
+      const response = await httpClient.post<TableData>(
+        API_URLS.getDashboardTableData(),
+        requestBody
+      );
+      return response.data;
+    },
+    enabled: !!user,
+  });
+};
+
+export const useGetOptions = ({ locale }: { locale: string | null }) => {
+  return useQuery({
+    queryKey: [DATA_QUERY_KEYS.options],
+    queryFn: async () => {
+      const response = await httpClient.get<Options>(
         API_URLS.getDashboardTableDataOptions({
           locale: locale ? locale : 'en',
         })
-      )
-      .then((response) => {
-        resolve(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
-        reject(error.response?.data);
-      });
+      );
+      return response.data;
+    },
   });
 };
+
+// export const getOptions = ({ locale }: { locale: string | null }) => {
+//   return new Promise<Options>((resolve, reject) => {
+//     httpClient
+//       .get<Options>(
+//         API_URLS.getDashboardTableDataOptions({
+//           locale: locale ? locale : 'en',
+//         })
+//       )
+//       .then((response) => {
+//         resolve(response.data);
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
+//         reject(error.response?.data);
+//       });
+//   });
+// };

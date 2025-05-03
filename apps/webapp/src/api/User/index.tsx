@@ -1,18 +1,16 @@
 import API_URLS from '../endpoints';
-import { httpClient } from '../httpClient';
+import { DATA_QUERY_KEYS } from '../data-query-keys';
 import { User } from './types';
+import { httpClient } from '../httpClient';
+import { useQuery } from '@tanstack/react-query';
 
-export const getUser = (): Promise<User> => {
-  return new Promise<User>((resolve, reject) => {
-    httpClient
-      .get<User>(API_URLS.getUser())
-      .then((response) => {
-        resolve(response.data);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
-        reject(error.response?.data);
-      });
+export const useGetUserDetails = () => {
+  return useQuery({
+    queryKey: [...DATA_QUERY_KEYS.user],
+    queryFn: async () => {
+      const response = await httpClient.get<User>(API_URLS.getUser());
+      return response.data;
+    },
   });
 };
 

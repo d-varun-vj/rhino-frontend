@@ -5,7 +5,6 @@ import './i18n/index.ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { FilterProvider } from './context/useFilter/index.tsx';
 import MainRoute from './appRouter/index.tsx';
-import { TokenProvider } from './context/useToken/index.tsx';
 import { UserProvider } from './context/useUser/index.tsx';
 import { FavoriteMeterProvider } from './context/useFavoriteMeter/index.tsx';
 
@@ -13,15 +12,13 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <TokenProvider>
-        <FilterProvider>
-          <UserProvider>
-            <FavoriteMeterProvider>
-              <MainRoute />
-            </FavoriteMeterProvider>
-          </UserProvider>
-        </FilterProvider>
-      </TokenProvider>
+      <FilterProvider>
+        <UserProvider>
+          <FavoriteMeterProvider>
+            <MainRoute />
+          </FavoriteMeterProvider>
+        </UserProvider>
+      </FilterProvider>
     </QueryClientProvider>
   </StrictMode>
 );

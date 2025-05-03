@@ -1,8 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
+
 import { User } from '../../api/User/types';
-import { useQuery } from '@tanstack/react-query';
-import { DATA_QUERY_KEYS } from '../../api/data-query-keys';
-import { getUser } from '../../api/User';
+import { useGetUserDetails } from '../../api/User';
 
 type UserStore = {
   user: User | null;
@@ -17,15 +16,11 @@ const UserContext = createContext<UserStore>({
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const { data: userData } = useQuery({
-    queryKey: [...DATA_QUERY_KEYS.getUser()],
-    queryFn: getUser,
-  });
+  const { data: userData } = useGetUserDetails();
 
   useEffect(() => {
-    setUser(userData ? userData : null);
+    setUser(userData ?? null);
   }, [userData]);
-  console.log(user);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

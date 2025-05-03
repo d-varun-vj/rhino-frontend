@@ -1,6 +1,6 @@
 export const DATA_QUERY_KEYS = {
-  getDashboard: () => ['dashboard'],
-  getDashboardOptions: () => ['options'],
-  getUser: () => ['user'],
+  dashboard: ['dashboard'],
+  options: ['options'],
+  user: ['user'],
   getFavoriteMeters: () => ['FavoriteMeters'],
 };

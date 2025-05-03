@@ -1,10 +1,11 @@
-import { VscTriangleLeft } from 'react-icons/vsc';
-import { ItemType } from '../MenuItem';
-import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
-import { useUser } from '../../../../context/useUser';
 import { UserType, ViewPermissionsType } from '../../../../api/User/types';
+
+import { ItemType } from '../MenuItem';
 import { MenuItemType } from '../data';
+import { VscTriangleLeft } from 'react-icons/vsc';
+import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useUser } from '../../../../context/useUser';
 
 const MinimizePopup = ({
   menuItem,
@@ -16,8 +17,9 @@ const MinimizePopup = ({
   const { t } = useTranslation();
   const location = useLocation();
   const { user } = useUser();
+
   return (
-    <div className="w-[300px]   absolute left-[75px]  z-40 -mt-10 ">
+    <div className="w-[300px] absolute left-[75px]  z-40 -mt-10 ">
       {/* Header */}
       <div className="flex items-center">
         <VscTriangleLeft className="text-rhino-indigo-blue-light " />
@@ -26,7 +28,7 @@ const MinimizePopup = ({
           target={`${menuItem.link ? 'blank' : ''}`}
         >
           <div
-            className={`py-3 text-white px-4 rounded-lg  bg-rhino-indigo-blue-light min-w-[200px] -ml-[5px] text-[14px] ${menuItem.subItems ? 'rounded-bl-none  rounded-br-none' : ''}`}
+            className={`py-3 text-white px-4 rounded-lg  bg-rhino-indigo-blue-light min-w-[200px] -ml-[5px] text-sm ${menuItem.subItems ? 'rounded-bl-none  rounded-br-none' : ''}`}
           >
             {t(menuItem.label)}
           </div>

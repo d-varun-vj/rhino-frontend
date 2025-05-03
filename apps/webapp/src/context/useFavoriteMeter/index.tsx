@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+
 import { FavType } from '../../components/shared/TopRibbon/FavoriteMeter/types';
 
 type FavoriteMeterStore = {
@@ -19,6 +20,7 @@ export const FavoriteMeterProvider = ({
   children: React.ReactNode;
 }) => {
   const [favoriteMeter, setFavoriteMeter] = useState<FavType | null>(null);
+
   const clearFavoriteMeter = () => {
     setFavoriteMeter(null);
   };
