@@ -11,7 +11,7 @@ import axios, {
 } from 'axios';
 
 import { getCookie } from '../utils';
-import { VITE_WICKET_BASE_URL } from '../components/shared/Sidebar/data';
+import { VITE_WICKET_BASE_URL } from '../components/shared/Sidebar/config';
 
 // Create a custom adapter using fetch
 const fetchAdapter: AxiosAdapter = async (
@@ -139,7 +139,10 @@ export const initHttpClient = (baseURL?: string) => {
   };
 
   httpClient.interceptors.request.use(requestInterceptor);
+
+  // TODO: Fix me (Currently not in use, but it may be useful in the future)
   httpClientWithoutAuthorization.interceptors.request.use(requestInterceptor);
+
   httpClient.interceptors.response.use(responseInterceptor, errorInterceptor);
 
   return { httpClient, httpClientWithoutAuthorization };

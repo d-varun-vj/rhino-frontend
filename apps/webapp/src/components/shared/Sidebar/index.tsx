@@ -2,13 +2,12 @@ import './Sidebar.css';
 import rhinoLogo from '../../../assets/rhino-logo.svg';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import { MENU_KEYS, MenuItems } from './data';
+import { MENU_KEYS, MenuItems, MenuItemType } from './config';
 import MenuItem from './MenuItem';
 import { useUser } from '../../../context/useUser';
 import { UserType, ViewPermissionsType } from '../../../api/User/types';
 
 const SideBar = () => {
-  const [activeMenu, setActiveMenu] = useState<MENU_KEYS>(MENU_KEYS.DASHBOARD);
   const [minimize, setMinimize] = useState<{
     isMinimize: boolean;
     item: MENU_KEYS | '';
@@ -38,6 +37,17 @@ const SideBar = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [setMinimize]);
+
+  const MenuItemComponent = ({ menuItem }: { menuItem: MenuItemType }) => (
+    <MenuItem
+      key={menuItem.key}
+      menuItem={menuItem}
+      minimize={{
+        ...minimize,
+        setItem: setMinimize,
+      }}
+    />
+  );
 
   return (
     <aside
@@ -97,18 +107,7 @@ const SideBar = () => {
           {/* Main Menu Item*/}
           {MenuItems.map((menuItem) => {
             if (user?.userType === UserType.SuperAdmin) {
-              return (
-                <MenuItem
-                  key={menuItem.key}
-                  menuItem={menuItem}
-                  activeMenu={activeMenu}
-                  setActiveMenu={setActiveMenu}
-                  minimize={{
-                    ...minimize,
-                    setItem: setMinimize,
-                  }}
-                />
-              );
+              return MenuItemComponent({ menuItem });
             }
             return menuItem.viewPermissionType ===
               ViewPermissionsType.UserTypeBased &&
@@ -116,37 +115,19 @@ const SideBar = () => {
                 if (uType === user?.userType) {
                   return true;
                 }
-              }) ? (
-              <MenuItem
-                key={menuItem.key}
-                menuItem={menuItem}
-                activeMenu={activeMenu}
-                setActiveMenu={setActiveMenu}
-                minimize={{
-                  ...minimize,
-                  setItem: setMinimize,
-                }}
-              />
-            ) : menuItem.viewPermissionType ===
-                ViewPermissionsType.ViewRoleBased &&
-              menuItem.viewPermissions?.some((permission) => {
-                return user?.permissions?.some((userPermission) => {
-                  if (userPermission === permission) {
-                    return true;
-                  }
-                });
-              }) ? (
-              <MenuItem
-                key={menuItem.key}
-                menuItem={menuItem}
-                activeMenu={activeMenu}
-                setActiveMenu={setActiveMenu}
-                minimize={{
-                  ...minimize,
-                  setItem: setMinimize,
-                }}
-              />
-            ) : null;
+              })
+              ? MenuItemComponent({ menuItem })
+              : menuItem.viewPermissionType ===
+                    ViewPermissionsType.ViewRoleBased &&
+                  menuItem.viewPermissions?.some((permission) => {
+                    return user?.permissions?.some((userPermission) => {
+                      if (userPermission === permission) {
+                        return true;
+                      }
+                    });
+                  })
+                ? MenuItemComponent({ menuItem })
+                : null;
           })}
         </ul>
       </nav>

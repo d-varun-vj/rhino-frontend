@@ -1,6 +1,9 @@
-export const DATA_QUERY_KEYS = {
-  dashboard: ['dashboard'],
-  options: ['options'],
-  user: ['user'],
-  getFavoriteMeters: () => ['FavoriteMeters'],
-};
+export const enum DataQueryKeys {
+  DASHBOARD = 'dashboard',
+  OPTIONS = 'options',
+  USER = 'user',
+  // Top Ribbon
+  CLIENTS = 'clients',
+  LOCATIONS = 'locations',
+  FAVORITE_METERS = 'FavoriteMeters',
+}

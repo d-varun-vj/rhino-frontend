@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import API_URLS from '../../../api/endpoints';
 import { httpClient } from '../../../api/httpClient';
-import { VITE_WICKET_BASE_URL } from '../../../components/shared/Sidebar/data';
 import { DashboardType, DictionaryDto } from '../types';
-import { DATA_QUERY_KEYS } from '../../../api/data-query-keys';
+import { DataQueryKeys } from '../../../api/data-query-keys';
 import { User } from '../../../api/User/types';
 
 type Options = {
@@ -45,26 +44,6 @@ export type DashboardTableRequestBody = {
   endUserAreaType: string | null;
 };
 
-export const getTableData = ({
-  requestBody,
-}: {
-  requestBody?: DashboardTableRequestBody;
-}): Promise<TableData> => {
-  return new Promise<TableData>((resolve, reject) => {
-    httpClient
-      .post<TableData>(API_URLS.getDashboardTableData(), requestBody)
-      .then((response) => {
-        resolve(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        window.location.href = VITE_WICKET_BASE_URL + 'login';
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
-        reject(error.response?.data);
-      });
-  });
-};
-
 export const useGetTableData = ({
   requestBody,
   queryKeys,
@@ -75,7 +54,7 @@ export const useGetTableData = ({
   user: User | null;
 }) => {
   return useQuery({
-    queryKey: [...DATA_QUERY_KEYS.dashboard, ...queryKeys],
+    queryKey: [DataQueryKeys.DASHBOARD, ...queryKeys],
     queryFn: async () => {
       const response = await httpClient.post<TableData>(
         API_URLS.getDashboardTableData(),
@@ -89,7 +68,7 @@ export const useGetTableData = ({
 
 export const useGetOptions = ({ locale }: { locale: string | null }) => {
   return useQuery({
-    queryKey: [DATA_QUERY_KEYS.options],
+    queryKey: [DataQueryKeys.OPTIONS],
     queryFn: async () => {
       const response = await httpClient.get<Options>(
         API_URLS.getDashboardTableDataOptions({
@@ -100,22 +79,3 @@ export const useGetOptions = ({ locale }: { locale: string | null }) => {
     },
   });
 };
-
-// export const getOptions = ({ locale }: { locale: string | null }) => {
-//   return new Promise<Options>((resolve, reject) => {
-//     httpClient
-//       .get<Options>(
-//         API_URLS.getDashboardTableDataOptions({
-//           locale: locale ? locale : 'en',
-//         })
-//       )
-//       .then((response) => {
-//         resolve(response.data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
-//         reject(error.response?.data);
-//       });
-//   });
-// };

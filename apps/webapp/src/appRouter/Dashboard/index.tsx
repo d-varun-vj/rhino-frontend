@@ -9,7 +9,7 @@ import MainLayout from '../../layouts/MainLayout';
 import Table from '../../components/shared/Table';
 import Title from '../../components/shared/Title';
 import { UserType } from '../../api/User/types';
-import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/data';
+import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/config';
 import { useFavoriteMeter } from '../../context/useFavoriteMeter';
 import { useFilter } from '../../context/useFilter';
 import { useTranslation } from 'react-i18next';
@@ -86,7 +86,7 @@ const Dashboard = () => {
   });
 
   const { data: Options } = useGetOptions({
-    locale: user?.language ? user.language : null,
+    locale: user?.language ?? null,
   });
 
   useEffect(() => {
@@ -115,18 +115,8 @@ const Dashboard = () => {
               return { ...prev, locationName: val };
             });
           },
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'localisationName',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -140,18 +130,8 @@ const Dashboard = () => {
               return { ...prev, groupName: val };
             });
           },
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'groupName',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -165,18 +145,8 @@ const Dashboard = () => {
               return { ...prev, measurementName: val };
             });
           },
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'measurementName',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -190,18 +160,8 @@ const Dashboard = () => {
               return { ...prev, serialNumber: val };
             });
           },
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'serialNumber',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -215,7 +175,7 @@ const Dashboard = () => {
               return { ...prev, tenant: val };
             });
           },
-          isSortable: false,
+          sortKey: null,
         },
       },
       {
@@ -228,18 +188,8 @@ const Dashboard = () => {
               return { ...prev, medium: val };
             });
           },
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'translatedMedium',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -249,18 +199,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'factor',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -270,18 +210,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'value',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -291,18 +221,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'readTime',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -312,18 +232,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'currentMonthConsumption',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -333,18 +243,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'lastMonthSameDayConsumption',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -354,18 +254,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'percentage',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -375,18 +265,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'lastMonthConsumption',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -396,18 +276,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'unit',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -417,18 +287,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'levelType',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
           selectionOptions: Options?.levelTypes.map(
             (type) => type.translationEn
@@ -455,18 +315,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'loadType',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
           selectionOptions: Options?.loadTypes.map(
             (type) => type.translationEn
@@ -493,18 +343,8 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'endUseArea',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
           selectionOptions: Options?.endUserAreaTypes.map(
             (type) => type.translationEn
@@ -531,7 +371,7 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.actions'),
         meta: {
           filterVariant: null,
-          isSortable: false,
+          sortKey: null,
         },
         cell: ({ row }) => (
           <ActionCell>
@@ -571,7 +411,7 @@ const Dashboard = () => {
         guide={true}
         guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
       />
-      <p className="text-[15px] text-[#666666] mb-2 mt-[19px]">
+      <p className="text-[15px] text-grey mb-2 mt-[19px]">
         {t('pages.dashboard.subHeader')}
       </p>
       <Table

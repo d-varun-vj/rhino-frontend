@@ -17,15 +17,14 @@ import {
 import Filter from './Filter';
 import TableFooter from './Footer';
 import { SortDirection } from '../../../appRouter/Dashboard/api';
+import { Sort } from '../../../appRouter/Dashboard/types';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilterValue?: React.Dispatch<React.SetStateAction<any>>;
-  isSortable: boolean;
-  setSortedField?: React.Dispatch<React.SetStateAction<string>>;
-  sortKey?: string; // Same as backend sorting field name
-  setSortDirection?: React.Dispatch<React.SetStateAction<string>>;
+  setSort?: React.Dispatch<React.SetStateAction<Sort>>;
+  sortKey: string | null; // Same as backend sorting field name
   sortDirection?: string;
 }
 declare module '@tanstack/react-table' {
@@ -109,34 +108,37 @@ const Table = <T,>({
                               className: header.column.getCanSort()
                                 ? 'cursor-pointer select-none text-rhino-indigo-blue  pr-[1.2rem] flex   text-[13px]  whitespace-wrap gap-3 min-h-[80px] h-[100px] justify-start '
                                 : '',
-                              onClick: header.column.columnDef.meta?.isSortable
-                                ? () => {
-                                    if (
-                                      header.column.columnDef.meta
-                                        ?.setSortedField
-                                    ) {
-                                      header.column.columnDef.meta.setSortedField(
-                                        header.column.columnDef.meta.sortKey ||
-                                          ''
-                                      );
+                              onClick:
+                                header.column.columnDef.meta?.sortKey !== null
+                                  ? () => {
+                                      if (
+                                        header.column.columnDef.meta?.setSort
+                                      ) {
+                                        header.column.columnDef.meta.setSort(
+                                          (prev) => {
+                                            return {
+                                              ...prev,
+                                              field:
+                                                header.column.columnDef.meta
+                                                  ?.sortKey ?? '',
+                                              direction:
+                                                header.column.columnDef.meta &&
+                                                header.column.columnDef.meta
+                                                  .sortDirection === ''
+                                                  ? SortDirection.ASC
+                                                  : header.column.columnDef
+                                                        .meta &&
+                                                      header.column.columnDef
+                                                        .meta.sortDirection ===
+                                                        SortDirection.ASC
+                                                    ? SortDirection.DESC
+                                                    : '',
+                                            };
+                                          }
+                                        );
+                                      }
                                     }
-                                    if (
-                                      header.column.columnDef.meta
-                                        ?.setSortDirection
-                                    ) {
-                                      header.column.columnDef.meta.setSortDirection(
-                                        header.column.columnDef.meta
-                                          .sortDirection === ''
-                                          ? SortDirection.ASC
-                                          : header.column.columnDef.meta
-                                                .sortDirection ===
-                                              SortDirection.ASC
-                                            ? SortDirection.DESC
-                                            : ''
-                                      );
-                                    }
-                                  }
-                                : () => null,
+                                  : () => null,
                             }}
                           >
                             <div className="h-full text-start  overflow-y-auto">
@@ -146,9 +148,9 @@ const Table = <T,>({
                               )}{' '}
                             </div>
                             <div
-                              className={`${header.column.columnDef.meta?.isSortable ? 'text-[#808080]' : 'hidden'} `}
+                              className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'} `}
                             >
-                              {header.column.columnDef.meta?.setSortDirection
+                              {header.column.columnDef.meta?.setSort
                                 ? header.column.columnDef.meta.sortDirection ===
                                   SortDirection.DESC
                                   ? '⇂'

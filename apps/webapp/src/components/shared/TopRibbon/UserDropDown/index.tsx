@@ -4,7 +4,7 @@ import { useUser } from '../../../../context/useUser';
 import { useTranslation } from 'react-i18next';
 import { changeLanguage } from 'i18next';
 import { useLocation } from 'react-router-dom';
-import { VITE_WICKET_BASE_URL } from '../../Sidebar/data';
+import { VITE_WICKET_BASE_URL } from '../../Sidebar/config';
 
 import Langaugae from './Language';
 

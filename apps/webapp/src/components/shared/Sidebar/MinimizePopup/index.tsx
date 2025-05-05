@@ -1,9 +1,8 @@
 import { UserType, ViewPermissionsType } from '../../../../api/User/types';
 
 import { ItemType } from '../MenuItem';
-import { MenuItemType } from '../data';
+import { MenuItemType } from '../config';
 import { VscTriangleLeft } from 'react-icons/vsc';
-import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
 
@@ -12,14 +11,13 @@ const MinimizePopup = ({
   Item,
 }: {
   menuItem: MenuItemType;
-  Item: ({ subItem, t, location, isMinimize }: ItemType) => JSX.Element;
+  Item: ({ subItem, isMinimize }: ItemType) => JSX.Element;
 }) => {
   const { t } = useTranslation();
-  const location = useLocation();
   const { user } = useUser();
 
   return (
-    <div className="w-[300px] absolute left-[75px]  z-40 -mt-10 ">
+    <div className="min-w-[300px] absolute left-[75px]  z-40 -mt-10 ">
       {/* Header */}
       <div className="flex items-center">
         <VscTriangleLeft className="text-rhino-indigo-blue-light " />
@@ -38,13 +36,7 @@ const MinimizePopup = ({
         {menuItem.subItems?.map((subItem) => {
           if (user?.userType === UserType.SuperAdmin) {
             return (
-              <Item
-                subItem={subItem}
-                t={t}
-                key={subItem.key}
-                location={location}
-                isMinimize={true}
-              />
+              <Item subItem={subItem} key={subItem.key} isMinimize={true} />
             );
           }
           return subItem.viewPermissionType ===
@@ -54,7 +46,7 @@ const MinimizePopup = ({
                 return true;
               }
             }) ? (
-            <Item subItem={subItem} t={t} location={location} />
+            <Item subItem={subItem} />
           ) : subItem.viewPermissionType ===
               ViewPermissionsType.ViewRoleBased &&
             subItem.viewPermissions?.some((permission) => {
@@ -64,7 +56,7 @@ const MinimizePopup = ({
                 }
               });
             }) ? (
-            <Item subItem={subItem} t={t} location={location} />
+            <Item subItem={subItem} />
           ) : null;
         })}
       </div>

@@ -12,13 +12,13 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <FilterProvider>
-        <UserProvider>
+      <UserProvider>
+        <FilterProvider>
           <FavoriteMeterProvider>
             <MainRoute />
           </FavoriteMeterProvider>
-        </UserProvider>
-      </FilterProvider>
+        </FilterProvider>
+      </UserProvider>
     </QueryClientProvider>
   </StrictMode>
 );

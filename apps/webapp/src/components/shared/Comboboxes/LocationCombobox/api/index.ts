@@ -1,6 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
 import API_URLS from '../../../../../api/endpoints';
 import { httpClient } from '../../../../../api/httpClient';
-import { VITE_WICKET_BASE_URL } from '../../../Sidebar/data';
+import { VITE_WICKET_BASE_URL } from '../../../Sidebar/config';
+import { DataQueryKeys } from '../../../../../api/data-query-keys';
 
 export type Location = {
   uuid: string;
@@ -30,5 +32,24 @@ export const getLocations = ({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
         reject(error.response?.data);
       });
+  });
+};
+
+export const useGetLocations = ({
+  clientId,
+  queryKey,
+}: {
+  clientId: string | null;
+  queryKey: unknown[];
+}) => {
+  return useQuery({
+    queryKey: [DataQueryKeys.LOCATIONS, ...queryKey],
+    queryFn: async () => {
+      const response = await httpClient.get<Location[]>(
+        API_URLS.getLocations({ clientId: clientId })
+      );
+      return response.data;
+    },
+    enabled: clientId ? true : false,
   });
 };

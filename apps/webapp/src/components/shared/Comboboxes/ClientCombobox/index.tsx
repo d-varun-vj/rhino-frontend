@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import UuidCombobox from '../UuidCombobox';
 import { useFilter } from '../../../../context/useFilter';
-import { useQuery } from '@tanstack/react-query';
-import { Client, getClients } from './api';
+import { Client, useGetClients } from './api';
 import { useTranslation } from 'react-i18next';
 import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
 import { initHttpClient } from '../../../../api/httpClient';
@@ -26,10 +25,8 @@ const ClientCombobox = () => {
   const { clearFavoriteMeter } = useFavoriteMeter();
   const { user } = useUser();
 
-  const { data: clientsData } = useQuery({
-    queryKey: ['clients'],
-    queryFn: () => getClients({ userUuid: user ? user?.uuid : '' }),
-    enabled: user?.uuid ? true : false,
+  const { data: clientsData } = useGetClients({
+    userUuid: user ? user?.uuid : '',
   });
 
   useEffect(() => {

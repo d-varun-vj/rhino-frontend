@@ -1,12 +1,12 @@
 import API_URLS from '../endpoints';
-import { DATA_QUERY_KEYS } from '../data-query-keys';
+import { DataQueryKeys } from '../data-query-keys';
 import { User } from './types';
 import { httpClient } from '../httpClient';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useGetUserDetails = () => {
   return useQuery({
-    queryKey: [...DATA_QUERY_KEYS.user],
+    queryKey: [DataQueryKeys.USER],
     queryFn: async () => {
       const response = await httpClient.get<User>(API_URLS.getUser());
       return response.data;
@@ -14,30 +14,14 @@ export const useGetUserDetails = () => {
   });
 };
 
-export const changeUserLanguage = ({
-  userId,
-  lang,
-}: {
-  userId: string;
-  lang: string;
-}) => {
-  return new Promise((resolve, reject) => {
-    httpClient
-      .put(
-        API_URLS.changeLanguage({
-          userId,
-        }),
-        {
-          language: lang?.toString() || null,
-        }
-      )
-      .then((res) => {
-        resolve(res.data);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/prefer-promise-reject-errors
-        reject(err.response?.data);
-        console.log(err);
-      });
+export const useChangeUserLanguage = () => {
+  return useMutation({
+    mutationFn: async ({ userId, lang }: { userId: string; lang: string }) => {
+      const response = await httpClient.put(
+        API_URLS.changeLanguage({ userId }),
+        { language: lang?.toString() || null }
+      );
+      return response.data as void;
+    },
   });
 };

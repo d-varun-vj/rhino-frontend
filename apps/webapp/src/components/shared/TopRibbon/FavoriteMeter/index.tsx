@@ -6,9 +6,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { FavFilter, FavType } from './types';
 import ActionCell from '../../Table/ActionCell';
 import IconButton from '../../Buttons/IconButton';
-import { useQuery } from '@tanstack/react-query';
-import { getAllFavoriteMeters } from './api';
-import { DATA_QUERY_KEYS } from '../../../../api/data-query-keys';
+import { useGetAllFavoriteMeters } from './api';
 import { useUser } from '../../../../context/useUser';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
@@ -46,18 +44,8 @@ const FavoriteMeter = () => {
               return { ...prev, name: val };
             });
           },
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'name',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -71,18 +59,8 @@ const FavoriteMeter = () => {
               return { ...prev, authorEmail: val };
             });
           },
-          isSortable: true,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'user.email',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -91,19 +69,9 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.createdDate'),
         cell: (info) => info.getValue(),
         meta: {
-          isSortable: true,
           filterVariant: null,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'createdAt',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -112,19 +80,9 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.updatedDate'),
         cell: (info) => info.getValue(),
         meta: {
-          isSortable: true,
           filterVariant: null,
-          setSortedField: (val) => {
-            setSort((prev) => {
-              return { ...prev, field: val as string };
-            });
-          },
+          setSort: setSort,
           sortKey: 'updatedAt',
-          setSortDirection: (val) => {
-            setSort((prev) => {
-              return { ...prev, direction: val as string };
-            });
-          },
           sortDirection: sort.direction,
         },
       },
@@ -134,7 +92,7 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.actions'),
         meta: {
           filterVariant: null,
-          isSortable: false,
+          sortKey: null,
         },
         cell: (info) => (
           <ActionCell>
@@ -155,26 +113,22 @@ const FavoriteMeter = () => {
     [setFavoriteMeter, t, sort.direction]
   );
 
-  const { data: tableData } = useQuery({
-    queryKey: [
-      ...DATA_QUERY_KEYS.getFavoriteMeters(),
+  const { data: tableData } = useGetAllFavoriteMeters({
+    page: page,
+    size: pageSize,
+    userUuid: user ? user?.uuid : '',
+    clientUuid: client ? client.uuid : '',
+    filters: filters,
+    sort: sort,
+    userId: user ? user?.uuid : null,
+    queryKeys: [
       client,
       page,
       pageSize,
-      ...Object.entries(filters).map(([key, value]) => ({ [key]: value })),
+      JSON.stringify(filters),
       sort.direction,
       sort.field,
     ],
-    queryFn: () =>
-      getAllFavoriteMeters({
-        page: page,
-        size: pageSize,
-        userUuid: user ? user?.uuid : '',
-        clientUuid: client ? client.uuid : '',
-        filters: filters,
-        sort: sort,
-      }),
-    enabled: user?.uuid ? true : false,
   });
 
   return (

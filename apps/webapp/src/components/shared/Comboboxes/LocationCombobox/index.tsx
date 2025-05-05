@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFilter } from '../../../../context/useFilter';
 import UuidCombobox from '../UuidCombobox';
-import { useQuery } from '@tanstack/react-query';
-import { getLocations, Location } from './api';
+import { Location, useGetLocations } from './api';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
 import { UserType } from '../../../../api/User/types';
@@ -19,13 +18,9 @@ const LocationCombobox = () => {
   } = useFilter();
   const [locations, setLocations] = useState<Location[]>([]);
 
-  const { data: locationsData } = useQuery({
-    queryKey: ['locations', selectedClient],
-    queryFn: () =>
-      getLocations({
-        clientId: selectedClient ? selectedClient?.uuid : null,
-      }),
-    enabled: selectedClient != null,
+  const { data: locationsData } = useGetLocations({
+    clientId: selectedClient ? selectedClient?.uuid : null,
+    queryKey: [selectedClient],
   });
 
   useEffect(() => {
