@@ -1,3 +1,17 @@
+type SharedTenants = {
+  uuid: string;
+  displayName: string;
+  leaseNumber: string;
+  groupName: string;
+  localizationName: string;
+  localisationUuid: string;
+  displayNameWithLeaseNumber: string;
+  clientName: string;
+  m2: string;
+  leaseStartDate: string;
+  leaseEndDate: string;
+};
+
 export type FavType = {
   authorEmail: string | null;
   createdAt: string | null;
@@ -8,6 +22,10 @@ export type FavType = {
   measurementUuids: string[];
   authorUuid: string | null;
   editorUuid: string | null;
+  readOnly: boolean;
+  shared: boolean;
+  sharedLocalisations: { uuid: string; name: string }[];
+  sharedTenants: SharedTenants[];
   action?: string;
 };
 

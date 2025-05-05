@@ -65,6 +65,31 @@ const FavoriteMeter = () => {
         },
       },
       {
+        accessorFn: (row) => (row.shared === true ? 'Yes' : 'No'),
+        header: t(translationBaseRoute + 'header.shared'),
+        meta: {
+          filterVariant: 'select',
+          setSort: setSort,
+          sortKey: 'shared',
+          sortDirection: sort.direction,
+          selectionOptions: ['Yes', 'No'],
+          setFilterValue: (value: string) => {
+            if (value === null) {
+              return setFilters((prev: FavFilter) => {
+                return { ...prev, shared: '' };
+              });
+            }
+            ['Yes', 'No'].filter((type) => {
+              if (type === value) {
+                setFilters((prev: FavFilter) => {
+                  return { ...prev, shared: type };
+                });
+              }
+            });
+          },
+        },
+      },
+      {
         accessorFn: (row) => row.createdAt,
         header: t(translationBaseRoute + 'header.createdDate'),
         cell: (info) => info.getValue(),
@@ -121,6 +146,7 @@ const FavoriteMeter = () => {
     filters: filters,
     sort: sort,
     userId: user ? user?.uuid : null,
+    userType: user ? user?.userType : null,
     queryKeys: [
       client,
       page,
@@ -130,6 +156,7 @@ const FavoriteMeter = () => {
       sort.field,
     ],
   });
+  // const tableData = [];
 
   return (
     <div>

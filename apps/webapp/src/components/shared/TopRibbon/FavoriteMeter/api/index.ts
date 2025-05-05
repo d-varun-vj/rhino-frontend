@@ -4,6 +4,7 @@ import { httpClient } from '../../../../../api/httpClient';
 import { Sort } from '../../../../../appRouter/Dashboard/types';
 import { FavFilter, FavType } from '../types';
 import { DataQueryKeys } from '../../../../../api/data-query-keys';
+import { UserType } from '../../../../../api/User/types';
 
 type TableData = {
   results: FavType[];
@@ -18,6 +19,7 @@ export const useGetAllFavoriteMeters = ({
   filters,
   sort,
   userId,
+  userType,
   queryKeys,
 }: {
   page?: number | null;
@@ -27,6 +29,7 @@ export const useGetAllFavoriteMeters = ({
   filters?: FavFilter | null;
   sort?: Sort | null;
   userId: string | null;
+  userType: UserType | null;
   queryKeys: unknown[];
 }) => {
   const queryParams = new URLSearchParams({
@@ -38,6 +41,7 @@ export const useGetAllFavoriteMeters = ({
     authorEmail: filters?.authorEmail || '',
     sortedField: sort?.field || '',
     sortDirection: sort?.direction || '',
+    userType: userType || '',
   });
   return useQuery({
     queryKey: [DataQueryKeys.FAVORITE_METERS, ...queryKeys],
