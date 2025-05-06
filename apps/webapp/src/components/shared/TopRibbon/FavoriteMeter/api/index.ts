@@ -19,8 +19,8 @@ export const useGetAllFavoriteMeters = ({
   filters,
   sort,
   userId,
-  userType,
-  queryKeys,
+  // userType,
+  // queryKeys,
 }: {
   page?: number | null;
   size?: number | null;
@@ -30,7 +30,7 @@ export const useGetAllFavoriteMeters = ({
   sort?: Sort | null;
   userId: string | null;
   userType: UserType | null;
-  queryKeys: unknown[];
+  // queryKeys: unknown[];
 }) => {
   const queryParams = new URLSearchParams({
     page: page?.toString() || '',
@@ -41,10 +41,19 @@ export const useGetAllFavoriteMeters = ({
     authorEmail: filters?.authorEmail || '',
     sortedField: sort?.field || '',
     sortDirection: sort?.direction || '',
-    userType: userType || '',
+    // TODO:Change when favorite backend config
+    userType: UserType.SuperAdmin || '',
   });
   return useQuery({
-    queryKey: [DataQueryKeys.FAVORITE_METERS, ...queryKeys],
+    queryKey: [
+      DataQueryKeys.FAVORITE_METERS,
+      clientUuid,
+      page,
+      size,
+      JSON.stringify(filters),
+      sort?.direction,
+      sort?.field,
+    ],
     queryFn: async () => {
       const response = await httpClient.get<TableData>(
         API_URLS.getAllFavoriteMeters({

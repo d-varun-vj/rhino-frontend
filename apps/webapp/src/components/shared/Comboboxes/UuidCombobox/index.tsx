@@ -8,7 +8,7 @@ interface Props {
     groups?: { name: string; uuid: string }[];
   }[];
   defaultPlaceholder: string;
-  disabled: boolean;
+  disenabled: boolean;
   setReturnValue: (data: { name: string; uuid: string } | null) => void;
   selectedValue: {
     name: string;
@@ -18,7 +18,7 @@ interface Props {
 const UuidCombobox = ({
   options,
   defaultPlaceholder,
-  disabled,
+  disenabled: disabled,
   setReturnValue,
   selectedValue,
 }: Props) => {

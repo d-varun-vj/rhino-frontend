@@ -42,19 +42,18 @@ export type DashboardTableRequestBody = {
   levelType: string | null;
   loadType: string | null;
   endUserAreaType: string | null;
+  user: User | null;
 };
 
 export const useGetTableData = ({
-  requestBody,
-  queryKeys,
-  user,
+  params,
 }: {
-  requestBody?: DashboardTableRequestBody;
-  queryKeys: unknown[];
-  user: User | null;
+  params: DashboardTableRequestBody;
 }) => {
+  const { user, ...requestBody } = params;
+
   return useQuery({
-    queryKey: [DataQueryKeys.DASHBOARD, ...queryKeys],
+    queryKey: [DataQueryKeys.DASHBOARD, JSON.stringify(requestBody)],
     queryFn: async () => {
       const response = await httpClient.post<TableData>(
         API_URLS.getDashboardTableData(),

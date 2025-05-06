@@ -1,59 +1,27 @@
-import { useEffect, useState } from 'react';
 import UuidCombobox from '../UuidCombobox';
-import { useFilter } from '../../../../context/useFilter';
-import { Client, useGetClients } from './api';
+import { Client } from './api';
 import { useTranslation } from 'react-i18next';
-import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
-import { initHttpClient } from '../../../../api/httpClient';
-import { BASE_URL } from '../../../../api/endpoints';
-import { useUser } from '../../../../context/useUser';
-import { UserType } from '../../../../api/User/types';
+import { FieldType } from '../../TopRibbon';
+import { FilterData } from '../../../../context/useFilter';
 
-const ClientCombobox = () => {
-  useEffect(() => {
-    initHttpClient(BASE_URL);
-  }, []);
+const ClientCombobox = ({
+  onSelect: onFliterSelect,
+  clients,
+  disableDropdown,
+  selectedClient,
+}: {
+  onSelect: (
+    type: FieldType,
+    value: {
+      name: string;
+      uuid: string;
+    } | null
+  ) => void;
+  clients: Client[] | null;
+  disableDropdown?: boolean;
+  selectedClient?: FilterData | null;
+}) => {
   const { t } = useTranslation();
-  const {
-    setClient: setSelectedClient,
-    setLocation: setSelectedLocation,
-    setGroup: setSelectedGroup,
-    client: selectedClient,
-  } = useFilter();
-  const [clients, setClients] = useState<Client[]>();
-  const [disableDropdown, setDisableDropdown] = useState<boolean>();
-  const { clearFavoriteMeter } = useFavoriteMeter();
-  const { user } = useUser();
-
-  const { data: clientsData } = useGetClients({
-    userUuid: user ? user?.uuid : '',
-  });
-
-  useEffect(() => {
-    if (selectedClient?.name === null) {
-      setSelectedGroup(null);
-      setSelectedLocation(null);
-    }
-
-    if (clientsData) {
-      setClients(clientsData);
-    }
-
-    if (
-      (user && user.userType === UserType.ClientAdmin) ||
-      user?.userType === UserType.LocalisationAdmin ||
-      user?.userType === UserType.RegularUser ||
-      user?.userType === UserType.Tenant
-    ) {
-      setDisableDropdown(true);
-    }
-  }, [
-    selectedClient,
-    clientsData,
-    setSelectedLocation,
-    setSelectedGroup,
-    user,
-  ]);
 
   return (
     <UuidCombobox
@@ -66,16 +34,11 @@ const ClientCombobox = () => {
           : []
       }
       defaultPlaceholder={t('comboBox.select')}
-      disabled={disableDropdown || false}
+      disenabled={disableDropdown || false}
       setReturnValue={(client) => {
-        if (client?.name !== selectedClient?.name) {
-          clearFavoriteMeter();
-          setSelectedClient(client);
-          setSelectedGroup(null);
-          setSelectedLocation(null);
-        }
+        if (onFliterSelect) onFliterSelect(FieldType.CLIENT, client);
       }}
-      selectedValue={selectedClient}
+      selectedValue={selectedClient ?? null}
     />
   );
 };

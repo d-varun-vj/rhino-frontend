@@ -45,7 +45,8 @@ const fetchAdapter: AxiosAdapter = async (
 
   const response = await fetch(url!, fetchOptions);
 
-  if (response.status === 401 || response.status === 500) {
+  // TODO: Add || response.status === 500 after fix favorite meter change
+  if (response.status === 401) {
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
     window.location.href = VITE_WICKET_BASE_URL + 'dashboard?-2.-logout';
     // window.location.href = VITE_WICKET_BASE_URL + 'login';
@@ -86,7 +87,7 @@ const httpClientWithoutAuthorization: AxiosInstance = axios.create({
 // Read token from cookie once during initialization
 const token: string = getCookie('token') || '';
 
-export const initHttpClient = (baseURL?: string) => {
+export const initHttpClient = async (baseURL?: string) => {
   const defaultHeaders = new AxiosHeaders({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
@@ -126,15 +127,15 @@ export const initHttpClient = (baseURL?: string) => {
   const errorInterceptor = (error: any) => {
     console.log('Error: ', error);
 
-    if (error.response) {
-      const { status } = error.response || {};
-      if (status === 401 || status === 500) {
-        window.location.href = VITE_WICKET_BASE_URL + 'login';
-      }
-    } else {
-      console.error('Unexpected Error:', error.message);
-      window.location.href = VITE_WICKET_BASE_URL + 'login';
-    }
+    // if (error.response) {
+    //   const { status } = error.response || {};
+    //   if (status === 401 || status === 500) {
+    //     window.location.href = VITE_WICKET_BASE_URL + 'login';
+    //   }
+    // } else {
+    //   console.error('Unexpected Error:', error.message);
+    //   window.location.href = VITE_WICKET_BASE_URL + 'login';
+    // }
     return Promise.reject(error);
   };
 

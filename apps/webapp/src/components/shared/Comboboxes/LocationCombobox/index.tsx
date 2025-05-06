@@ -1,66 +1,27 @@
-import { useEffect, useState } from 'react';
-import { useFilter } from '../../../../context/useFilter';
+import { FilterData } from '../../../../context/useFilter';
 import UuidCombobox from '../UuidCombobox';
-import { Location, useGetLocations } from './api';
+import { Location } from './api';
 import { useTranslation } from 'react-i18next';
-import { useUser } from '../../../../context/useUser';
-import { UserType } from '../../../../api/User/types';
+import { FieldType } from '../../TopRibbon';
 
-const LocationCombobox = () => {
+const LocationCombobox = ({
+  onSelect,
+  locations,
+  disenabled,
+  selectedLocation,
+}: {
+  onSelect?: (
+    type: FieldType,
+    value: {
+      name: string;
+      uuid: string;
+    } | null
+  ) => void;
+  locations?: Location[];
+  disenabled?: boolean;
+  selectedLocation?: FilterData | null;
+}) => {
   const { t } = useTranslation();
-  const { user } = useUser();
-  const {
-    setLocation: setSelectedLocation,
-    setGroup: setSelectedGroup,
-    client: selectedClient,
-    group: selectedGroup,
-    location: selectedLocation,
-  } = useFilter();
-  const [locations, setLocations] = useState<Location[]>([]);
-
-  const { data: locationsData } = useGetLocations({
-    clientId: selectedClient ? selectedClient?.uuid : null,
-    queryKey: [selectedClient],
-  });
-
-  useEffect(() => {
-    if (
-      selectedLocation !== null &&
-      !locationsData
-        ?.filter((location) => location.name === selectedLocation.name)
-        .some((location) =>
-          location.groups?.some((group) => group.name === selectedGroup?.name)
-        )
-    ) {
-      setSelectedGroup(null);
-    }
-    if (
-      (user?.structureAccess?.resourceAccesses ?? []).length > 0 &&
-      user?.userType === UserType.LocalisationAdmin &&
-      locationsData
-    ) {
-      const filterLocationUuid = user?.structureAccess?.resourceAccesses
-        ?.filter((resource) => resource.source_type === 'LOCALISATION')
-        .map((resource) => resource.source_uuid);
-      const filteredLocations = locationsData.filter((location) =>
-        filterLocationUuid?.includes(location.uuid)
-      );
-      setLocations(filteredLocations);
-    } else if (locationsData) {
-      setLocations(locationsData);
-    }
-  }, [
-    selectedClient,
-    selectedGroup,
-    selectedLocation,
-    locationsData,
-    setSelectedGroup,
-    user?.selectedLocation,
-    setLocations,
-    setSelectedLocation,
-    user?.userType,
-    user?.structureAccess?.resourceAccesses,
-  ]);
 
   return (
     <UuidCombobox
@@ -73,9 +34,11 @@ const LocationCombobox = () => {
           : []
       }
       defaultPlaceholder={t('comboBox.locationNull')}
-      disabled={selectedClient == null ? true : false}
-      setReturnValue={setSelectedLocation}
-      selectedValue={selectedLocation}
+      disenabled={disenabled ?? false}
+      setReturnValue={(location) => {
+        if (onSelect) onSelect(FieldType.LOCATION, location);
+      }}
+      selectedValue={selectedLocation ?? null}
     />
   );
 };

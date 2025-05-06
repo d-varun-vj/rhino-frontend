@@ -44,7 +44,6 @@ const FavoriteMeter = () => {
               return { ...prev, name: val };
             });
           },
-          setSort: setSort,
           sortKey: 'name',
           sortDirection: sort.direction,
         },
@@ -59,7 +58,6 @@ const FavoriteMeter = () => {
               return { ...prev, authorEmail: val };
             });
           },
-          setSort: setSort,
           sortKey: 'user.email',
           sortDirection: sort.direction,
         },
@@ -69,7 +67,6 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.shared'),
         meta: {
           filterVariant: 'select',
-          setSort: setSort,
           sortKey: 'shared',
           sortDirection: sort.direction,
           selectionOptions: ['Yes', 'No'],
@@ -95,7 +92,6 @@ const FavoriteMeter = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'createdAt',
           sortDirection: sort.direction,
         },
@@ -106,7 +102,6 @@ const FavoriteMeter = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'updatedAt',
           sortDirection: sort.direction,
         },
@@ -147,16 +142,10 @@ const FavoriteMeter = () => {
     sort: sort,
     userId: user ? user?.uuid : null,
     userType: user ? user?.userType : null,
-    queryKeys: [
-      client,
-      page,
-      pageSize,
-      JSON.stringify(filters),
-      sort.direction,
-      sort.field,
-    ],
   });
-  // const tableData = [];
+  const onSortClick = (field: string, direction: string) => {
+    setSort({ field, direction });
+  };
 
   return (
     <div>
@@ -208,6 +197,7 @@ const FavoriteMeter = () => {
                   }}
                   extraStyles="max-h-[500px]"
                   emptyText="No results"
+                  onSortSelect={onSortClick}
                 />
               </div>
             </div>

@@ -17,13 +17,11 @@ import {
 import Filter from './Filter';
 import TableFooter from './Footer';
 import { SortDirection } from '../../../appRouter/Dashboard/api';
-import { Sort } from '../../../appRouter/Dashboard/types';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFilterValue?: React.Dispatch<React.SetStateAction<any>>;
-  setSort?: React.Dispatch<React.SetStateAction<Sort>>;
   sortKey: string | null; // Same as backend sorting field name
   sortDirection?: string;
 }
@@ -50,6 +48,7 @@ type TableProps<T> = {
   isLoading?: boolean;
   extraStyles?: string;
   emptyText?: string;
+  onSortSelect?: (field: string, direction: string) => void;
 };
 
 const Table = <T,>({
@@ -59,6 +58,7 @@ const Table = <T,>({
   isLoading,
   extraStyles,
   emptyText,
+  onSortSelect,
 }: TableProps<T>) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -111,32 +111,21 @@ const Table = <T,>({
                               onClick:
                                 header.column.columnDef.meta?.sortKey !== null
                                   ? () => {
-                                      if (
-                                        header.column.columnDef.meta?.setSort
-                                      ) {
-                                        header.column.columnDef.meta.setSort(
-                                          (prev) => {
-                                            return {
-                                              ...prev,
-                                              field:
+                                      if (onSortSelect)
+                                        onSortSelect(
+                                          header.column.columnDef.meta
+                                            ?.sortKey ?? '',
+                                          header.column.columnDef.meta &&
+                                            header.column.columnDef.meta
+                                              .sortDirection === ''
+                                            ? SortDirection.ASC
+                                            : header.column.columnDef.meta &&
                                                 header.column.columnDef.meta
-                                                  ?.sortKey ?? '',
-                                              direction:
-                                                header.column.columnDef.meta &&
-                                                header.column.columnDef.meta
-                                                  .sortDirection === ''
-                                                  ? SortDirection.ASC
-                                                  : header.column.columnDef
-                                                        .meta &&
-                                                      header.column.columnDef
-                                                        .meta.sortDirection ===
-                                                        SortDirection.ASC
-                                                    ? SortDirection.DESC
-                                                    : '',
-                                            };
-                                          }
+                                                  .sortDirection ===
+                                                  SortDirection.ASC
+                                              ? SortDirection.DESC
+                                              : ''
                                         );
-                                      }
                                     }
                                   : () => null,
                             }}
@@ -150,7 +139,7 @@ const Table = <T,>({
                             <div
                               className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'} `}
                             >
-                              {header.column.columnDef.meta?.setSort
+                              {header.column.columnDef.meta
                                 ? header.column.columnDef.meta.sortDirection ===
                                   SortDirection.DESC
                                   ? '⇂'

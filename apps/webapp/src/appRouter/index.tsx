@@ -7,17 +7,19 @@ import { initHttpClient } from '../api/httpClient';
 import { useEffect, useState } from 'react';
 
 const MainRoute = () => {
-  const [fullScreenLoading, setFullScreenLoading] = useState(true); // Start with true to trigger loading state
+  const [isFullScreenLoading, setIsFullScreenLoading] = useState(true); // Start with true to trigger loading state
 
   useEffect(() => {
-    const initialize = () => {
-      initHttpClient(BASE_URL);
-      setFullScreenLoading(false);
+    const initialize = async () => {
+      await initHttpClient(BASE_URL);
+      setIsFullScreenLoading(false);
     };
-    initialize();
+    initialize().catch((error) =>
+      console.error('Initialization failed:', error)
+    );
   }, []);
 
-  if (fullScreenLoading) {
+  if (isFullScreenLoading) {
     return (
       <div className="flex h-screen justify-center items-center ">
         <h1>Loading...</h1>

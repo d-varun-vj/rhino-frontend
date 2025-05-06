@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-
-type FilterData = { name: string; uuid: string };
+export type FilterData = { name: string; uuid: string };
 
 type FilterState = {
   client: FilterData | null;

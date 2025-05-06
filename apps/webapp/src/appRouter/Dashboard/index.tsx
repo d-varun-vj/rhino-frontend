@@ -46,7 +46,7 @@ const Dashboard = () => {
   const translationBaseRoute = 'pages.dashboard.table.';
 
   const { data: tableData, isLoading } = useGetTableData({
-    requestBody: {
+    params: {
       page: page,
       size: pageSize,
       clientId: client ? client.uuid : null,
@@ -71,18 +71,8 @@ const Dashboard = () => {
               .filter((resource) => resource.source_type === 'LOCALISATION')
               .map((resource) => resource.source_uuid)
           : [],
+      user: user,
     },
-    queryKeys: [
-      page,
-      pageSize,
-      client,
-      group,
-      location,
-      JSON.stringify(filters),
-      JSON.stringify(sort),
-      favoriteMeter,
-    ],
-    user,
   });
 
   const { data: Options } = useGetOptions({
@@ -103,6 +93,10 @@ const Dashboard = () => {
     }
   }, [user, setClient]);
 
+  const onSortClick = (field: string, direction: string) => {
+    setSort({ field, direction });
+  };
+
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
     () => [
       {
@@ -115,7 +109,6 @@ const Dashboard = () => {
               return { ...prev, locationName: val };
             });
           },
-          setSort: setSort,
           sortKey: 'localisationName',
           sortDirection: sort.direction,
         },
@@ -130,7 +123,6 @@ const Dashboard = () => {
               return { ...prev, groupName: val };
             });
           },
-          setSort: setSort,
           sortKey: 'groupName',
           sortDirection: sort.direction,
         },
@@ -145,7 +137,6 @@ const Dashboard = () => {
               return { ...prev, measurementName: val };
             });
           },
-          setSort: setSort,
           sortKey: 'measurementName',
           sortDirection: sort.direction,
         },
@@ -160,7 +151,6 @@ const Dashboard = () => {
               return { ...prev, serialNumber: val };
             });
           },
-          setSort: setSort,
           sortKey: 'serialNumber',
           sortDirection: sort.direction,
         },
@@ -188,7 +178,6 @@ const Dashboard = () => {
               return { ...prev, medium: val };
             });
           },
-          setSort: setSort,
           sortKey: 'translatedMedium',
           sortDirection: sort.direction,
         },
@@ -199,7 +188,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'factor',
           sortDirection: sort.direction,
         },
@@ -210,7 +198,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'value',
           sortDirection: sort.direction,
         },
@@ -221,7 +208,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'readTime',
           sortDirection: sort.direction,
         },
@@ -232,7 +218,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'currentMonthConsumption',
           sortDirection: sort.direction,
         },
@@ -243,7 +228,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'lastMonthSameDayConsumption',
           sortDirection: sort.direction,
         },
@@ -254,7 +238,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'percentage',
           sortDirection: sort.direction,
         },
@@ -265,7 +248,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'lastMonthConsumption',
           sortDirection: sort.direction,
         },
@@ -276,7 +258,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: null,
-          setSort: setSort,
           sortKey: 'unit',
           sortDirection: sort.direction,
         },
@@ -287,7 +268,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
-          setSort: setSort,
           sortKey: 'levelType',
           sortDirection: sort.direction,
           selectionOptions: Options?.levelTypes.map(
@@ -315,7 +295,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
-          setSort: setSort,
           sortKey: 'loadType',
           sortDirection: sort.direction,
           selectionOptions: Options?.loadTypes.map(
@@ -343,7 +322,6 @@ const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: 'select',
-          setSort: setSort,
           sortKey: 'endUseArea',
           sortDirection: sort.direction,
           selectionOptions: Options?.endUserAreaTypes.map(
@@ -424,6 +402,7 @@ const Dashboard = () => {
           setPageSize: setPageSize,
           pageSize: pageSize,
         }}
+        onSortSelect={onSortClick}
         isLoading={isLoading}
       />
     </MainLayout>

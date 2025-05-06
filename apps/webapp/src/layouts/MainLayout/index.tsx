@@ -1,5 +1,6 @@
 import React from 'react';
 import SideBar from '../../components/shared/Sidebar';
+// import TopRibbon from '../../components/shared/TopRibbon';
 import TopRibbon from '../../components/shared/TopRibbon';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
