@@ -104,7 +104,8 @@ const TopRibbon = () => {
     } else if (locations) {
       setLocations(locations);
     }
-  }, [locations, selectedLocation, selectedGroup, setSelectedGroup, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const onFilterChange = (
     type: FieldType,

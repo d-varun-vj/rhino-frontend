@@ -1,9 +1,9 @@
 import { DashboardType, Filter, Sort } from './types';
 import { FaChartBar, FaChartLine } from 'react-icons/fa';
 import React, { useEffect, useState } from 'react';
-import { useGetOptions, useGetTableData } from './api';
+import { TableData, useGetMetaData, usePostGetTableData } from './api';
 import ActionCell from '../../components/shared/Table/ActionCell';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 import IconButton from '../../components/shared/Buttons/IconButton';
 import MainLayout from '../../layouts/MainLayout';
 import Table from '../../components/shared/Table';
@@ -45,7 +45,7 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const translationBaseRoute = 'pages.dashboard.table.';
 
-  const { data: tableData, isLoading } = useGetTableData({
+  const { mutateAsync: postGetTableData, isPending } = usePostGetTableData({
     params: {
       page: page,
       size: pageSize,
@@ -65,17 +65,39 @@ const Dashboard = () => {
           ? user.clients?.map((client) => client.uuid)
           : [],
       localisationUuids:
+        favoriteMeter === null &&
         user?.structureAccess?.resourceAccesses &&
         user?.userType === UserType.LocalisationAdmin
           ? user.structureAccess.resourceAccesses
               .filter((resource) => resource.source_type === 'LOCALISATION')
               .map((resource) => resource.source_uuid)
           : [],
-      user: user,
     },
   });
+  const [tableData, settableData] = useState<TableData>();
 
-  const { data: Options } = useGetOptions({
+  const getData = async () => {
+    const resonse = await postGetTableData();
+    settableData(resonse);
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    user,
+    client,
+    location,
+    group,
+    favoriteMeter,
+    filters,
+    sort,
+    page,
+    pageSize,
+  ]);
+
+  const { data: Options } = useGetMetaData({
     locale: user?.language ?? null,
   });
 
@@ -92,6 +114,33 @@ const Dashboard = () => {
       });
     }
   }, [user, setClient]);
+
+  const ActionCellFn = (row: Row<DashboardType>) => (
+    <ActionCell>
+      <IconButton
+        action={() => {
+          window.location.href =
+            VITE_WICKET_BASE_URL +
+            `consumptionProfileChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+        }}
+        popupContent={t(translationBaseRoute + 'popup.goToProfile')}
+        style="bg-rhino-energy-green text-white"
+      >
+        <FaChartBar />
+      </IconButton>
+      <IconButton
+        action={() => {
+          window.location.href =
+            VITE_WICKET_BASE_URL +
+            `consumptionChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+        }}
+        popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
+        style="bg-rhino-energy-green text-white"
+      >
+        <FaChartLine />
+      </IconButton>
+    </ActionCell>
+  );
 
   const onSortClick = (field: string, direction: string) => {
     setSort({ field, direction });
@@ -351,34 +400,10 @@ const Dashboard = () => {
           filterVariant: null,
           sortKey: null,
         },
-        cell: ({ row }) => (
-          <ActionCell>
-            <IconButton
-              action={() => {
-                window.location.href =
-                  VITE_WICKET_BASE_URL +
-                  `consumptionProfileChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
-              }}
-              popupContent={t(translationBaseRoute + 'popup.goToProfile')}
-              style="bg-rhino-energy-green text-white"
-            >
-              <FaChartBar />
-            </IconButton>
-            <IconButton
-              action={() => {
-                window.location.href =
-                  VITE_WICKET_BASE_URL +
-                  `consumptionChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
-              }}
-              popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
-              style="bg-rhino-energy-green text-white"
-            >
-              <FaChartLine />
-            </IconButton>
-          </ActionCell>
-        ),
+        cell: ({ row }) => ActionCellFn(row),
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [Options, sort.direction, t]
   );
 
@@ -403,7 +428,7 @@ const Dashboard = () => {
           pageSize: pageSize,
         }}
         onSortSelect={onSortClick}
-        isLoading={isLoading}
+        isLoading={isPending}
       />
     </MainLayout>
   );

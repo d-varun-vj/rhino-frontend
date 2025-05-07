@@ -45,8 +45,7 @@ const fetchAdapter: AxiosAdapter = async (
 
   const response = await fetch(url!, fetchOptions);
 
-  // TODO: Add || response.status === 500 after fix favorite meter change
-  if (response.status === 401) {
+  if (response.status === 401 || response.status === 500) {
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
     window.location.href = VITE_WICKET_BASE_URL + 'dashboard?-2.-logout';
     // window.location.href = VITE_WICKET_BASE_URL + 'login';
@@ -127,21 +126,21 @@ export const initHttpClient = async (baseURL?: string) => {
   const errorInterceptor = (error: any) => {
     console.log('Error: ', error);
 
-    // if (error.response) {
-    //   const { status } = error.response || {};
-    //   if (status === 401 || status === 500) {
-    //     window.location.href = VITE_WICKET_BASE_URL + 'login';
-    //   }
-    // } else {
-    //   console.error('Unexpected Error:', error.message);
-    //   window.location.href = VITE_WICKET_BASE_URL + 'login';
-    // }
+    if (error.response) {
+      const { status } = error.response || {};
+      if (status === 401 || status === 500) {
+        window.location.href = VITE_WICKET_BASE_URL + 'login';
+      }
+    } else {
+      console.error('Unexpected Error:', error.message);
+      window.location.href = VITE_WICKET_BASE_URL + 'login';
+    }
     return Promise.reject(error);
   };
 
   httpClient.interceptors.request.use(requestInterceptor);
 
-  // TODO: Fix me (Currently not in use, but it may be useful in the future)
+  // FIX ME: (Currently not in use, but it may be useful in the future)
   httpClientWithoutAuthorization.interceptors.request.use(requestInterceptor);
 
   httpClient.interceptors.response.use(responseInterceptor, errorInterceptor);
