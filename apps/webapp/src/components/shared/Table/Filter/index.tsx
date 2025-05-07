@@ -3,8 +3,19 @@ import { useState } from 'react';
 import DebouncedInput from './DebouncedInput';
 import ComboBox from '../../Comboboxes';
 import { useTranslation } from 'react-i18next';
+import { FilterVariant } from '../types';
 
-const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
+const Filter = <T,>({
+  column,
+  onFilterChange,
+}: {
+  column: Column<T, unknown>;
+  onFilterChange: (
+    val: string | null,
+    field: string,
+    varient: FilterVariant | null
+  ) => void;
+}) => {
   const { t } = useTranslation();
   const columnFilterValue = column.getFilterValue();
 
@@ -12,31 +23,7 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
   const [selectValue, setSelectedValue] = useState<string | null>(null);
   const options = column?.columnDef?.meta?.selectionOptions || [];
 
-  return filterVariant === 'range' ? (
-    <div className="">
-      <div className="flex space-x-2">
-        <DebouncedInput
-          type="number"
-          value={(columnFilterValue as [number, number])?.[0] ?? null}
-          onChange={(value) =>
-            column.setFilterValue((old: [number, number]) => [value, old?.[1]])
-          }
-          placeholder={`Min`}
-          className=" rounded"
-        />
-        <DebouncedInput
-          type="number"
-          value={(columnFilterValue as [number, number])?.[1] ?? null}
-          onChange={(value) =>
-            column.setFilterValue((old: [number, number]) => [old?.[0], value])
-          }
-          placeholder={`Max`}
-          className=" rounded"
-        />
-      </div>
-      <div className="h-1" />
-    </div>
-  ) : filterVariant === 'select' ? (
+  return filterVariant === FilterVariant.SELECT ? (
     <ComboBox
       options={options}
       defaultPlaceholder={t('comboBox.select')}
@@ -44,14 +31,18 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
       selectedValue={selectValue}
       setReturnValue={(value) => {
         if (value === 'all') {
-          if (column.columnDef.meta?.setFilterValue) {
-            column?.columnDef?.meta?.setFilterValue(null);
+          if (column.columnDef.meta?.filterKey) {
+            onFilterChange(null, 'all', null);
           }
           column.setFilterValue(null);
           setSelectedValue(null);
         } else {
-          if (column.columnDef.meta?.setFilterValue) {
-            column?.columnDef?.meta?.setFilterValue(value);
+          if (column.columnDef.meta?.filterKey) {
+            onFilterChange(
+              value,
+              column.columnDef.meta?.filterKey,
+              FilterVariant.SELECT
+            );
           }
           column.setFilterValue(value);
           setSelectedValue(value ? value : null);
@@ -63,20 +54,24 @@ const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
         dropdown: 'mt-[-16px]  !min-w-[9rem]',
       }}
     />
-  ) : filterVariant === null ? (
-    <input type="text" className=" " disabled />
-  ) : (
+  ) : filterVariant === FilterVariant.TEXT ? (
     <DebouncedInput
       className="rounded"
       onChange={(value) => {
-        if (column.columnDef.meta?.setFilterValue) {
-          column?.columnDef?.meta?.setFilterValue(value);
+        if (column.columnDef.meta?.filterKey) {
+          onFilterChange(
+            value.toString(),
+            column?.columnDef?.meta?.filterKey,
+            FilterVariant.TEXT
+          );
         }
       }}
       placeholder={``}
       type="text"
       value={(columnFilterValue ?? '') as string}
     />
+  ) : (
+    <input type="text" className=" " disabled />
   );
 };
 

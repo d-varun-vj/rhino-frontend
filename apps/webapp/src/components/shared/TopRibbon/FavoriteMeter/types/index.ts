@@ -32,4 +32,5 @@ export type FavType = {
 export type FavFilter = {
   name: string;
   authorEmail: string;
+  shared: string;
 };

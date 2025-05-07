@@ -14,6 +14,7 @@ import { useFavoriteMeter } from '../../context/useFavoriteMeter';
 import { useFilter } from '../../context/useFilter';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/useUser';
+import { FilterVariant } from '../../components/shared/Table/types';
 
 const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
@@ -146,6 +147,46 @@ const Dashboard = () => {
     setSort({ field, direction });
   };
 
+  const onFilterChange = (
+    val: string | null,
+    field: string,
+    varient: FilterVariant | null
+  ) => {
+    switch (varient) {
+      case FilterVariant.TEXT:
+        setFilters((prev: Filter) => {
+          return { ...prev, [field]: val };
+        });
+        break;
+      case FilterVariant.SELECT:
+        if (val === null) {
+          setFilters((prev: Filter) => {
+            return { ...prev, [field]: '' };
+          });
+        }
+        Options?.levelTypes.filter((type) => {
+          if (type.translationEn === val) {
+            setFilters((prev: Filter) => {
+              return { ...prev, [field]: type.name };
+            });
+          }
+        });
+        break;
+      case null:
+        setFilters({
+          locationName: null,
+          groupName: null,
+          measurementName: null,
+          serialNumber: null,
+          tenant: null,
+          medium: null,
+          levelType: null,
+          loadType: null,
+          endUserAreaType: null,
+        });
+    }
+  };
+
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
     () => [
       {
@@ -153,11 +194,8 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.localisationName'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: (val: string) => {
-            setFilters((prev: Filter) => {
-              return { ...prev, locationName: val };
-            });
-          },
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'locationName',
           sortKey: 'localisationName',
           sortDirection: sort.direction,
         },
@@ -167,11 +205,8 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.groupName'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: (val: string) => {
-            setFilters((prev: Filter) => {
-              return { ...prev, groupName: val };
-            });
-          },
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'groupName',
           sortKey: 'groupName',
           sortDirection: sort.direction,
         },
@@ -181,11 +216,8 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.measurementName'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: (val: string) => {
-            setFilters((prev: Filter) => {
-              return { ...prev, measurementName: val };
-            });
-          },
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'measurementName',
           sortKey: 'measurementName',
           sortDirection: sort.direction,
         },
@@ -195,11 +227,8 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.serialNumber'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: (val: string) => {
-            setFilters((prev: Filter) => {
-              return { ...prev, serialNumber: val };
-            });
-          },
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'serialNumber',
           sortKey: 'serialNumber',
           sortDirection: sort.direction,
         },
@@ -209,11 +238,8 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.tenant'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: (val: string) => {
-            setFilters((prev: Filter) => {
-              return { ...prev, tenant: val };
-            });
-          },
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'tenant',
           sortKey: null,
         },
       },
@@ -222,11 +248,8 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.translatedMedium'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: (val: string) => {
-            setFilters((prev: Filter) => {
-              return { ...prev, medium: val };
-            });
-          },
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'medium',
           sortKey: 'translatedMedium',
           sortDirection: sort.direction,
         },
@@ -236,7 +259,6 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.factor'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'factor',
           sortDirection: sort.direction,
         },
@@ -246,7 +268,6 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.value'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'value',
           sortDirection: sort.direction,
         },
@@ -256,7 +277,6 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.readTime'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'readTime',
           sortDirection: sort.direction,
         },
@@ -266,7 +286,6 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.currentMonthConsumption'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'currentMonthConsumption',
           sortDirection: sort.direction,
         },
@@ -276,7 +295,6 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.lastMonthSameDayConsumption'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'lastMonthSameDayConsumption',
           sortDirection: sort.direction,
         },
@@ -286,7 +304,6 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.percentage'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'percentage',
           sortDirection: sort.direction,
         },
@@ -296,7 +313,6 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.lastMonthConsumption'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'lastMonthConsumption',
           sortDirection: sort.direction,
         },
@@ -306,7 +322,6 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.unit'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'unit',
           sortDirection: sort.direction,
         },
@@ -316,26 +331,13 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.levelType'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: 'select',
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'levelType',
           sortKey: 'levelType',
           sortDirection: sort.direction,
           selectionOptions: Options?.levelTypes.map(
             (type) => type.translationEn
           ),
-          setFilterValue: (value: string) => {
-            if (value === null) {
-              return setFilters((prev: Filter) => {
-                return { ...prev, levelType: '' };
-              });
-            }
-            Options?.levelTypes.filter((type) => {
-              if (type.translationEn === value) {
-                setFilters((prev: Filter) => {
-                  return { ...prev, levelType: type.name };
-                });
-              }
-            });
-          },
         },
       },
       {
@@ -343,26 +345,13 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.loadType'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: 'select',
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'loadType',
           sortKey: 'loadType',
           sortDirection: sort.direction,
           selectionOptions: Options?.loadTypes.map(
             (type) => type.translationEn
           ),
-          setFilterValue: (value: string) => {
-            if (value === null) {
-              return setFilters((prev: Filter) => {
-                return { ...prev, loadType: '' };
-              });
-            }
-            Options?.loadTypes.filter((type) => {
-              if (type.translationEn === value) {
-                setFilters((prev: Filter) => {
-                  return { ...prev, loadType: type.name };
-                });
-              }
-            });
-          },
         },
       },
       {
@@ -370,26 +359,13 @@ const Dashboard = () => {
         header: t(translationBaseRoute + 'header.endUseArea'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: 'select',
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'endUserAreaType',
           sortKey: 'endUseArea',
           sortDirection: sort.direction,
           selectionOptions: Options?.endUserAreaTypes.map(
             (type) => type.translationEn
           ),
-          setFilterValue: (value: string) => {
-            if (value === null) {
-              return setFilters((prev: Filter) => {
-                return { ...prev, endUserAreaType: '' };
-              });
-            }
-            Options?.endUserAreaTypes.filter((type) => {
-              if (type.translationEn === value) {
-                setFilters((prev: Filter) => {
-                  return { ...prev, endUserAreaType: type.name };
-                });
-              }
-            });
-          },
         },
       },
       {
@@ -397,7 +373,6 @@ const Dashboard = () => {
         accessorFn: (row) => row.action,
         header: t(translationBaseRoute + 'header.actions'),
         meta: {
-          filterVariant: null,
           sortKey: null,
         },
         cell: ({ row }) => ActionCellFn(row),
@@ -428,6 +403,7 @@ const Dashboard = () => {
           pageSize: pageSize,
         }}
         onSortSelect={onSortClick}
+        onFilterChange={onFilterChange}
         isLoading={isPending}
       />
     </MainLayout>

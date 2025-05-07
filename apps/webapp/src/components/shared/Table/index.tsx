@@ -17,18 +17,18 @@ import {
 import Filter from './Filter';
 import TableFooter from './Footer';
 import { SortDirection } from '../../../appRouter/Dashboard/api';
+import { FilterVariant } from './types';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFilterValue?: React.Dispatch<React.SetStateAction<any>>;
+  filterKey?: string;
   sortKey: string | null; // Same as backend sorting field name
   sortDirection?: string;
 }
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> extends CustomColumnMeta {
-    filterVariant?: 'text' | 'range' | 'select' | null;
+    filterVariant?: FilterVariant | null;
   }
 }
 
@@ -49,6 +49,11 @@ type TableProps<T> = {
   extraStyles?: string;
   emptyText?: string;
   onSortSelect?: (field: string, direction: string) => void;
+  onFilterChange: (
+    val: string | null,
+    field: string,
+    varient: FilterVariant | null
+  ) => void;
 };
 
 const Table = <T,>({
@@ -59,6 +64,7 @@ const Table = <T,>({
   extraStyles,
   emptyText,
   onSortSelect,
+  onFilterChange,
 }: TableProps<T>) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -153,7 +159,10 @@ const Table = <T,>({
                           <div className="flex  justify-start">
                             {header.column.getCanFilter() ? (
                               <div className="text-rhino-indigo-blue flex">
-                                <Filter column={header.column} />
+                                <Filter
+                                  column={header.column}
+                                  onFilterChange={onFilterChange}
+                                />
                               </div>
                             ) : null}
                           </div>

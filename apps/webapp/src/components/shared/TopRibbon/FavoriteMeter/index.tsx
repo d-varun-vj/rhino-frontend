@@ -12,6 +12,7 @@ import { RiCloseCircleFill } from 'react-icons/ri';
 import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
 import { useFilter } from '../../../../context/useFilter';
 import { Sort } from '../../../../appRouter/Dashboard/types';
+import { FilterVariant } from '../../Table/types';
 
 const FavoriteMeter = () => {
   const { t } = useTranslation();
@@ -28,6 +29,7 @@ const FavoriteMeter = () => {
   const [filters, setFilters] = useState<FavFilter>({
     name: '',
     authorEmail: '',
+    shared: '',
   });
   const [isModelOpen, setModelOpen] = useState(false);
 
@@ -39,11 +41,8 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.name'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: (val: string) => {
-            setFilters((prev) => {
-              return { ...prev, name: val };
-            });
-          },
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'name',
           sortKey: 'name',
           sortDirection: sort.direction,
         },
@@ -53,11 +52,8 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.author'),
         cell: (info) => info.getValue(),
         meta: {
-          setFilterValue: (val: string) => {
-            setFilters((prev) => {
-              return { ...prev, authorEmail: val };
-            });
-          },
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'authorEmail',
           sortKey: 'user.email',
           sortDirection: sort.direction,
         },
@@ -66,24 +62,11 @@ const FavoriteMeter = () => {
         accessorFn: (row) => (row.shared === true ? 'Yes' : 'No'),
         header: t(translationBaseRoute + 'header.shared'),
         meta: {
-          filterVariant: 'select',
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'shared',
           sortKey: 'shared',
           sortDirection: sort.direction,
           selectionOptions: ['Yes', 'No'],
-          setFilterValue: (value: string) => {
-            if (value === null) {
-              return setFilters((prev: FavFilter) => {
-                return { ...prev, shared: '' };
-              });
-            }
-            ['Yes', 'No'].filter((type) => {
-              if (type === value) {
-                setFilters((prev: FavFilter) => {
-                  return { ...prev, shared: type };
-                });
-              }
-            });
-          },
         },
       },
       {
@@ -91,7 +74,6 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.createdDate'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'createdAt',
           sortDirection: sort.direction,
         },
@@ -101,7 +83,6 @@ const FavoriteMeter = () => {
         header: t(translationBaseRoute + 'header.updatedDate'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
           sortKey: 'updatedAt',
           sortDirection: sort.direction,
         },
@@ -111,7 +92,6 @@ const FavoriteMeter = () => {
         accessorFn: (row) => row.action,
         header: t(translationBaseRoute + 'header.actions'),
         meta: {
-          filterVariant: null,
           sortKey: null,
         },
         cell: (info) => (
@@ -145,6 +125,31 @@ const FavoriteMeter = () => {
   });
   const onSortClick = (field: string, direction: string) => {
     setSort({ field, direction });
+  };
+
+  const onFilterChange = (
+    val: string | null,
+    field: string,
+    varient: FilterVariant | null
+  ) => {
+    switch (varient) {
+      case FilterVariant.TEXT:
+        setFilters((prev: FavFilter) => {
+          return { ...prev, [field]: val };
+        });
+        break;
+      case FilterVariant.SELECT:
+        setFilters((prev: FavFilter) => {
+          return { ...prev, [field]: val?.toLowerCase() };
+        });
+        break;
+      case null:
+        setFilters({
+          name: '',
+          authorEmail: '',
+          shared: '',
+        });
+    }
   };
 
   return (
@@ -198,6 +203,7 @@ const FavoriteMeter = () => {
                   extraStyles="max-h-[500px]"
                   emptyText="No results"
                   onSortSelect={onSortClick}
+                  onFilterChange={onFilterChange}
                 />
               </div>
             </div>

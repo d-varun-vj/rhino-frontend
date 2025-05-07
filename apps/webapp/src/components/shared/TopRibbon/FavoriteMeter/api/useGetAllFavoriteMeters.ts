@@ -40,6 +40,7 @@ export const useGetAllFavoriteMeters = ({
     sortedField: sort?.field || '',
     sortDirection: sort?.direction || '',
     userType: userType || '',
+    shared: filters?.shared || '',
   });
   return useQuery({
     queryKey: [
