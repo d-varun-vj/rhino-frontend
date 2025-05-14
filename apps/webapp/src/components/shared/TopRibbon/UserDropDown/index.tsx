@@ -5,15 +5,16 @@ import { useTranslation } from 'react-i18next';
 import { changeLanguage } from 'i18next';
 import { useLocation } from 'react-router-dom';
 import { VITE_WICKET_BASE_URL } from '../../Sidebar/config';
+import { toast } from 'react-toastify';
 
 import Langaugae from './Language';
 
-type Items = {
+type Item = {
   label: string;
   action: ({ url }: { url?: string }) => void;
 };
 
-const items: Items[] = [
+const items: Item[] = [
   {
     label: 'topRibbon.user.terms',
     action: () => {
@@ -52,8 +53,8 @@ const UserDropDown = () => {
 
   useEffect(() => {
     if (user?.language !== language) {
-      changeLanguage(user?.language).catch((err) => {
-        console.error('Failed to change language:', err);
+      changeLanguage(user?.language).catch(() => {
+        toast.error('Failed to change language!');
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

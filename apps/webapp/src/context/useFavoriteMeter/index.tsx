@@ -1,10 +1,10 @@
 import React, { createContext, useState } from 'react';
 
-import { FavType } from '../../components/shared/TopRibbon/FavoriteMeter/types';
+import { FavoriteMeterType } from '../../components/shared/TopRibbon/FavoriteMeter/types';
 
 type FavoriteMeterStore = {
-  favoriteMeter: FavType | null;
-  setFavoriteMeter: (favoriteMeter: FavType | null) => void;
+  favoriteMeter: FavoriteMeterType | null;
+  setFavoriteMeter: (favoriteMeter: FavoriteMeterType | null) => void;
   clearFavoriteMeter: () => void;
 };
 
@@ -19,7 +19,9 @@ export const FavoriteMeterProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [favoriteMeter, setFavoriteMeter] = useState<FavType | null>(null);
+  const [favoriteMeter, setFavoriteMeter] = useState<FavoriteMeterType | null>(
+    null
+  );
 
   const clearFavoriteMeter = () => {
     setFavoriteMeter(null);

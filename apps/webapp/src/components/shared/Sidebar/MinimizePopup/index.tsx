@@ -1,6 +1,6 @@
-import { UserType, ViewPermissionsType } from '../../../../api/User/types';
+import { UserType } from '../../../../api/User/types';
 
-import { ItemType } from '../MenuItem';
+import { canViewItem, ItemType } from '../MenuItem';
 import { MenuItemType } from '../config';
 import { VscTriangleLeft } from 'react-icons/vsc';
 import { useTranslation } from 'react-i18next';
@@ -32,33 +32,16 @@ const MinimizePopup = ({
           </div>
         </a>
       </div>
-      <div className="w-full bg-rhino-indigo-blue-light ml-[11px] rounded-lg rounded-tl-none  overflow-hidden">
-        {menuItem.subItems?.map((subItem) => {
-          if (user?.userType === UserType.SuperAdmin) {
-            return (
-              <Item subItem={subItem} key={subItem.key} isMinimize={true} />
-            );
-          }
-          return subItem.viewPermissionType ===
-            ViewPermissionsType.UserTypeBased &&
-            subItem.allowedUserTypes?.some((uType) => {
-              if (uType === user?.userType) {
-                return true;
-              }
-            }) ? (
-            <Item subItem={subItem} />
-          ) : subItem.viewPermissionType ===
-              ViewPermissionsType.ViewRoleBased &&
-            subItem.viewPermissions?.some((permission) => {
-              return user?.permissions?.some((userPermission) => {
-                if (userPermission === permission) {
-                  return true;
-                }
-              });
-            }) ? (
-            <Item subItem={subItem} />
-          ) : null;
-        })}
+      <div className="w-full bg-rhino-indigo-blue-light ml-[11px] rounded-lg rounded-tl-none overflow-hidden">
+        {menuItem.subItems?.map((subItem) =>
+          user && canViewItem({ subItem, user }) ? (
+            <Item
+              subItem={subItem}
+              key={subItem.key}
+              isMinimize={user?.userType === UserType.SuperAdmin}
+            />
+          ) : null
+        )}
       </div>
     </div>
   );

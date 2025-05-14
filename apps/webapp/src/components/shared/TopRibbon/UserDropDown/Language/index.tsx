@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useChangeUserLanguage } from '../../../../../api/User';
+import { toast } from 'react-toastify';
 
 const Langaugae = ({ userId }: { userId: string }) => {
   const {
@@ -18,12 +19,16 @@ const Langaugae = ({ userId }: { userId: string }) => {
           { userId: userId, lang: languageName.toLowerCase() },
           {
             onSuccess: () => {
-              changeLanguage(languageName.toLowerCase()).catch((err) => {
-                console.error('Failed to change language:', err);
-              });
+              changeLanguage(languageName.toLowerCase())
+                .then(() => {
+                  toast.success(t('toast.languageChanged.success'));
+                })
+                .catch(() => {
+                  toast.error(t('toast.somethingWantWrong'));
+                });
             },
-            onError: (error) => {
-              console.error('Failed to change language:', error);
+            onError: () => {
+              toast.error(t('toast.somethingWantWrong'));
             },
           }
         );

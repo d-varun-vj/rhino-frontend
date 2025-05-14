@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import API_URLS from '../../../../../api/endpoints';
 import { httpClient } from '../../../../../api/httpClient';
-import { Sort } from '../../../../../appRouter/Dashboard/types';
-import { FavFilter, FavType } from '../types';
+import { FavoriteMeterFilter, FavoriteMeterType } from '../types';
 import { DataQueryKeys } from '../../../../../api/data-query-keys';
 import { UserType } from '../../../../../api/User/types';
+import { Sort } from '../../../../../types/shared/table';
 
 type TableData = {
-  results: FavType[];
+  results: FavoriteMeterType[];
   totalCount: number;
 };
 
@@ -25,7 +25,7 @@ export const useGetAllFavoriteMeters = ({
   size?: number | null;
   userUuid: string;
   clientUuid: string;
-  filters?: FavFilter | null;
+  filters?: FavoriteMeterFilter | null;
   sort?: Sort | null;
   userId: string | null;
   userType: UserType | null;

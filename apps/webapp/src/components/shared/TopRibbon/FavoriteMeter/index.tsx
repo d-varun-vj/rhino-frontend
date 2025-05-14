@@ -3,7 +3,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import Table from '../../Table';
 import React, { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { FavFilter, FavType } from './types';
+import { FavoriteMeterFilter, FavoriteMeterType } from './types';
 import ActionCell from '../../Table/ActionCell';
 import IconButton from '../../Buttons/IconButton';
 import { useGetAllFavoriteMeters } from './api';
@@ -11,8 +11,8 @@ import { useUser } from '../../../../context/useUser';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
 import { useFilter } from '../../../../context/useFilter';
-import { Sort } from '../../../../appRouter/Dashboard/types';
 import { FilterVariant } from '../../Table/types';
+import { Sort } from '../../../../types/shared/table';
 
 const FavoriteMeter = () => {
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ const FavoriteMeter = () => {
     field: '',
     direction: '',
   });
-  const [filters, setFilters] = useState<FavFilter>({
+  const [filters, setFilters] = useState<FavoriteMeterFilter>({
     name: '',
     authorEmail: '',
     shared: '',
@@ -34,7 +34,7 @@ const FavoriteMeter = () => {
   const [isModelOpen, setModelOpen] = useState(false);
 
   const translationBaseRoute = 'favoriteMeterModel.table.';
-  const columns = React.useMemo<ColumnDef<FavType, unknown>[]>(
+  const columns = React.useMemo<ColumnDef<FavoriteMeterType, unknown>[]>(
     () => [
       {
         accessorFn: (row) => row.name,
@@ -134,12 +134,12 @@ const FavoriteMeter = () => {
   ) => {
     switch (varient) {
       case FilterVariant.TEXT:
-        setFilters((prev: FavFilter) => {
+        setFilters((prev: FavoriteMeterFilter) => {
           return { ...prev, [field]: val };
         });
         break;
       case FilterVariant.SELECT:
-        setFilters((prev: FavFilter) => {
+        setFilters((prev: FavoriteMeterFilter) => {
           return { ...prev, [field]: val?.toLowerCase() };
         });
         break;

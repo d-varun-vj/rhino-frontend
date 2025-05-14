@@ -7,7 +7,7 @@ import { FieldType } from '../../TopRibbon';
 const LocationCombobox = ({
   onSelect,
   locations,
-  disenabled,
+  disabled: disenabled,
   selectedLocation,
 }: {
   onSelect?: (
@@ -18,7 +18,7 @@ const LocationCombobox = ({
     } | null
   ) => void;
   locations?: Location[];
-  disenabled?: boolean;
+  disabled?: boolean;
   selectedLocation?: FilterData | null;
 }) => {
   const { t } = useTranslation();

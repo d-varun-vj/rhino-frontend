@@ -1,11 +1,13 @@
 import React from 'react';
 import SideBar from '../../components/shared/Sidebar';
 import TopRibbon from '../../components/shared/TopRibbon';
+import { ToastContainer } from 'react-toastify';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <div className="flex items-stretch flex-auto w-full min-h-screen">
+        <ToastContainer />
         {/* Navigation */}
         <SideBar />
         {/* Main Panel */}

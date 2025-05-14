@@ -1,4 +1,4 @@
-import { DashboardType, Filter, Sort } from './types';
+import { DashboardType, Filter } from './types';
 import { FaChartBar, FaChartLine } from 'react-icons/fa';
 import React, { useEffect, useState } from 'react';
 import { TableData, useGetMetaData, usePostGetTableData } from './api';
@@ -15,6 +15,9 @@ import { useFilter } from '../../context/useFilter';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/useUser';
 import { FilterVariant } from '../../components/shared/Table/types';
+import { Sort } from '../../types/shared/table';
+import { CONSTANTS } from '../../constant';
+import { shouldSetInitialClient } from '../../helpers/client';
 
 const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
@@ -26,7 +29,7 @@ const Dashboard = () => {
     medium: null,
     levelType: null,
     loadType: null,
-    endUserAreaType: null,
+    endUseAreaType: null,
   });
   const [sort, setSort] = useState<Sort>({
     field: '',
@@ -34,12 +37,6 @@ const Dashboard = () => {
   });
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-
-  // const [pagination, setPagination] = useState({
-  //   page: 0,
-  //   pageSize: 5,
-  // });
-
   const { client, location, group, setClient } = useFilter();
   const { favoriteMeter } = useFavoriteMeter();
   const { user } = useUser();
@@ -70,7 +67,7 @@ const Dashboard = () => {
         user?.structureAccess?.resourceAccesses &&
         user?.userType === UserType.LocalisationAdmin
           ? user.structureAccess.resourceAccesses
-              .filter((resource) => resource.source_type === 'LOCALISATION')
+              .filter((resource) => resource.source_type === CONSTANTS.location)
               .map((resource) => resource.source_uuid)
           : [],
     },
@@ -103,12 +100,7 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    if (
-      (user && user.userType === UserType.ClientAdmin) ||
-      user?.userType === UserType.LocalisationAdmin ||
-      user?.userType === UserType.RegularUser ||
-      user?.userType === UserType.Tenant
-    ) {
+    if (user && shouldSetInitialClient(user)) {
       setClient({
         name: user.clients ? user.clients[0].name : '',
         uuid: user.clients ? user.clients[0].uuid : '',
@@ -150,9 +142,9 @@ const Dashboard = () => {
   const onFilterChange = (
     val: string | null,
     field: string,
-    varient: FilterVariant | null
+    filterVarient: FilterVariant | null
   ) => {
-    switch (varient) {
+    switch (filterVarient) {
       case FilterVariant.TEXT:
         setFilters((prev: Filter) => {
           return { ...prev, [field]: val };
@@ -182,7 +174,7 @@ const Dashboard = () => {
           medium: null,
           levelType: null,
           loadType: null,
-          endUserAreaType: null,
+          endUseAreaType: null,
         });
     }
   };

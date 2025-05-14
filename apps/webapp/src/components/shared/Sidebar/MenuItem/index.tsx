@@ -1,21 +1,25 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { MENU_KEYS, MenuItemType, SubItemType } from '../config';
+import { MenuKeys, MenuItemType, SubItemType } from '../config';
 import './MenuItem.css';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
-import { UserType, ViewPermissionsType } from '../../../../api/User/types';
+import {
+  User,
+  UserType,
+  ViewPermissionsType,
+} from '../../../../api/User/types';
 import MinimizePopup from '../MinimizePopup';
 
 export type menuItem = {
   menuItem: MenuItemType;
   minimize: {
     isMinimize: boolean;
-    item: MENU_KEYS | '';
+    item: MenuKeys | '';
     setItem: Dispatch<
       SetStateAction<{
         isMinimize: boolean;
-        item: MENU_KEYS | '';
+        item: MenuKeys | '';
       }>
     >;
   };
@@ -24,6 +28,49 @@ export type menuItem = {
 export type ItemType = {
   subItem: SubItemType;
   isMinimize?: boolean;
+};
+
+const hasUserTypeAccess = ({
+  subItem,
+  user,
+}: {
+  subItem: SubItemType;
+  user: User;
+}) => {
+  return (
+    subItem.viewPermissionType === ViewPermissionsType.UserTypeBased &&
+    subItem.allowedUserTypes?.includes(user?.userType)
+  );
+};
+
+const hasRoleAccess = ({
+  subItem,
+  user,
+}: {
+  subItem: SubItemType;
+  user: User | null;
+}) => {
+  return (
+    subItem.viewPermissionType === ViewPermissionsType.ViewRoleBased &&
+    subItem.viewPermissions?.some((permission) =>
+      user?.permissions?.includes(permission)
+    )
+  );
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const canViewItem = ({
+  subItem,
+  user,
+}: {
+  subItem: SubItemType;
+  user: User;
+}) => {
+  return (
+    user?.userType === UserType.SuperAdmin ||
+    hasUserTypeAccess({ subItem, user }) ||
+    hasRoleAccess({ subItem, user })
+  );
 };
 
 const MenuItem = ({ menuItem, minimize }: menuItem) => {
@@ -99,30 +146,11 @@ const MenuItem = ({ menuItem, minimize }: menuItem) => {
       {/* Sub Menu Item */}
       {!minimize.isMinimize && (
         <ul className="m-0 p-0 py-[10px] nav-sub-menu">
-          {menuItem.subItems?.map((subItem) => {
-            if (user?.userType === UserType.SuperAdmin) {
-              return <Item subItem={subItem} key={subItem.key} />;
-            }
-            return subItem.viewPermissionType ===
-              ViewPermissionsType.UserTypeBased &&
-              subItem.allowedUserTypes?.some((uType) => {
-                if (uType === user?.userType) {
-                  return true;
-                }
-              }) ? (
-              <Item subItem={subItem} />
-            ) : subItem.viewPermissionType ===
-                ViewPermissionsType.ViewRoleBased &&
-              subItem.viewPermissions?.some((permission) => {
-                return user?.permissions?.some((userPermission) => {
-                  if (userPermission === permission) {
-                    return true;
-                  }
-                });
-              }) ? (
-              <Item subItem={subItem} />
-            ) : null;
-          })}
+          {menuItem.subItems?.map((subItem) =>
+            user && canViewItem({ subItem, user }) ? (
+              <Item subItem={subItem} key={subItem.key} />
+            ) : null
+          )}
         </ul>
       )}
       {minimize.isMinimize && minimize.item === menuItem.key && (

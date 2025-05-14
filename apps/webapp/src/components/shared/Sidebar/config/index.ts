@@ -22,7 +22,7 @@ import {
   getAnalysisViewPermissions,
   getConfigurtionViewPermissions,
   UserType,
-  UserViewPermissions,
+  UserViewPermission,
   ViewPermissionsType,
 } from '../../../../api/User/types';
 
@@ -36,7 +36,7 @@ export type SubItemType = {
   wicketLink?: string;
   route?: string;
   viewPermissionType: ViewPermissionsType;
-  viewPermissions?: UserViewPermissions[]; // This is used to check if the user has permission to access this item.
+  viewPermissions?: UserViewPermission[]; // This is used to check if the user has permission to access this item.
   allowedUserTypes?: UserType[]; // This is used to check if the user has permission to access this item.
 };
 
@@ -44,14 +44,14 @@ export type MenuItemType = {
   label: string; // label from i18n translation (check src/i18n/...json)
   icon: IconType;
   subItems?: SubItemType[];
-  key: MENU_KEYS; // This is for identifying which item is active (label in lowercase, connected with hyphens).
+  key: MenuKeys; // This is for identifying which item is active (label in lowercase, connected with hyphens).
   link?: string; // This is mostly used when there are no sub-items and only serves to redirect to other links.
   viewPermissionType: ViewPermissionsType;
-  viewPermissions?: UserViewPermissions[]; // This is used to check if the user has permission to access this item.
+  viewPermissions?: UserViewPermission[]; // This is used to check if the user has permission to access this item.
   allowedUserTypes?: UserType[]; // This is used to check if the user has permission to access this item.
 };
 
-export enum MENU_KEYS {
+export enum MenuKeys {
   DASHBOARD = 'dashboards',
   ANALYSIS_AND_REPORTS = 'analysis-and-reports',
   ALARMS_AND_NOTIFICATIONS = 'alarms-and-notifications',
@@ -65,7 +65,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.dashboards', // label from i18n (check src/i18n/...json)
     icon: FaTable,
-    key: MENU_KEYS.DASHBOARD,
+    key: MenuKeys.DASHBOARD,
     subItems: [
       {
         label: 'sideMenu.dashboard',
@@ -112,7 +112,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.analysisReports',
     icon: FaLightbulb,
-    key: MENU_KEYS.ANALYSIS_AND_REPORTS,
+    key: MenuKeys.ANALYSIS_AND_REPORTS,
     subItems: [
       {
         label: 'sideMenu.consumptionChart',
@@ -120,7 +120,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'consumption',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionChart',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.CONSUMPTION_CHART_ROLE],
+        viewPermissions: [UserViewPermission.CONSUMPTION_CHART_ROLE],
       },
       {
         label: 'sideMenu.consumptionProfileChart',
@@ -128,7 +128,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'profile',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionProfileChart',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.CONSUMPTION_PROFILE_CHART_ROLE],
+        viewPermissions: [UserViewPermission.CONSUMPTION_PROFILE_CHART_ROLE],
       },
       {
         label: 'sideMenu.heatMap',
@@ -136,7 +136,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'load-chart',
         wicketLink: VITE_WICKET_BASE_URL + 'heatmap',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.HEAT_MAP_ROLE],
+        viewPermissions: [UserViewPermission.HEAT_MAP_ROLE],
       },
       {
         label: 'sideMenu.measurementStructures',
@@ -144,7 +144,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'structures',
         wicketLink: VITE_WICKET_BASE_URL + 'measurementStructures',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE],
+        viewPermissions: [UserViewPermission.MEASUREMENT_STRUCTURE_ROLE],
       },
       {
         label: 'sideMenu.balanceModule',
@@ -153,7 +153,7 @@ export const MenuItems: MenuItemType[] = [
         route: '/balance',
         wicketLink: VITE_WICKET_BASE_URL + 'balanceModule',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.BALANCE_MODULE_ROLE],
+        viewPermissions: [UserViewPermission.BALANCE_MODULE_ROLE],
       },
       {
         label: 'sideMenu.report',
@@ -162,11 +162,11 @@ export const MenuItems: MenuItemType[] = [
         wicketLink: VITE_WICKET_BASE_URL + 'reports',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
         viewPermissions: [
-          UserViewPermissions.CONSUMPTION_REPORT_ROLE,
-          UserViewPermissions.CONSUMPTION_PROFILE_REPORT_ROLE,
-          UserViewPermissions.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
-          UserViewPermissions.POWER_REPORTS_ROLE,
-          UserViewPermissions.METER_VALUES_REPORT_ROLE,
+          UserViewPermission.CONSUMPTION_REPORT_ROLE,
+          UserViewPermission.CONSUMPTION_PROFILE_REPORT_ROLE,
+          UserViewPermission.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
+          UserViewPermission.POWER_REPORTS_ROLE,
+          UserViewPermission.METER_VALUES_REPORT_ROLE,
         ],
       },
       {
@@ -175,7 +175,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'utils-cost',
         wicketLink: VITE_WICKET_BASE_URL + 'utilityCosts',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.UTILITY_COSTS_ROLE],
+        viewPermissions: [UserViewPermission.UTILITY_COSTS_ROLE],
       },
     ],
     viewPermissionType: ViewPermissionsType.ViewRoleBased,
@@ -185,7 +185,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.alarmsAndNotifications',
     icon: FaBell,
-    key: MENU_KEYS.ALARMS_AND_NOTIFICATIONS,
+    key: MenuKeys.ALARMS_AND_NOTIFICATIONS,
     subItems: [
       {
         label: 'sideMenu.immediateAlarm',
@@ -193,17 +193,17 @@ export const MenuItems: MenuItemType[] = [
         key: 'immediate-alarm',
         wicketLink: VITE_WICKET_BASE_URL + 'alarms/immediate',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.IMMEDIATE_ALARM_ROLE],
+        viewPermissions: [UserViewPermission.IMMEDIATE_ALARM_ROLE],
       },
     ],
     viewPermissionType: ViewPermissionsType.ViewRoleBased,
-    viewPermissions: [UserViewPermissions.IMMEDIATE_ALARM_ROLE],
+    viewPermissions: [UserViewPermission.IMMEDIATE_ALARM_ROLE],
   },
   //   Configuration
   {
     label: 'sideMenu.configuration',
     icon: IoSettingsSharp,
-    key: MENU_KEYS.CONFIGURATION,
+    key: MenuKeys.CONFIGURATION,
     subItems: [
       {
         label: 'sideMenu.measurements',
@@ -211,7 +211,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'measurements',
         wicketLink: VITE_WICKET_BASE_URL + 'measurements',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.MEASUREMENT_ROLE],
+        viewPermissions: [UserViewPermission.MEASUREMENT_ROLE],
       },
       {
         label: 'sideMenu.externalServiceConfiguration',
@@ -255,7 +255,7 @@ export const MenuItems: MenuItemType[] = [
         key: 'meter-values',
         wicketLink: VITE_WICKET_BASE_URL + 'metersValues',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermissions.METER_STATES_ROLE],
+        viewPermissions: [UserViewPermission.METER_STATES_ROLE],
       },
       {
         label: 'sideMenu.favoriteMeters',
@@ -288,7 +288,7 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.administration',
     icon: FaSuitcase,
-    key: MENU_KEYS.ADMINISTRATION,
+    key: MenuKeys.ADMINISTRATION,
     subItems: [
       {
         label: 'sideMenu.clients',
@@ -338,9 +338,9 @@ export const MenuItems: MenuItemType[] = [
   {
     label: 'sideMenu.support',
     icon: FaQuestionCircle,
-    key: MENU_KEYS.SUPPORT,
+    key: MenuKeys.SUPPORT,
     link: 'https://support.rhino.energy/login_page.php',
     viewPermissionType: ViewPermissionsType.ViewRoleBased,
-    viewPermissions: [UserViewPermissions.SUPPORT_ROLE],
+    viewPermissions: [UserViewPermission.SUPPORT_ROLE],
   },
 ];

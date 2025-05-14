@@ -11,6 +11,8 @@ import { UserType } from '../../../api/User/types';
 import { useFavoriteMeter } from '../../../context/useFavoriteMeter';
 import { Location, useGetLocations } from '../Comboboxes/LocationCombobox/api';
 import { Client, useGetClients } from '../Comboboxes/ClientCombobox/api';
+import { shouldSetInitialClient } from '../../../helpers/client';
+import { CONSTANTS } from '../../../constant';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const enum FieldType {
@@ -57,12 +59,7 @@ const TopRibbon = () => {
       setSelectedGroup(null);
       setSelectedLocation(null);
     }
-    if (
-      (user && user.userType === UserType.ClientAdmin) ||
-      user?.userType === UserType.LocalisationAdmin ||
-      user?.userType === UserType.RegularUser ||
-      user?.userType === UserType.Tenant
-    ) {
+    if (user && shouldSetInitialClient(user)) {
       setDisableDropdown(true);
     }
     clearFavoriteMeter();
@@ -95,7 +92,7 @@ const TopRibbon = () => {
       locations
     ) {
       const filterLocationUuid = user?.structureAccess?.resourceAccesses
-        ?.filter((resource) => resource.source_type === 'LOCALISATION')
+        ?.filter((resource) => resource.source_type === CONSTANTS.location)
         .map((resource) => resource.source_uuid);
       const filteredLocations = locations.filter((location) =>
         filterLocationUuid?.includes(location.uuid)
@@ -145,7 +142,7 @@ const TopRibbon = () => {
         <LocationCombobox
           onSelect={onFilterChange}
           locations={locations}
-          disenabled={selectedClient == null ? true : false}
+          disabled={selectedClient == null ? true : false}
           selectedLocation={selectedLocation}
         />
       ),
@@ -156,7 +153,7 @@ const TopRibbon = () => {
         <GroupCombobox
           onSelect={onFilterChange}
           locations={locations}
-          disenabled={selectedClient == null ? true : false}
+          disabled={selectedClient == null ? true : false}
           selectedGroup={selectedGroup}
           selectedLocation={selectedLocation}
         />

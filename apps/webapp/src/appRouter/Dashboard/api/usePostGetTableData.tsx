@@ -9,11 +9,6 @@ export type TableData = {
   countPerPage: number;
 };
 
-export enum SortDirection {
-  ASC = 'ASC',
-  DESC = 'DESC',
-}
-
 export type DashboardTableRequestBody = {
   measurementUuids: string[] | null;
   clientUuids: string[] | null;
@@ -33,7 +28,7 @@ export type DashboardTableRequestBody = {
   medium: string | null;
   levelType: string | null;
   loadType: string | null;
-  endUserAreaType: string | null;
+  endUseAreaType: string | null;
 };
 
 export const usePostGetTableData = ({

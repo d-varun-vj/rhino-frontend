@@ -12,7 +12,7 @@ export type User = {
   measurements: string[] | null;
   clients: { name: string; uuid: string; useAggregateData: boolean }[] | null;
   selectedLocation: { name: string; uuid: string } | null;
-  permissions: UserViewPermissions[] | null;
+  permissions: UserViewPermission[] | null;
   selectedClient: {
     name: string;
     uuid: string;
@@ -48,7 +48,7 @@ export enum ViewPermissionsType {
   ViewRoleBased = 'VIEW_ROLE',
 }
 
-export enum UserViewPermissions {
+export enum UserViewPermission {
   HEAT_MAP_ROLE = 'HEAT_MAP',
   CONSUMPTION_CHART_ROLE = 'CONSUMPTION_CHART',
   CONSUMPTION_PROFILE_CHART_ROLE = 'CONSUMPTION_PROFILE_CHART',
@@ -68,23 +68,23 @@ export enum UserViewPermissions {
 
 export const getAnalysisViewPermissions = () => {
   return [
-    UserViewPermissions.HEAT_MAP_ROLE,
-    UserViewPermissions.CONSUMPTION_CHART_ROLE,
-    UserViewPermissions.CONSUMPTION_PROFILE_CHART_ROLE,
-    UserViewPermissions.CONSUMPTION_REPORT_ROLE,
-    UserViewPermissions.CONSUMPTION_PROFILE_REPORT_ROLE,
-    UserViewPermissions.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
-    UserViewPermissions.POWER_REPORTS_ROLE,
-    UserViewPermissions.METER_VALUES_REPORT_ROLE,
-    UserViewPermissions.MEASUREMENT_STRUCTURE_ROLE,
-    UserViewPermissions.BALANCE_MODULE_ROLE,
-    UserViewPermissions.UTILITY_COSTS_ROLE,
+    UserViewPermission.HEAT_MAP_ROLE,
+    UserViewPermission.CONSUMPTION_CHART_ROLE,
+    UserViewPermission.CONSUMPTION_PROFILE_CHART_ROLE,
+    UserViewPermission.CONSUMPTION_REPORT_ROLE,
+    UserViewPermission.CONSUMPTION_PROFILE_REPORT_ROLE,
+    UserViewPermission.SIMPLIFIED_CONSUMPTION_REPORTS_ROLE,
+    UserViewPermission.POWER_REPORTS_ROLE,
+    UserViewPermission.METER_VALUES_REPORT_ROLE,
+    UserViewPermission.MEASUREMENT_STRUCTURE_ROLE,
+    UserViewPermission.BALANCE_MODULE_ROLE,
+    UserViewPermission.UTILITY_COSTS_ROLE,
   ];
 };
 
 export const getConfigurtionViewPermissions = () => {
   return [
-    UserViewPermissions.MEASUREMENT_ROLE,
-    UserViewPermissions.METER_STATES_ROLE,
+    UserViewPermission.MEASUREMENT_ROLE,
+    UserViewPermission.METER_STATES_ROLE,
   ];
 };

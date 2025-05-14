@@ -1,4 +1,4 @@
-type SharedTenants = {
+type SharedTenant = {
   uuid: string;
   displayName: string;
   leaseNumber: string;
@@ -12,7 +12,7 @@ type SharedTenants = {
   leaseEndDate: string;
 };
 
-export type FavType = {
+export type FavoriteMeterType = {
   authorEmail: string | null;
   createdAt: string | null;
   editorEmail: string | null;
@@ -25,11 +25,11 @@ export type FavType = {
   readOnly: boolean;
   shared: boolean;
   sharedLocalisations: { uuid: string; name: string }[];
-  sharedTenants: SharedTenants[];
+  sharedTenants: SharedTenant[];
   action?: string;
 };
 
-export type FavFilter = {
+export type FavoriteMeterFilter = {
   name: string;
   authorEmail: string;
   shared: string;

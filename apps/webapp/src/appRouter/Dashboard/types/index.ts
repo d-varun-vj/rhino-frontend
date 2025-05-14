@@ -38,15 +38,5 @@ export type Filter = {
   medium: string | null;
   levelType: string | null;
   loadType: string | null;
-  endUserAreaType: string | null;
-};
-
-export type Sort = {
-  field: string;
-  direction: string;
-};
-
-export type Pagination = {
-  page: number;
-  size: number;
+  endUseAreaType: string | null;
 };

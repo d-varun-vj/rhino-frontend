@@ -1,42 +1,88 @@
 import './Sidebar.css';
 import rhinoLogo from '../../../assets/rhino-logo.svg';
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
-import { MENU_KEYS, MenuItems, MenuItemType } from './config';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import { MenuKeys, MenuItems, MenuItemType } from './config';
 import MenuItem from './MenuItem';
 import { useUser } from '../../../context/useUser';
-import { UserType, ViewPermissionsType } from '../../../api/User/types';
+import { User, UserType, ViewPermissionsType } from '../../../api/User/types';
+
+const handleResizeLogic = (
+  setMinimize: Dispatch<
+    SetStateAction<{
+      isMinimize: boolean;
+      item: MenuKeys | '';
+    }>
+  >
+) => {
+  setMinimize({
+    isMinimize: window.innerWidth < 768,
+    item: '',
+  });
+};
+
+const hasUserTypeAccess = ({
+  menuItem,
+  user,
+}: {
+  menuItem: MenuItemType;
+  user: User;
+}) =>
+  menuItem.viewPermissionType === ViewPermissionsType.UserTypeBased &&
+  menuItem.allowedUserTypes?.includes(user?.userType);
+
+const hasRoleAccess = ({
+  menuItem,
+  user,
+}: {
+  menuItem: MenuItemType;
+  user: User;
+}) =>
+  menuItem.viewPermissionType === ViewPermissionsType.ViewRoleBased &&
+  menuItem.viewPermissions?.some((permission) =>
+    user?.permissions?.includes(permission)
+  );
+
+const canViewMenuItem = ({
+  menuItem,
+  user,
+}: {
+  menuItem: MenuItemType;
+  user: User;
+}) =>
+  user?.userType === UserType.SuperAdmin ||
+  hasUserTypeAccess({ menuItem, user }) ||
+  hasRoleAccess({ menuItem, user });
 
 const SideBar = () => {
   const [minimize, setMinimize] = useState<{
     isMinimize: boolean;
-    item: MENU_KEYS | '';
+    item: MenuKeys | '';
   }>({
     isMinimize: false,
     item: '',
   });
   const { user } = useUser();
 
+  const handleResize = useCallback(
+    () => handleResizeLogic(setMinimize),
+    [setMinimize]
+  );
+
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setMinimize({
-          isMinimize: true,
-          item: '',
-        });
-      } else {
-        setMinimize({
-          isMinimize: false,
-          item: '',
-        });
-      }
-    };
     handleResize();
     window.addEventListener('resize', handleResize);
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [setMinimize]);
+  }, [handleResize]);
 
   const MenuItemComponent = ({ menuItem }: { menuItem: MenuItemType }) => (
     <MenuItem
@@ -51,7 +97,7 @@ const SideBar = () => {
 
   return (
     <aside
-      className={`${minimize.isMinimize ? 'max-w-[4.6875rem]    w-[75px]' : 'max-w-[15.2rem]  w-[300px] '} bg-rhino-indigo-blue relative flex-grow flex-shrink-0 basis-auto flex-col flex z-40 will-change-scroll manu-background `}
+      className={`${minimize.isMinimize ? 'max-w-[4.6875rem] w-[75px]' : 'max-w-[15.2rem]  w-[300px] '} bg-rhino-indigo-blue relative flex-grow flex-shrink-0 basis-auto flex-col flex z-40 will-change-scroll manu-background `}
       onMouseLeave={() =>
         setMinimize({
           isMinimize: minimize.isMinimize,
@@ -99,36 +145,17 @@ const SideBar = () => {
           className="m-0 p-0"
           onMouseLeave={() =>
             setMinimize({
-              isMinimize: minimize.isMinimize ? minimize.isMinimize : false,
+              isMinimize: minimize.isMinimize,
               item: minimize.item,
             })
           }
         >
-          {/* Main Menu Item*/}
-          {MenuItems.map((menuItem) => {
-            if (user?.userType === UserType.SuperAdmin) {
-              return MenuItemComponent({ menuItem });
-            }
-            return menuItem.viewPermissionType ===
-              ViewPermissionsType.UserTypeBased &&
-              menuItem.allowedUserTypes?.some((uType) => {
-                if (uType === user?.userType) {
-                  return true;
-                }
-              })
-              ? MenuItemComponent({ menuItem })
-              : menuItem.viewPermissionType ===
-                    ViewPermissionsType.ViewRoleBased &&
-                  menuItem.viewPermissions?.some((permission) => {
-                    return user?.permissions?.some((userPermission) => {
-                      if (userPermission === permission) {
-                        return true;
-                      }
-                    });
-                  })
-                ? MenuItemComponent({ menuItem })
-                : null;
-          })}
+          {/* Main Menu Items */}
+          {MenuItems.map((menuItem) =>
+            user && canViewMenuItem({ menuItem, user }) ? (
+              <MenuItemComponent menuItem={menuItem} key={menuItem.key} />
+            ) : null
+          )}
         </ul>
       </nav>
     </aside>

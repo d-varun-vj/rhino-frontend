@@ -5,6 +5,7 @@ import './Table.css';
 import {
   ColumnDef,
   ColumnFiltersState,
+  Header,
   RowData,
   flexRender,
   getCoreRowModel,
@@ -16,8 +17,10 @@ import {
 
 import Filter from './Filter';
 import TableFooter from './Footer';
-import { SortDirection } from '../../../appRouter/Dashboard/api';
+
 import { FilterVariant } from './types';
+import { SortDirection } from '../../../types/shared/table';
+import { ColumnMeta } from '@tanstack/table-core';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
@@ -54,6 +57,33 @@ type TableProps<T> = {
     field: string,
     varient: FilterVariant | null
   ) => void;
+};
+
+const getSortDirection = <T,>(meta?: ColumnMeta<T, unknown>): SortDirection => {
+  const direction = meta?.sortDirection;
+  return direction === SortDirection.ASC
+    ? SortDirection.DESC
+    : SortDirection.ASC;
+};
+
+const handleSortClick = <T,>(
+  header: Header<T, unknown>,
+  onSortSelect?: (field: string, direction: SortDirection) => void
+) => {
+  const sortKey = header.column.columnDef?.meta?.sortKey;
+  if (!onSortSelect || sortKey === undefined || sortKey === null) return;
+
+  onSortSelect(sortKey, getSortDirection(header.column.columnDef?.meta));
+};
+
+const getSortIndicator = (meta?: { sortDirection?: string }) => {
+  if (!meta?.sortDirection) return '⇅';
+  const direction = meta.sortDirection as SortDirection;
+  return direction === SortDirection.DESC
+    ? '⇂'
+    : direction === SortDirection.ASC
+      ? '↿'
+      : '⇅';
 };
 
 const Table = <T,>({
@@ -114,26 +144,8 @@ const Table = <T,>({
                               className: header.column.getCanSort()
                                 ? 'cursor-pointer select-none text-rhino-indigo-blue  pr-[1.2rem] flex   text-[13px]  whitespace-wrap gap-3 min-h-[80px] h-[100px] justify-start '
                                 : '',
-                              onClick:
-                                header.column.columnDef.meta?.sortKey !== null
-                                  ? () => {
-                                      if (onSortSelect)
-                                        onSortSelect(
-                                          header.column.columnDef.meta
-                                            ?.sortKey ?? '',
-                                          header.column.columnDef.meta &&
-                                            header.column.columnDef.meta
-                                              .sortDirection === ''
-                                            ? SortDirection.ASC
-                                            : header.column.columnDef.meta &&
-                                                header.column.columnDef.meta
-                                                  .sortDirection ===
-                                                  SortDirection.ASC
-                                              ? SortDirection.DESC
-                                              : ''
-                                        );
-                                    }
-                                  : () => null,
+                              onClick: () =>
+                                handleSortClick(header, onSortSelect),
                             }}
                           >
                             <div className="h-full text-start  overflow-y-auto">
@@ -145,15 +157,7 @@ const Table = <T,>({
                             <div
                               className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'} `}
                             >
-                              {header.column.columnDef.meta
-                                ? header.column.columnDef.meta.sortDirection ===
-                                  SortDirection.DESC
-                                  ? '⇂'
-                                  : header.column.columnDef.meta
-                                        .sortDirection === SortDirection.ASC
-                                    ? '↿'
-                                    : '⇅'
-                                : '⇅'}
+                              {getSortIndicator(header.column.columnDef.meta)}
                             </div>
                           </div>
                           <div className="flex  justify-start">

@@ -7,7 +7,7 @@ import { FieldType } from '../../TopRibbon';
 const GroupCombobox = ({
   onSelect,
   locations,
-  disenabled,
+  disabled: disenabled,
   selectedGroup,
   selectedLocation,
 }: {
@@ -19,7 +19,7 @@ const GroupCombobox = ({
     } | null
   ) => void;
   locations?: Location[];
-  disenabled?: boolean;
+  disabled?: boolean;
   selectedGroup?: FilterData | null;
   selectedLocation?: FilterData | null;
 }) => {
