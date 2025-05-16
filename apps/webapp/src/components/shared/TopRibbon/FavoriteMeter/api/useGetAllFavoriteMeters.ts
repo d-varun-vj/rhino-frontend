@@ -7,8 +7,11 @@ import { UserType } from '../../../../../api/User/types';
 import { Sort } from '../../../../../types/shared/table';
 
 type TableData = {
-  results: FavoriteMeterType[];
-  totalCount: number;
+  content: FavoriteMeterType[];
+  totalElements: number;
+  size: number;
+  page: number;
+  empty: boolean;
 };
 
 export const useGetAllFavoriteMeters = ({
@@ -26,19 +29,18 @@ export const useGetAllFavoriteMeters = ({
   userUuid: string;
   clientUuid: string;
   filters?: FavoriteMeterFilter | null;
-  sort?: Sort | null;
+  sort: Sort;
   userId: string | null;
   userType: UserType | null;
 }) => {
   const queryParams = new URLSearchParams({
     page: page?.toString() || '',
     size: size?.toString() || '',
+    sort: `${sort.field},${sort.direction}`,
     userUuid: userUuid?.toString() || '',
     clientUuid: clientUuid?.toString() || '',
     name: filters?.name || '',
     authorEmail: filters?.authorEmail || '',
-    sortedField: sort?.field || '',
-    sortDirection: sort?.direction || '',
     userType: userType || '',
     shared: filters?.shared || '',
   });
@@ -49,8 +51,8 @@ export const useGetAllFavoriteMeters = ({
       page,
       size,
       JSON.stringify(filters),
-      sort?.direction,
-      sort?.field,
+      sort.direction,
+      sort.field,
     ],
     queryFn: async () => {
       const response = await httpClient.get<TableData>(

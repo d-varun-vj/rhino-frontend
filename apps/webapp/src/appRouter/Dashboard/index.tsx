@@ -8,7 +8,6 @@ import IconButton from '../../components/shared/Buttons/IconButton';
 import MainLayout from '../../layouts/MainLayout';
 import Table from '../../components/shared/Table';
 import Title from '../../components/shared/Title';
-import { UserType } from '../../api/User/types';
 import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/config';
 import { useFavoriteMeter } from '../../context/useFavoriteMeter';
 import { useFilter } from '../../context/useFilter';
@@ -16,7 +15,6 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/useUser';
 import { FilterVariant } from '../../components/shared/Table/types';
 import { Sort } from '../../types/shared/table';
-import { CONSTANTS } from '../../constant';
 import { shouldSetInitialClient } from '../../helpers/client';
 
 const Dashboard = () => {
@@ -50,26 +48,14 @@ const Dashboard = () => {
       clientId: client ? client.uuid : null,
       locationUuid: location ? location.uuid : null,
       groupUuid: group ? group.uuid : null,
-      sortDirection: sort.direction ? sort.direction : null,
-      sortedField: sort.field ? sort.field : null,
+      sortDirection: sort.direction,
+      sortedField: sort.field,
       ...filters,
       measurementUuids: favoriteMeter
         ? favoriteMeter.measurementUuids
         : user?.measurements
           ? user.measurements
           : null,
-      clientUuids:
-        favoriteMeter === null && user?.clients
-          ? user.clients?.map((client) => client.uuid)
-          : [],
-      localisationUuids:
-        favoriteMeter === null &&
-        user?.structureAccess?.resourceAccesses &&
-        user?.userType === UserType.LocalisationAdmin
-          ? user.structureAccess.resourceAccesses
-              .filter((resource) => resource.source_type === CONSTANTS.location)
-              .map((resource) => resource.source_uuid)
-          : [],
     },
   });
   const [tableData, settableData] = useState<TableData>();
@@ -386,10 +372,10 @@ const Dashboard = () => {
       </p>
       <Table
         columns={columns}
-        data={tableData ? tableData?.results : []}
+        data={tableData ? tableData?.content : []}
         footer={{
           currentPage: page,
-          totalCount: tableData ? tableData?.totalCount : 0,
+          totalCount: tableData ? tableData?.totalElements : 0,
           setCurrentPage: setPage,
           setPageSize: setPageSize,
           pageSize: pageSize,

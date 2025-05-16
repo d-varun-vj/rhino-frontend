@@ -192,10 +192,10 @@ const FavoriteMeter = () => {
               <div className="relative flex-grow flex-shrink basis-auto p-[1.25rem] overflow-auto ">
                 <Table
                   columns={columns}
-                  data={tableData ? tableData.results : []}
+                  data={tableData ? tableData.content : []}
                   footer={{
                     currentPage: page,
-                    totalCount: tableData ? tableData.totalCount : 0,
+                    totalCount: tableData ? tableData.totalElements : 0,
                     setCurrentPage: setPage,
                     setPageSize: setPageSize,
                     pageSize: pageSize,

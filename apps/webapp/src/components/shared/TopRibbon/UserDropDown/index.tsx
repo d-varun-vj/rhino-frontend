@@ -100,7 +100,7 @@ const UserDropDown = () => {
           ))}
 
           {/* Language section */}
-          <Langaugae userId={user ? user?.uuid : ''} />
+          <Langaugae />
         </div>
       )}
     </div>

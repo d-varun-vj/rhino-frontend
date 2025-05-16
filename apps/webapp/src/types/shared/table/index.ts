@@ -4,6 +4,6 @@ export type Sort = {
 };
 
 export enum SortDirection {
-  ASC = 'ASC',
-  DESC = 'DESC',
+  ASC = 'asc',
+  DESC = 'desc',
 }

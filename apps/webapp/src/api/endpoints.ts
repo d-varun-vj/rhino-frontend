@@ -9,13 +9,24 @@ const API_URLS = {
   getLocations: ({ clientId }: { clientId: string | null }) =>
     `locations/${clientId}`,
   getUser: () => 'user',
-  changeLanguage: ({ userId }: { userId: string }) => `user/${userId}/language`,
+  changeLanguage: () => `user/language`,
 
   getAllFavoriteMeters: ({ queryParams }: { queryParams: string }) =>
     `favoritemeter?${queryParams}`,
 
   //   Dashboard
-  getDashboardTableData: () => `dashboard`,
+  getDashboardTableData: ({
+    page,
+    size,
+    sortDirection,
+    sortedField,
+  }: {
+    page: number | null;
+    size: number | null;
+    sortedField?: string;
+    sortDirection?: string;
+  }) =>
+    `dashboard?page=${page}&size=${size}&sort=${sortedField},${sortDirection}`,
   getDashboardTableDataOptions: ({ locale }: { locale: string }) =>
     `metadata?locale=${locale}`,
 };

@@ -4,22 +4,22 @@ import API_URLS from '../../../api/endpoints';
 import { DashboardType } from '../types';
 
 export type TableData = {
-  results: DashboardType[];
-  totalCount: number;
-  countPerPage: number;
+  content: DashboardType[];
+  totalElements: number;
+  size: number;
+  page: number;
+  empty: boolean;
 };
 
 export type DashboardTableRequestBody = {
   measurementUuids: string[] | null;
-  clientUuids: string[] | null;
-  localisationUuids: string[] | null;
-  page?: number | null;
-  size?: number | null;
+  page: number | null;
+  size: number | null;
   clientId?: string | null;
   locationUuid?: string | null;
   groupUuid?: string | null;
-  sortedField: string | null;
-  sortDirection: string | null;
+  sortedField?: string;
+  sortDirection?: string;
   locationName: string | null;
   groupName: string | null;
   measurementName: string | null;
@@ -36,11 +36,17 @@ export const usePostGetTableData = ({
 }: {
   params: DashboardTableRequestBody;
 }) => {
+  const { page, size, sortDirection, sortedField, ...body } = params;
   return useMutation({
     mutationFn: async () => {
       const result = await httpClient.post<TableData>(
-        API_URLS.getDashboardTableData(),
-        params
+        API_URLS.getDashboardTableData({
+          page,
+          size,
+          sortDirection,
+          sortedField,
+        }),
+        body
       );
       return result?.data;
     },

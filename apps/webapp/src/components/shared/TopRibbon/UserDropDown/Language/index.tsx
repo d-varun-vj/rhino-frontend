@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useChangeUserLanguage } from '../../../../../api/User';
 import { toast } from 'react-toastify';
 
-const Langaugae = ({ userId }: { userId: string }) => {
+const Langaugae = () => {
   const {
     t,
     // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -16,7 +16,7 @@ const Langaugae = ({ userId }: { userId: string }) => {
       className={`w-[35px] h-[35px] flex justify-center items-center rounded-[50%] bg-white mr-[10px] cursor-pointer hover:text-rhino-indigo-blue-light ${languageName.toLowerCase() === language ? 'text-rhino-indigo-blue border-[2px] border-rhino-indigo-blue' : 'text-black  border-black opacity-[0.2]'}`}
       onClick={() => {
         mutate(
-          { userId: userId, lang: languageName.toLowerCase() },
+          { lang: languageName.toLowerCase() },
           {
             onSuccess: () => {
               changeLanguage(languageName.toLowerCase())
