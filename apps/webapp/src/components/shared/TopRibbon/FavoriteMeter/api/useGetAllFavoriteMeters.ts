@@ -10,7 +10,7 @@ type TableData = {
   content: FavoriteMeterType[];
   totalElements: number;
   size: number;
-  page: number;
+  totalPages: number;
   empty: boolean;
 };
 

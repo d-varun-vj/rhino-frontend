@@ -21,6 +21,7 @@ import TableFooter from './Footer';
 import { FilterVariant } from './types';
 import { SortDirection } from '../../../types/shared/table';
 import { ColumnMeta } from '@tanstack/table-core';
+import { CONSTANTS } from '../../../constant';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
@@ -135,7 +136,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className="font-thin "
+                      className={`${header.id == CONSTANTS.action && 'sticky bg-white -right-5 pl-2'} font-thin`}
                     >
                       {header.isPlaceholder ? null : (
                         <div className=" flex flex-col justify-start ">
@@ -155,7 +156,7 @@ const Table = <T,>({
                               )}{' '}
                             </div>
                             <div
-                              className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'} `}
+                              className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'}`}
                             >
                               {getSortIndicator(header.column.columnDef.meta)}
                             </div>
@@ -183,12 +184,14 @@ const Table = <T,>({
             <tbody>
               {table.getRowModel().rows.map((row) => {
                 return (
-                  <tr key={row.id} className="odd:bg-[#03030405] ">
+                  <tr key={row.id} className={`odd:bg-[#03030405]`}>
                     {row.getVisibleCells().map((cell) => {
+                      console.log(cell.column.id);
+
                       return (
                         <td
                           key={cell.id}
-                          className="p-[.75rem] align-top pl-0 first:pl-[.75rem]"
+                          className={`${cell.column.id === CONSTANTS.action && 'sticky -right-5  z-10 '} p-[.75rem] align-top pl-0 first:pl-[.75rem]`}
                         >
                           <div className={` text-[13px] text-wrap  w-auto `}>
                             {flexRender(

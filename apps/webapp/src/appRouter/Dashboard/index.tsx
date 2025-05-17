@@ -16,6 +16,7 @@ import { useUser } from '../../context/useUser';
 import { FilterVariant } from '../../components/shared/Table/types';
 import { Sort } from '../../types/shared/table';
 import { shouldSetInitialClient } from '../../helpers/client';
+import { CONSTANTS } from '../../constant';
 
 const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
@@ -347,7 +348,7 @@ const Dashboard = () => {
         },
       },
       {
-        id: 'action',
+        id: CONSTANTS.action,
         accessorFn: (row) => row.action,
         header: t(translationBaseRoute + 'header.actions'),
         meta: {
