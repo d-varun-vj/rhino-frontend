@@ -26,8 +26,8 @@ import {
   ViewPermissionsType,
 } from '../../../../api/User/types';
 
-// export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
-export const VITE_WICKET_BASE_URL = 'http://localhost:8080/';
+export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
+// export const VITE_WICKET_BASE_URL = 'http://localhost:8080/';
 
 export type SubItemType = {
   label: string; // label from i18n translation (check src/i18n/...json)
