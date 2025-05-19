@@ -1,0 +1,119 @@
+{
+  "translation": {
+    "comboBox": {
+      "select": "Wybierać",
+      "locationNull": "Wszystkie lokalizacje",
+      "groupNull": "Wszystkie grupy"
+    },
+    "favoriteMeterModel": {
+      "mainHeader": "Wybierz ulubione liczniki",
+      "table": {
+        "header": {
+          "name": "Nazwa",
+          "author": "Autor",
+          "shared": "Wspólny",
+          "createdDate": "Data utworzenia",
+          "updatedDate": "Data edycji",
+          "actions": "Akcje"
+        },
+        "popup": "Wybierać"
+      }
+    },
+    "pages": {
+      "dashboard": {
+        "mainHeader": "Dashboard",
+        "subHeader": "Tylko automatyczne liczniki",
+        "table": {
+          "header": {
+            "groupName": "Grupa",
+            "localisationName": "Lokalizacja",
+            "translatedMedium": "Medium",
+            "measurementName": "Nazwa Licznika",
+            "serialNumber": "Numer seryjny",
+            "factor": "MnoÅ¼na",
+            "value": "Odczyt",
+            "readTime": "Data ostatniego odczytu",
+            "currentMonthConsumption": "ZuÅ¼ycie w tym miesiÄcu",
+            "lastMonthSameDayConsumption": "ZuÅ¼ycie na ten sam dzieÅ w poprzednim miesiÄcu",
+            "percentage": "PorÃ³wnanie w %",
+            "lastMonthConsumption": "ZuÅ¼ycie w poprzednim miesiÄcu",
+            "unit": "Jednostka",
+            "tenant": "Najemcy",
+            "actions": "Akcje",
+            "levelType": "Poziom licznika",
+            "loadType": "Typ pomiaru",
+            "endUseArea": "Mierzony obszar"
+          },
+          "popup": {
+            "goToProfile": "Przejdź do profilu",
+            "goToComsumptions": "Przejdź do zużycia, aby porównać zużycie pomiarowe"
+          }
+        }
+      }
+    },
+    "sideMenu": {
+      "dashboards": "Dashboardy",
+      "dashboard": "Dashboard",
+      "energyDashboard": "Dashboard energii",
+      "dashboardR": "Panel (R)",
+
+      "analysisReports": "Analiza i raporty",
+      "consumptionChart": "ZuÅ¼ycie",
+      "consumptionProfileChart": "Profil",
+      "heatMap": "Mapa zuÅ¼ycia",
+      "measurementStructures": "Struktury",
+      "balanceModule": "ModuÅ bilansÃ³w",
+      "report": "Raporty",
+      "utilityCosts": "Koszty mediÃ³w",
+
+      "alarmsAndNotifications": "Alarmy i powiadomienia",
+      "immediateAlarm": "Alarm natychmiastowy",
+
+      "configuration": "Konfiguracja",
+      "measurements": "Liczniki",
+      "externalServiceConfiguration": "Konfiguracja zewnÄtrznych UPC",
+      "technicalView": "Widok instalatora",
+      "inputManagement": "ZarzÄdzanie pomiarami",
+      "maintenanceReport": "Raport utrzymania systemu",
+      "meterStates": "Stany licznikowe",
+      "favoriteMeters": "Ulubione liczniki",
+
+      "administration": "Administracja ",
+      "clients": "Klienci",
+      "users": "UÅ¼ytkownicy",
+      "tenants": "Najemcy",
+
+      "support": "Wsparcie"
+    },
+    "table": {
+      "footer": {
+        "show": "Pokaż",
+        "positions": "pozycji",
+        "showing": "Pozycje od ",
+        "to": "do",
+        "of": "z",
+        "previous": "Poprzednia",
+        "next": "Następna"
+      }
+    },
+    "topRibbon": {
+      "client": "Klient:",
+      "location": "Lokalizacja:",
+      "group": "Grupa:",
+      "favoriteMeters": "Wybierać",
+      "favoriteMeterButton": "Wybierz",
+      "user": {
+        "terms": "Regulamin",
+        "manual": "Instrukcja",
+        "logout": "Wyloguj",
+        "language": "Język"
+      }
+    },
+    "toast": {
+      "somethingWantWrong": "Coś jest nie tak !",
+      "languageChanged": {
+        "success": "Zmieniono język"
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@ import axios, {
 } from 'axios';
 
 import { getCookie } from '../utils';
+import { VITE_WICKET_BASE_URL } from '../components/shared/Sidebar/config';
 
 // Create a custom adapter using fetch
 const fetchAdapter: AxiosAdapter = async (
@@ -39,10 +40,16 @@ const fetchAdapter: AxiosAdapter = async (
   };
 
   if (config.data) {
-    fetchOptions.body = JSON.stringify(config.data);
+    fetchOptions.body = config.data;
   }
 
   const response = await fetch(url!, fetchOptions);
+
+  if (response.status === 401 || response.status === 500) {
+    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+    window.location.href = VITE_WICKET_BASE_URL + 'dashboard?-2.-logout';
+  }
+
   let responseData: unknown;
 
   try {
@@ -70,14 +77,14 @@ const fetchAdapter: AxiosAdapter = async (
 const httpClient: AxiosInstance = axios.create({
   adapter: fetchAdapter,
 });
-const httpClientWithoutAccessor: AxiosInstance = axios.create({
+const httpClientWithoutAuthorization: AxiosInstance = axios.create({
   adapter: fetchAdapter,
 });
 
 // Read token from cookie once during initialization
 const token: string = getCookie('token') || '';
 
-export const initHttpClient = (baseURL?: string) => {
+export const initHttpClient = async (baseURL?: string) => {
   const defaultHeaders = new AxiosHeaders({
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
@@ -89,7 +96,7 @@ export const initHttpClient = (baseURL?: string) => {
     headers: defaultHeaders,
   });
 
-  Object.assign(httpClientWithoutAccessor.defaults, {
+  Object.assign(httpClientWithoutAuthorization.defaults, {
     baseURL: baseURL,
     withCredentials: false,
     headers: defaultHeaders,
@@ -98,6 +105,13 @@ export const initHttpClient = (baseURL?: string) => {
   const requestInterceptor = (config: InternalAxiosRequestConfig<unknown>) => {
     // Ensure cookies are not sent with each request
     config.withCredentials = false;
+
+    // Check if token exists
+    if (!token) {
+      // Redirect to login if token is missing
+      window.location.href = VITE_WICKET_BASE_URL + 'login';
+    }
+
     // Ensure token is in Authorization header
     config.headers.Authorization = `Bearer ${token}`;
     return config;
@@ -107,11 +121,29 @@ export const initHttpClient = (baseURL?: string) => {
     return response;
   };
 
-  httpClient.interceptors.request.use(requestInterceptor);
-  httpClientWithoutAccessor.interceptors.request.use(requestInterceptor);
-  httpClient.interceptors.response.use(responseInterceptor);
+  const errorInterceptor = (error: any) => {
+    console.log('Error: ', error);
 
-  return { httpClient, httpClientWithoutAccessor };
+    if (error.response) {
+      const { status } = error.response || {};
+      if (status === 401 || status === 500) {
+        window.location.href = VITE_WICKET_BASE_URL + 'login';
+      }
+    } else {
+      console.error('Unexpected Error:', error.message);
+      window.location.href = VITE_WICKET_BASE_URL + 'login';
+    }
+    return Promise.reject(error);
+  };
+
+  httpClient.interceptors.request.use(requestInterceptor);
+
+  // FIX ME: (Currently not in use, but it may be useful in the future)
+  httpClientWithoutAuthorization.interceptors.request.use(requestInterceptor);
+
+  httpClient.interceptors.response.use(responseInterceptor, errorInterceptor);
+
+  return { httpClient, httpClientWithoutAuthorization };
 };
 
-export { httpClient, httpClientWithoutAccessor };
+export { httpClient, httpClientWithoutAuthorization };

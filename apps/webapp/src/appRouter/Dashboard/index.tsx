@@ -1,223 +1,389 @@
-import React, { useState } from 'react';
-
-import Title from '../../components/shared/Title';
-import MainLayout from '../../layouts/MainLayout';
-import { ColumnDef } from '@tanstack/react-table';
-import { DashboardType } from './types';
-import IconButton from '../../components/shared/Buttons/IconButton';
+import { DashboardType, Filter } from './types';
 import { FaChartBar, FaChartLine } from 'react-icons/fa';
-
-import { getTableData } from './api';
-import { useQuery } from '@tanstack/react-query';
-import { useFilter } from '../../context/useFilter';
-import { DATA_QUERY_KEYS } from '../../api/data-query-keys';
-import Table from '../../components/shared/Table';
+import React, { useEffect, useState } from 'react';
+import { TableData, useGetMetaData, usePostGetTableData } from './api';
 import ActionCell from '../../components/shared/Table/ActionCell';
+import { ColumnDef, Row } from '@tanstack/react-table';
+import IconButton from '../../components/shared/Buttons/IconButton';
+import MainLayout from '../../layouts/MainLayout';
+import Table from '../../components/shared/Table';
+import Title from '../../components/shared/Title';
+import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/config';
+import { useFavoriteMeter } from '../../context/useFavoriteMeter';
+import { useFilter } from '../../context/useFilter';
+import { useTranslation } from 'react-i18next';
+import { useUser } from '../../context/useUser';
+import { FilterVariant } from '../../components/shared/Table/types';
+import { Sort } from '../../types/shared/table';
+import { shouldSetInitialClient } from '../../helpers/client';
+import { CONSTANTS } from '../../constant';
 
 const Dashboard = () => {
+  const [filters, setFilters] = useState<Filter>({
+    locationName: null,
+    groupName: null,
+    measurementName: null,
+    serialNumber: null,
+    tenant: null,
+    medium: null,
+    levelType: null,
+    loadType: null,
+    endUseAreaType: null,
+  });
+  const [sort, setSort] = useState<Sort>({
+    field: '',
+    direction: '',
+  });
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const { client, location, group, setClient } = useFilter();
+  const { favoriteMeter } = useFavoriteMeter();
+  const { user } = useUser();
+  const { t } = useTranslation();
+  const translationBaseRoute = 'pages.dashboard.table.';
+
+  const { mutateAsync: postGetTableData, isPending } = usePostGetTableData({
+    params: {
+      page: page,
+      size: pageSize,
+      clientId: client ? client.uuid : null,
+      locationUuid: location ? location.uuid : null,
+      groupUuid: group ? group.uuid : null,
+      sortDirection: sort.direction,
+      sortedField: sort.field,
+      ...filters,
+      measurementUuids: favoriteMeter
+        ? favoriteMeter.measurementUuids
+        : user?.measurements
+          ? user.measurements
+          : null,
+    },
+  });
+  const [tableData, settableData] = useState<TableData>();
+
+  const getData = async () => {
+    const resonse = await postGetTableData();
+    settableData(resonse);
+  };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    user,
+    client,
+    location,
+    group,
+    favoriteMeter,
+    filters,
+    sort,
+    page,
+    pageSize,
+  ]);
+
+  const { data: Options } = useGetMetaData({
+    locale: user?.language ?? null,
+  });
+
+  useEffect(() => {
+    if (user && shouldSetInitialClient(user)) {
+      setClient({
+        name: user.clients ? user.clients[0].name : '',
+        uuid: user.clients ? user.clients[0].uuid : '',
+      });
+    }
+  }, [user, setClient]);
+
+  const ActionCellFn = (row: Row<DashboardType>) => (
+    <ActionCell>
+      <IconButton
+        action={() => {
+          window.location.href =
+            VITE_WICKET_BASE_URL +
+            `consumptionProfileChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+        }}
+        popupContent={t(translationBaseRoute + 'popup.goToProfile')}
+        style="bg-rhino-energy-green text-white"
+      >
+        <FaChartBar />
+      </IconButton>
+      <IconButton
+        action={() => {
+          window.location.href =
+            VITE_WICKET_BASE_URL +
+            `consumptionChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+        }}
+        popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
+        style="bg-rhino-energy-green text-white"
+      >
+        <FaChartLine />
+      </IconButton>
+    </ActionCell>
+  );
+
+  const onSortClick = (field: string, direction: string) => {
+    setSort({ field, direction });
+  };
+
+  const onFilterChange = (
+    val: string | null,
+    field: string,
+    filterVarient: FilterVariant | null
+  ) => {
+    switch (filterVarient) {
+      case FilterVariant.TEXT:
+        setFilters((prev: Filter) => {
+          return { ...prev, [field]: val };
+        });
+        break;
+      case FilterVariant.SELECT:
+        if (val === null) {
+          setFilters((prev: Filter) => {
+            return { ...prev, [field]: '' };
+          });
+        }
+        Options?.levelTypes.filter((type) => {
+          if (type.translationEn === val) {
+            setFilters((prev: Filter) => {
+              return { ...prev, [field]: type.name };
+            });
+          }
+        });
+        break;
+      case null:
+        setFilters({
+          locationName: null,
+          groupName: null,
+          measurementName: null,
+          serialNumber: null,
+          tenant: null,
+          medium: null,
+          levelType: null,
+          loadType: null,
+          endUseAreaType: null,
+        });
+    }
+  };
+
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
     () => [
       {
         accessorFn: (row) => row.localisationName,
-        header: 'Location',
+        header: t(translationBaseRoute + 'header.localisationName'),
         cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'locationName',
+          sortKey: 'localisationName',
+          sortDirection: sort.direction,
+        },
       },
       {
         accessorFn: (row) => row.groupName,
-        header: 'Group',
+        header: t(translationBaseRoute + 'header.groupName'),
         cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'groupName',
+          sortKey: 'groupName',
+          sortDirection: sort.direction,
+        },
       },
       {
         accessorFn: (row) => row.measurementName,
-        header: 'Measurement name',
+        header: t(translationBaseRoute + 'header.measurementName'),
         cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'measurementName',
+          sortKey: 'measurementName',
+          sortDirection: sort.direction,
+        },
       },
       {
         accessorFn: (row) => row.serialNumber,
-        header: 'Serial number',
+        header: t(translationBaseRoute + 'header.serialNumber'),
         cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'serialNumber',
+          sortKey: 'serialNumber',
+          sortDirection: sort.direction,
+        },
       },
       {
         accessorFn: (row) => row.tenant,
-        header: 'Tenants',
+        header: t(translationBaseRoute + 'header.tenant'),
         cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'tenant',
+          sortKey: null,
+        },
       },
       {
         accessorFn: (row) => row.translatedMedium,
-        header: 'Medium',
+        header: t(translationBaseRoute + 'header.translatedMedium'),
         cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'medium',
+          sortKey: 'translatedMedium',
+          sortDirection: sort.direction,
+        },
       },
       {
         accessorFn: (row) => row.factor,
-        header: 'Multiplicand',
+        header: t(translationBaseRoute + 'header.factor'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
-          selectionOptions: [],
+          sortKey: 'factor',
+          sortDirection: sort.direction,
         },
       },
       {
         accessorFn: (row) => row.value,
-        header: 'Value',
+        header: t(translationBaseRoute + 'header.value'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
-          selectionOptions: [],
+          sortKey: 'value',
+          sortDirection: sort.direction,
         },
       },
       {
         accessorFn: (row) => row.readTime,
-        header: 'Last reading date',
+        header: t(translationBaseRoute + 'header.readTime'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
-          selectionOptions: [],
+          sortKey: 'readTime',
+          sortDirection: sort.direction,
         },
       },
       {
         accessorFn: (row) => row.currentMonthConsumption,
-        header: 'Current month consumption',
+        header: t(translationBaseRoute + 'header.currentMonthConsumption'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
-          selectionOptions: [],
+          sortKey: 'currentMonthConsumption',
+          sortDirection: sort.direction,
         },
       },
       {
         accessorFn: (row) => row.lastMonthSameDayConsumption,
-        header: 'Last month up to same day consumption',
+        header: t(translationBaseRoute + 'header.lastMonthSameDayConsumption'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
-          selectionOptions: [],
+          sortKey: 'lastMonthSameDayConsumption',
+          sortDirection: sort.direction,
         },
       },
       {
         accessorFn: (row) => row.percentage,
-        header: 'Comparison in %',
+        header: t(translationBaseRoute + 'header.percentage'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
-          selectionOptions: [],
+          sortKey: 'percentage',
+          sortDirection: sort.direction,
         },
       },
       {
         accessorFn: (row) => row.lastMonthConsumption,
-        header: 'Last month consumption',
+        header: t(translationBaseRoute + 'header.lastMonthConsumption'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
+          sortKey: 'lastMonthConsumption',
+          sortDirection: sort.direction,
         },
       },
       {
         accessorFn: (row) => row.unit,
-        header: 'Unit',
+        header: t(translationBaseRoute + 'header.unit'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
+          sortKey: 'unit',
+          sortDirection: sort.direction,
         },
       },
       {
-        accessorFn: (row) => row.levelType?.name,
-        header: 'Level Type',
+        accessorFn: (row) => row.levelType?.translationEn,
+        header: t(translationBaseRoute + 'header.levelType'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: 'select',
-          selectionOptions: [
-            'Grid-Level Main Meter',
-            'Building-level Main Meter',
-            'Tenant Cost Allocation Meter',
-            'Analytical Submeter',
-          ],
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'levelType',
+          sortKey: 'levelType',
+          sortDirection: sort.direction,
+          selectionOptions: Options?.levelTypes.map(
+            (type) => type.translationEn
+          ),
         },
       },
       {
-        accessorFn: (row) => row.loadType?.name,
-        header: 'Load Type',
+        accessorFn: (row) => row.loadType?.translationEn,
+        header: t(translationBaseRoute + 'header.loadType'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: 'select',
-          selectionOptions: [],
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'loadType',
+          sortKey: 'loadType',
+          sortDirection: sort.direction,
+          selectionOptions: Options?.loadTypes.map(
+            (type) => type.translationEn
+          ),
         },
       },
       {
-        accessorFn: (row) => row.endUseArea?.name,
-        header: 'End Use Area',
+        accessorFn: (row) => row.endUseArea?.translationEn,
+        header: t(translationBaseRoute + 'header.endUseArea'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: 'select',
-          selectionOptions: [],
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'endUserAreaType',
+          sortKey: 'endUseArea',
+          sortDirection: sort.direction,
+          selectionOptions: Options?.endUserAreaTypes.map(
+            (type) => type.translationEn
+          ),
         },
       },
       {
-        id: 'action',
+        id: CONSTANTS.action,
         accessorFn: (row) => row.action,
-        header: 'Actions',
+        header: t(translationBaseRoute + 'header.actions'),
         meta: {
-          filterVariant: null,
+          sortKey: null,
         },
-        cell: ({ row }) => (
-          <ActionCell>
-            <IconButton
-              action={() => console.log(row.original)}
-              popupContent="Go to profile"
-              style="bg-rhino-energy-green text-white"
-            >
-              <FaChartBar />
-            </IconButton>
-            <IconButton
-              action={() => console.log(row.original)}
-              popupContent="Go to comsumptions to compare measurement comsumptions"
-              style="bg-rhino-energy-green text-white"
-            >
-              <FaChartLine />
-            </IconButton>
-          </ActionCell>
-        ),
+        cell: ({ row }) => ActionCellFn(row),
       },
     ],
-    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [Options, sort.direction, t]
   );
-
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
-  const { client, location, group } = useFilter();
-
-  const { data: tableData } = useQuery({
-    queryKey: [
-      ...DATA_QUERY_KEYS.getDashboard(),
-      page,
-      pageSize,
-      client,
-      group,
-      location,
-    ],
-    queryFn: () =>
-      getTableData({
-        page: page,
-        size: pageSize,
-        clientId: client ? client.uuid : null,
-        locationUuid: location ? location.uuid : null,
-        groupUuid: group ? group.uuid : null,
-      }),
-  });
 
   return (
     <MainLayout>
-      <Title title="Dashboard" />
-      <p className="text-[15px] text-[#666666] mb-[8px] mt-[19px]">
-        Automatic measurements only
+      <Title
+        title={t('pages.dashboard.mainHeader')}
+        guide={true}
+        guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
+      />
+      <p className="text-[15px] text-grey mb-2 mt-[19px]">
+        {t('pages.dashboard.subHeader')}
       </p>
       <Table
         columns={columns}
-        data={tableData ? tableData?.results : []}
+        data={tableData ? tableData?.content : []}
         footer={{
           currentPage: page,
-          totalCount: tableData ? tableData?.totalCount : 0,
+          totalCount: tableData ? tableData?.totalElements : 0,
           setCurrentPage: setPage,
           setPageSize: setPageSize,
           pageSize: pageSize,
         }}
+        onSortSelect={onSortClick}
+        onFilterChange={onFilterChange}
+        isLoading={isPending}
       />
     </MainLayout>
   );

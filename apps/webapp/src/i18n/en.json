@@ -1,0 +1,119 @@
+{
+  "translation": {
+    "comboBox": {
+      "select": "Select",
+      "locationNull": "All locations",
+      "groupNull": "All groups"
+    },
+    "favoriteMeterModel": {
+      "mainHeader": "Choose favorite meters",
+      "table": {
+        "header": {
+          "name": "Name",
+          "author": "Author",
+          "shared": "Shared",
+          "createdDate": "Created Date",
+          "updatedDate": "Updated Date",
+          "actions": "Actions"
+        },
+        "popup": "Select"
+      }
+    },
+    "pages": {
+      "dashboard": {
+        "mainHeader": "Dashboard",
+        "subHeader": "Automatic measurements only",
+        "table": {
+          "header": {
+            "groupName": "Group",
+            "localisationName": "Location",
+            "translatedMedium": "Medium",
+            "measurementName": "Measurement name",
+            "serialNumber": "Serial number",
+            "factor": "Multiplicand",
+            "value": "Value",
+            "readTime": "Last reading date",
+            "currentMonthConsumption": "Current month consumption",
+            "lastMonthSameDayConsumption": "Last month up to same day consumption",
+            "percentage": "Comparison in %",
+            "lastMonthConsumption": "Last month consumption",
+            "unit": "Unit",
+            "tenant": "Tenants",
+            "actions": "Actions",
+            "levelType": "Level Type",
+            "loadType": "Load Type",
+            "endUseArea": "End Use Area"
+          },
+          "popup": {
+            "goToProfile": "Go to profile",
+            "goToComsumptions": "Go to comsumptions to compare measurement comsumptions"
+          }
+        }
+      }
+    },
+    "sideMenu": {
+      "dashboards": "Dashboards",
+      "dashboard": "Dashboard",
+      "energyDashboard": " Energy dashboard",
+      "dashboardR": "Dashboard (R)",
+
+      "analysisReports": "Analysis and reports",
+      "consumptionChart": "Consumption",
+      "consumptionProfileChart": "Profile",
+      "heatMap": "Load Chart",
+      "measurementStructures": "Structures",
+      "balanceModule": "Balance module",
+      "report": "Reports",
+      "utilityCosts": "Utility costs",
+
+      "alarmsAndNotifications": "Alarms and notifications",
+      "immediateAlarm": "Immediate alarm",
+
+      "configuration": "Configuration",
+      "measurements": "Measurements",
+      "externalServiceConfiguration": "External UPCs configuration",
+      "technicalView": "Technical view",
+      "inputManagement": "Input management",
+      "maintenanceReport": "System maintenance report",
+      "meterStates": "Meters values",
+      "favoriteMeters": "Favorite meters",
+
+      "administration": "Administration",
+      "clients": "Clients",
+      "users": "Users management",
+      "tenants": "Tenants",
+
+      "support": "Support"
+    },
+    "table": {
+      "footer": {
+        "show": "Show",
+        "positions": "positions",
+        "showing": "Showing",
+        "to": "to",
+        "of": "of",
+        "previous": "Previous",
+        "next": "Next"
+      }
+    },
+    "topRibbon": {
+      "client": "Client:",
+      "location": "Location:",
+      "group": "Group:",
+      "favoriteMeters": "Favorite meters:",
+      "favoriteMeterButton": "Select",
+      "user": {
+        "terms": "Terms of Use",
+        "manual": "Manual",
+        "logout": "Logout",
+        "language": "Language"
+      }
+    },
+    "toast": {
+      "somethingWantWrong": "Something want wrong !",
+      "languageChanged": {
+        "success": "Language Changed"
+      }
+    }
+  }
+}

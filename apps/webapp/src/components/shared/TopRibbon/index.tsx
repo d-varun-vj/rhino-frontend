@@ -1,13 +1,30 @@
-import { FaArrowRight, FaUserCircle } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
-
-import { Client, Location } from './types';
-import { getClients, getLocations } from './api';
-import { useQuery } from '@tanstack/react-query';
-import RibbonComboBox from './RibbonCombobox';
+import UserDropDown from './UserDropDown';
+import ClientCombobox from '../Comboboxes/ClientCombobox';
+import LocationCombobox from '../Comboboxes/LocationCombobox';
+import GroupCombobox from '../Comboboxes/GroupCombobox';
+import { useTranslation } from 'react-i18next';
+import FavoriteMeter from './FavoriteMeter';
 import { useFilter } from '../../../context/useFilter';
+import { useEffect, useState } from 'react';
+import { useUser } from '../../../context/useUser';
+import { UserType } from '../../../api/User/types';
+import { useFavoriteMeter } from '../../../context/useFavoriteMeter';
+import { Location, useGetLocations } from '../Comboboxes/LocationCombobox/api';
+import { Client, useGetClients } from '../Comboboxes/ClientCombobox/api';
+import { shouldSetInitialClient } from '../../../helpers/client';
+import { CONSTANTS } from '../../../constant';
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const enum FieldType {
+  CLIENT = 'client',
+  GROUP = 'group',
+  LOCATION = 'location',
+}
 
 const TopRibbon = () => {
+  const { t } = useTranslation();
+  const { user } = useUser();
+  const [disableDropdown, setDisableDropdown] = useState<boolean>(false);
   const {
     setClient: setSelectedClient,
     setLocation: setSelectedLocation,
@@ -16,37 +33,49 @@ const TopRibbon = () => {
     group: selectedGroup,
     location: selectedLocation,
   } = useFilter();
-  const [clients, setClients] = useState<Client[]>();
-  const [locations, setLocations] = useState<Location[]>();
-  //   const [groups, setGroups] = useState<Group[]>();
-
-  const { data: clientsData } = useQuery({
-    queryKey: ['clents'],
-    queryFn: () => getClients(),
+  const { clearFavoriteMeter } = useFavoriteMeter();
+  const [locations, setLocations] = useState<Location[]>([]);
+  const { data: locationsData } = useGetLocations({
+    clientId: selectedClient ? selectedClient?.uuid : null,
+    queryKey: [selectedClient],
   });
-  const { data: locationsData } = useQuery({
-    queryKey: ['locations', selectedClient],
-    queryFn: () =>
-      getLocations({
-        clientId: selectedClient ? selectedClient?.uuid : null,
-      }),
+  const [clients, setClients] = useState<Client[]>([]);
+
+  const { data: clientsData } = useGetClients({
+    userUuid: user ? user?.uuid : '',
   });
 
   useEffect(() => {
-    console.log(
-      'CLIENT : ',
-      selectedClient,
-      '\n',
-      'GROUP :',
-      selectedGroup,
-      '\n',
-      'LOCATION :',
-      selectedLocation
-    );
+    if (clientsData) {
+      setClients(clientsData);
+    }
+  }, [clientsData, user]);
+
+  useEffect(() => {
+    if (locationsData) {
+      setLocations(locationsData);
+    }
     if (selectedClient?.name === null) {
       setSelectedGroup(null);
       setSelectedLocation(null);
     }
+    if (user && shouldSetInitialClient(user)) {
+      setDisableDropdown(true);
+    }
+    clearFavoriteMeter();
+    setSelectedGroup(null);
+    setSelectedLocation(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    locationsData,
+    selectedClient,
+    setSelectedClient,
+    setSelectedGroup,
+    setSelectedLocation,
+    user,
+  ]);
+
+  useEffect(() => {
     if (
       selectedLocation !== null &&
       !locations
@@ -57,118 +86,106 @@ const TopRibbon = () => {
     ) {
       setSelectedGroup(null);
     }
+    if (
+      (user?.structureAccess?.resourceAccesses ?? []).length > 0 &&
+      user?.userType === UserType.LocalisationAdmin &&
+      locations
+    ) {
+      const filterLocationUuid = user?.structureAccess?.resourceAccesses
+        ?.filter((resource) => resource.source_type === CONSTANTS.location)
+        .map((resource) => resource.source_uuid);
+      const filteredLocations = locations.filter((location) =>
+        filterLocationUuid?.includes(location.uuid)
+      );
+      setLocations(filteredLocations);
+    } else if (locations) {
+      setLocations(locations);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
-    if (clientsData) {
-      setClients(clientsData);
+  const onFilterChange = (
+    type: FieldType,
+    value: {
+      name: string;
+      uuid: string;
+    } | null
+  ) => {
+    switch (type) {
+      case FieldType.CLIENT:
+        setSelectedClient(value);
+        break;
+      case FieldType.LOCATION:
+        setSelectedLocation(value);
+        break;
+      case FieldType.GROUP:
+        setSelectedGroup(value);
+        break;
     }
-    if (locationsData) {
-      setLocations(locationsData);
-    }
-  }, [
-    selectedClient,
-    selectedGroup,
-    selectedLocation,
-    clientsData,
-    locationsData,
-    locations,
-    setSelectedLocation,
-    setSelectedGroup,
-  ]);
+  };
+
+  const Items: { labelKey: string; component: JSX.Element }[] = [
+    {
+      labelKey: 'topRibbon.client', // from i18n
+      component: (
+        <ClientCombobox
+          onSelect={onFilterChange}
+          disableDropdown={disableDropdown}
+          clients={clients}
+          selectedClient={selectedClient}
+        />
+      ),
+    },
+    {
+      labelKey: 'topRibbon.location',
+      component: (
+        <LocationCombobox
+          onSelect={onFilterChange}
+          locations={locations}
+          disabled={selectedClient == null ? true : false}
+          selectedLocation={selectedLocation}
+        />
+      ),
+    },
+    {
+      labelKey: 'topRibbon.group',
+      component: (
+        <GroupCombobox
+          onSelect={onFilterChange}
+          locations={locations}
+          disabled={selectedClient == null ? true : false}
+          selectedGroup={selectedGroup}
+          selectedLocation={selectedLocation}
+        />
+      ),
+    },
+    {
+      labelKey: 'topRibbon.favoriteMeters',
+      component: <FavoriteMeter />,
+    },
+  ];
 
   return (
-    <header className="flex basis-auto h-auto relative z-40 justify-between">
-      <div className="mt-[1rem] relative px-[.75rem] ">
+    <header className="flex basis-auto h-auto  z-30 justify-between max-sm:flex-col">
+      <div className="mt-[1rem]  px-[.75rem] ">
         <div className="flex flex-row ">
-          <div className="pl-[1rem] mt-[.25rem] items-baseline flex flex-row flex-wrap gap-10">
-            <div className="flex items-center">
-              <div className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]">
-                Client:
-              </div>
-              <RibbonComboBox
-                options={
-                  clients
-                    ? clients?.map((client) => ({
-                        name: client.name,
-                        uuid: client.uuid,
-                      }))
-                    : []
-                }
-                defaultPlaceholder="Select"
-                disabled={false}
-                setReturnValue={(client) => {
-                  if (client?.name !== selectedClient?.name) {
-                    setSelectedClient(client);
-                    setSelectedGroup(null);
-                    setSelectedLocation(null);
-
-                    // if (client) setClient(client);
-                  }
-                }}
-                selectedValue={selectedClient}
-              />
-            </div>
-            <div className="flex items-center">
-              <div className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]">
-                Location:
-              </div>
-              <RibbonComboBox
-                options={
-                  locations
-                    ? locations?.map((location) => ({
-                        name: location.name,
-                        uuid: location.uuid,
-                      }))
-                    : []
-                }
-                defaultPlaceholder="All locations"
-                disabled={selectedClient == null ? true : false}
-                setReturnValue={setSelectedLocation}
-                selectedValue={selectedLocation}
-              />
-            </div>
-            <div className="flex items-center">
-              <div className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]">
-                Group:
-              </div>
-              <RibbonComboBox
-                options={
-                  locations
-                    ? locations
-                        .filter((location) =>
-                          selectedLocation?.name
-                            ? location.name === selectedLocation.name
-                            : true
-                        )
-                        .map((location) => ({
-                          name: location.name,
-                          uuid: location.uuid,
-                          groups: location.groups ? location.groups : [],
-                        }))
-                    : []
-                }
-                defaultPlaceholder="All groups"
-                disabled={selectedClient == null ? true : false}
-                setReturnValue={setSelectedGroup}
-                selectedValue={selectedGroup}
-              />
-            </div>
-            <div className="flex items-center">
-              <div className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]">
-                Favorite meters:
-              </div>
-              <a
-                href="#"
-                className="cursor-pointer min-w-[14rem] max-w-[14rem] flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-white font-bold bg-rhino-energy-green border-rhino-energy-green-light rounded-[4px] text-[13px]"
+          <div className="pl-[1rem] mt-[.25rem] items-baseline flex flex-row flex-wrap gap-10 ">
+            {Items.map((item) => (
+              <div
+                className="flex items-center max-md:justify-between max-md:w-full"
+                key={item.labelKey}
               >
-                Select favorite <FaArrowRight />
-              </a>
-            </div>
+                <div className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]">
+                  {t(item.labelKey)}
+                </div>
+                {item.component}
+              </div>
+            ))}
           </div>
         </div>
       </div>
-      <div className="flex justify-end mt-[.25rem] px-[.75rem] items-center h-[4.125rem] pr-[2.5rem]">
-        <FaUserCircle className="text-[#036983] text-[21px]" />
-      </div>
+      {/* User Profile */}
+      <UserDropDown />
     </header>
   );
 };

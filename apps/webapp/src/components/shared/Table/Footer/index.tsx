@@ -1,5 +1,7 @@
 import { FooterType } from '..';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useFilter } from '../../../../context/useFilter';
+import { useTranslation } from 'react-i18next';
 
 type Footer = {
   pagination: FooterType;
@@ -10,12 +12,29 @@ const TableFooter = ({ pagination }: Footer) => {
     from: number;
     to: number;
   }>({ from: 1, to: pagination.pageSize });
+
+  const { client, location, group } = useFilter();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    setShowIndex({ from: 1, to: pagination.pageSize });
+    pagination.setCurrentPage(0);
+    pagination.setPageSize(5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    client,
+    location,
+    group,
+    pagination.setCurrentPage,
+    pagination.setPageSize,
+  ]);
+
   return (
     <div className="flex justify-between  my-5 flex-col gap-5 mt-10 lg:flex-row lg:items-center">
       {/* Page show filter */}
       <div>
         <span className="text-[#949494] text-[13px]">
-          show &nbsp;
+          {t('table.footer.show')} &nbsp;
           <select
             value={pagination?.pageSize}
             onChange={(e) => {
@@ -37,19 +56,20 @@ const TableFooter = ({ pagination }: Footer) => {
               </option>
             ))}
           </select>
-          positions
+          {t('table.footer.positions')}
         </span>
       </div>
       {/* Showing page count */}
       <div>
         <span className="flex items-center gap-1 text-[#949494] text-[13px] font-thin">
-          <div>Showing </div>
+          <div>{t('table.footer.showing')} </div>
           <strong>
-            {pagination.totalCount > 0 ? showIndex.from : 0} to{' '}
+            {pagination.totalCount > 0 ? showIndex.from : 0}{' '}
+            {t('table.footer.to')}{' '}
             {pagination.totalCount > showIndex.to
               ? showIndex.to
               : pagination.totalCount}{' '}
-            of {pagination.totalCount}
+            {t('table.footer.of')} {pagination.totalCount}
           </strong>
         </span>
       </div>
@@ -86,46 +106,46 @@ const TableFooter = ({ pagination }: Footer) => {
             });
           }}
         >
-          {'Previous'}
+          {t('table.footer.previous')}
         </button>
-
         <>
-          {[...(Array(pagination.totalCount) as number[])]
+          {/* Create an array of page numbers */}
+          {Array(Math.ceil(pagination.totalCount / pagination.pageSize))
+            .fill(null) // Fill array with placeholders
+            .map((_, index) => index) // Map placeholders to page indices
             .slice(
-              Math.floor(pagination.currentPage / 10) * 10,
-              Math.floor(pagination?.currentPage / 10) * 10 + 10
+              Math.floor(pagination.currentPage / 10) * 10, // Start of current chunk
+              Math.floor(pagination.currentPage / 10) * 10 + 10 // End of current chunk
             )
-            .map((_, pageIndex) => {
-              const actualIndex =
-                Math.floor(pagination?.currentPage / 10) * 10 + pageIndex;
+            .map((pageIndex) => {
               return (
                 <button
-                  key={actualIndex}
-                  className={`border  px-2 py-1 ${pagination?.currentPage === actualIndex ? ' text-[#808080]' : 'text-rhino-indigo-blue'} `}
+                  key={pageIndex}
+                  className={`border px-2 py-1 ${
+                    pagination.currentPage === pageIndex
+                      ? 'text-[#808080]'
+                      : 'text-rhino-indigo-blue'
+                  }`}
                   onClick={() => {
-                    console.log(
-                      actualIndex > pagination.currentPage
-                        ? 'forward'
-                        : 'backward'
-                    );
                     pagination.setPageSize(
                       pagination.pageSize ? pagination.pageSize : 5
                     );
                     setShowIndex({
-                      from: actualIndex * pagination.pageSize + 1,
+                      from: pageIndex * pagination.pageSize + 1,
                       to: Math.min(
-                        (actualIndex + 1) * pagination.pageSize,
+                        (pageIndex + 1) * pagination.pageSize,
                         pagination.totalCount
                       ),
                     });
-                    pagination?.setCurrentPage(actualIndex);
+                    pagination.setCurrentPage(pageIndex);
                   }}
                 >
-                  {actualIndex + 1}
+                  {pageIndex + 1} {/* Display page number */}
                 </button>
               );
             })}
         </>
+
         <button
           className="border  p-1"
           onClick={() => {
@@ -144,9 +164,9 @@ const TableFooter = ({ pagination }: Footer) => {
                   : showIndex.to,
             });
           }}
-          // disabled={!table.getCanNextPage()}
+          disabled={showIndex.to >= pagination.totalCount ? true : false}
         >
-          {'Next'}
+          {t('table.footer.next')}
         </button>
         <button
           className="border rounded-br rounded-tr p-1"

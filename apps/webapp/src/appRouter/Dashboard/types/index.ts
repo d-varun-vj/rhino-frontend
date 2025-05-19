@@ -1,4 +1,4 @@
-type DictionaryDto = {
+export type DictionaryDto = {
   name: string;
   translationEn: string;
   translationPl: string;
@@ -15,16 +15,28 @@ export type DashboardType = {
   lastMonthSameDayConsumption: string | null;
   lastMonthConsumption: string | null;
   unit: string | null;
-  readTime: null | string;
+  readTime: string | null;
   translatedMedium: string | null;
   serialNumber: string | null;
   tenant: string | null;
   incremental: boolean | null;
   manual: boolean | null;
-  levelType: null | DictionaryDto;
-  loadType: null | DictionaryDto;
-  endUseArea: null | DictionaryDto;
+  levelType: DictionaryDto | null;
+  loadType: DictionaryDto | null;
+  endUseArea: DictionaryDto | null;
   percentageColor: string | null;
   type: string | null;
   action?: string;
+};
+
+export type Filter = {
+  locationName: string | null;
+  groupName: string | null;
+  measurementName: string | null;
+  serialNumber: string | null;
+  tenant: string | null;
+  medium: string | null;
+  levelType: string | null;
+  loadType: string | null;
+  endUseAreaType: string | null;
 };

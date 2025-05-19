@@ -1,70 +1,77 @@
 import { Column } from '@tanstack/react-table';
 import { useState } from 'react';
 import DebouncedInput from './DebouncedInput';
-import ComboBox from '../../Combobox';
+import ComboBox from '../../Comboboxes';
+import { useTranslation } from 'react-i18next';
+import { FilterVariant } from '../types';
 
-const Filter = <T,>({ column }: { column: Column<T, unknown> }) => {
+const Filter = <T,>({
+  column,
+  onFilterChange,
+}: {
+  column: Column<T, unknown>;
+  onFilterChange: (
+    val: string | null,
+    field: string,
+    varient: FilterVariant | null
+  ) => void;
+}) => {
+  const { t } = useTranslation();
   const columnFilterValue = column.getFilterValue();
 
   const { filterVariant } = column.columnDef.meta ?? {};
-  const [selectValue, setSelectedValue] = useState<string>('');
+  const [selectValue, setSelectedValue] = useState<string | null>(null);
   const options = column?.columnDef?.meta?.selectionOptions || [];
 
-  return filterVariant === 'range' ? (
-    <div className="">
-      <div className="flex space-x-2">
-        <DebouncedInput
-          type="number"
-          value={(columnFilterValue as [number, number])?.[0] ?? ''}
-          onChange={(value) =>
-            column.setFilterValue((old: [number, number]) => [value, old?.[1]])
-          }
-          placeholder={`Min`}
-          className=" rounded"
-        />
-        <DebouncedInput
-          type="number"
-          value={(columnFilterValue as [number, number])?.[1] ?? ''}
-          onChange={(value) =>
-            column.setFilterValue((old: [number, number]) => [old?.[0], value])
-          }
-          placeholder={`Max`}
-          className=" rounded"
-        />
-      </div>
-      <div className="h-1" />
-    </div>
-  ) : filterVariant === 'select' ? (
+  return filterVariant === FilterVariant.SELECT ? (
     <ComboBox
       options={options}
-      defaultPlaceholder="select"
+      defaultPlaceholder={t('comboBox.select')}
       disabled={false}
       selectedValue={selectValue}
       setReturnValue={(value) => {
         if (value === 'all') {
+          if (column.columnDef.meta?.filterKey) {
+            onFilterChange(null, 'all', null);
+          }
           column.setFilterValue(null);
-          setSelectedValue('');
+          setSelectedValue(null);
         } else {
+          if (column.columnDef.meta?.filterKey) {
+            onFilterChange(
+              value,
+              column.columnDef.meta?.filterKey,
+              FilterVariant.SELECT
+            );
+          }
           column.setFilterValue(value);
-          setSelectedValue(value ? value : '');
+          setSelectedValue(value ? value : null);
         }
       }}
       customStyle={{
         header:
-          'mb-[16px] h-auto py-[5.5px] rounded px-[10px] focus-within:rounded-bl-none focus-within:rounded-br-none !w-[9rem]',
-        dropdown: 'mt-[-16px]  !w-[9rem]',
+          'mb-[16px] h-auto py-[5.5px] rounded px-[10px] focus-within:rounded-bl-none focus-within:rounded-br-none !min-w-[9rem] overflow-hidden  whitespace-nowrap',
+        dropdown: 'mt-[-16px]  !min-w-[9rem]',
       }}
     />
-  ) : filterVariant === null ? (
-    <input type="text" className=" " disabled />
-  ) : (
+  ) : filterVariant === FilterVariant.TEXT ? (
     <DebouncedInput
-      className="  rounded"
-      onChange={(value) => column.setFilterValue(value)}
+      className="rounded"
+      onChange={(value) => {
+        if (column.columnDef.meta?.filterKey) {
+          onFilterChange(
+            value.toString(),
+            column?.columnDef?.meta?.filterKey,
+            FilterVariant.TEXT
+          );
+        }
+      }}
       placeholder={``}
       type="text"
       value={(columnFilterValue ?? '') as string}
     />
+  ) : (
+    <input type="text" className=" " disabled />
   );
 };
 
