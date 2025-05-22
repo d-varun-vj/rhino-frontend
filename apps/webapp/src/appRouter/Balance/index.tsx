@@ -11,7 +11,7 @@ const Balance = () => {
   // ];
 
   return (
-    <MainLayout>
+    <MainLayout title="Balance Module">
       <Title title="Balance Module" />
       <p>Client: {client ? client.name : ''}</p>
       <p>Location: {location ? location.name : ''}</p>

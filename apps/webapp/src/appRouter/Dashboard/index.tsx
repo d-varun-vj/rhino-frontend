@@ -52,18 +52,15 @@ const Dashboard = () => {
       sortDirection: sort.direction,
       sortedField: sort.field,
       ...filters,
-      measurementUuids: favoriteMeter
-        ? favoriteMeter.measurementUuids
-        : user?.measurements
-          ? user.measurements
-          : null,
+      measurementUuids: user?.measurements ? user.measurements : null,
+      favoriteMeterUuids: favoriteMeter ? favoriteMeter.measurementUuids : null,
     },
   });
   const [tableData, settableData] = useState<TableData>();
 
   const getData = async () => {
-    const resonse = await postGetTableData();
-    settableData(resonse);
+    const response = await postGetTableData();
+    settableData(response);
   };
 
   useEffect(() => {
@@ -137,20 +134,21 @@ const Dashboard = () => {
           return { ...prev, [field]: val };
         });
         break;
-      case FilterVariant.SELECT:
-        if (val === null) {
-          setFilters((prev: Filter) => {
-            return { ...prev, [field]: '' };
-          });
-        }
-        Options?.levelTypes.filter((type) => {
-          if (type.translationEn === val) {
-            setFilters((prev: Filter) => {
-              return { ...prev, [field]: type.name };
-            });
-          }
-        });
+      case FilterVariant.SELECT: {
+        const selectedType =
+          Options?.levelTypes.find((type) => type.translationEn === val) ||
+          Options?.loadTypes.find((type) => type.translationEn === val) ||
+          Options?.endUserAreaTypes.find((type) => type.translationEn === val);
+        console.log(selectedType);
+
+        setFilters((prev: Filter) => ({
+          ...prev,
+          [field]: selectedType
+            ? selectedType.name
+            : prev[field as keyof Filter],
+        }));
         break;
+      }
       case null:
         setFilters({
           locationName: null,
@@ -229,7 +227,7 @@ const Dashboard = () => {
         meta: {
           filterVariant: FilterVariant.TEXT,
           filterKey: 'medium',
-          sortKey: 'translatedMedium',
+          sortKey: user?.language == 'en' ? 'mediumEn' : 'mediumPl',
           sortDirection: sort.direction,
         },
       },
@@ -362,7 +360,7 @@ const Dashboard = () => {
   );
 
   return (
-    <MainLayout>
+    <MainLayout title="sideMenu.dashboard">
       <Title
         title={t('pages.dashboard.mainHeader')}
         guide={true}

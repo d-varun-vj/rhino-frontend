@@ -47,13 +47,19 @@ const TopRibbon = () => {
 
   useEffect(() => {
     if (clientsData) {
-      setClients(clientsData);
+      const sortedClients = [...clientsData].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      setClients(sortedClients);
     }
   }, [clientsData, user]);
 
   useEffect(() => {
     if (locationsData) {
-      setLocations(locationsData);
+      const sortedLocations = [...locationsData].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      setLocations(sortedLocations);
     }
     if (selectedClient?.name === null) {
       setSelectedGroup(null);

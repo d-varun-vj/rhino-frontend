@@ -60,16 +60,20 @@ type TableProps<T> = {
   ) => void;
 };
 
-const getSortDirection = <T,>(meta?: ColumnMeta<T, unknown>): SortDirection => {
+const getSortDirection = <T,>(
+  meta?: ColumnMeta<T, unknown>
+): SortDirection | string => {
   const direction = meta?.sortDirection;
-  return direction === SortDirection.ASC
-    ? SortDirection.DESC
-    : SortDirection.ASC;
+  return direction === ''
+    ? SortDirection.ASC
+    : direction === SortDirection.ASC
+      ? SortDirection.DESC
+      : '';
 };
 
 const handleSortClick = <T,>(
   header: Header<T, unknown>,
-  onSortSelect?: (field: string, direction: SortDirection) => void
+  onSortSelect?: (field: string, direction: SortDirection | string) => void
 ) => {
   const sortKey = header.column.columnDef?.meta?.sortKey;
   if (!onSortSelect || sortKey === undefined || sortKey === null) return;
@@ -123,11 +127,11 @@ const Table = <T,>({
   });
 
   return (
-    <div>
+    <div className="">
       <div
-        className={`p-2 overflow-auto  ${table.getRowModel().rows.length == 0 ? 'pb-[150px]' : ''}  ${extraStyles}`}
+        className={`p-2 overflow-auto   ${table.getRowModel().rows.length == 0 ? 'pb-[150px]' : ''}  ${extraStyles}`}
       >
-        <table className="relative">
+        <table className="relative w-full">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -136,7 +140,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={`${header.id == CONSTANTS.action && 'sticky bg-white -right-5 pl-2'} font-thin`}
+                      className={`${header.id == CONSTANTS.action && 'sticky bg-white -right-5 pl-2 '} font-thin`}
                     >
                       {header.isPlaceholder ? null : (
                         <div className=" flex flex-col justify-start ">
@@ -186,12 +190,10 @@ const Table = <T,>({
                 return (
                   <tr key={row.id} className={`odd:bg-[#03030405]`}>
                     {row.getVisibleCells().map((cell) => {
-                      console.log(cell.column.id);
-
                       return (
                         <td
                           key={cell.id}
-                          className={`${cell.column.id === CONSTANTS.action && 'sticky -right-5  z-10 '} p-[.75rem] align-top pl-0 first:pl-[.75rem]`}
+                          className={`${cell.column.id === CONSTANTS.action && 'sticky -right-5'} p-[.75rem] align-top pl-0 first:pl-[.75rem]`}
                         >
                           <div className={` text-[13px] text-wrap  w-auto `}>
                             {flexRender(

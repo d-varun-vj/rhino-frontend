@@ -101,7 +101,7 @@ const FavoriteMeter = () => {
                 setModelOpen(false);
                 setFavoriteMeter(info.row.original);
               }}
-              popupContent={t(translationBaseRoute + 'popup')}
+              // popupContent={t(translationBaseRoute + 'popup')}
               style="bg-rhino-energy-green text-white"
             >
               <FaArrowRight />
@@ -113,7 +113,7 @@ const FavoriteMeter = () => {
     [setFavoriteMeter, t, sort.direction]
   );
 
-  const { data: tableData } = useGetAllFavoriteMeters({
+  const { data: tableData, isLoading } = useGetAllFavoriteMeters({
     page: page,
     size: pageSize,
     userUuid: user ? user?.uuid : '',
@@ -155,7 +155,7 @@ const FavoriteMeter = () => {
   return (
     <div>
       <div
-        className={`cursor-pointer min-w-[14rem] max-w-[14rem] flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-white font-bold  rounded-[4px] text-[13px] ${favoriteMeter ? 'bg-rhino-indigo-blue border-rhino-indigo-blue-light' : 'bg-rhino-energy-green border-rhino-energy-green-light'}`}
+        className={`cursor-pointer min-w-[14rem]  flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-white font-bold  rounded-[4px] text-[13px] ${favoriteMeter ? 'bg-rhino-indigo-blue border-rhino-indigo-blue-light' : 'bg-rhino-energy-green border-rhino-energy-green-light'}`}
         onClick={() => {
           if (favoriteMeter !== null) {
             setModelOpen(false);
@@ -175,8 +175,8 @@ const FavoriteMeter = () => {
         )}
       </div>
       {isModelOpen && (
-        <div className=" w-full h-full absolute top-0 left-0 z-30 transition-opacity bg-black/15 ">
-          <div className="lg:w-fit  my-20 max-lg:mx-5 mx-auto flex items-center relative z-30 ">
+        <div className=" w-full h-full absolute top-0 left-0 z-30 transition-opacity bg-black/15  ">
+          <div className="mx-16 my-20 max-lg:mx-5  flex items-center relative z-30  ">
             <div className="border-t-[.5rem] border-t-rhino-energy-green shadow-xl relative flex flex-col w-full bg-[#fff] border-transparent border-[1px] rounded ">
               <div className="flex items-start justify-between p-[1.25rem] ">
                 <h4 className="text-[2rem] font-bold text-rhino-indigo-blue my-0 leading-[1.47] ">
@@ -200,10 +200,11 @@ const FavoriteMeter = () => {
                     setPageSize: setPageSize,
                     pageSize: pageSize,
                   }}
-                  extraStyles="max-h-[500px]"
+                  extraStyles=""
                   emptyText="No results"
                   onSortSelect={onSortClick}
                   onFilterChange={onFilterChange}
+                  isLoading={isLoading}
                 />
               </div>
             </div>

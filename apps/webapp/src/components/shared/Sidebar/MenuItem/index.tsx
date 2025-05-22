@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { MenuKeys, MenuItemType, SubItemType } from '../config';
 import './MenuItem.css';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
 import {
@@ -23,11 +23,6 @@ export type menuItem = {
       }>
     >;
   };
-};
-
-export type ItemType = {
-  subItem: SubItemType;
-  isMinimize?: boolean;
 };
 
 const hasUserTypeAccess = ({
@@ -75,43 +70,7 @@ export const canViewItem = ({
 
 const MenuItem = ({ menuItem, minimize }: menuItem) => {
   const { t } = useTranslation();
-  const [title, setTitle] = useState(t(menuItem.label));
-  const location = useLocation();
   const { user } = useUser();
-  const Item = ({ subItem, isMinimize = false }: ItemType) => (
-    <NavLink to={subItem.wicketLink || subItem.route || '#'}>
-      {({ isActive }) => (
-        <li className="relative">
-          <p
-            className={`${
-              isActive
-                ? 'nav-active nav-sub-menu-a'
-                : isMinimize
-                  ? 'hover:!bg-rhino-indigo-blue nav-sub-menu-a'
-                  : 'nav-sub-menu-a'
-            }`}
-          >
-            <i className={`${isActive ? 'nav-active' : ''}`}>
-              <subItem.icon className="text-[15px]" />
-            </i>
-            <span className={`${isActive ? 'nav-active' : ''}`}>
-              {t(subItem.label)}
-            </span>
-          </p>
-        </li>
-      )}
-    </NavLink>
-  );
-
-  useEffect(() => {
-    document.title = title;
-    menuItem.subItems?.map((item) => {
-      if (item.route === location.pathname) {
-        setTitle(t(item.label));
-        return;
-      }
-    });
-  }, [title, location.pathname, menuItem.key, menuItem.subItems, t]);
 
   return (
     <li
@@ -125,8 +84,8 @@ const MenuItem = ({ menuItem, minimize }: menuItem) => {
       }
     >
       <NavLink
-        to={`${menuItem.link ? menuItem.link : menuItem.subItems ? menuItem.subItems[0].route : '#'}`}
-        target={`${menuItem.link ? 'blank' : ''}`}
+        to={`${menuItem.link ? menuItem.link : menuItem.subItems ? (menuItem.subItems[0].route ? menuItem.subItems[0].route : menuItem.subItems[0].wicketLink) : '#'}`}
+        target={`${menuItem.link && 'blank'}`}
         className={`nav-menu-a  ${minimize.isMinimize ? '!px-0 !text-center !flex !items-center !justify-center py-[12px]' : ''}`}
       >
         {({ isActive }) => (
@@ -148,13 +107,37 @@ const MenuItem = ({ menuItem, minimize }: menuItem) => {
         <ul className="m-0 p-0 py-[10px] nav-sub-menu">
           {menuItem.subItems?.map((subItem) =>
             user && canViewItem({ subItem, user }) ? (
-              <Item subItem={subItem} key={subItem.key} />
+              <NavLink
+                to={subItem.wicketLink || subItem.route || '#'}
+                key={subItem.key}
+              >
+                {({ isActive }) => (
+                  <li className="relative">
+                    <p
+                      className={`${
+                        isActive
+                          ? 'nav-active nav-sub-menu-a'
+                          : minimize.isMinimize
+                            ? 'hover:!bg-rhino-indigo-blue nav-sub-menu-a'
+                            : 'nav-sub-menu-a'
+                      }`}
+                    >
+                      <i className={`${isActive ? 'nav-active' : ''}`}>
+                        <subItem.icon className="text-[15px]" />
+                      </i>
+                      <span className={`${isActive ? 'nav-active' : ''}`}>
+                        {t(subItem.label)}
+                      </span>
+                    </p>
+                  </li>
+                )}
+              </NavLink>
             ) : null
           )}
         </ul>
       )}
       {minimize.isMinimize && minimize.item === menuItem.key && (
-        <MinimizePopup menuItem={menuItem} Item={Item} />
+        <MinimizePopup menuItem={menuItem} />
       )}
     </li>
   );

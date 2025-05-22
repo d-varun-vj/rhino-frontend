@@ -1,9 +1,20 @@
-import React from 'react';
+import { useEffect } from 'react';
 import SideBar from '../../components/shared/Sidebar';
 import TopRibbon from '../../components/shared/TopRibbon';
 import { ToastContainer } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
-const MainLayout = ({ children }: { children: React.ReactNode }) => {
+const MainLayout = ({
+  children,
+  title,
+}: {
+  children: React.ReactNode;
+  title: string;
+}) => {
+  const { t } = useTranslation();
+  useEffect(() => {
+    document.title = t(title); // Set the document title dynamically
+  }, [title, t]);
   return (
     <>
       <div className="flex items-stretch flex-auto w-full min-h-screen">
