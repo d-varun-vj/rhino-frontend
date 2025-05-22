@@ -28,7 +28,7 @@ const IconButton = ({
       </button>
       {popupContent && showPopup && (
         <div
-          className="absolute -bottom-7 mt-2 px-2 py-1 right-0   bg-gray-700 text-white rounded shadow-lg z-10 text-[12px]"
+          className="absolute -bottom-7 mt-2 px-2 py-1 right-0   bg-gray-700 text-white rounded shadow-lg  text-[12px]"
           style={{ whiteSpace: 'nowrap' }}
         >
           {popupContent}

@@ -13,6 +13,7 @@ export type TableData = {
 
 export type DashboardTableRequestBody = {
   measurementUuids: string[] | null;
+  favoriteMeterUuids: string[] | null;
   page: number | null;
   size: number | null;
   clientId?: string | null;

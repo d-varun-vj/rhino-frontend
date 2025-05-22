@@ -1,18 +1,13 @@
 import { UserType } from '../../../../api/User/types';
 
-import { canViewItem, ItemType } from '../MenuItem';
+import { canViewItem } from '../MenuItem';
 import { MenuItemType } from '../config';
 import { VscTriangleLeft } from 'react-icons/vsc';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../../context/useUser';
+import { NavLink } from 'react-router-dom';
 
-const MinimizePopup = ({
-  menuItem,
-  Item,
-}: {
-  menuItem: MenuItemType;
-  Item: ({ subItem, isMinimize }: ItemType) => JSX.Element;
-}) => {
+const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
   const { t } = useTranslation();
   const { user } = useUser();
 
@@ -35,11 +30,29 @@ const MinimizePopup = ({
       <div className="w-full bg-rhino-indigo-blue-light ml-[11px] rounded-lg rounded-tl-none overflow-hidden">
         {menuItem.subItems?.map((subItem) =>
           user && canViewItem({ subItem, user }) ? (
-            <Item
-              subItem={subItem}
+            <NavLink
+              to={subItem.wicketLink || subItem.route || '#'}
               key={subItem.key}
-              isMinimize={user?.userType === UserType.SuperAdmin}
-            />
+            >
+              {({ isActive }) => (
+                <li className="relative">
+                  <p
+                    className={`${
+                      isActive
+                        ? 'nav-active nav-sub-menu-a'
+                        : user?.userType === UserType.SuperAdmin
+                          ? 'hover:!bg-rhino-indigo-blue nav-sub-menu-a'
+                          : 'nav-sub-menu-a'
+                    }`}
+                  >
+                    <i className={`${isActive ? 'nav-active' : ''}`}>
+                      <subItem.icon className="text-[15px]" />
+                    </i>
+                    <span className={``}>{t(subItem.label)}</span>
+                  </p>
+                </li>
+              )}
+            </NavLink>
           ) : null
         )}
       </div>

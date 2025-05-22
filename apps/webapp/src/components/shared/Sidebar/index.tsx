@@ -84,17 +84,6 @@ const SideBar = () => {
     };
   }, [handleResize]);
 
-  const MenuItemComponent = ({ menuItem }: { menuItem: MenuItemType }) => (
-    <MenuItem
-      key={menuItem.key}
-      menuItem={menuItem}
-      minimize={{
-        ...minimize,
-        setItem: setMinimize,
-      }}
-    />
-  );
-
   return (
     <aside
       className={`${minimize.isMinimize ? 'max-w-[4.6875rem] w-[75px]' : 'max-w-[15.2rem]  w-[300px] '} bg-rhino-indigo-blue relative flex-grow flex-shrink-0 basis-auto flex-col flex z-40 will-change-scroll manu-background `}
@@ -153,7 +142,15 @@ const SideBar = () => {
           {/* Main Menu Items */}
           {MenuItems.map((menuItem) =>
             user && canViewMenuItem({ menuItem, user }) ? (
-              <MenuItemComponent menuItem={menuItem} key={menuItem.key} />
+              // <MenuItemComponent menuItem={menuItem} key={menuItem.key} />
+              <MenuItem
+                key={menuItem.key}
+                menuItem={menuItem}
+                minimize={{
+                  ...minimize,
+                  setItem: setMinimize,
+                }}
+              />
             ) : null
           )}
         </ul>
