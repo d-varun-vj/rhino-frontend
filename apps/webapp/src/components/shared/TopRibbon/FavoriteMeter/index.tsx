@@ -200,7 +200,7 @@ const FavoriteMeter = () => {
                     setPageSize: setPageSize,
                     pageSize: pageSize,
                   }}
-                  extraStyles=""
+                  extraStyles="max-h-[600px]"
                   emptyText="No results"
                   onSortSelect={onSortClick}
                   onFilterChange={onFilterChange}
