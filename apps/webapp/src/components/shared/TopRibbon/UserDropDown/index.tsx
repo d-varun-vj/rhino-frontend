@@ -4,10 +4,10 @@ import { useUser } from '../../../../context/useUser';
 import { useTranslation } from 'react-i18next';
 import { changeLanguage } from 'i18next';
 import { useLocation } from 'react-router-dom';
-import { VITE_WICKET_BASE_URL } from '../../Sidebar/config';
 import { toast } from 'react-toastify';
 
 import Langaugae from './Language';
+import { VITE_WICKET_BASE_URL } from '../../../../api/endpoints';
 
 type Item = {
   label: string;

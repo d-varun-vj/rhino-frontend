@@ -46,7 +46,7 @@ const ComboBox = ({
       onMouseLeave={() => setIsDropdownOpen(false)}
     >
       <div
-        className={`${isDropdownOpen ? '!border-rhino-indigo-blue !border-b-transparent select-header' : 'select-header'} ${disabled ? '!bg-[#eee]' : ''} ${customStyle?.header}`}
+        className={`${isDropdownOpen ? '!border-rhino-indigo-blue !border-b-transparent select-header !rounded-bl-none !rounded-br-none' : 'select-header'} ${disabled ? '!bg-[#eee]' : ''} ${customStyle?.header}`}
         onClick={() =>
           disabled
             ? setIsDropdownOpen(false)
@@ -56,7 +56,7 @@ const ComboBox = ({
       >
         <span>{selectedValue || defaultPlaceholder}</span>
         {/* Add custom down icon */}
-        <span className="icon">▼</span>
+        <span className="icon"> {isDropdownOpen ? '▲' : '▼'}</span>
       </div>
 
       {isDropdownOpen && (
@@ -67,6 +67,7 @@ const ComboBox = ({
             value={search ? search : ''}
             onChange={(e) => setSearch(e.target.value)}
             className="select-search"
+            autoFocus
           />
           <ul className="select-options">
             {search === null &&

@@ -11,7 +11,7 @@ import axios, {
 } from 'axios';
 
 import { getCookie } from '../utils';
-import { VITE_WICKET_BASE_URL } from '../components/shared/Sidebar/config';
+import { VITE_WICKET_BASE_URL } from './endpoints';
 
 // Create a custom adapter using fetch
 const fetchAdapter: AxiosAdapter = async (
