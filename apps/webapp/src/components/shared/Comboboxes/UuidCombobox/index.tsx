@@ -35,7 +35,7 @@ const UuidCombobox = ({
   const filteredOptions = options.filter((option) =>
     option.name.toLowerCase().includes(search ? search.toLowerCase() : '')
   );
-  const GroupfilteredOptions = options.map((option) =>
+  const groupfilteredOptions = options.map((option) =>
     option.groups?.filter((group) =>
       group.name.toLowerCase().includes(search ? search.toLowerCase() : '')
     )
@@ -62,7 +62,7 @@ const UuidCombobox = ({
       onMouseLeave={() => setIsDropdownOpen(false)}
     >
       <div
-        className={`${isDropdownOpen ? '!border-rhino-indigo-blue !border-b-transparent custom-select-header' : 'custom-select-header'} ${disabled ? '!bg-[#eee]' : ''} focus-within:rounded-bl-none focus-within:rounded-br-none `}
+        className={`${isDropdownOpen ? '!border-rhino-indigo-blue !border-b-transparent custom-select-header !rounded-bl-none !rounded-br-none' : 'custom-select-header'} ${disabled && '!bg-[#eee]'}`}
         onClick={() =>
           disabled
             ? setIsDropdownOpen(false)
@@ -72,7 +72,7 @@ const UuidCombobox = ({
       >
         <span>{selectedValue?.name || defaultPlaceholder}</span>
         {/* Add custom down icon */}
-        <span className="custom-icon">▼</span>
+        <span className="custom-icon">{isDropdownOpen ? '▲' : '▼'}</span>
       </div>
 
       {isDropdownOpen && (
@@ -82,12 +82,11 @@ const UuidCombobox = ({
             placeholder="Search..."
             value={search ? search : ''}
             onChange={(e) => setSearch(e.target.value)}
-            className="custom-select-search"
+            className={`custom-select-search`}
+            autoFocus
           />
           <ul className="custom-select-options">
-            {search === null &&
-            defaultPlaceholder &&
-            filteredOptions.length !== 0 ? (
+            {defaultPlaceholder && filteredOptions.length !== 0 ? (
               <li
                 onClick={() =>
                   handleSelect({
@@ -95,7 +94,7 @@ const UuidCombobox = ({
                     uuid: 'placeholder',
                   })
                 }
-                className={`${defaultPlaceholder.toString() == selectedOption?.name ? 'bg-[#036983] text-white custom-select-option' : 'custom-select-option'} `}
+                className={`${defaultPlaceholder.toString() == selectedOption?.name ? 'bg-rhino-indigo-blue-highlight text-white custom-select-option' : 'custom-select-option'} `}
               >
                 {defaultPlaceholder}
               </li>
@@ -114,7 +113,7 @@ const UuidCombobox = ({
                           uuid: group.uuid,
                         })
                       }
-                      className={`${group.name == selectedOption?.name ? 'bg-[#036983] text-white custom-select-option' : 'custom-select-option'} `}
+                      className={`${group.name == selectedOption?.name && 'bg-rhino-indigo-blue-highlight text-white '} custom-select-option`}
                     >
                       {group.name}
                     </li>
@@ -129,13 +128,13 @@ const UuidCombobox = ({
                       uuid: option.uuid,
                     })
                   }
-                  className={`${option.name == selectedOption?.name ? 'bg-[#036983] text-white custom-select-option' : 'custom-select-option'} `}
+                  className={`${option.name == selectedOption?.name && 'bg-rhino-indigo-blue-highlight text-white'}  custom-select-option`}
                 >
                   {option.name}
                 </li>
               )
             )}
-            {GroupfilteredOptions.map((filterGroups, index) => (
+            {groupfilteredOptions.map((filterGroups, index) => (
               <React.Fragment key={index}>
                 {filterGroups?.map((group, index) => (
                   <li
@@ -146,7 +145,7 @@ const UuidCombobox = ({
                         uuid: group.uuid,
                       })
                     }
-                    className={`${group.name == selectedOption?.name ? 'bg-[#036983] text-white custom-select-option' : 'custom-select-option'} `}
+                    className={`${group.name == selectedOption?.name && 'bg-rhino-indigo-blue-highlight text-white '} custom-select-option`}
                   >
                     {group.name}
                   </li>

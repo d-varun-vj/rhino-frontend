@@ -1,6 +1,10 @@
+// FIX: Used for env
 // export const BASE_URL: string = import.meta.env.VITE_API_BASE_URL as string;
+// export const VITE_WICKET_BASE_URL = import.meta.env
+//   .VITE_WICKET_BASE_URL as string;
+
 export const BASE_URL: string = 'https://app.stg.rhino.energy/api/app/';
-// export const BASE_URL: string = 'http://localhost:8090/api/app/';
+export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
 
 const API_URLS = {
   //   Top Ribbon

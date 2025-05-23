@@ -8,7 +8,6 @@ import IconButton from '../../components/shared/Buttons/IconButton';
 import MainLayout from '../../layouts/MainLayout';
 import Table from '../../components/shared/Table';
 import Title from '../../components/shared/Title';
-import { VITE_WICKET_BASE_URL } from '../../components/shared/Sidebar/config';
 import { useFavoriteMeter } from '../../context/useFavoriteMeter';
 import { useFilter } from '../../context/useFilter';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +16,7 @@ import { FilterVariant } from '../../components/shared/Table/types';
 import { Sort } from '../../types/shared/table';
 import { shouldSetInitialClient } from '../../helpers/client';
 import { CONSTANTS } from '../../constant';
+import { VITE_WICKET_BASE_URL } from '../../api/endpoints';
 
 const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({

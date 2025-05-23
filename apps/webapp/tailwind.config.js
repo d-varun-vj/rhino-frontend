@@ -8,6 +8,7 @@ export default {
       },
       colors: {
         'rhino-indigo-blue': '#1c4670',
+        'rhino-indigo-blue-highlight': '#036983',
         'rhino-indigo-blue-light': '#496b8d',
         'rhino-energy-green': '#00cf60',
         'rhino-energy-green-light': '#66e3a0',
