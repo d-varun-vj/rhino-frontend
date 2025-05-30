@@ -10,7 +10,7 @@ const API_URLS = {
   //   Top Ribbon
   getClients: () => `clients`,
   getLocations: ({ clientId }: { clientId: string | null }) =>
-    `clients/${clientId}/locations-with-groups`,
+    `clients/${clientId}/localisations-with-groups`,
   getGroups: ({ queryParams }: { queryParams: string }) =>
     `groups?${queryParams}`,
   getUser: () => 'user',
