@@ -1,18 +1,6 @@
-import React, { createContext, useState } from 'react';
-
+import React, { useState } from 'react';
+import { FavoriteMeterContext } from './favorite-meter-context';
 import { FavoriteMeterType } from '../../components/shared/TopRibbon/FavoriteMeter/types';
-
-type FavoriteMeterStore = {
-  favoriteMeter: FavoriteMeterType | null;
-  setFavoriteMeter: (favoriteMeter: FavoriteMeterType | null) => void;
-  clearFavoriteMeter: () => void;
-};
-
-const FavoriteMeterContext = createContext<FavoriteMeterStore>({
-  favoriteMeter: null,
-  setFavoriteMeter: () => {},
-  clearFavoriteMeter: () => {},
-});
 
 export const FavoriteMeterProvider = ({
   children,
@@ -38,9 +26,4 @@ export const FavoriteMeterProvider = ({
       {children}
     </FavoriteMeterContext.Provider>
   );
-};
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const useFavoriteMeter = () => {
-  return React.useContext(FavoriteMeterContext);
 };

@@ -1,104 +1,116 @@
-import { useEffect, useState } from 'react';
-import './ComboBox.css';
+import { Fragment, useState } from 'react';
+import {
+  Combobox,
+  ComboboxButton,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+} from '@headlessui/react';
+import clsx from 'clsx';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 interface ComboBoxProps {
   options: string[];
   defaultPlaceholder: string;
   disabled: boolean;
-  setReturnValue: (data: string | null) => void;
+  onSelect: (data: string | null) => void;
   selectedValue: string | null;
-  customStyle?: { header: string; dropdown: string };
+  width?: string;
+  customStyle?: string;
 }
 const ComboBox = ({
   options,
   defaultPlaceholder,
   disabled,
-  setReturnValue,
+  onSelect,
   selectedValue,
+  width,
   customStyle,
 }: ComboBoxProps) => {
-  const [search, setSearch] = useState<string | null>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(
-    selectedValue ? selectedValue : defaultPlaceholder
-  );
+  const [query, setQuery] = useState('');
 
-  const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(search ? search.toLowerCase() : '')
-  );
-
-  const handleSelect = (option: string) => {
-    setSelectedOption(option);
-    setIsDropdownOpen(false);
-    setSearch(null);
-  };
-
-  useEffect(() => {
-    setReturnValue(
-      selectedOption === defaultPlaceholder ? 'all' : selectedOption
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
+  const filteredOptions =
+    query === ''
+      ? options
+      : options.filter((option) =>
+          option.toLowerCase().includes(query.toLowerCase())
+        );
 
   return (
-    <div
-      className="select-wrapper"
-      onMouseLeave={() => setIsDropdownOpen(false)}
+    <Combobox
+      value={selectedValue}
+      onChange={(value) => onSelect(value)}
+      onClose={() => setQuery('')}
     >
-      <div
-        className={`${isDropdownOpen ? '!border-rhino-indigo-blue !border-b-transparent select-header !rounded-bl-none !rounded-br-none' : 'select-header'} ${disabled ? '!bg-[#eee]' : ''} ${customStyle?.header}`}
-        onClick={() =>
-          disabled
-            ? setIsDropdownOpen(false)
-            : setIsDropdownOpen(!isDropdownOpen)
-        }
-        tabIndex={0}
-      >
-        <span>{selectedValue || defaultPlaceholder}</span>
-        {/* Add custom down icon */}
-        <span className="icon"> {isDropdownOpen ? '▲' : '▼'}</span>
-      </div>
-
-      {isDropdownOpen && (
-        <div className={`select-dropdown ${customStyle?.dropdown}`}>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search ? search : ''}
-            onChange={(e) => setSearch(e.target.value)}
-            className="select-search"
-            autoFocus
-          />
-          <ul className="select-options">
-            {search === null &&
-            defaultPlaceholder &&
-            filteredOptions.length !== 0 ? (
-              <li
-                onClick={() => handleSelect(defaultPlaceholder)}
-                className={`${defaultPlaceholder == selectedOption ? 'bg-[#036983] text-white select-option' : 'select-option'} `}
-              >
-                {defaultPlaceholder}
-              </li>
-            ) : (
-              ''
+      <div className="relative">
+        <ComboboxInput
+          className={clsx(
+            'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 ',
+            width,
+            customStyle
+          )}
+          displayValue={(option: string) => option}
+          onChange={(event) => setQuery(event.target.value)}
+          readOnly={disabled}
+          placeholder={defaultPlaceholder}
+        />
+        <ComboboxButton
+          className="group absolute inset-y-0 right-0 px-2.5"
+          hidden={disabled}
+        >
+          <ChevronDownIcon className="size-4 fill-rhino-indigo-blue group-data-hover:bg-yellow-500" />
+        </ComboboxButton>
+        <ComboboxOptions
+          anchor="bottom start"
+          className={clsx(
+            'empty:invisible bg-rhino-white border-[1px] border-rhino-indigo-blue rounded z-30 px-3 py-1  mt-1  text-sm !max-h-72',
+            width
+          )}
+        >
+          <div className="py-3">
+            {filteredOptions.length !== 0 && (
+              <ComboboxOption value={'all'}>
+                {({ focus }) => (
+                  <div
+                    className={clsx(
+                      'group flex gap-2 px-2 py-2 text-[13px]',
+                      focus &&
+                        'bg-rhino-indigo-blue-highlight text-rhino-white',
+                      selectedValue == 'all' &&
+                        'bg-rhino-energy-green text-rhino-white'
+                    )}
+                  >
+                    All
+                  </div>
+                )}
+              </ComboboxOption>
             )}
-
             {filteredOptions.map((option, index) => (
-              <li
-                key={index}
-                onClick={() => handleSelect(option || defaultPlaceholder)}
-                className={`${option == selectedOption ? 'bg-[#036983] text-white select-option' : 'select-option'} !text-start`}
-              >
-                {option}
-              </li>
+              <ComboboxOption as={Fragment} key={index} value={option}>
+                {({ focus }) => (
+                  <div
+                    className={clsx(
+                      'group flex gap-2 px-2 py-2 text-[13px]',
+                      focus &&
+                        'bg-rhino-indigo-blue-highlight text-rhino-white',
+                      selectedValue == option &&
+                        'bg-rhino-energy-green text-rhino-white'
+                    )}
+                  >
+                    {option}
+                  </div>
+                )}
+              </ComboboxOption>
             ))}
-            {filteredOptions.length === 0 && (
-              <li className="text-[12px] p-3">No options found</li>
-            )}
-          </ul>
-        </div>
-      )}
-    </div>
+          </div>
+          {filteredOptions.length === 0 && (
+            <div className="text-rhino-yellow w-full text-[13px] pb-3">
+              No results
+            </div>
+          )}
+        </ComboboxOptions>
+      </div>
+    </Combobox>
   );
 };
 

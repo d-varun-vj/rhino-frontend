@@ -1,17 +1,17 @@
 import { DashboardType, Filter } from './types';
 import { FaChartBar, FaChartLine } from 'react-icons/fa';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { TableData, useGetMetaData, usePostGetTableData } from './api';
 import ActionCell from '../../components/shared/Table/ActionCell';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import IconButton from '../../components/shared/Buttons/IconButton';
 import MainLayout from '../../layouts/MainLayout';
 import Table from '../../components/shared/Table';
-import Title from '../../components/shared/Title';
-import { useFavoriteMeter } from '../../context/useFavoriteMeter';
-import { useFilter } from '../../context/useFilter';
+import PageTitle from '../../components/shared/PageTitle';
+import { useFavoriteMeter } from '../../context/favoriteMeter';
+import { useUserFilter } from '../../context/userFilter';
 import { useTranslation } from 'react-i18next';
-import { useUser } from '../../context/useUser';
+import { useUser } from '../../context/user';
 import { FilterVariant } from '../../components/shared/Table/types';
 import { Sort } from '../../types/shared/table';
 import { shouldSetInitialClient } from '../../helpers/client';
@@ -36,13 +36,13 @@ const Dashboard = () => {
   });
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  const { client, location, group, setClient } = useFilter();
+  const { client, location, group, setClient } = useUserFilter();
   const { favoriteMeter } = useFavoriteMeter();
   const { user } = useUser();
   const { t } = useTranslation();
   const translationBaseRoute = 'pages.dashboard.table.';
 
-  const { mutateAsync: postGetTableData, isPending } = usePostGetTableData({
+  const { mutateAsync: postGetTableData } = usePostGetTableData({
     params: {
       page: page,
       size: pageSize,
@@ -52,21 +52,24 @@ const Dashboard = () => {
       sortDirection: sort.direction,
       sortedField: sort.field,
       ...filters,
-      measurementUuids: user?.measurements ? user.measurements : null,
-      favoriteMeterUuids: favoriteMeter ? favoriteMeter.measurementUuids : null,
+      favoriteMeterUuid: favoriteMeter ? favoriteMeter.uuid : null,
     },
   });
-  const [tableData, settableData] = useState<TableData>();
-
-  const getData = async () => {
-    const response = await postGetTableData();
-    settableData(response);
-  };
+  const [tableData, setTableData] = useState<TableData>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const getData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await postGetTableData();
+        setTableData(response);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      setIsLoading(false);
+    };
+    void getData();
   }, [
     user,
     client,
@@ -77,6 +80,7 @@ const Dashboard = () => {
     sort,
     page,
     pageSize,
+    postGetTableData,
   ]);
 
   const { data: Options } = useGetMetaData({
@@ -92,31 +96,34 @@ const Dashboard = () => {
     }
   }, [user, setClient]);
 
-  const ActionCellFn = (row: Row<DashboardType>) => (
-    <ActionCell>
-      <IconButton
-        action={() => {
-          window.location.href =
-            VITE_WICKET_BASE_URL +
-            `consumptionProfileChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
-        }}
-        popupContent={t(translationBaseRoute + 'popup.goToProfile')}
-        style="bg-rhino-energy-green text-white"
-      >
-        <FaChartBar />
-      </IconButton>
-      <IconButton
-        action={() => {
-          window.location.href =
-            VITE_WICKET_BASE_URL +
-            `consumptionChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
-        }}
-        popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
-        style="bg-rhino-energy-green text-white"
-      >
-        <FaChartLine />
-      </IconButton>
-    </ActionCell>
+  const ActionCellFn = useCallback(
+    (row: Row<DashboardType>) => (
+      <ActionCell>
+        <IconButton
+          action={() => {
+            window.location.href =
+              VITE_WICKET_BASE_URL +
+              `consumptionProfileChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+          }}
+          popupContent={t(translationBaseRoute + 'popup.goToProfile')}
+          style="bg-rhino-energy-green text-rhino-white"
+        >
+          <FaChartBar />
+        </IconButton>
+        <IconButton
+          action={() => {
+            window.location.href =
+              VITE_WICKET_BASE_URL +
+              `consumptionChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+          }}
+          popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
+          style="bg-rhino-energy-green text-rhino-white"
+        >
+          <FaChartLine />
+        </IconButton>
+      </ActionCell>
+    ),
+    [t]
   );
 
   const onSortClick = (field: string, direction: string) => {
@@ -355,13 +362,20 @@ const Dashboard = () => {
         cell: ({ row }) => ActionCellFn(row),
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [Options, sort.direction, t]
+    [
+      ActionCellFn,
+      Options?.endUserAreaTypes,
+      Options?.levelTypes,
+      Options?.loadTypes,
+      sort.direction,
+      t,
+      user?.language,
+    ]
   );
 
   return (
     <MainLayout title="sideMenu.dashboard">
-      <Title
+      <PageTitle
         title={t('pages.dashboard.mainHeader')}
         guide={true}
         guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
@@ -381,7 +395,7 @@ const Dashboard = () => {
         }}
         onSortSelect={onSortClick}
         onFilterChange={onFilterChange}
-        isLoading={isPending}
+        isLoading={isLoading}
       />
     </MainLayout>
   );

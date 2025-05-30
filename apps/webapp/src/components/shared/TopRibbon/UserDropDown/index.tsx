@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
-import { useUser } from '../../../../context/useUser';
+import { useUser } from '../../../../context/user';
 import { useTranslation } from 'react-i18next';
 import { changeLanguage } from 'i18next';
 import { useLocation } from 'react-router-dom';
@@ -50,14 +50,14 @@ const UserDropDown = () => {
     i18n: { language },
   } = useTranslation();
   const { pathname } = useLocation();
+  const languageRef = useRef(language);
 
   useEffect(() => {
-    if (user?.language !== language) {
+    if (user?.language !== languageRef.current) {
       changeLanguage(user?.language).catch(() => {
         toast.error('Failed to change language!');
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (

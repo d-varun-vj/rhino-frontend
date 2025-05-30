@@ -82,7 +82,7 @@ const httpClientWithoutAuthorization: AxiosInstance = axios.create({
 });
 
 // Read token from cookie once during initialization
-const token: string = getCookie('token') || '';
+const token: string = getCookie() || '';
 
 export const initHttpClient = async (baseURL?: string) => {
   const defaultHeaders = new AxiosHeaders({

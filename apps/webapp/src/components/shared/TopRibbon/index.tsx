@@ -4,22 +4,14 @@ import LocationCombobox from '../Comboboxes/LocationCombobox';
 import GroupCombobox from '../Comboboxes/GroupCombobox';
 import { useTranslation } from 'react-i18next';
 import FavoriteMeter from './FavoriteMeter';
-import { useFilter } from '../../../context/useFilter';
+import { useUserFilter } from '../../../context/userFilter';
 import { useEffect, useState } from 'react';
-import { useUser } from '../../../context/useUser';
-import { UserType } from '../../../api/User/types';
-import { useFavoriteMeter } from '../../../context/useFavoriteMeter';
+import { useUser } from '../../../context/user';
+import { useFavoriteMeter } from '../../../context/favoriteMeter';
 import { Location, useGetLocations } from '../Comboboxes/LocationCombobox/api';
 import { Client, useGetClients } from '../Comboboxes/ClientCombobox/api';
 import { shouldSetInitialClient } from '../../../helpers/client';
-import { CONSTANTS } from '../../../constant';
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const enum FieldType {
-  CLIENT = 'client',
-  GROUP = 'group',
-  LOCATION = 'location',
-}
+import { FieldType } from '../../../types/shared/topribbon';
 
 const TopRibbon = () => {
   const { t } = useTranslation();
@@ -32,8 +24,8 @@ const TopRibbon = () => {
     client: selectedClient,
     group: selectedGroup,
     location: selectedLocation,
-  } = useFilter();
-  const { clearFavoriteMeter } = useFavoriteMeter();
+  } = useUserFilter();
+  const { setFavoriteMeter } = useFavoriteMeter();
   const [locations, setLocations] = useState<Location[]>([]);
   const { data: locationsData } = useGetLocations({
     clientId: selectedClient ? selectedClient?.uuid : null,
@@ -68,16 +60,16 @@ const TopRibbon = () => {
     if (user && shouldSetInitialClient(user)) {
       setDisableDropdown(true);
     }
-    clearFavoriteMeter();
     setSelectedGroup(null);
     setSelectedLocation(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setFavoriteMeter(null);
   }, [
     locationsData,
     selectedClient,
     setSelectedClient,
     setSelectedGroup,
     setSelectedLocation,
+    setFavoriteMeter,
     user,
   ]);
 
@@ -92,23 +84,13 @@ const TopRibbon = () => {
     ) {
       setSelectedGroup(null);
     }
-    if (
-      (user?.structureAccess?.resourceAccesses ?? []).length > 0 &&
-      user?.userType === UserType.LocalisationAdmin &&
-      locations
-    ) {
-      const filterLocationUuid = user?.structureAccess?.resourceAccesses
-        ?.filter((resource) => resource.source_type === CONSTANTS.location)
-        .map((resource) => resource.source_uuid);
-      const filteredLocations = locations.filter((location) =>
-        filterLocationUuid?.includes(location.uuid)
-      );
-      setLocations(filteredLocations);
-    } else if (locations) {
-      setLocations(locations);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [
+    locations,
+    selectedGroup?.name,
+    selectedLocation,
+    setSelectedGroup,
+    user,
+  ]);
 
   const onFilterChange = (
     type: FieldType,

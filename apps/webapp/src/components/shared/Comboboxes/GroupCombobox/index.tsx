@@ -1,8 +1,8 @@
-import { FilterData } from '../../../../context/useFilter';
-import UuidCombobox from '../UuidCombobox';
-import { Location } from '../LocationCombobox/api';
 import { useTranslation } from 'react-i18next';
-import { FieldType } from '../../TopRibbon';
+import UuidCombobox from '../UuidCombobox';
+import { FieldType } from '../../../../types/shared/topribbon';
+import { FilterData } from '../../../../context/userFilter/user-filter-context';
+import { Location } from '../LocationCombobox/api';
 
 const GroupCombobox = ({
   onSelect,
@@ -43,8 +43,8 @@ const GroupCombobox = ({
           : []
       }
       defaultPlaceholder={t('comboBox.groupNull')}
-      disenabled={disenabled ?? false}
-      setReturnValue={(group) => {
+      disabled={disenabled ?? false}
+      onSelect={(group) => {
         if (onSelect) onSelect(FieldType.GROUP, group);
       }}
       selectedValue={selectedGroup ?? null}

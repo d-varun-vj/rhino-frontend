@@ -8,10 +8,11 @@ export const VITE_WICKET_BASE_URL = 'https://app.stg.rhino.energy/';
 
 const API_URLS = {
   //   Top Ribbon
-  getClients: ({ userUuid }: { userUuid: string }) =>
-    `clients/user/${userUuid}`,
+  getClients: () => `clients`,
   getLocations: ({ clientId }: { clientId: string | null }) =>
-    `locations/${clientId}`,
+    `clients/${clientId}/locations-with-groups`,
+  getGroups: ({ queryParams }: { queryParams: string }) =>
+    `groups?${queryParams}`,
   getUser: () => 'user',
   changeLanguage: () => `user/language`,
 

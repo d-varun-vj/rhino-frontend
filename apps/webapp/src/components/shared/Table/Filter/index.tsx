@@ -24,36 +24,35 @@ const Filter = <T,>({
   const options = column?.columnDef?.meta?.selectionOptions || [];
 
   return filterVariant === FilterVariant.SELECT ? (
-    <ComboBox
-      options={options}
-      defaultPlaceholder={t('comboBox.select')}
-      disabled={false}
-      selectedValue={selectValue}
-      setReturnValue={(value) => {
-        if (value === 'all') {
-          if (column.columnDef.meta?.filterKey) {
-            onFilterChange(null, 'all', null);
+    <div className="mb-4">
+      <ComboBox
+        options={options}
+        defaultPlaceholder={t('comboBox.select')}
+        disabled={false}
+        selectedValue={selectValue}
+        onSelect={(value) => {
+          if (value === 'all') {
+            if (column.columnDef.meta?.filterKey) {
+              onFilterChange(null, 'all', null);
+            }
+            column.setFilterValue(null);
+            setSelectedValue(null);
+          } else {
+            if (column.columnDef.meta?.filterKey) {
+              onFilterChange(
+                value,
+                column.columnDef.meta?.filterKey,
+                FilterVariant.SELECT
+              );
+            }
+            column.setFilterValue(value);
+            setSelectedValue(value ? value : null);
           }
-          column.setFilterValue(null);
-          setSelectedValue(null);
-        } else {
-          if (column.columnDef.meta?.filterKey) {
-            onFilterChange(
-              value,
-              column.columnDef.meta?.filterKey,
-              FilterVariant.SELECT
-            );
-          }
-          column.setFilterValue(value);
-          setSelectedValue(value ? value : null);
-        }
-      }}
-      customStyle={{
-        header:
-          'mb-[16px] h-auto py-[5.5px] rounded px-[10px] focus-within:rounded-bl-none focus-within:rounded-br-none !min-w-[9rem] overflow-hidden  whitespace-nowrap',
-        dropdown: 'mt-[-16px]  !min-w-[9rem]',
-      }}
-    />
+        }}
+        width="w-[10rem]"
+        customStyle="!h-[2rem]"
+      />
+    </div>
   ) : filterVariant === FilterVariant.TEXT ? (
     <DebouncedInput
       className="rounded"

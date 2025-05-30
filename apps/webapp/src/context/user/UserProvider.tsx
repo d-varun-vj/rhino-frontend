@@ -1,17 +1,7 @@
-import React, { createContext, useEffect, useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import { User } from '../../api/User/types';
 import { useGetUserDetails } from '../../api/User';
-
-type UserStore = {
-  user: User | null;
-  setUser: (user: User | null) => void;
-};
-
-const UserContext = createContext<UserStore>({
-  user: null,
-  setUser: () => {},
-});
+import { UserContext } from './user-context';
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -27,9 +17,4 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </UserContext.Provider>
   );
-};
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const useUser = () => {
-  return React.useContext(UserContext);
 };

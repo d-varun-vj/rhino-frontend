@@ -13,9 +13,7 @@ export const useGetClients = ({ userUuid }: { userUuid: string }) => {
   return useQuery({
     queryKey: [DataQueryKeys.CLIENTS],
     queryFn: async () => {
-      const response = await httpClient.get<Client[]>(
-        API_URLS.getClients({ userUuid: userUuid })
-      );
+      const response = await httpClient.get<Client[]>(API_URLS.getClients());
       return response.data;
     },
     enabled: userUuid ? true : false,

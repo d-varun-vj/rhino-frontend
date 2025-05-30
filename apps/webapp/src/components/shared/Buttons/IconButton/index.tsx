@@ -1,39 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const IconButton = ({
   children,
-  action,
   style,
   popupContent,
+  action,
 }: {
   children: React.ReactNode;
-  action: () => void;
   style?: string;
+  action: () => void;
   popupContent?: string;
 }) => {
-  const [showPopup, setShowPopup] = useState(false);
-
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setShowPopup(true)}
-      onMouseLeave={() => setShowPopup(false)}
-    >
+    <div className="relative group inline-block">
       <button
+        className={`font-bold px-4 py-2 rounded bg-rhino-energy-green text-white ${style}`}
         onClick={action}
-        style={{ cursor: 'pointer' }}
-        className={`font-bold px-[1.125rem] py-[0.5rem] rounded ${style}`}
       >
         {children}
       </button>
-      {popupContent && showPopup && (
-        <div
-          className="absolute -bottom-7 mt-2 px-2 py-1 right-0   bg-gray-700 text-white rounded shadow-lg  text-[12px]"
-          style={{ whiteSpace: 'nowrap' }}
-        >
-          {popupContent}
-        </div>
-      )}
+      <div className="absolute invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-300 -bottom-7 right-0 bg-black/90 text-white px-2 py-1 rounded shadow-lg text-xs lg:whitespace-nowrap ">
+        {popupContent}
+      </div>
     </div>
   );
 };

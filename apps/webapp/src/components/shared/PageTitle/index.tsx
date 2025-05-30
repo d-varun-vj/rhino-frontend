@@ -1,6 +1,6 @@
 import { FaQuestionCircle } from 'react-icons/fa';
 
-const Title = ({
+const PageTitle = ({
   title,
   guide = false,
   guideLink,
@@ -30,4 +30,4 @@ const Title = ({
   );
 };
 
-export default Title;
+export default PageTitle;

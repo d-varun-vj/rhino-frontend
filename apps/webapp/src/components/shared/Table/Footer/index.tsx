@@ -1,6 +1,6 @@
 import { FooterType } from '..';
-import { useEffect, useState } from 'react';
-import { useFilter } from '../../../../context/useFilter';
+import { useEffect, useRef, useState } from 'react';
+import { useUserFilter } from '../../../../context/userFilter';
 import { useTranslation } from 'react-i18next';
 
 type Footer = {
@@ -13,21 +13,15 @@ const TableFooter = ({ pagination }: Footer) => {
     to: number;
   }>({ from: 1, to: pagination.pageSize });
 
-  const { client, location, group } = useFilter();
+  const { client, location, group } = useUserFilter();
   const { t } = useTranslation();
+  const paginationRef = useRef(pagination);
 
   useEffect(() => {
-    setShowIndex({ from: 1, to: pagination.pageSize });
-    pagination.setCurrentPage(0);
-    pagination.setPageSize(5);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    client,
-    location,
-    group,
-    pagination.setCurrentPage,
-    pagination.setPageSize,
-  ]);
+    setShowIndex({ from: 1, to: paginationRef.current.pageSize });
+    paginationRef.current.setCurrentPage(0);
+    paginationRef.current.setPageSize(5);
+  }, [client, location, group]);
 
   return (
     <div className="flex justify-between  my-5 flex-col gap-5 mt-10 lg:flex-row lg:items-center">

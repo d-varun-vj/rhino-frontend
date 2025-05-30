@@ -7,10 +7,10 @@ import { FavoriteMeterFilter, FavoriteMeterType } from './types';
 import ActionCell from '../../Table/ActionCell';
 import IconButton from '../../Buttons/IconButton';
 import { useGetAllFavoriteMeters } from './api';
-import { useUser } from '../../../../context/useUser';
+import { useUser } from '../../../../context/user';
 import { RiCloseCircleFill } from 'react-icons/ri';
-import { useFavoriteMeter } from '../../../../context/useFavoriteMeter';
-import { useFilter } from '../../../../context/useFilter';
+import { useFavoriteMeter } from '../../../../context/favoriteMeter';
+import { useUserFilter } from '../../../../context/userFilter';
 import { FilterVariant } from '../../Table/types';
 import { Sort } from '../../../../types/shared/table';
 
@@ -18,7 +18,7 @@ const FavoriteMeter = () => {
   const { t } = useTranslation();
   const { user } = useUser();
   const { favoriteMeter, setFavoriteMeter } = useFavoriteMeter();
-  const { client } = useFilter();
+  const { client } = useUserFilter();
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
@@ -101,8 +101,8 @@ const FavoriteMeter = () => {
                 setModelOpen(false);
                 setFavoriteMeter(info.row.original);
               }}
-              // popupContent={t(translationBaseRoute + 'popup')}
-              style="bg-rhino-energy-green text-white"
+              popupContent={t(translationBaseRoute + 'popup')}
+              style="bg-rhino-energy-green text-rhino-white"
             >
               <FaArrowRight />
             </IconButton>
@@ -155,7 +155,7 @@ const FavoriteMeter = () => {
   return (
     <div>
       <div
-        className={`cursor-pointer min-w-[14rem]  flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-white font-bold  rounded-[4px] text-[13px] ${favoriteMeter ? 'bg-rhino-indigo-blue border-rhino-indigo-blue-light' : 'bg-rhino-energy-green border-rhino-energy-green-light'}`}
+        className={`cursor-pointer min-w-[14rem]  flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-rhino-white font-bold  rounded-[4px] text-[13px] ${favoriteMeter ? 'bg-rhino-indigo-blue border-rhino-indigo-blue-light' : 'bg-rhino-energy-green border-rhino-energy-green-light'}`}
         onClick={() => {
           if (favoriteMeter !== null) {
             setModelOpen(false);

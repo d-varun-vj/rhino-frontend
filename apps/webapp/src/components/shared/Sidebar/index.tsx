@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { MenuKeys, MenuItems, MenuItemType } from './config';
 import MenuItem from './MenuItem';
-import { useUser } from '../../../context/useUser';
+import { useUser } from '../../../context/user';
 import { User, UserType, ViewPermissionsType } from '../../../api/User/types';
 
 const handleResizeLogic = (
@@ -142,7 +142,6 @@ const SideBar = () => {
           {/* Main Menu Items */}
           {MenuItems.map((menuItem) =>
             user && canViewMenuItem({ menuItem, user }) ? (
-              // <MenuItemComponent menuItem={menuItem} key={menuItem.key} />
               <MenuItem
                 key={menuItem.key}
                 menuItem={menuItem}

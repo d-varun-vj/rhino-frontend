@@ -22,7 +22,7 @@ const MainLayout = ({
         {/* Navigation */}
         <SideBar />
         {/* Main Panel */}
-        <div className="bg-[#fff] flex items-stretch flex-auto p-0 basis-full flex-col w-0 min-w-0 max-w-full min-h-[1px] relative">
+        <div className="bg-rhino-white flex items-stretch flex-auto p-0 basis-full flex-col w-0 min-w-0 max-w-full min-h-[1px] relative">
           {/* Top Ribbon */}
           <TopRibbon />
           {/* Main Content */}

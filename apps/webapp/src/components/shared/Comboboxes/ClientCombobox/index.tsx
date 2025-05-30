@@ -1,8 +1,8 @@
-import UuidCombobox from '../UuidCombobox';
 import { Client } from './api';
 import { useTranslation } from 'react-i18next';
-import { FieldType } from '../../TopRibbon';
-import { FilterData } from '../../../../context/useFilter';
+import UuidCombobox from '../UuidCombobox';
+import { FieldType } from '../../../../types/shared/topribbon';
+import { FilterData } from '../../../../context/userFilter/user-filter-context';
 
 const ClientCombobox = ({
   onSelect: onFliterSelect,
@@ -34,8 +34,8 @@ const ClientCombobox = ({
           : []
       }
       defaultPlaceholder={t('comboBox.select')}
-      disenabled={disableDropdown || false}
-      setReturnValue={(client) => {
+      disabled={disableDropdown || false}
+      onSelect={(client) => {
         if (onFliterSelect) onFliterSelect(FieldType.CLIENT, client);
       }}
       selectedValue={selectedClient ?? null}

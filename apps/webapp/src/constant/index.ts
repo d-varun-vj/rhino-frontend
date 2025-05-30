@@ -1,4 +1,8 @@
 export const CONSTANTS = {
-  location: 'LOCALISATION',
-  action: 'action',
+  action: 'action', // Table Action btn key
+  sortIndicator: {
+    asc: '↿',
+    desc: '⇂',
+    noSort: '⇅',
+  },
 };

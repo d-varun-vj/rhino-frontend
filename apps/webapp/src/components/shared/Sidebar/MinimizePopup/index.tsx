@@ -1,11 +1,10 @@
 import { UserType } from '../../../../api/User/types';
-
-import { canViewItem } from '../MenuItem';
 import { MenuItemType } from '../config';
 import { VscTriangleLeft } from 'react-icons/vsc';
 import { useTranslation } from 'react-i18next';
-import { useUser } from '../../../../context/useUser';
+import { useUser } from '../../../../context/user';
 import { NavLink } from 'react-router-dom';
+import { canViewItem } from '../../../../helpers/sidebar';
 
 const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
   const { t } = useTranslation();
@@ -21,7 +20,7 @@ const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
           target={`${menuItem.link ? 'blank' : ''}`}
         >
           <div
-            className={`py-3 text-white px-4 rounded-lg  bg-rhino-indigo-blue-light min-w-[200px] -ml-[5px] text-sm ${menuItem.subItems ? 'rounded-bl-none  rounded-br-none' : ''}`}
+            className={`py-3 text-rhino-white px-4 rounded-lg  bg-rhino-indigo-blue-light min-w-[200px] -ml-[5px] text-sm ${menuItem.subItems ? 'rounded-bl-none  rounded-br-none' : ''}`}
           >
             {t(menuItem.label)}
           </div>

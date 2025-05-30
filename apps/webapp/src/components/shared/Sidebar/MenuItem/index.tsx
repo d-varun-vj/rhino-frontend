@@ -1,15 +1,11 @@
 import { Dispatch, SetStateAction } from 'react';
-import { MenuKeys, MenuItemType, SubItemType } from '../config';
+import { MenuKeys, MenuItemType } from '../config';
 import './MenuItem.css';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useUser } from '../../../../context/useUser';
-import {
-  User,
-  UserType,
-  ViewPermissionsType,
-} from '../../../../api/User/types';
+import { useUser } from '../../../../context/user';
 import MinimizePopup from '../MinimizePopup';
+import { canViewItem } from '../../../../helpers/sidebar';
 
 export type menuItem = {
   menuItem: MenuItemType;
@@ -23,49 +19,6 @@ export type menuItem = {
       }>
     >;
   };
-};
-
-const hasUserTypeAccess = ({
-  subItem,
-  user,
-}: {
-  subItem: SubItemType;
-  user: User;
-}) => {
-  return (
-    subItem.viewPermissionType === ViewPermissionsType.UserTypeBased &&
-    subItem.allowedUserTypes?.includes(user?.userType)
-  );
-};
-
-const hasRoleAccess = ({
-  subItem,
-  user,
-}: {
-  subItem: SubItemType;
-  user: User | null;
-}) => {
-  return (
-    subItem.viewPermissionType === ViewPermissionsType.ViewRoleBased &&
-    subItem.viewPermissions?.some((permission) =>
-      user?.permissions?.includes(permission)
-    )
-  );
-};
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const canViewItem = ({
-  subItem,
-  user,
-}: {
-  subItem: SubItemType;
-  user: User;
-}) => {
-  return (
-    user?.userType === UserType.SuperAdmin ||
-    hasUserTypeAccess({ subItem, user }) ||
-    hasRoleAccess({ subItem, user })
-  );
 };
 
 const MenuItem = ({ menuItem, minimize }: menuItem) => {

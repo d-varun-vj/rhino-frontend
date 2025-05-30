@@ -5,5 +5,6 @@ export const enum DataQueryKeys {
   // Top Ribbon
   CLIENTS = 'clients',
   LOCATIONS = 'locations',
+  GROUPS = 'groups',
   FAVORITE_METERS = 'favoriteMeters',
 }

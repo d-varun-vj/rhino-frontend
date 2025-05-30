@@ -1,166 +1,134 @@
-import React, { useEffect, useState } from 'react';
-import './UuidComboBox.css';
+import {
+  Combobox,
+  ComboboxButton,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+} from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import React, { Fragment, useState } from 'react';
+import clsx from 'clsx';
+
+type Group = { name: string; uuid: string };
 
 interface Props {
   options: {
     name: string;
     uuid: string;
-    groups?: { name: string; uuid: string }[];
+    groups?: Group[];
   }[];
   defaultPlaceholder: string;
-  disenabled: boolean;
-  setReturnValue: (data: { name: string; uuid: string } | null) => void;
+  disabled: boolean;
+  onSelect: (data: { name: string; uuid: string } | null) => void;
   selectedValue: {
     name: string;
     uuid: string;
   } | null;
 }
+
 const UuidCombobox = ({
   options,
   defaultPlaceholder,
-  disenabled: disabled,
-  setReturnValue,
+  disabled,
+  onSelect,
   selectedValue,
 }: Props) => {
-  const [search, setSearch] = useState<string | null>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<{
-    name: string;
-    uuid: string;
-  } | null>({
-    name: selectedValue ? selectedValue.name : defaultPlaceholder,
-    uuid: selectedValue ? selectedValue.uuid : '',
-  });
+  const [query, setQuery] = useState('');
 
-  const filteredOptions = options.filter((option) =>
-    option.name.toLowerCase().includes(search ? search.toLowerCase() : '')
-  );
-  const groupfilteredOptions = options.map((option) =>
-    option.groups?.filter((group) =>
-      group.name.toLowerCase().includes(search ? search.toLowerCase() : '')
-    )
-  );
-
-  const handleSelect = (option: { name: string; uuid: string }) => {
-    setSelectedOption(option);
-    setIsDropdownOpen(false);
-    setSearch(null);
-  };
-
-  useEffect(() => {
-    setReturnValue(
-      selectedOption?.name === defaultPlaceholder.toString()
-        ? null
-        : selectedOption
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
+  const filteredOptions =
+    query === ''
+      ? options
+      : options.filter(
+          (option) =>
+            option.name.toLowerCase().includes(query.toLowerCase()) ||
+            option.groups?.some((group) =>
+              group.name.toLowerCase().includes(query.toLowerCase())
+            )
+        );
 
   return (
-    <div
-      className="custom-select-wrapper"
-      onMouseLeave={() => setIsDropdownOpen(false)}
+    <Combobox
+      value={selectedValue}
+      onChange={(value) => onSelect(value)}
+      onClose={() => setQuery('')}
     >
-      <div
-        className={`${isDropdownOpen ? '!border-rhino-indigo-blue !border-b-transparent custom-select-header !rounded-bl-none !rounded-br-none' : 'custom-select-header'} ${disabled && '!bg-[#eee]'}`}
-        onClick={() =>
-          disabled
-            ? setIsDropdownOpen(false)
-            : setIsDropdownOpen(!isDropdownOpen)
-        }
-        tabIndex={0}
-      >
-        <span>{selectedValue?.name || defaultPlaceholder}</span>
-        {/* Add custom down icon */}
-        <span className="custom-icon">{isDropdownOpen ? '▲' : '▼'}</span>
-      </div>
-
-      {isDropdownOpen && (
-        <div className="custom-select-dropdown">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search ? search : ''}
-            onChange={(e) => setSearch(e.target.value)}
-            className={`custom-select-search`}
-            autoFocus
-          />
-          <ul className="custom-select-options">
-            {defaultPlaceholder && filteredOptions.length !== 0 ? (
-              <li
-                onClick={() =>
-                  handleSelect({
-                    name: defaultPlaceholder,
-                    uuid: 'placeholder',
-                  })
-                }
-                className={`${defaultPlaceholder.toString() == selectedOption?.name ? 'bg-rhino-indigo-blue-highlight text-white custom-select-option' : 'custom-select-option'} `}
-              >
-                {defaultPlaceholder}
-              </li>
-            ) : null}
-
-            {filteredOptions.map((option, index) =>
-              option.groups ? (
+      <div className="relative">
+        <ComboboxInput
+          className={clsx(
+            'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] h-[2.5rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border-[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 w-[14rem]'
+          )}
+          displayValue={(option: { id: number; name: string }) => option?.name}
+          onChange={(event) => setQuery(event.target.value)}
+          autoFocus={!disabled}
+          readOnly={disabled}
+          placeholder={defaultPlaceholder}
+        />
+        <ComboboxButton
+          className="group absolute inset-y-0 right-0 px-2.5"
+          hidden={disabled}
+        >
+          <ChevronDownIcon className="size-4 fill-rhino-indigo-blue group-data-hover:bg-yellow-500" />
+        </ComboboxButton>
+        <ComboboxOptions
+          anchor="bottom start"
+          className={clsx(
+            'empty:invisible bg-rhino-white border-[1px] border-rhino-indigo-blue rounded z-30 px-3 py-1  mt-1  text-sm  w-[14rem] !max-h-72'
+          )}
+        >
+          <div className="py-3">
+            {filteredOptions.map((option, index) => {
+              return option.groups ? (
                 <React.Fragment key={index}>
                   <p className="text-sm py-4 text-gray-500">{option.name}</p>
                   {option.groups.map((group, index) => (
-                    <li
-                      key={`${index}-${group.name}`}
-                      onClick={() =>
-                        handleSelect({
-                          name: group.name,
-                          uuid: group.uuid,
-                        })
-                      }
-                      className={`${group.name == selectedOption?.name && 'bg-rhino-indigo-blue-highlight text-white '} custom-select-option`}
+                    <ComboboxOption
+                      as={Fragment}
+                      key={`${index}`}
+                      value={group}
                     >
-                      {group.name}
-                    </li>
+                      {({ focus }) => (
+                        <div
+                          className={clsx(
+                            'group flex gap-2 px-2 py-2 text-[13px]',
+                            focus &&
+                              'bg-rhino-indigo-blue-highlight text-rhino-white',
+                            selectedValue?.name == group.name &&
+                              'bg-rhino-energy-green text-rhino-white'
+                          )}
+                        >
+                          {group.name}
+                        </div>
+                      )}
+                    </ComboboxOption>
                   ))}
                 </React.Fragment>
               ) : (
-                <li
-                  key={index}
-                  onClick={() =>
-                    handleSelect({
-                      name: option.name || defaultPlaceholder.toString(),
-                      uuid: option.uuid,
-                    })
-                  }
-                  className={`${option.name == selectedOption?.name && 'bg-rhino-indigo-blue-highlight text-white'}  custom-select-option`}
-                >
-                  {option.name}
-                </li>
-              )
-            )}
-            {groupfilteredOptions.map((filterGroups, index) => (
-              <React.Fragment key={index}>
-                {filterGroups?.map((group, index) => (
-                  <li
-                    key={`${index}-${group.name}`}
-                    onClick={() =>
-                      handleSelect({
-                        name: group.name,
-                        uuid: group.uuid,
-                      })
-                    }
-                    className={`${group.name == selectedOption?.name && 'bg-rhino-indigo-blue-highlight text-white '} custom-select-option`}
-                  >
-                    {group.name}
-                  </li>
-                ))}
-              </React.Fragment>
-            ))}
-            {filteredOptions.length === 0 && (
-              <li className="text-[13px] text-rhino-indigo-blue text-center">
-                No options found
-              </li>
-            )}
-          </ul>
-        </div>
-      )}
-    </div>
+                <ComboboxOption as={Fragment} key={option.uuid} value={option}>
+                  {({ focus }) => (
+                    <div
+                      className={clsx(
+                        'group flex gap-2 px-2 py-2 text-[13px]',
+                        focus &&
+                          'bg-rhino-indigo-blue-highlight text-rhino-white',
+                        selectedValue?.name == option.name &&
+                          'bg-rhino-energy-green text-rhino-white'
+                      )}
+                    >
+                      {option.name}
+                    </div>
+                  )}
+                </ComboboxOption>
+              );
+            })}
+          </div>
+          {filteredOptions.length === 0 && (
+            <div className="text-rhino-yellow w-full text-[13px] pb-3">
+              No results
+            </div>
+          )}
+        </ComboboxOptions>
+      </div>
+    </Combobox>
   );
 };
 

@@ -1,8 +1,8 @@
-import { FilterData } from '../../../../context/useFilter';
-import UuidCombobox from '../UuidCombobox';
 import { Location } from './api';
 import { useTranslation } from 'react-i18next';
-import { FieldType } from '../../TopRibbon';
+import UuidCombobox from '../UuidCombobox';
+import { FieldType } from '../../../../types/shared/topribbon';
+import { FilterData } from '../../../../context/userFilter/user-filter-context';
 
 const LocationCombobox = ({
   onSelect,
@@ -34,8 +34,8 @@ const LocationCombobox = ({
           : []
       }
       defaultPlaceholder={t('comboBox.locationNull')}
-      disenabled={disenabled ?? false}
-      setReturnValue={(location) => {
+      disabled={disenabled ?? false}
+      onSelect={(location) => {
         if (onSelect) onSelect(FieldType.LOCATION, location);
       }}
       selectedValue={selectedLocation ?? null}

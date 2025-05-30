@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './Table.css';
 
 import {
@@ -85,10 +84,10 @@ const getSortIndicator = (meta?: { sortDirection?: string }) => {
   if (!meta?.sortDirection) return '⇅';
   const direction = meta.sortDirection as SortDirection;
   return direction === SortDirection.DESC
-    ? '⇂'
+    ? CONSTANTS.sortIndicator.desc
     : direction === SortDirection.ASC
-      ? '↿'
-      : '⇅';
+      ? CONSTANTS.sortIndicator.asc
+      : CONSTANTS.sortIndicator.noSort;
 };
 
 const Table = <T,>({
@@ -129,7 +128,8 @@ const Table = <T,>({
   return (
     <div className="">
       <div
-        className={`p-2 overflow-auto   ${table.getRowModel().rows.length == 0 ? 'pb-[150px]' : ''}  ${extraStyles}`}
+        className={`p-2 overflow-auto ${table.getRowModel().rows.length == 0 ? 'pb-[150px]' : ''}  
+          ${extraStyles ?? 'overflow-y-hidden'} `}
       >
         <table className="relative w-full">
           <thead>
@@ -140,7 +140,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={`${header.id == CONSTANTS.action && 'sticky bg-white -right-5 pl-2 '} font-thin`}
+                      className={`${header.id == CONSTANTS.action && 'sticky bg-rhino-white -right-5 pl-2 '} font-thin`}
                     >
                       {header.isPlaceholder ? null : (
                         <div className=" flex flex-col justify-start ">
@@ -167,7 +167,7 @@ const Table = <T,>({
                           </div>
                           <div className="flex  justify-start">
                             {header.column.getCanFilter() ? (
-                              <div className="text-rhino-indigo-blue flex">
+                              <div className={`text-rhino-indigo-blue flex `}>
                                 <Filter
                                   column={header.column}
                                   onFilterChange={onFilterChange}
@@ -184,7 +184,16 @@ const Table = <T,>({
             ))}
           </thead>
           {/* Table Data Body */}
-          {table.getRowModel().rows.length !== 0 ? (
+
+          {isLoading && (
+            <tbody className="h-64 flex items-center ">
+              <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
+                Loading...
+              </div>
+            </tbody>
+          )}
+
+          {!isLoading && table.getRowModel().rows.length !== 0 && (
             <tbody>
               {table.getRowModel().rows.map((row) => {
                 return (
@@ -208,14 +217,14 @@ const Table = <T,>({
                 );
               })}
             </tbody>
-          ) : isLoading ? (
-            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
-              Loading...
-            </div>
-          ) : (
-            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
-              {emptyText || 'Not Found'}
-            </div>
+          )}
+
+          {!isLoading && table.getRowModel().rows.length === 0 && (
+            <tbody className="h-64 flex items-center">
+              <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
+                {emptyText || 'Not Found'}
+              </div>
+            </tbody>
           )}
         </table>
       </div>
