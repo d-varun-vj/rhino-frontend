@@ -55,7 +55,8 @@ const UuidCombobox = ({
       <div className="relative">
         <ComboboxInput
           className={clsx(
-            'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] h-[2.5rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border-[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 w-[14rem]'
+            'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] h-[2.5rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border-[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 w-[14rem]',
+            disabled && 'bg-grey-light !cursor-default'
           )}
           displayValue={(option: { id: number; name: string }) => option?.name}
           onChange={(event) => setQuery(event.target.value)}
@@ -89,7 +90,7 @@ const UuidCombobox = ({
                       {({ focus }) => (
                         <div
                           className={clsx(
-                            'group flex gap-2 px-2 py-2 text-[13px]',
+                            'group flex gap-2 px-2 py-2 text-[13px] cursor-pointer',
                             focus &&
                               'bg-rhino-indigo-blue-highlight text-rhino-white',
                             selectedValue?.name == group.name &&
@@ -107,7 +108,7 @@ const UuidCombobox = ({
                   {({ focus }) => (
                     <div
                       className={clsx(
-                        'group flex gap-2 px-2 py-2 text-[13px]',
+                        'group flex gap-2 px-2 py-2 text-[13px] cursor-pointer',
                         focus &&
                           'bg-rhino-indigo-blue-highlight text-rhino-white',
                         selectedValue?.name == option.name &&

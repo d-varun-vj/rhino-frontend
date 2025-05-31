@@ -16,12 +16,10 @@ const IconButton = ({
       <button
         className={`font-bold px-4 py-2 rounded bg-rhino-energy-green text-white ${style}`}
         onClick={action}
+        title={popupContent}
       >
         {children}
       </button>
-      <div className="absolute invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-300 -bottom-7 right-0 bg-black/90 text-white px-2 py-1 rounded shadow-lg text-xs lg:whitespace-nowrap ">
-        {popupContent}
-      </div>
     </div>
   );
 };

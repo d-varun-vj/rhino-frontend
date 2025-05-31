@@ -31,6 +31,7 @@ const Filter = <T,>({
         disabled={false}
         selectedValue={selectValue}
         onSelect={(value) => {
+          if (!value) return;
           if (value === 'all') {
             if (column.columnDef.meta?.filterKey) {
               onFilterChange(null, 'all', null);
@@ -70,7 +71,7 @@ const Filter = <T,>({
       value={(columnFilterValue ?? '') as string}
     />
   ) : (
-    <input type="text" className=" " disabled />
+    <div className="h-12" />
   );
 };
 

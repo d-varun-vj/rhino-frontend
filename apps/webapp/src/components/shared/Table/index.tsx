@@ -126,10 +126,9 @@ const Table = <T,>({
   });
 
   return (
-    <div className="">
+    <div className="h-full overflow-hidden flex flex-col">
       <div
-        className={`p-2 overflow-auto ${table.getRowModel().rows.length == 0 ? 'pb-[150px]' : ''}  
-          ${extraStyles ?? 'overflow-y-hidden'} `}
+        className={`p-2 overflow-auto ${extraStyles ?? 'overflow-y-hidden'} `}
       >
         <table className="relative w-full">
           <thead>
@@ -147,7 +146,7 @@ const Table = <T,>({
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none text-rhino-indigo-blue  pr-[1.2rem] flex   text-[13px]  whitespace-wrap gap-3 min-h-[80px] h-[100px] justify-start '
+                                ? 'cursor-pointer select-none text-rhino-indigo-blue pr-[1.2rem] flex text-[13px] whitespace-wrap gap-3 min-h-[80px] justify-start'
                                 : '',
                               onClick: () =>
                                 handleSortClick(header, onSortSelect),
@@ -185,14 +184,6 @@ const Table = <T,>({
           </thead>
           {/* Table Data Body */}
 
-          {isLoading && (
-            <tbody className="h-64 flex items-center ">
-              <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
-                Loading...
-              </div>
-            </tbody>
-          )}
-
           {!isLoading && table.getRowModel().rows.length !== 0 && (
             <tbody>
               {table.getRowModel().rows.map((row) => {
@@ -202,7 +193,7 @@ const Table = <T,>({
                       return (
                         <td
                           key={cell.id}
-                          className={`${cell.column.id === CONSTANTS.action && 'sticky -right-5'} p-[.75rem] align-top pl-0 first:pl-[.75rem]`}
+                          className={`${cell.column.id === CONSTANTS.action && 'sticky -right-5'} p-[.75rem] align-top first:pl-[.75rem] bg-white`}
                         >
                           <div className={` text-[13px] text-wrap  w-auto `}>
                             {flexRender(
@@ -218,15 +209,23 @@ const Table = <T,>({
               })}
             </tbody>
           )}
-
-          {!isLoading && table.getRowModel().rows.length === 0 && (
-            <tbody className="h-64 flex items-center">
-              <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
-                {emptyText || 'Not Found'}
-              </div>
-            </tbody>
-          )}
         </table>
+
+        {isLoading && (
+          <div className="flex items-center h-96">
+            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
+              Loading...
+            </div>
+          </div>
+        )}
+
+        {!isLoading && table.getRowModel().rows.length === 0 && (
+          <div className="flex items-center h-96">
+            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
+              {emptyText || 'Not Found'}
+            </div>
+          </div>
+        )}
       </div>
       {/* Footer */}
       {footer && <TableFooter pagination={footer} />}

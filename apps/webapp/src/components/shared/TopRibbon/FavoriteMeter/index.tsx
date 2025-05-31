@@ -177,7 +177,7 @@ const FavoriteMeter = () => {
       {isModelOpen && (
         <div className=" w-full h-full absolute top-0 left-0 z-30 transition-opacity bg-black/15  ">
           <div className="mx-16 my-20 max-lg:mx-5  flex items-center relative z-30  ">
-            <div className="border-t-[.5rem] border-t-rhino-energy-green shadow-xl relative flex flex-col w-full bg-[#fff] border-transparent border-[1px] rounded ">
+            <div className="border-t-[.5rem] border-t-rhino-energy-green shadow-xl relative flex flex-col w-full bg-[#fff] border-transparent border-[1px] rounded h-[800px]">
               <div className="flex items-start justify-between p-[1.25rem] ">
                 <h4 className="text-[2rem] font-bold text-rhino-indigo-blue my-0 leading-[1.47] ">
                   {t('favoriteMeterModel.mainHeader')}
@@ -189,7 +189,7 @@ const FavoriteMeter = () => {
                   ×
                 </button>
               </div>
-              <div className="relative flex-grow flex-shrink basis-auto p-[1.25rem] overflow-auto ">
+              <div className="relative flex-grow flex-shrink basis-auto p-[1.25rem] overflow-auto [&>div]:justify-between">
                 <Table
                   columns={columns}
                   data={tableData ? tableData.content : []}
