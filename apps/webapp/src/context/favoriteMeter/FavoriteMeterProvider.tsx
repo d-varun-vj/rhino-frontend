@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FavoriteMeterContext } from './favorite-meter-context';
-import { FavoriteMeterType } from '../../components/shared/TopRibbon/FavoriteMeter/types';
+import { FavoriteMeterType } from '@rhino/apis/FavoriteMeter/types';
 
 export const FavoriteMeterProvider = ({
   children,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { User } from '../../api/User/types';
-import { useGetUserDetails } from '../../api/User';
+import { User } from '@rhino/apis';
+import { useGetUserDetails } from '@rhino/apis';
 import { UserContext } from './user-context';
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {

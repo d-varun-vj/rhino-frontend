@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import Langaugae from './Language';
-import { VITE_WICKET_BASE_URL } from '../../../../api/endpoints';
+import { VITE_WICKET_BASE_URL } from '@rhino/apis';
 
 type Item = {
   label: string;

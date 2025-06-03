@@ -1,4 +1,4 @@
-import { User, UserType } from '../../api/User/types';
+import { User, UserType } from '@rhino/apis';
 
 export const shouldSetInitialClient = (user: User) => {
   return (

@@ -1,7 +1,7 @@
 {
-  "name": "@app/webapp",
+  "name": "@rhino/apis",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,8 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@rhino/apis": "^0.0.1",
-    "@rhino/utils": "^0.0.1"
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3",
+    "vitest": "^2.1.1",
+    "vite-plugin-dts": "^4.1.0"
   }
 }

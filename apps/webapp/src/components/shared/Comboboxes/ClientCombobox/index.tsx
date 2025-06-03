@@ -1,15 +1,10 @@
-import { Client } from './api';
+import { Client } from '@rhino/apis/Clients';
 import { useTranslation } from 'react-i18next';
 import UuidCombobox from '../UuidCombobox';
-import { FieldType } from '../../../../types/shared/topribbon';
+import { FieldType } from '@rhino/utils/types/shared/topribbon';
 import { FilterData } from '../../../../context/userFilter/user-filter-context';
 
-const ClientCombobox = ({
-  onSelect: onFliterSelect,
-  clients,
-  disableDropdown,
-  selectedClient,
-}: {
+type ClientComboboxProps = {
   onSelect: (
     type: FieldType,
     value: {
@@ -20,7 +15,14 @@ const ClientCombobox = ({
   clients: Client[] | null;
   disableDropdown?: boolean;
   selectedClient?: FilterData | null;
-}) => {
+};
+
+const ClientCombobox = ({
+  onSelect: onFliterSelect,
+  clients,
+  disableDropdown,
+  selectedClient,
+}: ClientComboboxProps) => {
   const { t } = useTranslation();
 
   return (

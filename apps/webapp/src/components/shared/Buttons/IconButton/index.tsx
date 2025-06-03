@@ -1,16 +1,18 @@
 import React from 'react';
 
+type IconButtonProps = {
+  children: React.ReactNode;
+  style?: string;
+  action: () => void;
+  popupContent?: string;
+};
+
 const IconButton = ({
   children,
   style,
   popupContent,
   action,
-}: {
-  children: React.ReactNode;
-  style?: string;
-  action: () => void;
-  popupContent?: string;
-}) => {
+}: IconButtonProps) => {
   return (
     <div className="relative group inline-block">
       <button

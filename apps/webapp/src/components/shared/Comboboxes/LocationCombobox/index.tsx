@@ -1,15 +1,10 @@
-import { Location } from './api';
+import { Location } from '@rhino/apis/Locations';
 import { useTranslation } from 'react-i18next';
 import UuidCombobox from '../UuidCombobox';
-import { FieldType } from '../../../../types/shared/topribbon';
+import { FieldType } from '@rhino/utils/types/shared/topribbon';
 import { FilterData } from '../../../../context/userFilter/user-filter-context';
 
-const LocationCombobox = ({
-  onSelect,
-  locations,
-  disabled: disenabled,
-  selectedLocation,
-}: {
+type LocationComboboxProps = {
   onSelect?: (
     type: FieldType,
     value: {
@@ -20,7 +15,14 @@ const LocationCombobox = ({
   locations?: Location[];
   disabled?: boolean;
   selectedLocation?: FilterData | null;
-}) => {
+};
+
+const LocationCombobox = ({
+  onSelect,
+  locations,
+  disabled: disenabled,
+  selectedLocation,
+}: LocationComboboxProps) => {
   const { t } = useTranslation();
 
   return (

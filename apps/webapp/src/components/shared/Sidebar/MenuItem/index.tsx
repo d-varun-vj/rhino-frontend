@@ -7,7 +7,7 @@ import { useUser } from '../../../../context/user';
 import MinimizePopup from '../MinimizePopup';
 import { canViewItem } from '../../../../helpers/sidebar';
 
-export type menuItem = {
+export type MenuItemProps = {
   menuItem: MenuItemType;
   minimize: {
     isMinimize: boolean;
@@ -21,7 +21,7 @@ export type menuItem = {
   };
 };
 
-const MenuItem = ({ menuItem, minimize }: menuItem) => {
+const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
   const { t } = useTranslation();
   const { user } = useUser();
 

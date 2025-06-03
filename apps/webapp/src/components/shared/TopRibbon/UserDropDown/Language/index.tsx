@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useChangeUserLanguage } from '../../../../../api/User';
+import { useChangeUserLanguage } from '@rhino/apis';
 import { toast } from 'react-toastify';
 
 const Langaugae = () => {

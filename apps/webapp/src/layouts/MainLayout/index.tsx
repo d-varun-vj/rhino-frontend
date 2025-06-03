@@ -4,13 +4,12 @@ import TopRibbon from '../../components/shared/TopRibbon';
 import { ToastContainer } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
-const MainLayout = ({
-  children,
-  title,
-}: {
+type MainLayoutProps = {
   children: React.ReactNode;
   title: string;
-}) => {
+};
+
+const MainLayout = ({ children, title }: MainLayoutProps) => {
   const { t } = useTranslation();
   useEffect(() => {
     document.title = t(title); // Set the document title dynamically

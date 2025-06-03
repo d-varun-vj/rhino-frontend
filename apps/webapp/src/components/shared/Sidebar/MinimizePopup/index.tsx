@@ -1,4 +1,4 @@
-import { UserType } from '../../../../api/User/types';
+import { UserType } from '@rhino/apis';
 import { MenuItemType } from '../config';
 import { VscTriangleLeft } from 'react-icons/vsc';
 import { useTranslation } from 'react-i18next';

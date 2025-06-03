@@ -24,8 +24,8 @@ import {
   UserType,
   UserViewPermission,
   ViewPermissionsType,
-} from '../../../../api/User/types';
-import { VITE_WICKET_BASE_URL } from '../../../../api/endpoints';
+} from '@rhino/apis';
+import { VITE_WICKET_BASE_URL } from '@rhino/apis';
 
 export type SubItemType = {
   label: string; // label from i18n translation (check src/i18n/...json)

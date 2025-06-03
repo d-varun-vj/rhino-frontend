@@ -16,4 +16,9 @@ export default defineConfig({
     emptyOutDir: true,
     sourcemap: true,
   },
+  resolve: {
+    alias: {
+      '@rhino/utils': resolve(__dirname, '../utils/src'),
+    },
+  },
 });

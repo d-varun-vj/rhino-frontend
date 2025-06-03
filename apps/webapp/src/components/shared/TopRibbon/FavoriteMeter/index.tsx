@@ -3,16 +3,19 @@ import { FaArrowRight } from 'react-icons/fa';
 import Table from '../../Table';
 import React, { useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
-import { FavoriteMeterFilter, FavoriteMeterType } from './types';
+import {
+  FavoriteMeterFilter,
+  FavoriteMeterType,
+} from '@rhino/apis/FavoriteMeter/types';
 import ActionCell from '../../Table/ActionCell';
 import IconButton from '../../Buttons/IconButton';
-import { useGetAllFavoriteMeters } from './api';
+import { useGetAllFavoriteMeters } from '@rhino/apis/FavoriteMeter';
 import { useUser } from '../../../../context/user';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import { useFavoriteMeter } from '../../../../context/favoriteMeter';
 import { useUserFilter } from '../../../../context/userFilter';
 import { FilterVariant } from '../../Table/types';
-import { Sort } from '../../../../types/shared/table';
+import { Sort } from '@rhino/utils/types/shared/table';
 
 const FavoriteMeter = () => {
   const { t } = useTranslation();

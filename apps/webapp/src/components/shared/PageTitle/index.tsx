@@ -1,14 +1,12 @@
 import { FaQuestionCircle } from 'react-icons/fa';
 
-const PageTitle = ({
-  title,
-  guide = false,
-  guideLink,
-}: {
+type PageTitleProps = {
   title: string;
   guide?: boolean;
   guideLink?: string;
-}) => {
+};
+
+const PageTitle = ({ title, guide = false, guideLink }: PageTitleProps) => {
   return (
     <div className="flex">
       <h1

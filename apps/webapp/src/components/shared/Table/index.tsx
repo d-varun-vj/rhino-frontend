@@ -18,7 +18,7 @@ import Filter from './Filter';
 import TableFooter from './Footer';
 
 import { FilterVariant } from './types';
-import { SortDirection } from '../../../types/shared/table';
+import { SortDirection } from '@rhino/utils/types/shared/table';
 import { ColumnMeta } from '@tanstack/table-core';
 import { CONSTANTS } from '../../../constant';
 

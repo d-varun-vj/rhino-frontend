@@ -1,16 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import UuidCombobox from '../UuidCombobox';
-import { FieldType } from '../../../../types/shared/topribbon';
+import { FieldType } from '@rhino/utils/types/shared/topribbon';
 import { FilterData } from '../../../../context/userFilter/user-filter-context';
-import { Location } from '../LocationCombobox/api';
+import { Location } from '@rhino/apis/Locations';
 
-const GroupCombobox = ({
-  onSelect,
-  locations,
-  disabled: disenabled,
-  selectedGroup,
-  selectedLocation,
-}: {
+type GroupComboboxProps = {
   onSelect?: (
     type: FieldType,
     value: {
@@ -22,7 +16,15 @@ const GroupCombobox = ({
   disabled?: boolean;
   selectedGroup?: FilterData | null;
   selectedLocation?: FilterData | null;
-}) => {
+};
+
+const GroupCombobox = ({
+  onSelect,
+  locations,
+  disabled: disenabled,
+  selectedGroup,
+  selectedLocation,
+}: GroupComboboxProps) => {
   const { t } = useTranslation();
 
   return (

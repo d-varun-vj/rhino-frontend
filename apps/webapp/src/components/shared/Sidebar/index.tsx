@@ -11,7 +11,7 @@ import {
 import { MenuKeys, MenuItems, MenuItemType } from './config';
 import MenuItem from './MenuItem';
 import { useUser } from '../../../context/user';
-import { User, UserType, ViewPermissionsType } from '../../../api/User/types';
+import { User, UserType, ViewPermissionsType } from '@rhino/apis';
 
 const handleResizeLogic = (
   setMinimize: Dispatch<

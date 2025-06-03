@@ -8,10 +8,10 @@ import { useUserFilter } from '../../../context/userFilter';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../../context/user';
 import { useFavoriteMeter } from '../../../context/favoriteMeter';
-import { Location, useGetLocations } from '../Comboboxes/LocationCombobox/api';
-import { Client, useGetClients } from '../Comboboxes/ClientCombobox/api';
+import { Location, useGetLocations } from '@rhino/apis/Locations';
+import { Client, useGetClients } from '@rhino/apis/Clients';
 import { shouldSetInitialClient } from '../../../helpers/client';
-import { FieldType } from '../../../types/shared/topribbon';
+import { FieldType } from '@rhino/utils/types/shared/topribbon';
 
 const TopRibbon = () => {
   const { t } = useTranslation();
