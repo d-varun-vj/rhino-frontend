@@ -19,7 +19,7 @@ import {
   Filter,
   TableData,
   useGetMetaData,
-  usePostGetTableData,
+  useGetTableData,
   VITE_WICKET_BASE_URL,
 } from '@rhino/apis';
 
@@ -47,46 +47,33 @@ export const Dashboard = () => {
   const { t } = useTranslation();
   const translationBaseRoute = 'pages.dashboard.table.';
 
-  const { mutateAsync: postGetTableData } = usePostGetTableData({
-    params: {
-      page: page,
-      size: pageSize,
-      clientId: client ? client.uuid : null,
-      locationUuid: location ? location.uuid : null,
-      groupUuid: group ? group.uuid : null,
-      sortDirection: sort.direction,
-      sortedField: sort.field,
-      ...filters,
-      favoriteMeterUuid: favoriteMeter ? favoriteMeter.uuid : null,
-    },
-  });
+  const { data: getTableData, isLoading: isLoadingTableData } = useGetTableData(
+    {
+      params: {
+        page: page,
+        size: pageSize,
+        clientId: client ? client.uuid : null,
+        locationUuid: location ? location.uuid : null,
+        groupUuid: group ? group.uuid : null,
+        sortDirection: sort.direction,
+        sortedField: sort.field,
+        ...filters,
+        favoriteMeterUuid: favoriteMeter ? favoriteMeter.uuid : null,
+      },
+    }
+  );
   const [tableData, setTableData] = useState<TableData>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const getData = async () => {
-      setIsLoading(true);
+    const getData = () => {
       try {
-        const response = await postGetTableData();
-        setTableData(response);
+        setTableData(getTableData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-      setIsLoading(false);
     };
-    void getData();
-  }, [
-    user,
-    client,
-    location,
-    group,
-    favoriteMeter,
-    filters,
-    sort,
-    page,
-    pageSize,
-    postGetTableData,
-  ]);
+    getData();
+  }, [getTableData]);
 
   const { data: Options } = useGetMetaData({
     locale: user?.language ?? null,
@@ -138,9 +125,9 @@ export const Dashboard = () => {
   const onFilterChange = (
     val: string | null,
     field: string,
-    filterVarient: FilterVariant | null
+    filterVariant: FilterVariant | null
   ) => {
-    switch (filterVarient) {
+    switch (filterVariant) {
       case FilterVariant.TEXT:
         setFilters((prev: Filter) => {
           return { ...prev, [field]: val };
@@ -150,7 +137,7 @@ export const Dashboard = () => {
         const selectedType =
           Options?.levelTypes.find((type) => type.translationEn === val) ||
           Options?.loadTypes.find((type) => type.translationEn === val) ||
-          Options?.endUserAreaTypes.find((type) => type.translationEn === val);
+          Options?.endUseAreaTypes.find((type) => type.translationEn === val);
         console.log(selectedType);
 
         setFilters((prev: Filter) => ({
@@ -351,10 +338,10 @@ export const Dashboard = () => {
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: FilterVariant.SELECT,
-          filterKey: 'endUserAreaType',
+          filterKey: 'endUseAreaType',
           sortKey: 'endUseArea',
           sortDirection: sort.direction,
-          selectionOptions: Options?.endUserAreaTypes.map(
+          selectionOptions: Options?.endUseAreaTypes?.map(
             (type) => type.translationEn
           ),
         },
@@ -371,7 +358,7 @@ export const Dashboard = () => {
     ],
     [
       ActionCellFn,
-      Options?.endUserAreaTypes,
+      Options?.endUseAreaTypes,
       Options?.levelTypes,
       Options?.loadTypes,
       sort.direction,
@@ -402,7 +389,7 @@ export const Dashboard = () => {
         }}
         onSortSelect={onSortClick}
         onFilterChange={onFilterChange}
-        isLoading={isLoading}
+        isLoading={isLoadingTableData}
       />
     </MainLayout>
   );

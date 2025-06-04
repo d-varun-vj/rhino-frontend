@@ -1,2 +1,2 @@
-export * from './usePostGetTableData';
+export * from './useGetTableData';
 export * from './useGetMetaData';

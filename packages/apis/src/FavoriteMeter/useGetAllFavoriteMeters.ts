@@ -36,15 +36,20 @@ export const useGetAllFavoriteMeters = ({
   userType,
 }: UseGetAllFavoriteMetersProps) => {
   const queryParams = {
-    page: page?.toString() || '',
-    size: size?.toString() || '',
-    sort: `${sort.field},${sort.direction}`,
-    userUuid: userUuid?.toString() || '',
-    clientUuid: clientUuid?.toString() || '',
-    name: filters?.name || '',
-    authorEmail: filters?.authorEmail || '',
-    userType: userType || '',
-    shared: filters?.shared || '',
+    ...(!!page && { page: page?.toString() }),
+    ...(!!size && { size: size?.toString() }),
+    ...((sort.field || sort.direction) && {
+      sort:
+        sort.field && sort.direction
+          ? `${sort.field},${sort.direction}`
+          : sort.field || sort.direction,
+    }),
+    ...(!!userUuid && { userUuid: userUuid?.toString() }),
+    ...(!!clientUuid && { clientUuid: clientUuid?.toString() }),
+    ...(!!filters?.name && { name: filters?.name }),
+    ...(!!filters?.authorEmail && { authorEmail: filters?.authorEmail }),
+    ...(!!userType && { userType: userType }),
+    ...(!!filters?.shared && { shared: filters?.shared }),
   };
 
   return useQuery({

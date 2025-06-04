@@ -55,7 +55,7 @@ type TableProps<T> = {
   onFilterChange: (
     val: string | null,
     field: string,
-    varient: FilterVariant | null
+    variant: FilterVariant | null
   ) => void;
 };
 
@@ -184,9 +184,9 @@ const Table = <T,>({
           </thead>
           {/* Table Data Body */}
 
-          {!isLoading && table.getRowModel().rows.length !== 0 && (
+          {!isLoading && table.getCoreRowModel().rows.length !== 0 && (
             <tbody>
-              {table.getRowModel().rows.map((row) => {
+              {table.getCoreRowModel().rows.map((row) => {
                 return (
                   <tr key={row.id} className={`odd:bg-[#03030405]`}>
                     {row.getVisibleCells().map((cell) => {
@@ -220,15 +220,15 @@ const Table = <T,>({
 
         {isLoading && (
           <div className="flex items-center h-96">
-            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
+            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-[95%] mt-10">
               Loading...
             </div>
           </div>
         )}
 
-        {!isLoading && table.getRowModel().rows.length === 0 && (
+        {!isLoading && data.length === 0 && (
           <div className="flex items-center h-96">
-            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-full mt-10">
+            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-[95%] mt-10">
               {emptyText || 'Not Found'}
             </div>
           </div>

@@ -45,10 +45,7 @@ const GroupCombobox = ({
               .map((location) => ({
                 name: location.name,
                 uuid: location.uuid,
-                groups: [
-                  { name: t('comboBox.groupNull'), uuid: '' },
-                  ...(location.groups || []),
-                ],
+                groups: location.groups ? location.groups : [],
               }))
           : []),
       ]}

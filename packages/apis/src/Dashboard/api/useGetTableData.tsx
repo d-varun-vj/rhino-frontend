@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { httpClient } from '../../httpClient';
 import { DashboardType } from '../types';
 import API_URLS from '../../endpoints';
+import { DataQueryKeys } from '../../data-query-keys';
 
 export type TableData = {
   content: DashboardType[];
@@ -31,7 +32,7 @@ export type DashboardTableRequestBody = {
   endUseAreaType: string | null;
 };
 
-export const usePostGetTableData = ({
+export const useGetTableData = ({
   params,
 }: {
   params: DashboardTableRequestBody;
@@ -56,33 +57,34 @@ export const usePostGetTableData = ({
     groupUuid,
   } = params;
 
-  return useMutation({
-    mutationFn: async () => {
-      const result = await httpClient.post<TableData>(
+  const queryParams = {
+    ...(!!page && { page }),
+    ...(!!size && { size }),
+    ...(!!sortDirection && { sortDirection }),
+    ...(sortedField?.length && { sort: sortedField }),
+    ...(!!locationName && { locationName }),
+    ...(!!groupName && { groupName }),
+    ...(!!measurementName && { measurementName }),
+    ...(!!serialNumber && { serialNumber }),
+    ...(!!tenant && { tenant }),
+    ...(!!medium && { medium }),
+    ...(!!levelType && { levelType }),
+    ...(!!loadType && { loadType }),
+    ...(!!endUseAreaType && { endUseAreaType }),
+    ...(!!favoriteMeterUuid && { favoriteMeterUuid }),
+    ...(!!clientId && { clientId }),
+    ...(!!locationUuid && { locationUuid }),
+    ...(!!groupUuid && { groupUuid }),
+  };
+
+  return useQuery({
+    queryKey: [DataQueryKeys.DASHBOARD, queryParams],
+    queryFn: async () => {
+      const response = await httpClient.get<TableData>(
         API_URLS.getDashboardTableData(),
-        {
-          params: {
-            ...(!!page && { page }),
-            ...(!!size && { size }),
-            ...(!!sortDirection && { sortDirection }),
-            ...(sortedField?.length && { sort: sortedField }),
-            ...(!!locationName && { locationName }),
-            ...(!!groupName && { groupName }),
-            ...(!!measurementName && { measurementName }),
-            ...(!!serialNumber && { serialNumber }),
-            ...(!!tenant && { tenant }),
-            ...(!!medium && { medium }),
-            ...(!!levelType && { levelType }),
-            ...(!!loadType && { loadType }),
-            ...(!!endUseAreaType && { endUseAreaType }),
-            ...(!!favoriteMeterUuid && { favoriteMeterUuid }),
-            ...(!!clientId && { clientId }),
-            ...(!!locationUuid && { locationUuid }),
-            ...(!!groupUuid && { groupUuid }),
-          },
-        }
+        { params: queryParams }
       );
-      return result?.data;
+      return response?.data;
     },
   });
 };

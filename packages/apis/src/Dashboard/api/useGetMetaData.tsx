@@ -7,7 +7,7 @@ import { DataQueryKeys } from '../../data-query-keys';
 type Options = {
   levelTypes: DictionaryDto[];
   loadTypes: DictionaryDto[];
-  endUserAreaTypes: DictionaryDto[];
+  endUseAreaTypes: DictionaryDto[];
 };
 
 export const useGetMetaData = ({ locale }: { locale: string | null }) => {
