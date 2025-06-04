@@ -52,7 +52,7 @@ export const Dashboard = () => {
       params: {
         page: page,
         size: pageSize,
-        clientId: client ? client.uuid : null,
+        clientUuid: client ? client.uuid : null,
         locationUuid: location ? location.uuid : null,
         groupUuid: group ? group.uuid : null,
         sortDirection: sort.direction,
@@ -138,7 +138,6 @@ export const Dashboard = () => {
           Options?.levelTypes.find((type) => type.translationEn === val) ||
           Options?.loadTypes.find((type) => type.translationEn === val) ||
           Options?.endUseAreaTypes.find((type) => type.translationEn === val);
-        console.log(selectedType);
 
         setFilters((prev: Filter) => ({
           ...prev,

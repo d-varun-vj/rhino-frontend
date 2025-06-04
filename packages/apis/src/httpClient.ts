@@ -139,8 +139,6 @@ export const initHttpClient = async (baseURL?: string) => {
   };
 
   const errorInterceptor = (error: any) => {
-    console.log('Error: ', error);
-
     if (error.response) {
       const { status } = error.response || {};
       if (status === 401 || status === 500) {

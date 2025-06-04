@@ -16,7 +16,7 @@ export type DashboardTableRequestBody = {
   favoriteMeterUuid: string | null;
   page: number | null;
   size: number | null;
-  clientId?: string | null;
+  clientUuid?: string | null;
   locationUuid?: string | null;
   groupUuid?: string | null;
   sortedField?: string;
@@ -52,7 +52,7 @@ export const useGetTableData = ({
     loadType,
     endUseAreaType,
     favoriteMeterUuid,
-    clientId,
+    clientUuid,
     locationUuid,
     groupUuid,
   } = params;
@@ -72,7 +72,7 @@ export const useGetTableData = ({
     ...(!!loadType && { loadType }),
     ...(!!endUseAreaType && { endUseAreaType }),
     ...(!!favoriteMeterUuid && { favoriteMeterUuid }),
-    ...(!!clientId && { clientId }),
+    ...(!!clientUuid && { clientUuid }),
     ...(!!locationUuid && { locationUuid }),
     ...(!!groupUuid && { groupUuid }),
   };

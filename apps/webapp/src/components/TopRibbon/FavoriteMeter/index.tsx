@@ -119,7 +119,6 @@ const FavoriteMeter = () => {
   const { data: tableData, isLoading } = useGetAllFavoriteMeters({
     page: page,
     size: pageSize,
-    userUuid: user ? user?.uuid : '',
     clientUuid: client ? client.uuid : '',
     filters: filters,
     sort: sort,

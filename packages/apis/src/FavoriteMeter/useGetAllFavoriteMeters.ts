@@ -17,7 +17,6 @@ type TableData = {
 type UseGetAllFavoriteMetersProps = {
   page?: number | null;
   size?: number | null;
-  userUuid: string;
   clientUuid: string;
   filters?: FavoriteMeterFilter | null;
   sort: Sort;
@@ -28,7 +27,6 @@ type UseGetAllFavoriteMetersProps = {
 export const useGetAllFavoriteMeters = ({
   page,
   size,
-  userUuid,
   clientUuid,
   filters,
   sort,
@@ -44,7 +42,6 @@ export const useGetAllFavoriteMeters = ({
           ? `${sort.field},${sort.direction}`
           : sort.field || sort.direction,
     }),
-    ...(!!userUuid && { userUuid: userUuid?.toString() }),
     ...(!!clientUuid && { clientUuid: clientUuid?.toString() }),
     ...(!!filters?.name && { name: filters?.name }),
     ...(!!filters?.authorEmail && { authorEmail: filters?.authorEmail }),
