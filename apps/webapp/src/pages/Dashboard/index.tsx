@@ -1,28 +1,29 @@
-import { DashboardType, Filter } from '@rhino/apis/Dashboard';
 import { FaChartBar, FaChartLine } from 'react-icons/fa';
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  TableData,
-  useGetMetaData,
-  usePostGetTableData,
-} from '@rhino/apis/Dashboard';
-import ActionCell from '../../components/shared/Table/ActionCell';
+import ActionCell from '../../components/Table/ActionCell';
 import { ColumnDef, Row } from '@tanstack/react-table';
-import IconButton from '../../components/shared/Buttons/IconButton';
+import IconButton from '../../components/Buttons/IconButton';
 import MainLayout from '../../layouts/MainLayout';
-import Table from '../../components/shared/Table';
-import PageTitle from '../../components/shared/PageTitle';
+import Table from '../../components/Table';
+import PageTitle from '../../components/PageTitle';
 import { useFavoriteMeter } from '../../context/favoriteMeter';
 import { useUserFilter } from '../../context/userFilter';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/user';
-import { FilterVariant } from '../../components/shared/Table/types';
-import { Sort } from '@rhino/utils/types/shared/table';
+import { FilterVariant } from '../../components/Table/types';
+import { Sort } from '@rhino/utils';
 import { shouldSetInitialClient } from '../../helpers/client';
 import { CONSTANTS } from '../../constant';
-import { VITE_WICKET_BASE_URL } from '@rhino/apis';
+import {
+  DashboardType,
+  Filter,
+  TableData,
+  useGetMetaData,
+  usePostGetTableData,
+  VITE_WICKET_BASE_URL,
+} from '@rhino/apis';
 
-const Dashboard = () => {
+export const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
     locationName: null,
     groupName: null,
@@ -252,6 +253,7 @@ const Dashboard = () => {
         },
       },
       {
+        id: 'VALUE',
         accessorFn: (row) => row.value,
         header: t(translationBaseRoute + 'header.value'),
         cell: (info) => info.getValue(),
@@ -261,6 +263,7 @@ const Dashboard = () => {
         },
       },
       {
+        id: 'READ_TIME',
         accessorFn: (row) => row.readTime,
         header: t(translationBaseRoute + 'header.readTime'),
         cell: (info) => info.getValue(),
@@ -404,5 +407,3 @@ const Dashboard = () => {
     </MainLayout>
   );
 };
-
-export default Dashboard;

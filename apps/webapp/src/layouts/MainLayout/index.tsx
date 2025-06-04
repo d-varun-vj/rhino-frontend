@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import SideBar from '../../components/shared/Sidebar';
-import TopRibbon from '../../components/shared/TopRibbon';
+import SideBar from '../../components/Sidebar';
+import TopRibbon from '../../components/TopRibbon';
 import { ToastContainer } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 

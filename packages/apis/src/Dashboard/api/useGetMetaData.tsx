@@ -12,12 +12,11 @@ type Options = {
 
 export const useGetMetaData = ({ locale }: { locale: string | null }) => {
   return useQuery({
-    queryKey: [DataQueryKeys.OPTIONS],
+    queryKey: [DataQueryKeys.OPTIONS, locale],
     queryFn: async () => {
       const response = await httpClient.get<Options>(
-        API_URLS.getDashboardTableDataOptions({
-          locale: locale ? locale : 'en',
-        })
+        API_URLS.getDashboardTableDataOptions(),
+        { params: { locale: locale || 'en' } }
       );
       return response.data;
     },

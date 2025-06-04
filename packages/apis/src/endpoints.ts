@@ -6,29 +6,15 @@ const API_URLS = {
   getClients: () => `clients`,
   getLocations: ({ clientId }: { clientId: string | null }) =>
     `clients/${clientId}/localisations-with-groups`,
-  getGroups: ({ queryParams }: { queryParams: string }) =>
-    `groups?${queryParams}`,
+  getGroups: () => `groups`,
   getUser: () => 'user',
   changeLanguage: () => `user/language`,
 
-  getAllFavoriteMeters: ({ queryParams }: { queryParams: string }) =>
-    `favoritemeter?${queryParams}`,
+  getAllFavoriteMeters: () => `favoritemeter`,
 
   //   Dashboard
-  getDashboardTableData: ({
-    page,
-    size,
-    sortDirection,
-    sortedField,
-  }: {
-    page: number | null;
-    size: number | null;
-    sortedField?: string;
-    sortDirection?: string;
-  }) =>
-    `dashboard?page=${page}&size=${size}&sort=${sortedField},${sortDirection}`,
-  getDashboardTableDataOptions: ({ locale }: { locale: string }) =>
-    `metadata?locale=${locale}`,
+  getDashboardTableData: () => `dashboard`,
+  getDashboardTableDataOptions: () => `metadata`,
 };
 
 export default API_URLS;

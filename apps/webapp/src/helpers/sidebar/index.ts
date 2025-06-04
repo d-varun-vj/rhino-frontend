@@ -1,5 +1,5 @@
 import { User, UserType, ViewPermissionsType } from '@rhino/apis';
-import { SubItemType } from '../../components/shared/Sidebar/config';
+import { SubItemType } from '../../components/Sidebar/config';
 
 const hasUserTypeAccess = ({
   subItem,

@@ -17,7 +17,25 @@ import { getCookie } from '@rhino/utils';
 const fetchAdapter: AxiosAdapter = async (
   config: AxiosRequestConfig
 ): Promise<AxiosResponse> => {
-  const url = config.baseURL ? `${config.baseURL}${config.url}` : config.url;
+  // Build URL with query parameters
+  let finalUrl = config.baseURL
+    ? `${config.baseURL}${config.url}`
+    : config.url || '';
+
+  // Handle query parameters
+  if (config.params) {
+    const queryParams = new URLSearchParams();
+    Object.entries(config.params).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        queryParams.append(key, String(value));
+      }
+    });
+
+    const queryString = queryParams.toString();
+    if (queryString) {
+      finalUrl += (finalUrl.includes('?') ? '&' : '?') + queryString;
+    }
+  }
 
   // Convert headers to AxiosHeaders if they aren't already
   const headers = new AxiosHeaders();
@@ -43,7 +61,7 @@ const fetchAdapter: AxiosAdapter = async (
     fetchOptions.body = config.data;
   }
 
-  const response = await fetch(url!, fetchOptions);
+  const response = await fetch(finalUrl, fetchOptions);
 
   if (response.status === 401 || response.status === 500) {
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';

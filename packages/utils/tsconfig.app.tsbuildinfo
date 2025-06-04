@@ -1,1 +1,1 @@
-{"root":["./src/get-cookie.ts","./src/index.ts","./src/vite-env.d.ts","./src/types/index.ts","./src/types/shared/index.ts","./src/types/shared/table/index.ts","./src/types/shared/topribbon/index.ts"],"version":"5.8.3"}
+{"root":["./src/get-cookie.ts","./src/index.ts","./src/vite-env.d.ts","./src/types/index.ts","./src/types/table/index.ts","./src/types/topribbon/index.ts"],"version":"5.8.3"}

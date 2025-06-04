@@ -4,7 +4,7 @@ import { httpClient } from '../httpClient';
 import { FavoriteMeterFilter, FavoriteMeterType } from './types';
 import { DataQueryKeys } from '../data-query-keys';
 import { UserType } from '../User/types';
-import { Sort } from '@rhino/utils/types/shared/table';
+import { Sort } from '@rhino/utils';
 
 type TableData = {
   content: FavoriteMeterType[];
@@ -35,7 +35,7 @@ export const useGetAllFavoriteMeters = ({
   userId,
   userType,
 }: UseGetAllFavoriteMetersProps) => {
-  const queryParams = new URLSearchParams({
+  const queryParams = {
     page: page?.toString() || '',
     size: size?.toString() || '',
     sort: `${sort.field},${sort.direction}`,
@@ -45,7 +45,8 @@ export const useGetAllFavoriteMeters = ({
     authorEmail: filters?.authorEmail || '',
     userType: userType || '',
     shared: filters?.shared || '',
-  });
+  };
+
   return useQuery({
     queryKey: [
       DataQueryKeys.FAVORITE_METERS,
@@ -58,9 +59,8 @@ export const useGetAllFavoriteMeters = ({
     ],
     queryFn: async () => {
       const response = await httpClient.get<TableData>(
-        API_URLS.getAllFavoriteMeters({
-          queryParams: queryParams.toString(),
-        })
+        API_URLS.getAllFavoriteMeters(),
+        { params: queryParams }
       );
       return response.data;
     },

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { FavoriteMeterType } from '@rhino/apis/FavoriteMeter/types';
+import { FavoriteMeterType } from '@rhino/apis';
 
 type FavoriteMeterStore = {
   favoriteMeter: FavoriteMeterType | null;
