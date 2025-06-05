@@ -28,6 +28,7 @@
     "@tanstack/react-table": "^8.21.2",
     "axios": "^1.6.8",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "i18next": "^24.2.3",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",

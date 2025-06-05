@@ -28,7 +28,6 @@ const LocationCombobox = ({
   return (
     <UuidCombobox
       options={[
-        { name: t('comboBox.locationNull'), uuid: '' },
         ...(locations?.map((location) => ({
           name: location.name,
           uuid: location.uuid,
