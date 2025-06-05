@@ -43,7 +43,7 @@ const ComboBox = ({
       onClose={() => setQuery('')}
     >
       <div className="relative">
-        <ComboboxButton as="div">
+        <ComboboxButton as="div" disabled={disabled}>
           <ComboboxInput
             className={clsx(
               'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 ',
@@ -70,7 +70,7 @@ const ComboBox = ({
           )}
         >
           <div className="py-3">
-            {filteredOptions.length !== 0 && (
+            {filteredOptions.length !== 0 && query === '' && (
               <ComboboxOption value={'all'}>
                 {({ focus }) => (
                   <div
