@@ -53,17 +53,21 @@ const UuidCombobox = ({
       onClose={() => setQuery('')}
     >
       <div className="relative">
-        <ComboboxInput
-          className={clsx(
-            'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] h-[2.5rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border-[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 w-[14rem]',
-            disabled && 'bg-grey-light !cursor-default'
-          )}
-          displayValue={(option: { id: number; name: string }) => option?.name}
-          onChange={(event) => setQuery(event.target.value)}
-          autoFocus={!disabled}
-          readOnly={disabled}
-          placeholder={defaultPlaceholder}
-        />
+        <ComboboxButton as="div">
+          <ComboboxInput
+            className={clsx(
+              'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] h-[2.5rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border-[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 w-[14rem]',
+              disabled && 'bg-grey-light !cursor-default'
+            )}
+            displayValue={(option: { id: number; name: string }) =>
+              option?.name
+            }
+            onChange={(event) => setQuery(event.target.value)}
+            autoFocus={!disabled}
+            readOnly={disabled}
+            placeholder={defaultPlaceholder}
+          />
+        </ComboboxButton>
         <ComboboxButton
           className="group absolute inset-y-0 right-0 px-2.5"
           hidden={disabled}
@@ -77,6 +81,23 @@ const UuidCombobox = ({
           )}
         >
           <div className="py-3">
+            {filteredOptions.length !== 0 && (
+              <ComboboxOption value={null}>
+                {({ focus }) => (
+                  <div
+                    className={clsx(
+                      'group flex gap-2 px-2 py-2 text-[13px]',
+                      focus &&
+                        'bg-rhino-indigo-blue-highlight text-rhino-white',
+                      selectedValue?.name == null &&
+                        'bg-rhino-energy-green text-rhino-white'
+                    )}
+                  >
+                    Select
+                  </div>
+                )}
+              </ComboboxOption>
+            )}
             {filteredOptions.map((option, index) => {
               return option.groups ? (
                 <React.Fragment key={index}>

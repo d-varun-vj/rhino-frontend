@@ -3,6 +3,7 @@ import { httpClient } from '../../httpClient';
 import { DashboardType } from '../types';
 import API_URLS from '../../endpoints';
 import { DataQueryKeys } from '../../data-query-keys';
+import { Sort } from '@rhino/utils';
 
 export type TableData = {
   content: DashboardType[];
@@ -19,8 +20,7 @@ export type DashboardTableRequestBody = {
   clientUuid?: string | null;
   locationUuid?: string | null;
   groupUuid?: string | null;
-  sortedField?: string;
-  sortDirection?: string;
+  sort: Sort;
   locationName: string | null;
   groupName: string | null;
   measurementName: string | null;
@@ -40,8 +40,7 @@ export const useGetTableData = ({
   const {
     page,
     size,
-    sortDirection,
-    sortedField,
+    sort,
     locationName,
     groupName,
     measurementName,
@@ -60,8 +59,12 @@ export const useGetTableData = ({
   const queryParams = {
     ...(!!page && { page }),
     ...(!!size && { size }),
-    ...(!!sortDirection && { sortDirection }),
-    ...(sortedField?.length && { sort: sortedField }),
+    ...((sort.field || sort.direction) && {
+      sort:
+        sort.field && sort.direction
+          ? `${sort.field},${sort.direction}`
+          : sort.field || sort.direction,
+    }),
     ...(!!locationName && { locationName }),
     ...(!!groupName && { groupName }),
     ...(!!measurementName && { measurementName }),

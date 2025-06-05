@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/user';
 import { FilterVariant } from '../../components/Table/types';
 import { Sort } from '@rhino/utils';
+import { format } from 'date-fns';
 import { shouldSetInitialClient } from '../../helpers/client';
 import { CONSTANTS } from '../../constant';
 import {
@@ -55,8 +56,7 @@ export const Dashboard = () => {
         clientUuid: client ? client.uuid : null,
         locationUuid: location ? location.uuid : null,
         groupUuid: group ? group.uuid : null,
-        sortDirection: sort.direction,
-        sortedField: sort.field,
+        sort: sort,
         ...filters,
         favoriteMeterUuid: favoriteMeter ? favoriteMeter.uuid : null,
       },
@@ -252,7 +252,12 @@ export const Dashboard = () => {
         id: 'READ_TIME',
         accessorFn: (row) => row.readTime,
         header: t(translationBaseRoute + 'header.readTime'),
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+          if (info.row.original.readTime !== null) {
+            return format(info.row.original.readTime, 'dd-MM-yyyy HH:mm');
+          }
+          return info.getValue();
+        },
         meta: {
           sortKey: 'readTime',
           sortDirection: sort.direction,

@@ -30,11 +30,6 @@ const GroupCombobox = ({
   return (
     <UuidCombobox
       options={[
-        {
-          name: '',
-          uuid: '',
-          groups: [{ name: t('comboBox.groupNull'), uuid: '' }],
-        },
         ...(locations
           ? locations
               .filter((location) =>

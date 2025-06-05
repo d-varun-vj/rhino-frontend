@@ -43,17 +43,19 @@ const ComboBox = ({
       onClose={() => setQuery('')}
     >
       <div className="relative">
-        <ComboboxInput
-          className={clsx(
-            'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 ',
-            width,
-            customStyle
-          )}
-          displayValue={(option: string) => option}
-          onChange={(event) => setQuery(event.target.value)}
-          readOnly={disabled}
-          placeholder={defaultPlaceholder}
-        />
+        <ComboboxButton as="div">
+          <ComboboxInput
+            className={clsx(
+              'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 ',
+              width,
+              customStyle
+            )}
+            displayValue={(option: string) => option}
+            onChange={(event) => setQuery(event.target.value)}
+            readOnly={disabled}
+            placeholder={defaultPlaceholder}
+          />
+        </ComboboxButton>
         <ComboboxButton
           className="group absolute inset-y-0 right-0 px-2.5"
           hidden={disabled}
