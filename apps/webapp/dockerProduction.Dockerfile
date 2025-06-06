@@ -14,7 +14,7 @@ RUN npm ci
 
 RUN npm install -g nx
 
-# Copy the necessary application code
+# Copy the necessary application code.
 COPY . .
 
 RUN cp apps/webapp/.env.production apps/webapp/.env
