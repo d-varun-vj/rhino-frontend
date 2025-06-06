@@ -8,6 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 COPY apps/webapp/package*.json ./apps/webapp/
 
+
 # Install dependencies
 RUN npm ci
 
@@ -15,6 +16,8 @@ RUN npm install -g nx
 
 # Copy the necessary application code
 COPY . .
+
+RUN cp apps/webapp/.env.production apps/webapp/.env
 
 # Build packages (if necessary)
 RUN nx run-many --target=build --all

@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 name: Release PR Flow
-run-name: "Create/Update Release PR & Push Image"
+run-name: "Build for production & Push Image"
 
 jobs:
   create-release-tag:
@@ -28,7 +28,7 @@ jobs:
         run: echo '${{ toJSON(steps.release.outputs) }}'
 
   publish-image-webapp:
-    name: Publish Image webapp
+    name: Publish Production Image webapp
     runs-on: self-hosted
     needs: create-release-tag
     if: ${{ needs.create-release-tag.outputs.webapp-release-created == 'true' }}
