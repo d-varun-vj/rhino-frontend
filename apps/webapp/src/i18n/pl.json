@@ -1,7 +1,7 @@
 {
   "translation": {
     "comboBox": {
-      "select": "Wybierać",
+      "select": "Wybierz",
       "locationNull": "Wszystkie lokalizacje",
       "groupNull": "Wszystkie grupy"
     },
@@ -16,7 +16,7 @@
           "updatedDate": "Data edycji",
           "actions": "Akcje"
         },
-        "popup": "Wybierać"
+        "popup": "Wybierarz"
       }
     },
     "pages": {
@@ -30,13 +30,13 @@
             "translatedMedium": "Medium",
             "measurementName": "Nazwa Licznika",
             "serialNumber": "Numer seryjny",
-            "factor": "MnoÅ¼na",
+            "factor": "Mnożna",
             "value": "Odczyt",
             "readTime": "Data ostatniego odczytu",
-            "currentMonthConsumption": "ZuÅ¼ycie w tym miesiÄcu",
-            "lastMonthSameDayConsumption": "ZuÅ¼ycie na ten sam dzieÅ w poprzednim miesiÄcu",
-            "percentage": "PorÃ³wnanie w %",
-            "lastMonthConsumption": "ZuÅ¼ycie w poprzednim miesiÄcu",
+            "currentMonthConsumption": "Zużycie w tym miesiącu",
+            "lastMonthSameDayConsumption": "Zużycie na ten sam dzień w poprzednim miesiącu",
+            "percentage": "Porównanie w %",
+            "lastMonthConsumption": "Zużycie w poprzednim miesiącu",
             "unit": "Jednostka",
             "tenant": "Najemcy",
             "actions": "Akcje",
@@ -58,29 +58,29 @@
       "dashboardR": "Panel (R)",
 
       "analysisReports": "Analiza i raporty",
-      "consumptionChart": "ZuÅ¼ycie",
+      "consumptionChart": "Zużycie",
       "consumptionProfileChart": "Profil",
-      "heatMap": "Mapa zuÅ¼ycia",
+      "heatMap": "Mapa zużycia",
       "measurementStructures": "Struktury",
-      "balanceModule": "ModuÅ bilansÃ³w",
+      "balanceModule": "Moduł bilansów",
       "report": "Raporty",
-      "utilityCosts": "Koszty mediÃ³w",
+      "utilityCosts": "Koszty mediów",
 
       "alarmsAndNotifications": "Alarmy i powiadomienia",
       "immediateAlarm": "Alarm natychmiastowy",
 
       "configuration": "Konfiguracja",
       "measurements": "Liczniki",
-      "externalServiceConfiguration": "Konfiguracja zewnÄtrznych UPC",
+      "externalServiceConfiguration": "Konfiguracja zewnętrznych UPC",
       "technicalView": "Widok instalatora",
-      "inputManagement": "ZarzÄdzanie pomiarami",
+      "inputManagement": "Zarządzanie pomiarami",
       "maintenanceReport": "Raport utrzymania systemu",
       "meterStates": "Stany licznikowe",
       "favoriteMeters": "Ulubione liczniki",
 
       "administration": "Administracja ",
       "clients": "Klienci",
-      "users": "UÅ¼ytkownicy",
+      "users": "Użytkownicy",
       "tenants": "Najemcy",
 
       "support": "Wsparcie"
@@ -100,7 +100,7 @@
       "client": "Klient:",
       "location": "Lokalizacja:",
       "group": "Grupa:",
-      "favoriteMeters": "Wybierać",
+      "favoriteMeters": "Wybierz",
       "favoriteMeterButton": "Wybierz",
       "user": {
         "terms": "Regulamin",
@@ -110,7 +110,7 @@
       }
     },
     "toast": {
-      "somethingWantWrong": "Coś jest nie tak !",
+      "somethingWantWrong": "Coś jest nie tak!",
       "languageChanged": {
         "success": "Zmieniono język"
       }
