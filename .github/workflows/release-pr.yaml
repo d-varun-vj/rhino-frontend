@@ -43,7 +43,7 @@ jobs:
         uses: Rhino-Energy/github-actions/.github/actions/javascript-monorepo@main
         with:
           aws-ecr-repo: "rhino-webapp"
-          docker-file-path: "apps/webapp/Dockerfile"
+          docker-file-path: "apps/webapp/dockerProduction.Dockerfile"
           tag: ${{ needs.create-release-tag.outputs.webapp-release-tag-name }}
           version: ${{ needs.create-release-tag.outputs.webapp-release-version }}
           aws-region: ${{ vars.aws_region }}
