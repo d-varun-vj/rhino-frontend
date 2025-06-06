@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.4.0...webapp-v1.5.0) (2025-06-06)
+
+
+### Features
+
+* Trigger deployment [PRD-1386] ([#51](https://github.com/Rhino-Energy/rhino-frontend/issues/51)) ([7236c12](https://github.com/Rhino-Energy/rhino-frontend/commit/7236c121eafa774a7773d4138ae4531657a48fe2))
+
 ## [1.4.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.3.0...webapp-v1.4.0) (2025-06-06)
 
 
