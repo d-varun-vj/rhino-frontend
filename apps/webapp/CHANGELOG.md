@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.5.0...webapp-v1.5.1) (2025-06-06)
+
+
+### Bug Fixes
+
+* Fix issues in polish encoding [PRD-1386] ([#53](https://github.com/Rhino-Energy/rhino-frontend/issues/53)) ([6bd18df](https://github.com/Rhino-Energy/rhino-frontend/commit/6bd18df6b910aa580ddedb117dd98d06678aac16))
+
 ## [1.5.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.4.0...webapp-v1.5.0) (2025-06-06)
 
 
