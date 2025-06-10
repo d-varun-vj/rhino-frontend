@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.5.1...webapp-v1.6.0) (2025-06-10)
+
+
+### Features
+
+* add hook to persist dashboard api filters ([#55](https://github.com/Rhino-Energy/rhino-frontend/issues/55)) ([6dc88fc](https://github.com/Rhino-Energy/rhino-frontend/commit/6dc88fc5de151eadb4bc1a69d3636e0ee5400adf))
+
 ## [1.5.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.5.0...webapp-v1.5.1) (2025-06-06)
 
 
