@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
+
 import { FavoriteMeterContext } from './favorite-meter-context';
-import { FavoriteMeterType } from '@rhino/apis';
+import { FilterData } from '../userFilter/user-filter-context';
 
 export const FavoriteMeterProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [favoriteMeter, setFavoriteMeter] = useState<FavoriteMeterType | null>(
-    null
-  );
+  const [favoriteMeter, setFavoriteMeter] = useState<FilterData | null>(null);
 
   const clearFavoriteMeter = () => {
     setFavoriteMeter(null);
