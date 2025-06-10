@@ -1,9 +1,9 @@
 import { createContext } from 'react';
-import { FavoriteMeterType } from '@rhino/apis';
+import { FilterData } from '../userFilter/user-filter-context';
 
 type FavoriteMeterStore = {
-  favoriteMeter: FavoriteMeterType | null;
-  setFavoriteMeter: (favoriteMeter: FavoriteMeterType | null) => void;
+  favoriteMeter: FilterData | null;
+  setFavoriteMeter: (favoriteMeter: FilterData | null) => void;
   clearFavoriteMeter: () => void;
 };
 

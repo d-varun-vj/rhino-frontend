@@ -17,7 +17,17 @@ import { useUserFilter } from '../../../context/userFilter';
 import { FilterVariant } from '../../Table/types';
 import { Sort } from '@rhino/utils';
 
-const FavoriteMeter = () => {
+type FavoriteMeterProps = {
+  selectedFavoriteMeter?: string;
+  removeSelectedFavoriteMeter: () => void;
+  selectedClientUuid?: string | null;
+};
+
+const FavoriteMeter = ({
+  selectedFavoriteMeter,
+  removeSelectedFavoriteMeter,
+  selectedClientUuid,
+}: FavoriteMeterProps) => {
   const { t } = useTranslation();
   const { user } = useUser();
   const { favoriteMeter, setFavoriteMeter } = useFavoriteMeter();
@@ -102,7 +112,10 @@ const FavoriteMeter = () => {
             <IconButton
               action={() => {
                 setModelOpen(false);
-                setFavoriteMeter(info.row.original);
+                setFavoriteMeter({
+                  uuid: info.row.original.uuid,
+                  name: info.row.original.name,
+                });
               }}
               popupContent={t(translationBaseRoute + 'popup')}
               style="bg-rhino-energy-green text-rhino-white"
@@ -119,7 +132,7 @@ const FavoriteMeter = () => {
   const { data: tableData, isLoading } = useGetAllFavoriteMeters({
     page: page,
     size: pageSize,
-    clientUuid: client ? client.uuid : '',
+    clientUuid: selectedClientUuid || client?.uuid || '',
     filters: filters,
     sort: sort,
     userId: user ? user?.uuid : null,
@@ -132,9 +145,9 @@ const FavoriteMeter = () => {
   const onFilterChange = (
     val: string | null,
     field: string,
-    varient: FilterVariant | null
+    variant: FilterVariant | null
   ) => {
-    switch (varient) {
+    switch (variant) {
       case FilterVariant.TEXT:
         setFilters((prev: FavoriteMeterFilter) => {
           return { ...prev, [field]: val };
@@ -157,20 +170,21 @@ const FavoriteMeter = () => {
   return (
     <div>
       <div
-        className={`cursor-pointer min-w-[14rem]  flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-rhino-white font-bold  rounded-[4px] text-[13px] ${favoriteMeter ? 'bg-rhino-indigo-blue border-rhino-indigo-blue-light' : 'bg-rhino-energy-green border-rhino-energy-green-light'}`}
+        className={`cursor-pointer min-w-[14rem]  flex items-center justify-center gap-[0.5rem] leading-[1rem] h-[2.5rem] text-rhino-white font-bold  rounded-[4px] text-[13px] ${favoriteMeter?.uuid || selectedFavoriteMeter?.length ? 'bg-rhino-indigo-blue border-rhino-indigo-blue-light' : 'bg-rhino-energy-green border-rhino-energy-green-light'}`}
         onClick={() => {
-          if (favoriteMeter !== null) {
+          if (favoriteMeter?.uuid || selectedFavoriteMeter?.length) {
             setModelOpen(false);
             setFavoriteMeter(null);
+            removeSelectedFavoriteMeter();
           } else {
             setModelOpen(true);
           }
         }}
       >
-        {favoriteMeter
-          ? favoriteMeter.name
-          : t('topRibbon.favoriteMeterButton')}
-        {favoriteMeter ? (
+        {selectedFavoriteMeter ||
+          favoriteMeter?.name ||
+          t('topRibbon.favoriteMeterButton')}
+        {favoriteMeter?.uuid || selectedFavoriteMeter?.length ? (
           <RiCloseCircleFill className="font-bold text-[16px]" />
         ) : (
           <FaArrowRight />
