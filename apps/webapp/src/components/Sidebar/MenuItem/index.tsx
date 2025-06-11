@@ -5,7 +5,8 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../context/user';
 import MinimizePopup from '../MinimizePopup';
-import { canViewItem } from '../../../helpers/sidebar';
+import { canViewItem, getToNavLink } from '../../../helpers/sidebar';
+import { useUserFilter } from '../../../context/userFilter';
 
 export type MenuItemProps = {
   menuItem: MenuItemType;
@@ -24,6 +25,7 @@ export type MenuItemProps = {
 const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
   const { t } = useTranslation();
   const { user } = useUser();
+  const { client, location, group } = useUserFilter();
 
   return (
     <li
@@ -61,29 +63,31 @@ const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
           {menuItem.subItems?.map((subItem) =>
             user && canViewItem({ subItem, user }) ? (
               <NavLink
-                to={subItem.wicketLink || subItem.route || '#'}
+                to={getToNavLink({ subItem, client, location, group })}
                 key={subItem.key}
               >
-                {({ isActive }) => (
-                  <li className="relative">
-                    <p
-                      className={`${
-                        isActive
-                          ? 'nav-active nav-sub-menu-a'
-                          : minimize.isMinimize
-                            ? 'hover:!bg-rhino-indigo-blue nav-sub-menu-a'
-                            : 'nav-sub-menu-a'
-                      }`}
-                    >
-                      <i className={`${isActive ? 'nav-active' : ''}`}>
-                        <subItem.icon className="text-[15px]" />
-                      </i>
-                      <span className={`${isActive ? 'nav-active' : ''}`}>
-                        {t(subItem.label)}
-                      </span>
-                    </p>
-                  </li>
-                )}
+                {({ isActive }) => {
+                  return (
+                    <li className="relative">
+                      <p
+                        className={`${
+                          isActive
+                            ? 'nav-active nav-sub-menu-a'
+                            : minimize.isMinimize
+                              ? 'hover:!bg-rhino-indigo-blue nav-sub-menu-a'
+                              : 'nav-sub-menu-a'
+                        }`}
+                      >
+                        <i className={`${isActive ? 'nav-active' : ''}`}>
+                          <subItem.icon className="text-[15px]" />
+                        </i>
+                        <span className={`${isActive ? 'nav-active' : ''}`}>
+                          {t(subItem.label)}
+                        </span>
+                      </p>
+                    </li>
+                  );
+                }}
               </NavLink>
             ) : null
           )}

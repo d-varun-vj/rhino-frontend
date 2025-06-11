@@ -148,7 +148,6 @@ export const MenuItems: MenuItemType[] = [
         label: 'sideMenu.balanceModule',
         icon: FaBalanceScale,
         key: 'balance',
-        route: '/balance',
         wicketLink: VITE_WICKET_BASE_URL + 'balanceModule',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
         viewPermissions: [UserViewPermission.BALANCE_MODULE_ROLE],

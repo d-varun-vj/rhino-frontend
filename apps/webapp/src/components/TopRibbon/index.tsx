@@ -122,7 +122,7 @@ const TopRibbon = () => {
           ...searchParams,
           location: null,
           group: null,
-          client: value?.uuid,
+          client: value ? value.uuid : null,
         });
         break;
       case FieldType.LOCATION:
@@ -130,7 +130,7 @@ const TopRibbon = () => {
         setSelectedGroup(null);
         setSearchParams({
           ...searchParams,
-          location: value?.uuid,
+          location: value ? value.uuid : null,
           group: null,
         });
         break;
@@ -138,13 +138,14 @@ const TopRibbon = () => {
         setSelectedGroup(value);
         setSearchParams({
           ...searchParams,
-          group: value?.uuid,
+          group: value ? value.uuid : null,
         });
         break;
     }
   };
 
-  const isComboboxDisabled = (searchParams?.['client'] as string) === null;
+  const isComboboxDisabled =
+    (searchParams?.['client'] as string) === null || selectedClient == null;
 
   const Items: { labelKey: string; component: JSX.Element }[] = [
     {

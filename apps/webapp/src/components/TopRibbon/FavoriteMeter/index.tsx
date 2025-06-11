@@ -136,7 +136,6 @@ const FavoriteMeter = ({
     filters: filters,
     sort: sort,
     userId: user ? user?.uuid : null,
-    userType: user ? user?.userType : null,
   });
   const onSortClick = (field: string, direction: string) => {
     setSort({ field, direction });

@@ -23,6 +23,7 @@ import {
   useGetTableData,
   VITE_WICKET_BASE_URL,
 } from '@rhino/apis';
+import { getRibbonParams } from '../../helpers/topribbon';
 
 export const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
@@ -95,7 +96,9 @@ export const Dashboard = () => {
           action={() => {
             window.location.href =
               VITE_WICKET_BASE_URL +
-              `consumptionProfileChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+              'consumptionProfileChart' +
+              getRibbonParams({ client, location, group }) +
+              `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
           }}
           popupContent={t(translationBaseRoute + 'popup.goToProfile')}
           style="bg-rhino-energy-green text-rhino-white"
@@ -106,7 +109,9 @@ export const Dashboard = () => {
           action={() => {
             window.location.href =
               VITE_WICKET_BASE_URL +
-              `consumptionChart?uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+              'consumptionChart' +
+              getRibbonParams({ client, location, group }) +
+              `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
           }}
           popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
           style="bg-rhino-energy-green text-rhino-white"
@@ -115,7 +120,7 @@ export const Dashboard = () => {
         </IconButton>
       </ActionCell>
     ),
-    [t]
+    [t, client, location, group]
   );
 
   const onSortClick = (field: string, direction: string) => {

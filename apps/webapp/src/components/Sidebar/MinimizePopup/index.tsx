@@ -4,11 +4,13 @@ import { VscTriangleLeft } from 'react-icons/vsc';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../context/user';
 import { NavLink } from 'react-router-dom';
-import { canViewItem } from '../../../helpers/sidebar';
+import { canViewItem, getToNavLink } from '../../../helpers/sidebar';
+import { useUserFilter } from '../../../context/userFilter';
 
 const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
   const { t } = useTranslation();
   const { user } = useUser();
+  const { client, location, group } = useUserFilter();
 
   return (
     <div className="min-w-[300px] absolute left-[75px]  z-40 -mt-10 ">
@@ -30,7 +32,7 @@ const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
         {menuItem.subItems?.map((subItem) =>
           user && canViewItem({ subItem, user }) ? (
             <NavLink
-              to={subItem.wicketLink || subItem.route || '#'}
+              to={getToNavLink({ subItem, client, location, group })}
               key={subItem.key}
             >
               {({ isActive }) => (

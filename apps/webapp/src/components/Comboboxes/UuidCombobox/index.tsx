@@ -57,7 +57,7 @@ const UuidCombobox = ({
           <ComboboxInput
             className={clsx(
               'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] h-[2.5rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border-[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 w-[14rem]',
-              disabled && 'bg-grey-light !cursor-default'
+              disabled && 'bg-grey/10 !cursor-default'
             )}
             displayValue={(option: { id: number; name: string }) =>
               option?.name

@@ -1,5 +1,7 @@
 import { User, UserType, ViewPermissionsType } from '@rhino/apis';
 import { SubItemType } from '../../components/Sidebar/config';
+import { getRibbonParams } from '../topribbon';
+import { FilterData } from '../../context/userFilter/user-filter-context';
 
 const hasUserTypeAccess = ({
   subItem,
@@ -40,5 +42,25 @@ export const canViewItem = ({
     user?.userType === UserType.SuperAdmin ||
     hasUserTypeAccess({ subItem, user }) ||
     hasRoleAccess({ subItem, user })
+  );
+};
+
+export const getToNavLink = ({
+  subItem,
+  client,
+  location,
+  group,
+}: {
+  subItem: SubItemType;
+  client: FilterData | null;
+  location: FilterData | null;
+  group: FilterData | null;
+}) => {
+  return (
+    (subItem.wicketLink &&
+      subItem.wicketLink + getRibbonParams({ client, location, group })) ||
+    (subItem.route &&
+      subItem.route + getRibbonParams({ client, location, group })) ||
+    '#'
   );
 };

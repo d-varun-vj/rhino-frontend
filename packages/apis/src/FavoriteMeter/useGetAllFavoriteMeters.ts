@@ -3,7 +3,6 @@ import API_URLS from '../endpoints';
 import { httpClient } from '../httpClient';
 import { FavoriteMeterFilter, FavoriteMeterType } from './types';
 import { DataQueryKeys } from '../data-query-keys';
-import { UserType } from '../User/types';
 import { Sort } from '@rhino/utils';
 
 type TableData = {
@@ -17,11 +16,10 @@ type TableData = {
 type UseGetAllFavoriteMetersProps = {
   page?: number | null;
   size?: number | null;
-  clientUuid: string;
+  clientUuid: string | null;
   filters?: FavoriteMeterFilter | null;
   sort: Sort;
   userId: string | null;
-  userType: UserType | null;
 };
 
 export const useGetAllFavoriteMeters = ({
@@ -31,7 +29,6 @@ export const useGetAllFavoriteMeters = ({
   filters,
   sort,
   userId,
-  userType,
 }: UseGetAllFavoriteMetersProps) => {
   const queryParams = {
     ...(!!page && { page: page?.toString() }),
@@ -42,10 +39,9 @@ export const useGetAllFavoriteMeters = ({
           ? `${sort.field},${sort.direction}`
           : sort.field || sort.direction,
     }),
-    ...(!!clientUuid && { clientUuid: clientUuid?.toString() }),
+    ...(clientUuid != 'null' && { clientUuid: clientUuid?.toString() }),
     ...(!!filters?.name && { name: filters?.name }),
     ...(!!filters?.authorEmail && { authorEmail: filters?.authorEmail }),
-    ...(!!userType && { userType: userType }),
     ...(!!filters?.shared && { shared: filters?.shared }),
   };
 
