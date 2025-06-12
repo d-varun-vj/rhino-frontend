@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.6.0...webapp-v1.7.0) (2025-06-11)
+
+
+### Features
+
+* set selected client from wicket through params [PRD-1386] ([#59](https://github.com/Rhino-Energy/rhino-frontend/issues/59)) ([b7e3e05](https://github.com/Rhino-Energy/rhino-frontend/commit/b7e3e058653e8b235897ed87c3a505b3c6754e12))
+
+
+### Bug Fixes
+
+* Fix type error during build [PRD-1386] ([#57](https://github.com/Rhino-Energy/rhino-frontend/issues/57)) ([2fc4684](https://github.com/Rhino-Energy/rhino-frontend/commit/2fc4684d3b9ba42a19fc06b20d1bd7e8336b40ef))
+
 ## [1.6.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.5.1...webapp-v1.6.0) (2025-06-10)
 
 
