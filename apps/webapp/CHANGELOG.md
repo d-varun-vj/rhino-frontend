@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.7.0...webapp-v1.8.0) (2025-06-18)
+
+
+### Features
+
+* Implement client sidebar dynamic logo [PRD-1386] ([#60](https://github.com/Rhino-Energy/rhino-frontend/issues/60)) ([fbd5596](https://github.com/Rhino-Energy/rhino-frontend/commit/fbd5596d41db288d728b494917703e1dd8a3087d))
+
 ## [1.7.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.6.0...webapp-v1.7.0) (2025-06-11)
 
 
