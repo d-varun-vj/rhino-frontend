@@ -12,6 +12,7 @@ import { MenuKeys, MenuItems, MenuItemType } from './config';
 import MenuItem from './MenuItem';
 import { useUser } from '../../context/user';
 import { User, UserType, ViewPermissionsType } from '@rhino/apis';
+import { useUserFilter } from '../../context/userFilter';
 
 const handleResizeLogic = (
   setMinimize: Dispatch<
@@ -61,6 +62,8 @@ const canViewMenuItem = ({
   hasRoleAccess({ menuItem, user });
 
 const SideBar = () => {
+  const VITE_STATIC_ASSET_URL: string = import.meta.env
+    .VITE_STATIC_ASSET_URL as string;
   const [minimize, setMinimize] = useState<{
     isMinimize: boolean;
     item: MenuKeys | '';
@@ -74,6 +77,8 @@ const SideBar = () => {
     () => handleResizeLogic(setMinimize),
     [setMinimize]
   );
+
+  const { client } = useUserFilter();
 
   useEffect(() => {
     handleResize();
@@ -122,7 +127,7 @@ const SideBar = () => {
         className={`${minimize.isMinimize ? 'opacity-0' : 'opacity-100'} flex h-[38px] my-[1rem] justify-center flex-row `}
       >
         <img
-          src={rhinoLogo}
+          src={client?.logo ? VITE_STATIC_ASSET_URL + client.logo : rhinoLogo}
           alt="Rhino Logo"
           className="object-contain max-w-full h-auto"
         />

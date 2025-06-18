@@ -16,13 +16,17 @@ interface Props {
     name: string;
     uuid: string;
     groups?: Group[];
+    logo?: string;
   }[];
   defaultPlaceholder: string;
   disabled: boolean;
-  onSelect: (data: { name: string; uuid: string } | null) => void;
+  onSelect: (
+    data: { name: string; uuid: string; logo?: string } | null
+  ) => void;
   selectedValue: {
     name: string;
     uuid: string;
+    logo?: string;
   } | null;
 }
 
@@ -49,7 +53,9 @@ const UuidCombobox = ({
   return (
     <Combobox
       value={selectedValue}
-      onChange={(value) => onSelect(value)}
+      onChange={(value) => {
+        return onSelect(value);
+      }}
       onClose={() => setQuery('')}
     >
       <div className="relative">

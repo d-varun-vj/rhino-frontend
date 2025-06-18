@@ -1,4 +1,3 @@
-import React from 'react';
 import './Table.css';
 
 import {
@@ -14,19 +13,20 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import Filter from './Filter';
-import TableFooter from './Footer';
-
-import { FilterVariant } from './types';
-import { SortDirection } from '@rhino/utils';
-import { ColumnMeta } from '@tanstack/table-core';
 import { CONSTANTS } from '../../constant';
+import { ColumnMeta } from '@tanstack/table-core';
+import Filter from './Filter';
+import { FilterVariant } from './types';
+import React from 'react';
+import { SortDirection } from '@rhino/utils';
+import TableFooter from './Footer';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
   filterKey?: string;
   sortKey: string | null; // Same as backend sorting field name
   sortDirection?: string;
+  renderCell?: (value: unknown, row: unknown) => React.ReactNode;
 }
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -61,13 +61,15 @@ type TableProps<T> = {
 
 const getSortDirection = <T,>(
   meta?: ColumnMeta<T, unknown>
-): SortDirection | string => {
-  const direction = meta?.sortDirection;
-  return direction === ''
-    ? SortDirection.ASC
-    : direction === SortDirection.ASC
-      ? SortDirection.DESC
-      : '';
+): SortDirection | '' => {
+  switch (meta?.sortDirection) {
+    case SortDirection.ASC:
+      return SortDirection.DESC;
+    case SortDirection.DESC:
+      return '';
+    default:
+      return SortDirection.ASC;
+  }
 };
 
 const handleSortClick = <T,>(
@@ -80,14 +82,22 @@ const handleSortClick = <T,>(
   onSortSelect(sortKey, getSortDirection(header.column.columnDef?.meta));
 };
 
-const getSortIndicator = (meta?: { sortDirection?: string }) => {
-  if (!meta?.sortDirection) return '⇅';
+const getSortIndicator = (meta?: {
+  sortDirection?: SortDirection | string;
+}): string => {
+  if (!meta?.sortDirection) {
+    return CONSTANTS.sortIndicator.noSort;
+  }
+
   const direction = meta.sortDirection as SortDirection;
-  return direction === SortDirection.DESC
-    ? CONSTANTS.sortIndicator.desc
-    : direction === SortDirection.ASC
-      ? CONSTANTS.sortIndicator.asc
-      : CONSTANTS.sortIndicator.noSort;
+  switch (direction) {
+    case SortDirection.ASC:
+      return CONSTANTS.sortIndicator.asc;
+    case SortDirection.DESC:
+      return CONSTANTS.sortIndicator.desc;
+    default:
+      return CONSTANTS.sortIndicator.noSort;
+  }
 };
 
 const Table = <T,>({
@@ -112,7 +122,7 @@ const Table = <T,>({
       columnFilters,
       pagination: {
         pageIndex: 0,
-        pageSize: footer?.pageSize ? footer.pageSize : 5,
+        pageSize: footer?.pageSize ?? 5,
       },
     },
     onColumnFiltersChange: setColumnFilters,
@@ -193,20 +203,25 @@ const Table = <T,>({
                       return (
                         <td
                           key={cell.id}
-                          className={`${cell.column.id === CONSTANTS.action && 'sticky -right-5'} p-[.75rem] align-top first:pl-[.75rem] bg-white`}
+                          className={`${cell.column.id === CONSTANTS.action && 'sticky -right-5 bg-white'} p-[.75rem] align-top first:pl-[.75rem] `}
                         >
                           <div
-                            className={` text-[13px] text-wrap  w-auto ${
+                            className={`text-[13px] text-wrap w-auto ${
                               cell.column.id === 'VALUE' ||
                               cell.column.id === 'READ_TIME'
                                 ? 'text-nowrap'
                                 : ''
                             }`}
                           >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
+                            {cell.column.columnDef.meta?.renderCell
+                              ? cell.column.columnDef.meta.renderCell(
+                                  cell.getValue(),
+                                  cell.row.original
+                                )
+                              : flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}
                           </div>
                         </td>
                       );

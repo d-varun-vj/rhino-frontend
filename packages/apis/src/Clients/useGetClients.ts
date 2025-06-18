@@ -6,6 +6,7 @@ import { DataQueryKeys } from '../data-query-keys';
 export type Client = {
   name: string;
   uuid: string;
+  logo: string;
   useAggregateData: boolean;
 };
 

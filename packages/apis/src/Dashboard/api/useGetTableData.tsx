@@ -30,6 +30,7 @@ export type DashboardTableRequestBody = {
   levelType: string | null;
   loadType: string | null;
   endUseAreaType: string | null;
+  percentageColor?: string | null;
 };
 
 export const useGetTableData = ({

@@ -24,7 +24,7 @@ export type DashboardType = {
   levelType: DictionaryDto | null;
   loadType: DictionaryDto | null;
   endUseArea: DictionaryDto | null;
-  percentageColor: string | null;
+  percentageColor?: string | null;
   type: string | null;
   action?: string;
 };

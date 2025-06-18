@@ -82,7 +82,13 @@ const TopRibbon = () => {
 
   useEffect(() => {
     setSelectedClient(
-      activeClient ? { name: activeClient.name, uuid: activeClient.uuid } : null
+      activeClient
+        ? {
+            name: activeClient.name,
+            uuid: activeClient.uuid,
+            logo: activeClient.logo,
+          }
+        : null
     );
     setSelectedLocation(
       activeLocation
@@ -111,6 +117,7 @@ const TopRibbon = () => {
     value: {
       name: string;
       uuid: string;
+      logo?: string;
     } | null
   ) => {
     switch (type) {

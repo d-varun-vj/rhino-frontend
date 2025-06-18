@@ -1,29 +1,42 @@
-import { FaChartBar, FaChartLine } from 'react-icons/fa';
-import React, { useCallback, useEffect, useState } from 'react';
-import ActionCell from '../../components/Table/ActionCell';
 import { ColumnDef, Row } from '@tanstack/react-table';
-import IconButton from '../../components/Buttons/IconButton';
-import MainLayout from '../../layouts/MainLayout';
-import Table from '../../components/Table';
-import PageTitle from '../../components/PageTitle';
-import { useFavoriteMeter } from '../../context/favoriteMeter';
-import { useUserFilter } from '../../context/userFilter';
-import { useTranslation } from 'react-i18next';
-import { useUser } from '../../context/user';
-import { FilterVariant } from '../../components/Table/types';
-import { Sort } from '@rhino/utils';
-import { format } from 'date-fns';
-import { shouldSetInitialClient } from '../../helpers/client';
-import { CONSTANTS } from '../../constant';
 import {
   DashboardType,
   Filter,
   TableData,
+  VITE_WICKET_BASE_URL,
   useGetMetaData,
   useGetTableData,
-  VITE_WICKET_BASE_URL,
 } from '@rhino/apis';
+import { FaChartBar, FaChartLine } from 'react-icons/fa';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import ActionCell from '../../components/Table/ActionCell';
+import { CONSTANTS } from '../../constant';
+import { FilterVariant } from '../../components/Table/types';
+import IconButton from '../../components/Buttons/IconButton';
+import MainLayout from '../../layouts/MainLayout';
+import PageTitle from '../../components/PageTitle';
+import { Sort } from '@rhino/utils';
+import Table from '../../components/Table';
+import { format } from 'date-fns';
 import { getRibbonParams } from '../../helpers/topribbon';
+import { shouldSetInitialClient } from '../../helpers/client';
+import { useFavoriteMeter } from '../../context/favoriteMeter';
+import { useTranslation } from 'react-i18next';
+import { useUser } from '../../context/user';
+import { useUserFilter } from '../../context/userFilter';
+
+type ColorMap = {
+  [key: string]: string;
+};
+
+const PERCENTAGE_COLORS: ColorMap = {
+  GREEN: 'text-green-500',
+  BLUE: 'text-blue-500',
+  ORANGE: 'text-orange-500',
+  RED: 'text-red-500',
+  DEFAULT: 'text-black',
+};
 
 export const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
@@ -287,12 +300,20 @@ export const Dashboard = () => {
         },
       },
       {
+        id: CONSTANTS.percentage,
         accessorFn: (row) => row.percentage,
         header: t(translationBaseRoute + 'header.percentage'),
         cell: (info) => info.getValue(),
         meta: {
           sortKey: 'percentage',
           sortDirection: sort.direction,
+          renderCell: (value, row) => {
+            const color = (row as DashboardType)
+              .percentageColor as keyof typeof PERCENTAGE_COLORS;
+            const className =
+              PERCENTAGE_COLORS[color] || PERCENTAGE_COLORS.DEFAULT;
+            return <span className={className}>{String(value)}</span>;
+          },
         },
       },
       {

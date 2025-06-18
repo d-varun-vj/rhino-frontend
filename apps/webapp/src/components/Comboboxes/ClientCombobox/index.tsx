@@ -10,6 +10,7 @@ type ClientComboboxProps = {
     value: {
       name: string;
       uuid: string;
+      logo?: string;
     } | null
   ) => void;
   clients: Client[] | null;
@@ -32,6 +33,7 @@ const ClientCombobox = ({
           ? clients.map((client) => ({
               name: client.name,
               uuid: client.uuid,
+              logo: client.logo,
             }))
           : []
       }
