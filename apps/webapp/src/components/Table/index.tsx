@@ -17,7 +17,7 @@ import { CONSTANTS } from '../../constant';
 import { ColumnMeta } from '@tanstack/table-core';
 import Filter from './Filter';
 import { FilterVariant } from './types';
-import React from 'react';
+import React, { useState } from 'react';
 import { SortDirection } from '@rhino/utils';
 import TableFooter from './Footer';
 
@@ -82,22 +82,27 @@ const handleSortClick = <T,>(
   onSortSelect(sortKey, getSortDirection(header.column.columnDef?.meta));
 };
 
-const getSortIndicator = (meta?: {
-  sortDirection?: SortDirection | string;
-}): string => {
+const getSortIndicator = (
+  meta?: {
+    sortDirection?: SortDirection | string;
+    sortKey?: string | null | undefined;
+  },
+  selectedSortKey?: string | null
+): string => {
   if (!meta?.sortDirection) {
     return CONSTANTS.sortIndicator.noSort;
   }
 
   const direction = meta.sortDirection as SortDirection;
-  switch (direction) {
-    case SortDirection.ASC:
-      return CONSTANTS.sortIndicator.asc;
-    case SortDirection.DESC:
-      return CONSTANTS.sortIndicator.desc;
-    default:
-      return CONSTANTS.sortIndicator.noSort;
+  if (meta.sortKey === selectedSortKey) {
+    switch (direction) {
+      case SortDirection.ASC:
+        return CONSTANTS.sortIndicator.asc;
+      case SortDirection.DESC:
+        return CONSTANTS.sortIndicator.desc;
+    }
   }
+  return CONSTANTS.sortIndicator.noSort;
 };
 
 const Table = <T,>({
@@ -113,6 +118,7 @@ const Table = <T,>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [selectedSortKey, setSelectedSortKey] = useState<string | null>(null);
 
   const table = useReactTable({
     data,
@@ -158,8 +164,12 @@ const Table = <T,>({
                               className: header.column.getCanSort()
                                 ? 'cursor-pointer select-none text-rhino-indigo-blue pr-[1.2rem] flex text-[13px] whitespace-wrap gap-3 min-h-[80px] justify-start'
                                 : '',
-                              onClick: () =>
-                                handleSortClick(header, onSortSelect),
+                              onClick: () => {
+                                setSelectedSortKey(
+                                  header.column.columnDef.meta?.sortKey ?? null
+                                );
+                                handleSortClick(header, onSortSelect);
+                              },
                             }}
                           >
                             <div className="h-full text-start  overflow-y-auto">
@@ -171,7 +181,10 @@ const Table = <T,>({
                             <div
                               className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'}`}
                             >
-                              {getSortIndicator(header.column.columnDef.meta)}
+                              {getSortIndicator(
+                                header.column.columnDef.meta,
+                                selectedSortKey
+                              )}
                             </div>
                           </div>
                           <div className="flex  justify-start">

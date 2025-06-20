@@ -125,11 +125,14 @@ const TopRibbon = () => {
         setSelectedClient(value);
         setSelectedLocation(null);
         setSelectedGroup(null);
+        setFavoriteMeter(null);
         setSearchParams({
           ...searchParams,
           location: null,
           group: null,
           client: value ? value.uuid : null,
+          favoriteMeterUuid: null,
+          favoriteMeterName: null,
         });
         break;
       case FieldType.LOCATION:
@@ -162,7 +165,7 @@ const TopRibbon = () => {
           onSelect={onFilterChange}
           disableDropdown={disableDropdown}
           clients={clients}
-          selectedClient={activeClient}
+          selectedClient={activeClient ?? selectedClient}
         />
       ),
     },

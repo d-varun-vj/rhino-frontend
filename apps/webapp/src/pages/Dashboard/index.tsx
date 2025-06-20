@@ -16,7 +16,7 @@ import { FilterVariant } from '../../components/Table/types';
 import IconButton from '../../components/Buttons/IconButton';
 import MainLayout from '../../layouts/MainLayout';
 import PageTitle from '../../components/PageTitle';
-import { Sort } from '@rhino/utils';
+import { convertToLocalTime, Sort } from '@rhino/utils';
 import Table from '../../components/Table';
 import { format } from 'date-fns';
 import { getRibbonParams } from '../../helpers/topribbon';
@@ -271,8 +271,11 @@ export const Dashboard = () => {
         accessorFn: (row) => row.readTime,
         header: t(translationBaseRoute + 'header.readTime'),
         cell: (info) => {
-          if (info.row.original.readTime !== null) {
-            return format(info.row.original.readTime, 'dd-MM-yyyy HH:mm');
+          if (info.row.original.readTime) {
+            return format(
+              convertToLocalTime(info.row.original.readTime),
+              'dd-MM-yyyy HH:mm'
+            );
           }
           return info.getValue();
         },

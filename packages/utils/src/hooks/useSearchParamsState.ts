@@ -66,14 +66,21 @@ export function useSearchParamsState(
     : defaultValue;
 
   const setSearchParamsState = (newState?: SearchParam) => {
-    const next = {
-      ...Array.from(searchParams.entries()).reduce(
-        (o, [key, value]) => ({ ...o, [key]: value }),
-        {}
-      ),
-
+    let next = {
+      ...Array.from(searchParams.entries()).reduce((o, [key, value]) => {
+        if (value !== null && value !== 'null' && value !== undefined) {
+          return { ...o, [key]: value };
+        }
+        return o;
+      }, {}),
       ...newState,
     };
+
+    next = Object.fromEntries(
+      Object.entries(next).filter(
+        ([, value]) => value !== null && value !== 'null' && value !== undefined
+      )
+    );
 
     setParam(next);
     setSearchParams(next, { replace: true });
