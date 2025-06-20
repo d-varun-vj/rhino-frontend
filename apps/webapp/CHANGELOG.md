@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.8.0...webapp-v1.8.1) (2025-06-20)
+
+
+### Bug Fixes
+
+* Fix timezone and sorting issues in dashboard ([#62](https://github.com/Rhino-Energy/rhino-frontend/issues/62)) ([43a1666](https://github.com/Rhino-Energy/rhino-frontend/commit/43a16668be5faf1d2eb0e3e61f75ba2b00c6740b))
+
 ## [1.8.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.7.0...webapp-v1.8.0) (2025-06-18)
 
 
