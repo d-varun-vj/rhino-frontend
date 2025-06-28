@@ -111,7 +111,7 @@ export const Dashboard = () => {
               VITE_WICKET_BASE_URL +
               'consumptionProfileChart' +
               getRibbonParams({ client, location, group }) +
-              `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+              `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}&shouldCompareMeasurement=${false}`;
           }}
           popupContent={t(translationBaseRoute + 'popup.goToProfile')}
           style="bg-rhino-energy-green text-rhino-white"
@@ -124,7 +124,7 @@ export const Dashboard = () => {
               VITE_WICKET_BASE_URL +
               'consumptionChart' +
               getRibbonParams({ client, location, group }) +
-              `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}`;
+              `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}&shouldCompareMeasurement=${true}`;
           }}
           popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
           style="bg-rhino-energy-green text-rhino-white"
