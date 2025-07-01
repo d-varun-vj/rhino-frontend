@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.8.1...webapp-v1.9.0) (2025-06-28)
+
+
+### Features
+
+* Add flag for redirecting to charts from dashboard [PRD-3118] ([#65](https://github.com/Rhino-Energy/rhino-frontend/issues/65)) ([1e04cca](https://github.com/Rhino-Energy/rhino-frontend/commit/1e04cca329b924f7231b5b4b465a8a84a7176565))
+
 ## [1.8.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.8.0...webapp-v1.8.1) (2025-06-20)
 
 
