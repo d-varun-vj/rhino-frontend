@@ -155,14 +155,14 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={`${header.id == CONSTANTS.action && 'sticky bg-rhino-white -right-5 pl-2 '} font-thin`}
+                      className={`${header.id == CONSTANTS.action && 'sticky bg-rhino-white -right-5 pl-2 '} font-thin align-baseline`}
                     >
                       {header.isPlaceholder ? null : (
                         <div className=" flex flex-col justify-start ">
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none text-rhino-indigo-blue pr-[1.2rem] flex text-[13px] whitespace-wrap gap-3 min-h-[80px] justify-start'
+                                ? 'cursor-pointer select-none text-rhino-indigo-blue pr-[1.2rem] flex text-[13px] whitespace-wrap gap-3 min-h-[50px] justify-start'
                                 : '',
                               onClick: () => {
                                 setSelectedSortKey(

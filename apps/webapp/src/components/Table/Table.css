@@ -13,6 +13,7 @@ input {
   word-wrap: normal !important;
   margin: 0 16px 16px 0 !important;
 }
+
 select {
   cursor: pointer;
   padding: 4.5px 10px !important;
@@ -29,14 +30,17 @@ select {
   margin: 0 16px 16px 0 !important;
   width: 9rem !important;
 }
+
 input:focus {
   border: 1px solid var(--color-rhino-indigo-blue-light) !important;
   outline: none;
 }
+
 select:focus {
   border: 1px solid var(--color-rhino-indigo-blue-light) !important;
   outline: none;
 }
+
 option {
   color: var(--color-rhino-indigo-blue);
 }
@@ -46,4 +50,12 @@ select:disabled {
   border: 1px solid transparent !important;
   background-color: transparent !important;
   cursor: not-allowed;
+}
+
+tbody tr:nth-child(even) td:last-child {
+  background-color: white;
+}
+
+tbody tr:nth-child(odd) td:last-child {
+  background-color: #fafafb;
 }

@@ -71,7 +71,7 @@ const Filter = <T,>({
       value={(columnFilterValue ?? '') as string}
     />
   ) : (
-    <div className="h-12" />
+    <div className="" />
   );
 };
 
