@@ -5,6 +5,7 @@ type IconButtonProps = {
   style?: string;
   action: () => void;
   popupContent?: string;
+  dataTestId?: string;
 };
 
 const IconButton = ({
@@ -12,6 +13,7 @@ const IconButton = ({
   style,
   popupContent,
   action,
+  dataTestId,
 }: IconButtonProps) => {
   return (
     <div className="relative group inline-block">
@@ -19,6 +21,7 @@ const IconButton = ({
         className={`font-bold px-4 py-2 rounded bg-rhino-energy-green text-white ${style}`}
         onClick={action}
         title={popupContent}
+        data-testid={dataTestId}
       >
         {children}
       </button>

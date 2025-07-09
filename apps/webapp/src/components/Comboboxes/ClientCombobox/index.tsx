@@ -19,7 +19,7 @@ type ClientComboboxProps = {
 };
 
 const ClientCombobox = ({
-  onSelect: onFliterSelect,
+  onSelect: onFilterSelect,
   clients,
   disableDropdown,
   selectedClient,
@@ -40,9 +40,10 @@ const ClientCombobox = ({
       defaultPlaceholder={t('comboBox.select')}
       disabled={disableDropdown || false}
       onSelect={(client) => {
-        if (onFliterSelect) onFliterSelect(FieldType.CLIENT, client);
+        if (onFilterSelect) onFilterSelect(FieldType.CLIENT, client);
       }}
       selectedValue={selectedClient ?? null}
+      dataTestId="ribbon-client-value"
     />
   );
 };

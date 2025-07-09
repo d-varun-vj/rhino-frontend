@@ -28,6 +28,7 @@ interface Props {
     uuid: string;
     logo?: string;
   } | null;
+  dataTestId?: string;
 }
 
 const UuidCombobox = ({
@@ -36,6 +37,7 @@ const UuidCombobox = ({
   disabled,
   onSelect,
   selectedValue,
+  dataTestId,
 }: Props) => {
   const [query, setQuery] = useState('');
 
@@ -72,6 +74,7 @@ const UuidCombobox = ({
             autoFocus={!disabled}
             readOnly={disabled}
             placeholder={defaultPlaceholder}
+            data-testid={dataTestId}
           />
         </ComboboxButton>
         <ComboboxButton

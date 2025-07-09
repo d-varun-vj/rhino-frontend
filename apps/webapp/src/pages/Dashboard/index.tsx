@@ -115,6 +115,7 @@ export const Dashboard = () => {
           }}
           popupContent={t(translationBaseRoute + 'popup.goToProfile')}
           style="bg-rhino-energy-green text-rhino-white"
+          dataTestId="consumption-profile-chart-btn"
         >
           <FaChartBar />
         </IconButton>
@@ -128,6 +129,7 @@ export const Dashboard = () => {
           }}
           popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
           style="bg-rhino-energy-green text-rhino-white"
+          dataTestId="consumption-chart-btn"
         >
           <FaChartLine />
         </IconButton>
@@ -183,6 +185,7 @@ export const Dashboard = () => {
   const columns = React.useMemo<ColumnDef<DashboardType, unknown>[]>(
     () => [
       {
+        id: 'location-name',
         accessorFn: (row) => row.localisationName,
         header: t(translationBaseRoute + 'header.localisationName'),
         cell: (info) => info.getValue(),
@@ -194,6 +197,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'group-name',
         accessorFn: (row) => row.groupName,
         header: t(translationBaseRoute + 'header.groupName'),
         cell: (info) => info.getValue(),
@@ -205,6 +209,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'measurement-name',
         accessorFn: (row) => row.measurementName,
         header: t(translationBaseRoute + 'header.measurementName'),
         cell: (info) => info.getValue(),
@@ -216,6 +221,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'serial-number',
         accessorFn: (row) => row.serialNumber,
         header: t(translationBaseRoute + 'header.serialNumber'),
         cell: (info) => info.getValue(),
@@ -227,6 +233,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'tenant',
         accessorFn: (row) => row.tenant,
         header: t(translationBaseRoute + 'header.tenant'),
         cell: (info) => info.getValue(),
@@ -237,6 +244,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'translated-medium',
         accessorFn: (row) => row.translatedMedium,
         header: t(translationBaseRoute + 'header.translatedMedium'),
         cell: (info) => info.getValue(),
@@ -248,6 +256,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'factor',
         accessorFn: (row) => row.factor,
         header: t(translationBaseRoute + 'header.factor'),
         cell: (info) => info.getValue(),
@@ -257,7 +266,7 @@ export const Dashboard = () => {
         },
       },
       {
-        id: 'VALUE',
+        id: 'value',
         accessorFn: (row) => row.value,
         header: t(translationBaseRoute + 'header.value'),
         cell: (info) => info.getValue(),
@@ -267,7 +276,7 @@ export const Dashboard = () => {
         },
       },
       {
-        id: 'READ_TIME',
+        id: 'read-time',
         accessorFn: (row) => row.readTime,
         header: t(translationBaseRoute + 'header.readTime'),
         cell: (info) => {
@@ -285,6 +294,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'current-month-consumption',
         accessorFn: (row) => row.currentMonthConsumption,
         header: t(translationBaseRoute + 'header.currentMonthConsumption'),
         cell: (info) => info.getValue(),
@@ -294,6 +304,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'last-month-same-day-consumption',
         accessorFn: (row) => row.lastMonthSameDayConsumption,
         header: t(translationBaseRoute + 'header.lastMonthSameDayConsumption'),
         cell: (info) => info.getValue(),
@@ -303,7 +314,7 @@ export const Dashboard = () => {
         },
       },
       {
-        id: CONSTANTS.percentage,
+        id: 'percentage',
         accessorFn: (row) => row.percentage,
         header: t(translationBaseRoute + 'header.percentage'),
         cell: (info) => info.getValue(),
@@ -320,6 +331,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'last-month-consumption',
         accessorFn: (row) => row.lastMonthConsumption,
         header: t(translationBaseRoute + 'header.lastMonthConsumption'),
         cell: (info) => info.getValue(),
@@ -329,6 +341,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'unit',
         accessorFn: (row) => row.unit,
         header: t(translationBaseRoute + 'header.unit'),
         cell: (info) => info.getValue(),
@@ -338,6 +351,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'level-type',
         accessorFn: (row) => row.levelType?.translationEn,
         header: t(translationBaseRoute + 'header.levelType'),
         cell: (info) => info.getValue(),
@@ -352,6 +366,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'load-type',
         accessorFn: (row) => row.loadType?.translationEn,
         header: t(translationBaseRoute + 'header.loadType'),
         cell: (info) => info.getValue(),
@@ -366,6 +381,7 @@ export const Dashboard = () => {
         },
       },
       {
+        id: 'end-use-area',
         accessorFn: (row) => row.endUseArea?.translationEn,
         header: t(translationBaseRoute + 'header.endUseArea'),
         cell: (info) => info.getValue(),
@@ -406,8 +422,12 @@ export const Dashboard = () => {
         title={t('pages.dashboard.mainHeader')}
         guide={true}
         guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
+        dataTestId="dashboard-page-header"
       />
-      <p className="text-[15px] text-grey mb-2 mt-[19px]">
+      <p
+        className="text-[15px] text-grey mb-2 mt-[19px]"
+        data-testid="dashboard-page-subheader"
+      >
         {t('pages.dashboard.subHeader')}
       </p>
       <Table

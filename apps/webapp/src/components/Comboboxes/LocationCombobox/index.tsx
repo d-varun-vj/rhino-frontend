@@ -39,6 +39,7 @@ const LocationCombobox = ({
         if (onSelect) onSelect(FieldType.LOCATION, location);
       }}
       selectedValue={selectedLocation ?? null}
+      dataTestId="ribbon-location-value"
     />
   );
 };

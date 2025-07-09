@@ -157,7 +157,11 @@ const TopRibbon = () => {
   const isComboboxDisabled =
     (searchParams?.['client'] as string) === null || selectedClient == null;
 
-  const Items: { labelKey: string; component: JSX.Element }[] = [
+  const Items: {
+    labelKey: string;
+    component: JSX.Element;
+    dataTestId?: string;
+  }[] = [
     {
       labelKey: 'topRibbon.client', // from i18n
       component: (
@@ -168,6 +172,7 @@ const TopRibbon = () => {
           selectedClient={activeClient ?? selectedClient}
         />
       ),
+      dataTestId: 'ribbon-client-label',
     },
     {
       labelKey: 'topRibbon.location',
@@ -179,6 +184,7 @@ const TopRibbon = () => {
           selectedLocation={activeLocation}
         />
       ),
+      dataTestId: 'ribbon-location-label',
     },
     {
       labelKey: 'topRibbon.group',
@@ -191,6 +197,7 @@ const TopRibbon = () => {
           selectedLocation={selectedLocation}
         />
       ),
+      dataTestId: 'ribbon-group-label',
     },
     {
       labelKey: 'topRibbon.favoriteMeters',
@@ -209,6 +216,7 @@ const TopRibbon = () => {
           }
         />
       ),
+      dataTestId: 'ribbon-favorite-meter-label',
     },
   ];
 
@@ -222,7 +230,10 @@ const TopRibbon = () => {
                 className="flex items-center max-md:justify-between max-md:w-full"
                 key={item.labelKey}
               >
-                <div className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]">
+                <div
+                  className="text-[.9rem] font-bold text-[#91A0B1] mr-[1rem]"
+                  data-testid={item.dataTestId}
+                >
                   {t(item.labelKey)}
                 </div>
                 {item.component}

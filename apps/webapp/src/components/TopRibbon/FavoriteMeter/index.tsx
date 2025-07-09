@@ -179,6 +179,7 @@ const FavoriteMeter = ({
             setModelOpen(true);
           }
         }}
+        data-testid="ribbon-favorite-meter-model-button"
       >
         {selectedFavoriteMeter ||
           favoriteMeter?.name ||
@@ -194,7 +195,10 @@ const FavoriteMeter = ({
           <div className="mx-16 my-20 max-lg:mx-5  flex items-center relative z-30  ">
             <div className="border-t-[.5rem] border-t-rhino-energy-green shadow-xl relative flex flex-col w-full bg-[#fff] border-transparent border-[1px] rounded h-[800px]">
               <div className="flex items-start justify-between p-[1.25rem] ">
-                <h4 className="text-[2rem] font-bold text-rhino-indigo-blue my-0 leading-[1.47] ">
+                <h4
+                  className="text-[2rem] font-bold text-rhino-indigo-blue my-0 leading-[1.47] "
+                  data-testid="ribbon-favorite-meter-header"
+                >
                   {t('favoriteMeterModel.mainHeader')}
                 </h4>
                 <button

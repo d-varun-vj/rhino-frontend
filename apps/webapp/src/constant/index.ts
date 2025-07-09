@@ -5,5 +5,4 @@ export const CONSTANTS = {
     desc: '⇂',
     noSort: '⇅',
   },
-  percentage: 'percentage',
 };

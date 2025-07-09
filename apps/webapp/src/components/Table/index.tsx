@@ -171,8 +171,12 @@ const Table = <T,>({
                                 handleSortClick(header, onSortSelect);
                               },
                             }}
+                            data-testid={`test-${header.id}`}
                           >
-                            <div className="h-full text-start  overflow-y-auto">
+                            <div
+                              className="h-full text-start  overflow-y-auto"
+                              data-testid="label"
+                            >
                               {flexRender(
                                 header.column.columnDef.header,
                                 header.getContext()
@@ -180,6 +184,7 @@ const Table = <T,>({
                             </div>
                             <div
                               className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'}`}
+                              data-testid="sort-indicator"
                             >
                               {getSortIndicator(
                                 header.column.columnDef.meta,
@@ -220,8 +225,8 @@ const Table = <T,>({
                         >
                           <div
                             className={`text-[13px] text-wrap w-auto ${
-                              cell.column.id === 'VALUE' ||
-                              cell.column.id === 'READ_TIME'
+                              cell.column.id === 'value' ||
+                              cell.column.id === 'read-time'
                                 ? 'text-nowrap'
                                 : ''
                             }`}

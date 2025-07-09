@@ -50,6 +50,7 @@ const GroupCombobox = ({
         if (onSelect) onSelect(FieldType.GROUP, group);
       }}
       selectedValue={selectedGroup ?? null}
+      dataTestId="ribbon-group-value"
     />
   );
 };

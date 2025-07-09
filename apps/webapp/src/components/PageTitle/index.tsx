@@ -4,14 +4,21 @@ type PageTitleProps = {
   title: string;
   guide?: boolean;
   guideLink?: string;
+  dataTestId?: string;
 };
 
-const PageTitle = ({ title, guide = false, guideLink }: PageTitleProps) => {
+const PageTitle = ({
+  title,
+  guide = false,
+  guideLink,
+  dataTestId,
+}: PageTitleProps) => {
   return (
     <div className="flex">
       <h1
         className="pl-0 ml-0 mb-[15px] text-left font-bold text-[32px] leading-[20px] tracking-[0]
         text-rhino-indigo-blue mt-[25px] flex items-center"
+        data-testid={dataTestId}
       >
         {title}
         {guide && (
