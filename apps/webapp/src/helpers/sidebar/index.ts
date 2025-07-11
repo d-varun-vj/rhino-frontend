@@ -1,5 +1,5 @@
 import { User, UserType, ViewPermissionsType } from '@rhino/apis';
-import { SubItemType } from '../../components/Sidebar/config';
+import { MenuItemType, SubItemType } from '../../components/Sidebar/config';
 import { getRibbonParams } from '../topribbon';
 import { FilterData } from '../../context/userFilter/user-filter-context';
 
@@ -62,5 +62,19 @@ export const getToNavLink = ({
     (subItem.route &&
       subItem.route + getRibbonParams({ client, location, group })) ||
     '#'
+  );
+};
+
+export const resolveMenuLink = (menuItem: MenuItemType): string => {
+  if (menuItem.link) return menuItem.link;
+
+  const routeItem = menuItem.subItems?.find((sub) => sub.route);
+  if (routeItem?.route) return routeItem.route;
+
+  const wicketItem = menuItem.subItems?.find((sub) => sub.wicketLink);
+  if (wicketItem?.wicketLink) return wicketItem.wicketLink;
+
+  return (
+    menuItem.subItems?.[0]?.route || menuItem.subItems?.[0]?.wicketLink || '#'
   );
 };

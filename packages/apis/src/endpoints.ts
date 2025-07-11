@@ -17,6 +17,9 @@ const API_URLS = {
   //   Dashboard
   getDashboardTableData: () => `dashboard`,
   getDashboardTableDataOptions: () => `metadata`,
+
+  //Periodic Alarm
+  getPeriodicAlarmList: () => `periodic-alarm`,
 };
 
 export default API_URLS;

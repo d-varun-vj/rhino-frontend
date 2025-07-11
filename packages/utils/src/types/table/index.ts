@@ -7,3 +7,12 @@ export enum SortDirection {
   ASC = 'asc',
   DESC = 'desc',
 }
+
+export interface TableMeta {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}

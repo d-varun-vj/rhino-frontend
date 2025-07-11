@@ -1,2 +1,2 @@
 export * from './Dashboard';
-export * from './Alarm';
+export * from './PeriodicAlarm';
