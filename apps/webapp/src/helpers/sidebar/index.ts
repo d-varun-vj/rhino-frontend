@@ -38,10 +38,16 @@ export const canViewItem = ({
   subItem: SubItemType;
   user: User;
 }) => {
+  let extraConditions = true;
+  if (subItem.renderCondition) {
+    extraConditions = subItem.renderCondition();
+  }
+
   return (
-    user?.userType === UserType.SuperAdmin ||
-    hasUserTypeAccess({ subItem, user }) ||
-    hasRoleAccess({ subItem, user })
+    extraConditions &&
+    (user?.userType === UserType.SuperAdmin ||
+      hasUserTypeAccess({ subItem, user }) ||
+      hasRoleAccess({ subItem, user }))
   );
 };
 

@@ -13,6 +13,7 @@ import {
   PeriodicAlarmTableData,
   PeriodicAlarmType,
   useGetAlarmList,
+  UserViewPermission,
 } from '@rhino/apis';
 import { useCallback, useEffect, useState } from 'react';
 import { CONSTANTS } from '../../constant';
@@ -255,7 +256,11 @@ export const PeriodicAlarm = () => {
   };
 
   return (
-    <MainLayout title="sideMenu.periodicAlarm" isFavoriteMeterShow={false}>
+    <MainLayout
+      title="sideMenu.periodicAlarm"
+      isFavoriteMeterShow={false}
+      pageUserPermission={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
+    >
       <div className="flex justify-between ">
         <PageTitle
           title={t('pages.periodicAlarm.mainHeader')}
