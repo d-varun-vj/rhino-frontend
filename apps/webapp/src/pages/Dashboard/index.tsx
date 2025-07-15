@@ -25,6 +25,7 @@ import { useFavoriteMeter } from '../../context/favoriteMeter';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/user';
 import { useUserFilter } from '../../context/userFilter';
+import { GUIDE_LINKS } from '../../constant/guide-links';
 
 type ColorMap = {
   [key: string]: string;
@@ -421,7 +422,7 @@ export const Dashboard = () => {
       <PageTitle
         title={t('pages.dashboard.mainHeader')}
         guide={true}
-        guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
+        guideLink={GUIDE_LINKS.DASHBOARD}
         dataTestId="dashboard-page-header"
       />
       <p

@@ -8,6 +8,8 @@ import { Row, ColumnDef } from '@tanstack/react-table';
 import ActionCell from '../../components/Table/ActionCell';
 import IconButton from '../../components/Buttons/IconButton';
 import {
+  PeriodicAlarmFilter,
+  periodicAlarmFrequencyOptions,
   PeriodicAlarmTableData,
   PeriodicAlarmType,
   useGetAlarmList,
@@ -18,18 +20,27 @@ import { useTranslation } from 'react-i18next';
 import { FilterVariant } from '../../components/Table/types';
 import ActiveDot from '../../components/Buttons/ActiveDot';
 import { format } from 'date-fns';
-import { convertToLocalTime } from '@rhino/utils';
-
-type FilterChangeHandler = (
-  value: string | null,
-  field: string,
-  variant: FilterVariant | null
-) => void;
+import { convertToLocalTime, Sort } from '@rhino/utils';
+import { GUIDE_LINKS } from '../../constant/guide-links';
+import { useUserFilter } from '../../context/userFilter';
 
 export const PeriodicAlarm = () => {
   const translationBaseRoute = 'pages.periodicAlarm.table.';
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
+  const [sort, setSort] = useState<Sort>({
+    field: '',
+    direction: '',
+  });
+  const [filters, setFilters] = useState<PeriodicAlarmFilter>({
+    name: null,
+    author: null,
+    active: null,
+    frequency: null,
+    location: null,
+    shared: null,
+  });
+  const { client, location } = useUserFilter();
 
   const { t } = useTranslation();
 
@@ -37,6 +48,10 @@ export const PeriodicAlarm = () => {
     useGetAlarmList({
       page: page,
       size: pageSize,
+      sort: sort,
+      ...filters,
+      clientUuid: client ? client.uuid : null,
+      locationUuid: location ? location.uuid : null,
     });
 
   const [tableData, setTableData] = useState<PeriodicAlarmTableData>();
@@ -94,8 +109,9 @@ export const PeriodicAlarm = () => {
       cell: (info) => info.getValue(),
       meta: {
         filterVariant: FilterVariant.TEXT,
-        filterKey: 'alarmName',
-        sortKey: 'alarmName',
+        filterKey: 'name',
+        sortKey: 'name',
+        sortDirection: sort.direction,
       },
     },
     {
@@ -105,7 +121,8 @@ export const PeriodicAlarm = () => {
       meta: {
         filterVariant: FilterVariant.TEXT,
         filterKey: 'author',
-        sortKey: 'author',
+        sortKey: 'user',
+        sortDirection: sort.direction,
       },
     },
     {
@@ -113,8 +130,9 @@ export const PeriodicAlarm = () => {
       header: t(translationBaseRoute + 'header.localisationName'),
       meta: {
         filterVariant: FilterVariant.TEXT,
-        filterKey: 'localisationName',
-        sortKey: 'localisationName',
+        filterKey: 'location',
+        sortKey: 'sharedLocalisations',
+        sortDirection: sort.direction,
         renderCell: (value) => {
           return (
             <span>
@@ -134,6 +152,7 @@ export const PeriodicAlarm = () => {
         filterVariant: FilterVariant.SELECT,
         filterKey: 'active',
         sortKey: 'active',
+        sortDirection: sort.direction,
         selectionOptions: ['Yes', 'No'],
         renderCell: (value) => {
           return <ActiveDot type={value == true ? 'active' : 'inactive'} />;
@@ -154,7 +173,8 @@ export const PeriodicAlarm = () => {
       },
       meta: {
         filterKey: 'lastOccurrence',
-        sortKey: 'lastOccurrence',
+        sortKey: 'lastOccurrenceDate',
+        sortDirection: sort.direction,
       },
     },
     {
@@ -163,8 +183,10 @@ export const PeriodicAlarm = () => {
       cell: (info) => info.getValue(),
       meta: {
         filterVariant: FilterVariant.SELECT,
-        filterKey: 'alarmPeriod',
-        sortKey: 'alarmPeriod',
+        filterKey: 'frequency',
+        sortKey: 'frequency',
+        sortDirection: sort.direction,
+        selectionOptions: periodicAlarmFrequencyOptions,
       },
     },
     {
@@ -177,6 +199,8 @@ export const PeriodicAlarm = () => {
         filterVariant: FilterVariant.SELECT,
         filterKey: 'shared',
         sortKey: 'shared',
+        sortDirection: sort.direction,
+        selectionOptions: ['Yes', 'No'],
       },
     },
     {
@@ -190,12 +214,44 @@ export const PeriodicAlarm = () => {
     },
   ];
 
-  const handleFilterChange: FilterChangeHandler = (val, field, variant) => {
-    console.log('Filter change:', val, field, variant);
-  };
-
   const handleCreateAlarm = () => {
     console.log('Create Alarm clicked');
+  };
+
+  const onSortClick = (field: string, direction: string) => {
+    console.log(field, direction);
+
+    setSort({ field, direction });
+  };
+
+  const onFilterChange = (
+    val: string | null,
+    field: string,
+    filterVariant: FilterVariant | null
+  ) => {
+    switch (filterVariant) {
+      case FilterVariant.TEXT:
+        setFilters((prev: PeriodicAlarmFilter) => {
+          return { ...prev, [field]: val };
+        });
+        break;
+      case FilterVariant.SELECT: {
+        setFilters((prev: PeriodicAlarmFilter) => ({
+          ...prev,
+          [field]: val,
+        }));
+        break;
+      }
+      case null:
+        setFilters({
+          name: null,
+          author: null,
+          active: null,
+          frequency: null,
+          location: null,
+          shared: null,
+        });
+    }
   };
 
   return (
@@ -204,7 +260,7 @@ export const PeriodicAlarm = () => {
         <PageTitle
           title={t('pages.periodicAlarm.mainHeader')}
           guide={true}
-          guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
+          guideLink={GUIDE_LINKS.PERIODIC_ALARM}
         />
         <Button
           text="Create periodic alarm"
@@ -223,7 +279,8 @@ export const PeriodicAlarm = () => {
           setCurrentPage: setPage,
           setPageSize: setPageSize,
         }}
-        onFilterChange={handleFilterChange}
+        onFilterChange={onFilterChange}
+        onSortSelect={onSortClick}
         isLoading={isLoadingTableData}
       />
     </MainLayout>
