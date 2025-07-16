@@ -61,7 +61,7 @@ const hasRoleAccess = ({
   );
 };
 
-const AuthorizeInstantiation = ({
+const AccessAuthorizer = ({
   children,
   viewPermissionType,
   allowedUserTypes,
@@ -85,4 +85,4 @@ const AuthorizeInstantiation = ({
   }
 };
 
-export default AuthorizeInstantiation;
+export default AccessAuthorizer;

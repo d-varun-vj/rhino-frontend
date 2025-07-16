@@ -1,5 +1,5 @@
 const NotAllowed = () => {
-  return <div>No Permission 500</div>;
+  return <div>No Permission 403</div>;
 };
 
 export default NotAllowed;
