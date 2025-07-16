@@ -229,7 +229,7 @@ const TopRibbon = ({ showFavoriteMeterShow }: TopRibbonProps) => {
             dataTestId: 'ribbon-favorite-meter-label',
           },
         ]
-      : [])
+      : []),
   ];
 
   return (

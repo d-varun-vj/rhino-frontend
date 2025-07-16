@@ -201,7 +201,7 @@ export const MenuItems: MenuItemType[] = [
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
         viewPermissions: [UserViewPermission.IMMEDIATE_ALARM_ROLE],
         renderCondition: () => {
-          return true;
+          return true; // set false to hide
         },
       },
     ],

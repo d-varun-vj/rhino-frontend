@@ -14,6 +14,7 @@ import {
   PeriodicAlarmType,
   useGetAlarmList,
   UserViewPermission,
+  ViewPermissionsType,
 } from '@rhino/apis';
 import { useCallback, useEffect, useState } from 'react';
 import { CONSTANTS } from '../../constant';
@@ -24,6 +25,7 @@ import { format } from 'date-fns';
 import { convertToLocalTime, Sort } from '@rhino/utils';
 import { GUIDE_LINKS } from '../../constant/guide-links';
 import { useUserFilter } from '../../context/userFilter';
+import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
 
 export const PeriodicAlarm = () => {
   const translationBaseRoute = 'pages.periodicAlarm.table.';
@@ -215,9 +217,7 @@ export const PeriodicAlarm = () => {
     },
   ];
 
-  const handleCreateAlarm = () => {
-    console.log('Create Alarm clicked');
-  };
+  const handleCreateAlarm = () => {};
 
   const onSortClick = (field: string, direction: string) => {
     console.log(field, direction);
@@ -256,38 +256,43 @@ export const PeriodicAlarm = () => {
   };
 
   return (
-    <MainLayout
-      title="sideMenu.periodicAlarm"
-      isFavoriteMeterShow={false}
-      pageUserPermission={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
+    <AccessAuthorizer
+      viewPermissionType={ViewPermissionsType.ViewRoleBased}
+      viewPermissions={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
     >
-      <div className="flex justify-between ">
-        <PageTitle
-          title={t('pages.periodicAlarm.mainHeader')}
-          guide={true}
-          guideLink={GUIDE_LINKS.PERIODIC_ALARM}
+      <MainLayout
+        title="sideMenu.periodicAlarm"
+        isFavoriteMeterShow={false}
+        pageUserPermission={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
+      >
+        <div className="flex justify-between ">
+          <PageTitle
+            title={t('pages.periodicAlarm.mainHeader')}
+            guide={true}
+            guideLink={GUIDE_LINKS.PERIODIC_ALARM}
+          />
+          <Button
+            text="Create periodic alarm"
+            type="primary"
+            icon={<FaPlusCircle />}
+            action={handleCreateAlarm}
+          />
+        </div>
+        <Table
+          columns={columns}
+          data={tableData ? tableData.data : []}
+          footer={{
+            currentPage: page,
+            pageSize: pageSize,
+            totalCount: tableData ? tableData.meta.totalItems : 0,
+            setCurrentPage: setPage,
+            setPageSize: setPageSize,
+          }}
+          onFilterChange={onFilterChange}
+          onSortSelect={onSortClick}
+          isLoading={isLoadingTableData}
         />
-        <Button
-          text="Create periodic alarm"
-          type="primary"
-          icon={<FaPlusCircle />}
-          action={handleCreateAlarm}
-        />
-      </div>
-      <Table
-        columns={columns}
-        data={tableData ? tableData.data : []}
-        footer={{
-          currentPage: page,
-          pageSize: pageSize,
-          totalCount: tableData ? tableData.meta.totalItems : 0,
-          setCurrentPage: setPage,
-          setPageSize: setPageSize,
-        }}
-        onFilterChange={onFilterChange}
-        onSortSelect={onSortClick}
-        isLoading={isLoadingTableData}
-      />
-    </MainLayout>
+      </MainLayout>
+    </AccessAuthorizer>
   );
 };

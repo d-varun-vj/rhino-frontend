@@ -70,9 +70,7 @@ const Filter = <T,>({
       type="text"
       value={(columnFilterValue ?? '') as string}
     />
-  ) : (
-    <div className="" />
-  );
+  ) : null;
 };
 
 export default Filter;
