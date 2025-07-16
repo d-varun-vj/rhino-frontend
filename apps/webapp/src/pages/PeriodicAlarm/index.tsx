@@ -250,11 +250,7 @@ export const PeriodicAlarm = () => {
       viewPermissionType={ViewPermissionsType.ViewRoleBased}
       viewPermissions={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
     >
-      <MainLayout
-        title="sideMenu.periodicAlarm"
-        isFavoriteMeterShow={false}
-        pageUserPermission={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
-      >
+      <MainLayout title="sideMenu.periodicAlarm" isFavoriteMeterShow={false}>
         <div className="flex justify-between ">
           <PageTitle
             title={t('pages.periodicAlarm.mainHeader')}

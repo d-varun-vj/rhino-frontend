@@ -3,43 +3,23 @@ import SideBar from '../../components/Sidebar';
 import TopRibbon from '../../components/TopRibbon';
 import { ToastContainer } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { useUser } from '../../context/user';
-import { User, UserType, UserViewPermission } from '@rhino/apis';
 
 type MainLayoutProps = {
   children: React.ReactNode;
   title: string;
   isFavoriteMeterShow?: boolean;
-  pageUserPermission?: UserViewPermission[];
 };
 
 const MainLayout = ({
   children,
   title,
   isFavoriteMeterShow = true,
-  pageUserPermission: pagePermission,
 }: MainLayoutProps) => {
   const { t } = useTranslation();
-  const { user } = useUser();
 
   useEffect(() => {
     document.title = t(title); // Set the document title dynamically
   }, [title, t]);
-
-  const hasAnyValidPermissionForViewPage = (user: User | null): boolean => {
-    if (user?.userType === UserType.SuperAdmin) return true;
-
-    if (!user || !user.permissions || user.permissions.length === 0)
-      return false;
-
-    return pagePermission
-      ? user.permissions.some((p) => pagePermission.includes(p))
-      : true;
-  };
-
-  if (user && !hasAnyValidPermissionForViewPage(user)) {
-    return <div>You don’t have permission to view this page.</div>;
-  }
 
   return (
     <>
