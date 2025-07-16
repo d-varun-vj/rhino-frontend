@@ -10,13 +10,12 @@ import IconButton from '../../components/Buttons/IconButton';
 import {
   PeriodicAlarmFilter,
   periodicAlarmFrequencyOptions,
-  PeriodicAlarmTableData,
   PeriodicAlarmType,
-  useGetAlarmList,
+  useGetPeriodicAlarmList,
   UserViewPermission,
   ViewPermissionsType,
 } from '@rhino/apis';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { CONSTANTS } from '../../constant';
 import { useTranslation } from 'react-i18next';
 import { FilterVariant } from '../../components/Table/types';
@@ -47,8 +46,8 @@ export const PeriodicAlarm = () => {
 
   const { t } = useTranslation();
 
-  const { data: getTableDataList, isLoading: isLoadingTableData } =
-    useGetAlarmList({
+  const { data: periodicAlarmRes, isLoading: isLoadingData } =
+    useGetPeriodicAlarmList({
       page: page,
       size: pageSize,
       sort: sort,
@@ -57,25 +56,12 @@ export const PeriodicAlarm = () => {
       locationUuid: location ? location.uuid : null,
     });
 
-  const [tableData, setTableData] = useState<PeriodicAlarmTableData>();
-
-  useEffect(() => {
-    const getData = () => {
-      try {
-        setTableData(getTableDataList);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    getData();
-  }, [getTableDataList]);
-
   const ActionCellFn = useCallback(
     (row: Row<PeriodicAlarmType>) => (
       <ActionCell>
         <IconButton
           action={() => {
-            console.log();
+            // To implement action
           }}
           popupContent="Go to Consumption Profile Chart"
           style="bg-rhino-energy-green text-rhino-white"
@@ -84,6 +70,7 @@ export const PeriodicAlarm = () => {
         </IconButton>
         <IconButton
           action={() => {
+            // To implement action
             console.log('Edit alarm:', row.original.id);
           }}
           popupContent="Edit Alarm"
@@ -93,6 +80,7 @@ export const PeriodicAlarm = () => {
         </IconButton>
         <IconButton
           action={() => {
+            // To implement action
             console.log('Delete alarm:', row.original.id);
           }}
           popupContent="Delete Alarm"
@@ -124,7 +112,7 @@ export const PeriodicAlarm = () => {
       meta: {
         filterVariant: FilterVariant.TEXT,
         filterKey: 'author',
-        sortKey: 'user',
+        sortKey: 'author',
         sortDirection: sort.direction,
       },
     },
@@ -217,7 +205,9 @@ export const PeriodicAlarm = () => {
     },
   ];
 
-  const handleCreateAlarm = () => {};
+  const handleCreateAlarm = () => {
+    // To implement action
+  };
 
   const onSortClick = (field: string, direction: string) => {
     console.log(field, direction);
@@ -280,17 +270,17 @@ export const PeriodicAlarm = () => {
         </div>
         <Table
           columns={columns}
-          data={tableData ? tableData.data : []}
+          data={periodicAlarmRes ? periodicAlarmRes.data : []}
           footer={{
             currentPage: page,
             pageSize: pageSize,
-            totalCount: tableData ? tableData.meta.totalItems : 0,
+            totalCount: periodicAlarmRes ? periodicAlarmRes.meta.totalItems : 0,
             setCurrentPage: setPage,
             setPageSize: setPageSize,
           }}
           onFilterChange={onFilterChange}
           onSortSelect={onSortClick}
-          isLoading={isLoadingTableData}
+          isLoading={isLoadingData}
         />
       </MainLayout>
     </AccessAuthorizer>

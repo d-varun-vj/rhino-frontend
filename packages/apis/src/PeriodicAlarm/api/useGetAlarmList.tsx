@@ -23,7 +23,7 @@ export type PeriodicAlarmRequestBody = {
   shared: boolean | null;
 };
 
-export const useGetAlarmList = (params: PeriodicAlarmRequestBody) => {
+export const useGetPeriodicAlarmList = (params: PeriodicAlarmRequestBody) => {
   const {
     page,
     size,
