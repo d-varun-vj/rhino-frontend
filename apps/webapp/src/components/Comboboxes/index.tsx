@@ -54,6 +54,11 @@ const ComboBox = ({
             onChange={(event) => setQuery(event.target.value)}
             readOnly={disabled}
             placeholder={defaultPlaceholder}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                e.stopPropagation();
+              }
+            }}
           />
         </ComboboxButton>
         <ComboboxButton

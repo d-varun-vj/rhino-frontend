@@ -2,7 +2,6 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 import {
   DashboardType,
   Filter,
-  TableData,
   VITE_WICKET_BASE_URL,
   useGetMetaData,
   useGetTableData,
@@ -63,8 +62,8 @@ export const Dashboard = () => {
   const { t } = useTranslation();
   const translationBaseRoute = 'pages.dashboard.table.';
 
-  const { data: getTableData, isLoading: isLoadingTableData } = useGetTableData(
-    {
+  const { data: DashboardDataRes, isLoading: isLoadingTableData } =
+    useGetTableData({
       params: {
         page: page,
         size: pageSize,
@@ -75,20 +74,7 @@ export const Dashboard = () => {
         ...filters,
         favoriteMeterUuid: favoriteMeter ? favoriteMeter.uuid : null,
       },
-    }
-  );
-  const [tableData, setTableData] = useState<TableData>();
-
-  useEffect(() => {
-    const getData = () => {
-      try {
-        setTableData(getTableData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    getData();
-  }, [getTableData]);
+    });
 
   const { data: Options } = useGetMetaData({
     locale: user?.language ?? null,
@@ -433,10 +419,10 @@ export const Dashboard = () => {
       </p>
       <Table
         columns={columns}
-        data={tableData ? tableData?.content : []}
+        data={DashboardDataRes ? DashboardDataRes?.content : []}
         footer={{
           currentPage: page,
-          totalCount: tableData ? tableData?.totalElements : 0,
+          totalCount: DashboardDataRes ? DashboardDataRes?.totalElements : 0,
           setCurrentPage: setPage,
           setPageSize: setPageSize,
           pageSize: pageSize,

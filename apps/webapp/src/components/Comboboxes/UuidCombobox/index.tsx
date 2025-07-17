@@ -75,6 +75,11 @@ const UuidCombobox = ({
             readOnly={disabled}
             placeholder={defaultPlaceholder}
             data-testid={dataTestId}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                e.stopPropagation();
+              }
+            }}
           />
         </ComboboxButton>
         <ComboboxButton

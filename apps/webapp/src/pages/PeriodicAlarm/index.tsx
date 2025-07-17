@@ -19,7 +19,7 @@ import { useCallback, useState } from 'react';
 import { CONSTANTS } from '../../constant';
 import { useTranslation } from 'react-i18next';
 import { FilterVariant } from '../../components/Table/types';
-import ActiveDot from '../../components/Buttons/ActiveDot';
+import ActiveDot from '../../components/ActiveDot';
 import { format } from 'date-fns';
 import { convertToLocalTime, Sort } from '@rhino/utils';
 import { GUIDE_LINKS } from '../../constant/guide-links';
