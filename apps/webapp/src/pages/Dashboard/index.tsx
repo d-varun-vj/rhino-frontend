@@ -2,7 +2,6 @@ import { ColumnDef, Row } from '@tanstack/react-table';
 import {
   DashboardType,
   Filter,
-  TableData,
   VITE_WICKET_BASE_URL,
   useGetMetaData,
   useGetTableData,
@@ -25,6 +24,7 @@ import { useFavoriteMeter } from '../../context/favoriteMeter';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../context/user';
 import { useUserFilter } from '../../context/userFilter';
+import { GUIDE_LINKS } from '../../constant/guide-links';
 
 type ColorMap = {
   [key: string]: string;
@@ -62,8 +62,8 @@ export const Dashboard = () => {
   const { t } = useTranslation();
   const translationBaseRoute = 'pages.dashboard.table.';
 
-  const { data: getTableData, isLoading: isLoadingTableData } = useGetTableData(
-    {
+  const { data: DashboardDataRes, isLoading: isLoadingTableData } =
+    useGetTableData({
       params: {
         page: page,
         size: pageSize,
@@ -74,20 +74,7 @@ export const Dashboard = () => {
         ...filters,
         favoriteMeterUuid: favoriteMeter ? favoriteMeter.uuid : null,
       },
-    }
-  );
-  const [tableData, setTableData] = useState<TableData>();
-
-  useEffect(() => {
-    const getData = () => {
-      try {
-        setTableData(getTableData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    getData();
-  }, [getTableData]);
+    });
 
   const { data: Options } = useGetMetaData({
     locale: user?.language ?? null,
@@ -421,7 +408,7 @@ export const Dashboard = () => {
       <PageTitle
         title={t('pages.dashboard.mainHeader')}
         guide={true}
-        guideLink="https://rhino.energy/wp-content/uploads/2023/04/Rhino-Platform-Access-nawigation-Dashboard-20230420.pdf"
+        guideLink={GUIDE_LINKS.DASHBOARD}
         dataTestId="dashboard-page-header"
       />
       <p
@@ -432,10 +419,10 @@ export const Dashboard = () => {
       </p>
       <Table
         columns={columns}
-        data={tableData ? tableData?.content : []}
+        data={DashboardDataRes ? DashboardDataRes?.content : []}
         footer={{
           currentPage: page,
-          totalCount: tableData ? tableData?.totalElements : 0,
+          totalCount: DashboardDataRes ? DashboardDataRes?.totalElements : 0,
           setCurrentPage: setPage,
           setPageSize: setPageSize,
           pageSize: pageSize,

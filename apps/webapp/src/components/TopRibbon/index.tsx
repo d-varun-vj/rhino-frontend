@@ -13,7 +13,11 @@ import { Location, useGetLocations, Client, useGetClients } from '@rhino/apis';
 import { shouldSetInitialClient } from '../../helpers/client';
 import { FieldType, useSearchParamsState } from '@rhino/utils';
 
-const TopRibbon = () => {
+type TopRibbonProps = {
+  showFavoriteMeterShow?: boolean;
+};
+
+const TopRibbon = ({ showFavoriteMeterShow }: TopRibbonProps) => {
   const { t } = useTranslation();
   const { user } = useUser();
   const [disableDropdown, setDisableDropdown] = useState<boolean>(false);
@@ -199,25 +203,33 @@ const TopRibbon = () => {
       ),
       dataTestId: 'ribbon-group-label',
     },
-    {
-      labelKey: 'topRibbon.favoriteMeters',
-      component: (
-        <FavoriteMeter
-          selectedFavoriteMeter={searchParams?.['favoriteMeterName'] as string}
-          removeSelectedFavoriteMeter={() => {
-            setSearchParams({
-              ...searchParams,
-              favoriteMeterUuid: null,
-              favoriteMeterName: null,
-            });
-          }}
-          selectedClientUuid={
-            (searchParams?.['client'] as string) || selectedClient?.uuid || null
-          }
-        />
-      ),
-      dataTestId: 'ribbon-favorite-meter-label',
-    },
+    ...(showFavoriteMeterShow
+      ? [
+          {
+            labelKey: 'topRibbon.favoriteMeters',
+            component: (
+              <FavoriteMeter
+                selectedFavoriteMeter={
+                  searchParams?.['favoriteMeterName'] as string
+                }
+                removeSelectedFavoriteMeter={() => {
+                  setSearchParams({
+                    ...searchParams,
+                    favoriteMeterUuid: null,
+                    favoriteMeterName: null,
+                  });
+                }}
+                selectedClientUuid={
+                  (searchParams?.['client'] as string) ||
+                  selectedClient?.uuid ||
+                  null
+                }
+              />
+            ),
+            dataTestId: 'ribbon-favorite-meter-label',
+          },
+        ]
+      : []),
   ];
 
   return (

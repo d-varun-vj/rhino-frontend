@@ -36,6 +36,7 @@ export type SubItemType = {
   viewPermissionType: ViewPermissionsType;
   viewPermissions?: UserViewPermission[]; // This is used to check if the user has permission to access this item.
   allowedUserTypes?: UserType[]; // This is used to check if the user has permission to access this item.
+  renderCondition?: () => boolean; // This is used to check extra conditions to user to access this item
 };
 
 export type MenuItemType = {
@@ -191,6 +192,17 @@ export const MenuItems: MenuItemType[] = [
         wicketLink: VITE_WICKET_BASE_URL + 'alarms/immediate',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
         viewPermissions: [UserViewPermission.IMMEDIATE_ALARM_ROLE],
+      },
+      {
+        label: 'sideMenu.periodicAlarm',
+        icon: FaBell,
+        key: 'periodic-alarm',
+        route: '/alarm/periodic',
+        viewPermissionType: ViewPermissionsType.ViewRoleBased,
+        viewPermissions: [UserViewPermission.IMMEDIATE_ALARM_ROLE],
+        renderCondition: () => {
+          return true; // set false to hide
+        },
       },
     ],
     viewPermissionType: ViewPermissionsType.ViewRoleBased,

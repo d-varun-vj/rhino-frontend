@@ -6,4 +6,5 @@ export type TableAction = {
 export enum FilterVariant {
   SELECT = 'select',
   TEXT = 'text',
+  ALL = 'all',
 }

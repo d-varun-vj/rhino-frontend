@@ -49,6 +49,21 @@
             "goToComsumptions": "Go to comsumptions to compare measurement comsumptions"
           }
         }
+      },
+      "periodicAlarm": {
+        "mainHeader": "Periodic alarms",
+        "table": {
+          "header": {
+            "alarmName": "Alarm name",
+            "author": "Author",
+            "localisationName": "Location",
+            "active": "Active",
+            "lastOccurrence": "Last occurrence",
+            "alarmPeriod": "Alarm period",
+            "shared": "shared",
+            "actions": "Actions"
+          }
+        }
       }
     },
     "sideMenu": {
@@ -56,7 +71,6 @@
       "dashboard": "Dashboard",
       "energyDashboard": " Energy dashboard",
       "dashboardR": "Dashboard (R)",
-
       "analysisReports": "Analysis and reports",
       "consumptionChart": "Consumption",
       "consumptionProfileChart": "Profile",
@@ -65,10 +79,9 @@
       "balanceModule": "Balance module",
       "report": "Reports",
       "utilityCosts": "Utility costs",
-
       "alarmsAndNotifications": "Alarms and notifications",
       "immediateAlarm": "Immediate alarm",
-
+      "periodicAlarm": "Periodic Alarm",
       "configuration": "Configuration",
       "measurements": "Measurements",
       "externalServiceConfiguration": "External UPCs configuration",
@@ -77,12 +90,10 @@
       "maintenanceReport": "System maintenance report",
       "meterStates": "Meters values",
       "favoriteMeters": "Favorite meters",
-
       "administration": "Administration",
       "clients": "Clients",
       "users": "Users management",
       "tenants": "Tenants",
-
       "support": "Support"
     },
     "table": {

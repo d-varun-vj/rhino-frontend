@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { VITE_API_BASE_URL, initHttpClient } from '@rhino/apis';
 import { useEffect, useState } from 'react';
 
-import { Dashboard } from '../pages';
+import { Dashboard, PeriodicAlarm } from '../pages';
 import { locations } from './locations';
 import { toast } from 'react-toastify';
 import NotAllowed from '../pages/NotAllowed';
@@ -30,6 +30,7 @@ const MainRoute = () => {
     <Router basename={locations.base}>
       <Routes>
         <Route path={locations.dashboard} element={<Dashboard />} />
+        <Route path={locations.periodicAlarm} element={<PeriodicAlarm />} />
         <Route path={locations.notAllowed} element={<NotAllowed />} />
       </Routes>
     </Router>

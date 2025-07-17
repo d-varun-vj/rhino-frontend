@@ -49,6 +49,21 @@
             "goToComsumptions": "Przejdź do zużycia, aby porównać zużycie pomiarowe"
           }
         }
+      },
+      "periodicAlarm": {
+        "mainHeader": "Okresowe alarmy",
+        "table": {
+          "header": {
+            "alarmName": "Nazwa alarmu",
+            "author": "Autor",
+            "localisationName": "Lokalizacja",
+            "active": "Aktywny",
+            "lastOccurrence": "Ostatnie wystąpienie",
+            "alarmPeriod": "Okres alarmowy",
+            "shared": "wspólny",
+            "actions": "Akcje"
+          }
+        }
       }
     },
     "sideMenu": {
@@ -68,6 +83,7 @@
 
       "alarmsAndNotifications": "Alarmy i powiadomienia",
       "immediateAlarm": "Alarm natychmiastowy",
+      "periodicAlarm": "Alarm okresowy",
 
       "configuration": "Konfiguracja",
       "measurements": "Liczniki",

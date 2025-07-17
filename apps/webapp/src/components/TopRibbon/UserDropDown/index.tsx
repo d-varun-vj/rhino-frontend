@@ -33,11 +33,10 @@ const items: Item[] = [
   },
   {
     label: 'topRibbon.user.logout',
-    action: ({ url }) => {
+    action: () => {
       document.cookie =
         'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-      window.location.href =
-        VITE_WICKET_BASE_URL + url?.split('/')[1] + '?-2.-logout';
+      window.location.href = VITE_WICKET_BASE_URL + '?-2.-logout';
     },
   },
 ];

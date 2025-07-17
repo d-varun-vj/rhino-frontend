@@ -5,7 +5,11 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../context/user';
 import MinimizePopup from '../MinimizePopup';
-import { canViewItem, getToNavLink } from '../../../helpers/sidebar';
+import {
+  canViewItem,
+  getToNavLink,
+  resolveMenuLink,
+} from '../../../helpers/sidebar';
 import { useUserFilter } from '../../../context/userFilter';
 
 export type MenuItemProps = {
@@ -39,7 +43,7 @@ const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
       }
     >
       <NavLink
-        to={`${menuItem.link ? menuItem.link : menuItem.subItems ? (menuItem.subItems[0].route ? menuItem.subItems[0].route : menuItem.subItems[0].wicketLink) : '#'}`}
+        to={resolveMenuLink(menuItem)}
         target={`${menuItem.link && 'blank'}`}
         className={`nav-menu-a  ${minimize.isMinimize ? '!px-0 !text-center !flex !items-center !justify-center py-[12px]' : ''}`}
       >
