@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 * {
   box-sizing: border-box;
@@ -20,6 +18,20 @@
   src: url('./assets/webfonts/Montserrat-Regular.ttf');
 }
 
+@theme {
+  --color-rhino-indigo-blue: #1c4670;
+  --color-rhino-indigo-blue-highlight: #036983;
+  --color-rhino-indigo-blue-light: #496b8d;
+  --color-rhino-energy-green: #00cf60;
+  --color-rhino-energy-green-light: #66e3a0;
+  --color-rhino-yellow: 'oklch(79.5% 0.184 86.047)';
+  --color-rhino-white: #fff;
+  --color-grey-light: #e6e6fa;
+  --color-grey-dark: #91a0b1;
+  --color-rhino-grey: '#666666';
+  --font-montserrat: 'Montserrat', 'sans-serif';
+}
+
 html {
   height: 100%;
   width: 100%;
@@ -30,15 +42,5 @@ body {
   height: 100%;
   width: 100%;
   letter-spacing: 0.1px;
-
-  font-family: Montserrat, sans-serif;
-
-  --color-rhino-indigo-blue: #1c4670;
-  --colot-rhino-indigo-blue-highlight: #036983;
-  --color-rhino-indigo-blue-light: #496b8d;
-  --color-rhino-energy-green: #00cf60;
-  --color-rhino-energy-green-light: #66e3a0;
-  --color-white: #fff;
-  --color-grey-light: #e6e6fa;
-  --color-grey-dark: #91a0b1;
+  font-family: 'Montserrat', sans-serif;
 }

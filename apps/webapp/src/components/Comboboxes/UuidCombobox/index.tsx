@@ -65,7 +65,9 @@ const UuidCombobox = ({
           <ComboboxInput
             className={clsx(
               'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] h-[2.5rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border-[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 w-[14rem]',
-              disabled && 'bg-grey/10 !cursor-default'
+              {
+                'bg-grey-dark !cursor-default': disabled,
+              }
             )}
             displayValue={(option: { id: number; name: string }) =>
               option?.name
@@ -86,7 +88,7 @@ const UuidCombobox = ({
           className="group absolute inset-y-0 right-0 px-2.5"
           hidden={disabled}
         >
-          <ChevronDownIcon className="size-4 fill-rhino-indigo-blue group-data-hover:bg-yellow-500" />
+          <ChevronDownIcon className="size-4 fill-rhino-indigo-blue " />
         </ComboboxButton>
         <ComboboxOptions
           anchor="bottom start"

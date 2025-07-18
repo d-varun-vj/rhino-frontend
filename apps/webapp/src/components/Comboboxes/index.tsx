@@ -65,7 +65,7 @@ const ComboBox = ({
           className="group absolute inset-y-0 right-0 px-2.5"
           hidden={disabled}
         >
-          <ChevronDownIcon className="size-4 fill-rhino-indigo-blue group-data-hover:bg-yellow-500" />
+          <ChevronDownIcon className="size-4 fill-rhino-indigo-blue" />
         </ComboboxButton>
         <ComboboxOptions
           anchor="bottom start"

@@ -197,7 +197,7 @@ export const PeriodicAlarm = () => {
     {
       id: CONSTANTS.action,
       accessorFn: (row: PeriodicAlarmType) => row.action,
-      header: 'Action',
+      header: t(translationBaseRoute + 'header.actions'),
       meta: {
         sortKey: null,
       },

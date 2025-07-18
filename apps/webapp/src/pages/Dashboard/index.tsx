@@ -412,7 +412,7 @@ export const Dashboard = () => {
         dataTestId="dashboard-page-header"
       />
       <p
-        className="text-[15px] text-grey mb-2 mt-[19px]"
+        className="text-[15px] text-grey-dark mb-2 mt-[19px]"
         data-testid="dashboard-page-subheader"
       >
         {t('pages.dashboard.subHeader')}

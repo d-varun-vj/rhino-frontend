@@ -68,9 +68,9 @@ const TableFooter = ({ pagination }: Footer) => {
         </span>
       </div>
       {/* Pagination */}
-      <div className="flex items-center  text-rhino-indigo-blue-light text-[12px] font-thin">
+      <div className="flex items-center  text-rhino-indigo-blue-light text-[12px] font-thin ">
         <button
-          className="border rounded-tl rounded-bl px-2.5 py-1"
+          className="border rounded-tl rounded-bl px-2.5 py-1 border-gray-200 cursor-pointer"
           onClick={() => {
             pagination?.setCurrentPage(0);
             pagination.setPageSize(
@@ -82,7 +82,7 @@ const TableFooter = ({ pagination }: Footer) => {
           {'<<'}
         </button>
         <button
-          className="border px-2.5 py-1"
+          className="border px-2.5 py-1 border-gray-200 cursor-pointer"
           onClick={() => {
             pagination?.setCurrentPage(
               pagination.currentPage ? pagination.currentPage - 1 : 0
@@ -115,7 +115,7 @@ const TableFooter = ({ pagination }: Footer) => {
               return (
                 <button
                   key={pageIndex}
-                  className={`border px-2.5 py-1 ${
+                  className={`border px-2.5 py-1 border-gray-200 !cursor-pointer ${
                     pagination.currentPage === pageIndex
                       ? 'text-[#808080]'
                       : 'text-rhino-indigo-blue'
@@ -141,7 +141,7 @@ const TableFooter = ({ pagination }: Footer) => {
         </>
 
         <button
-          className="border  px-2.5 py-1"
+          className="border  px-2.5 py-1 border-gray-200 cursor-pointer"
           onClick={() => {
             pagination?.setCurrentPage(pagination.currentPage + 1);
             pagination.setPageSize(
@@ -163,7 +163,7 @@ const TableFooter = ({ pagination }: Footer) => {
           {t('table.footer.next')}
         </button>
         <button
-          className="border rounded-br rounded-tr px-2.5 py-1"
+          className="border rounded-br rounded-tr px-2.5 py-1 border-gray-200 cursor-pointer"
           onClick={() => {
             pagination?.setCurrentPage(
               Math.floor(pagination?.totalCount / pagination?.pageSize) - 1

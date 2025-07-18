@@ -56,11 +56,11 @@
           "header": {
             "alarmName": "Alarm name",
             "author": "Author",
-            "localisationName": "Location",
+            "localisationName": "Locations",
             "active": "Active",
             "lastOccurrence": "Last occurrence",
             "alarmPeriod": "Alarm period",
-            "shared": "shared",
+            "shared": "Shared",
             "actions": "Actions"
           }
         }

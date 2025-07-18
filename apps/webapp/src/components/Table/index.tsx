@@ -17,9 +17,10 @@ import { CONSTANTS } from '../../constant';
 import { ColumnMeta } from '@tanstack/table-core';
 import Filter from './Filter';
 import { FilterVariant } from './types';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { SortDirection } from '@rhino/utils';
 import TableFooter from './Footer';
+import clsx from 'clsx';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];
@@ -119,6 +120,23 @@ const Table = <T,>({
     []
   );
   const [selectedSortKey, setSelectedSortKey] = useState<string | null>(null);
+  const [textFullViewId, setTextFullViewId] = useState('');
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = (columnId: string, el: HTMLElement) => {
+    if (el.scrollWidth > el.clientWidth)
+      hoverTimeoutRef.current = setTimeout(() => {
+        setTextFullViewId(columnId);
+      }, 300);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    setTextFullViewId('');
+  };
 
   const table = useReactTable({
     data,
@@ -155,14 +173,14 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={`${header.id == CONSTANTS.action && 'sticky bg-rhino-white -right-5 pl-2 '} font-thin align-baseline`}
+                      className={`${header.id == CONSTANTS.action && 'sticky bg-rhino-white -right-5 pl-2 '} font-thin align-baseline w-32 pr-1.5`}
                     >
                       {header.isPlaceholder ? null : (
-                        <div className=" flex flex-col justify-start ">
+                        <div className="flex flex-col justify-end w-full ">
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none text-rhino-indigo-blue pr-[1.2rem] flex text-[13px] whitespace-wrap gap-3 min-h-[50px] justify-start'
+                                ? 'cursor-pointer select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap  gap-2 min-h-[50px] justify-start w-38'
                                 : '',
                               onClick: () => {
                                 setSelectedSortKey(
@@ -174,7 +192,7 @@ const Table = <T,>({
                             data-testid={`test-${header.id}`}
                           >
                             <div
-                              className="h-full text-start  overflow-y-auto"
+                              className="text-start line-clamp-none max-h-[calc(2_*_1.5rem)] overflow-hidden break-words leading-snug"
                               data-testid="label"
                             >
                               {flexRender(
@@ -192,9 +210,9 @@ const Table = <T,>({
                               )}
                             </div>
                           </div>
-                          <div className="flex  justify-start">
+                          <div className="flex justify-start ">
                             {header.column.getCanFilter() ? (
-                              <div className={`text-rhino-indigo-blue flex `}>
+                              <div className={`text-rhino-indigo-blue flex`}>
                                 <Filter
                                   column={header.column}
                                   onFilterChange={onFilterChange}
@@ -221,15 +239,30 @@ const Table = <T,>({
                       return (
                         <td
                           key={cell.id}
-                          className={`${cell.column.id === CONSTANTS.action && 'sticky -right-5 bg-white'} p-[.75rem] align-top first:pl-[.75rem] `}
+                          className={clsx(
+                            'p-[.75rem] align-top first:pl-[.75rem] relative pl-0',
+                            {
+                              'sticky -right-5 bg-white':
+                                cell.column.id === CONSTANTS.action,
+                            }
+                          )}
                         >
                           <div
-                            className={`text-[13px] text-wrap w-auto ${
-                              cell.column.id === 'value' ||
-                              cell.column.id === 'read-time'
-                                ? 'text-nowrap'
-                                : ''
-                            }`}
+                            className={clsx(
+                              'text-[13px] overflow-hidden w-32  overflow-ellipsis',
+                              {
+                                'text-nowrap':
+                                  cell.column.id === 'value' ||
+                                  cell.column.id === 'read-time',
+                                'overflow-visible w-fit ':
+                                  cell.column.id === CONSTANTS.action ||
+                                  textFullViewId == cell.column.id,
+                              }
+                            )}
+                            onMouseEnter={(e) =>
+                              handleMouseEnter(cell.column.id, e.currentTarget)
+                            }
+                            onMouseLeave={handleMouseLeave}
                           >
                             {cell.column.columnDef.meta?.renderCell
                               ? cell.column.columnDef.meta.renderCell(
