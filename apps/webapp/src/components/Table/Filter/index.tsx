@@ -1,9 +1,9 @@
 import { Column } from '@tanstack/react-table';
 import { useState } from 'react';
 import DebouncedInput from './DebouncedInput';
-import ComboBox from '../../Comboboxes';
 import { useTranslation } from 'react-i18next';
 import { FilterVariant } from '../types';
+import ComboBox from '../../Comboboxes';
 
 const Filter = <T,>({
   column,
@@ -13,64 +13,65 @@ const Filter = <T,>({
   onFilterChange: (
     val: string | null,
     field: string,
-    varient: FilterVariant | null
+    variant: FilterVariant | null
   ) => void;
 }) => {
   const { t } = useTranslation();
   const columnFilterValue = column.getFilterValue();
 
   const { filterVariant } = column.columnDef.meta ?? {};
-  const [selectValue, setSelectedValue] = useState<string | null>(null);
+  const [selectValue, setSelectedValue] = useState<string>('');
   const options = column?.columnDef?.meta?.selectionOptions || [];
 
-  return filterVariant === FilterVariant.SELECT ? (
-    <div className="mb-4">
-      <ComboBox
-        options={options}
-        defaultPlaceholder={t('comboBox.select')}
-        disabled={false}
-        selectedValue={selectValue}
-        onSelect={(value) => {
-          if (!value) return;
-          if (value === 'all') {
-            if (column.columnDef.meta?.filterKey) {
-              onFilterChange(null, 'all', null);
+  if (filterVariant === FilterVariant.SELECT)
+    return (
+      <div className="mb-4">
+        <ComboBox
+          optionsList={['All', ...options]}
+          selectedValue={selectValue}
+          setSelectedValue={(value) => {
+            if (!value) return setSelectedValue('');
+            if (value.toLocaleLowerCase() === 'all') {
+              if (column.columnDef.meta?.filterKey) {
+                onFilterChange(null, 'all', null);
+              }
+              column.setFilterValue(null);
+              setSelectedValue('');
+            } else {
+              if (column.columnDef.meta?.filterKey) {
+                onFilterChange(
+                  value,
+                  column.columnDef.meta?.filterKey,
+                  FilterVariant.SELECT
+                );
+              }
+              column.setFilterValue(value);
+              setSelectedValue(value ? value : '');
             }
-            column.setFilterValue(null);
-            setSelectedValue(null);
-          } else {
-            if (column.columnDef.meta?.filterKey) {
-              onFilterChange(
-                value,
-                column.columnDef.meta?.filterKey,
-                FilterVariant.SELECT
-              );
-            }
-            column.setFilterValue(value);
-            setSelectedValue(value ? value : null);
+          }}
+          placeholder={t('comboBox.select')}
+        />
+      </div>
+    );
+  if (filterVariant === FilterVariant.TEXT)
+    return (
+      <DebouncedInput
+        className="rounded"
+        onChange={(value) => {
+          if (column.columnDef.meta?.filterKey) {
+            onFilterChange(
+              value.toString(),
+              column?.columnDef?.meta?.filterKey,
+              FilterVariant.TEXT
+            );
           }
         }}
-        width="w-[10rem]"
-        customStyle="!h-[2rem]"
+        placeholder={``}
+        type="text"
+        value={(columnFilterValue ?? '') as string}
       />
-    </div>
-  ) : filterVariant === FilterVariant.TEXT ? (
-    <DebouncedInput
-      className="rounded"
-      onChange={(value) => {
-        if (column.columnDef.meta?.filterKey) {
-          onFilterChange(
-            value.toString(),
-            column?.columnDef?.meta?.filterKey,
-            FilterVariant.TEXT
-          );
-        }
-      }}
-      placeholder={``}
-      type="text"
-      value={(columnFilterValue ?? '') as string}
-    />
-  ) : null;
+    );
+  return null;
 };
 
 export default Filter;
