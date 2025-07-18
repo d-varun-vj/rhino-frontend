@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import './i18n/index.ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import '@mantine/core/styles.css';
+import { MantineProvider } from '@mantine/core';
 import MainRoute from './routes/index.tsx';
 
 import { FavoriteMeterProvider } from './context/favoriteMeter/favorite-meter-provider.tsx';
 import { UserFilterProvider } from './context/userFilter/user-filter-provider.tsx';
 import { UserProvider } from './context/user/user-provider.tsx';
+import { theme } from './config/mantain-config.ts';
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(
@@ -16,7 +19,9 @@ createRoot(document.getElementById('root')!).render(
       <UserProvider>
         <UserFilterProvider>
           <FavoriteMeterProvider>
-            <MainRoute />
+            <MantineProvider theme={theme}>
+              <MainRoute />
+            </MantineProvider>
           </FavoriteMeterProvider>
         </UserFilterProvider>
       </UserProvider>
