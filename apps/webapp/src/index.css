@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+:root {
+  --font-size-sm: 13px;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -30,6 +34,7 @@
   --color-grey-dark: #91a0b1;
   --color-rhino-grey: '#666666';
   --font-montserrat: 'Montserrat', 'sans-serif';
+  --text-sm: '13px';
 }
 
 html {

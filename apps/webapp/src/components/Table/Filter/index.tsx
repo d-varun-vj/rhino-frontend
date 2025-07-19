@@ -31,23 +31,26 @@ const Filter = <T,>({
           selectedValue={selectValue}
           setSelectedValue={(value) => {
             if (!value) return setSelectedValue('');
+
             if (value.toLocaleLowerCase() === 'all') {
               if (column.columnDef.meta?.filterKey) {
                 onFilterChange(null, 'all', null);
               }
               column.setFilterValue(null);
               setSelectedValue('');
-            } else {
-              if (column.columnDef.meta?.filterKey) {
-                onFilterChange(
-                  value,
-                  column.columnDef.meta?.filterKey,
-                  FilterVariant.SELECT
-                );
-              }
-              column.setFilterValue(value);
-              setSelectedValue(value ? value : '');
+              return;
             }
+
+            if (column.columnDef.meta?.filterKey) {
+              onFilterChange(
+                value,
+                column.columnDef.meta?.filterKey,
+                FilterVariant.SELECT
+              );
+            }
+
+            column.setFilterValue(value);
+            setSelectedValue(value ? value : '');
           }}
           placeholder={t('comboBox.select')}
         />

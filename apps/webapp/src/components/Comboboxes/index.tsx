@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { InputBase, Combobox, useCombobox, ComboboxProps } from '@mantine/core';
+import { t } from 'i18next';
 
 interface ComboBoxProps extends ComboboxProps {
   optionsList: string[];
@@ -53,7 +54,7 @@ const ComboBox = ({
       }}
       styles={{
         option: {
-          fontSize: '13px',
+          fontSize: 'var(--font-size-sm)',
           padding: '8px 14px 8px 10px',
         },
         dropdown: {
@@ -91,10 +92,10 @@ const ComboBox = ({
           ) : (
             <Combobox.Empty
               style={{
-                fontSize: '13px',
+                fontSize: 'var(--font-size-sm)',
               }}
             >
-              Nothing found
+              {t('comboBox.empty')}
             </Combobox.Empty>
           )}
         </Combobox.Options>

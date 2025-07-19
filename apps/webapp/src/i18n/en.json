@@ -3,7 +3,8 @@
     "comboBox": {
       "select": "Select",
       "locationNull": "All locations",
-      "groupNull": "All groups"
+      "groupNull": "All groups",
+      "empty": "No result"
     },
     "favoriteMeterModel": {
       "mainHeader": "Choose favorite meters",
