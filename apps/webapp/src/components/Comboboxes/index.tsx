@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   InputBase,
   Combobox,
@@ -7,6 +7,7 @@ import {
   ScrollArea,
 } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
+import { CONSTANTS } from '../../constant';
 
 interface ComboBoxProps extends ComboboxProps {
   optionsList: string[];
@@ -32,17 +33,20 @@ const CustomComboBox = ({
     setSearch(selectedValue ?? '');
   }, [selectedValue]);
 
-  const shouldFilterOptions = optionsList.every((item) => item !== search);
-  const filteredOptions = shouldFilterOptions
-    ? optionsList.filter((item) =>
-        item.toLowerCase().includes(search ? search.toLowerCase().trim() : '')
-      )
-    : optionsList;
+  const filteredOptions = useMemo(() => {
+    const shouldFilterOptions = optionsList.every((item) => item !== search);
+    return shouldFilterOptions
+      ? optionsList.filter((item) =>
+          item.toLowerCase().includes(search ? search.toLowerCase().trim() : '')
+        )
+      : optionsList;
+  }, [optionsList, search]);
 
   const isActiveOption = (item: string) => {
     return (
       item === selectedValue ||
-      (selectedValue === '' && item.toLowerCase() === 'all')
+      (selectedValue === '' &&
+        item.toLowerCase() === CONSTANTS.SELECT_ALL_OPTION)
     );
   };
 
@@ -67,7 +71,7 @@ const CustomComboBox = ({
       onOptionSubmit={(val) => {
         setSelectedValue(val);
         setSearch(val);
-        if (val.toLowerCase() == 'all') {
+        if (val.toLowerCase() == CONSTANTS.SELECT_ALL_OPTION) {
           setSearch('');
         }
         combobox.closeDropdown();
@@ -93,7 +97,7 @@ const CustomComboBox = ({
           value={search ?? ''}
           onChange={(event) => {
             if (!event.currentTarget.value) {
-              setSelectedValue('all');
+              setSelectedValue(CONSTANTS.SELECT_ALL_OPTION);
             }
             combobox.updateSelectedOptionIndex();
             setSearch(event.currentTarget.value);

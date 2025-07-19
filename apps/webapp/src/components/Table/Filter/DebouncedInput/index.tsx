@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const DebouncedInput = ({
   value: initialValue,
@@ -10,20 +10,19 @@ const DebouncedInput = ({
   onChange: (value: string | number) => void;
   debounce?: number;
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) => {
-  const [value, setValue] = React.useState(initialValue);
+  const [value, setValue] = useState(initialValue);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
 
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
+  const timeout = setTimeout(() => {
+    onChange(value);
+  }, debounce);
 
+  useEffect(() => {
     return () => clearTimeout(timeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [value, timeout]);
 
   return (
     <input
