@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   InputBase,
   Combobox,
@@ -6,7 +6,7 @@ import {
   ComboboxProps,
   ScrollArea,
 } from '@mantine/core';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface ComboBoxProps extends ComboboxProps {
   optionsList: string[];
@@ -21,11 +21,16 @@ const CustomComboBox = ({
   setSelectedValue,
   placeholder,
 }: ComboBoxProps) => {
+  const { t } = useTranslation();
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
-  const [search, setSearch] = useState(selectedValue);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    setSearch(selectedValue ?? '');
+  }, [selectedValue]);
 
   const shouldFilterOptions = optionsList.every((item) => item !== search);
   const filteredOptions = shouldFilterOptions
@@ -34,13 +39,22 @@ const CustomComboBox = ({
       )
     : optionsList;
 
+  const isActiveOption = (item: string) => {
+    return (
+      item === selectedValue ||
+      (selectedValue === '' && item.toLowerCase() === 'all')
+    );
+  };
+
   const options = filteredOptions.map((item) => (
     <Combobox.Option
       value={item}
       key={item}
       style={{
-        backgroundColor: item == selectedValue ? '#036983' : '',
-        color: item == selectedValue ? 'white' : '',
+        backgroundColor: isActiveOption(item)
+          ? 'var(--color-rhino-indigo-blue-highlight)'
+          : '',
+        color: isActiveOption(item) ? 'white' : '',
       }}
     >
       {item}

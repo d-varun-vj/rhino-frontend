@@ -23,7 +23,7 @@ const Filter = <T,>({
   const [selectValue, setSelectedValue] = useState<string>('');
   const options = column?.columnDef?.meta?.selectionOptions || [];
 
-  if (filterVariant === FilterVariant.SELECT)
+  if (filterVariant === FilterVariant.SELECT) {
     return (
       <div className="mb-4">
         <CustomComboBox
@@ -32,7 +32,7 @@ const Filter = <T,>({
           setSelectedValue={(value) => {
             if (!value) return setSelectedValue('');
 
-            if (value.toLocaleLowerCase() === 'all') {
+            if (value.toLowerCase() === 'all') {
               if (column.columnDef.meta?.filterKey) {
                 onFilterChange(null, 'all', null);
               }
@@ -56,7 +56,9 @@ const Filter = <T,>({
         />
       </div>
     );
-  if (filterVariant === FilterVariant.TEXT)
+  }
+
+  if (filterVariant === FilterVariant.TEXT) {
     return (
       <DebouncedInput
         className="rounded"
@@ -74,6 +76,8 @@ const Filter = <T,>({
         value={(columnFilterValue ?? '') as string}
       />
     );
+  }
+
   return null;
 };
 
