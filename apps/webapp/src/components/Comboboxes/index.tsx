@@ -1,124 +1,129 @@
-import { Fragment, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
+  InputBase,
   Combobox,
-  ComboboxButton,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
-} from '@headlessui/react';
-import clsx from 'clsx';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+  useCombobox,
+  ComboboxProps,
+  ScrollArea,
+} from '@mantine/core';
+import { useTranslation } from 'react-i18next';
+import { CONSTANTS } from '../../constant';
 
-interface ComboBoxProps {
-  options: string[];
-  defaultPlaceholder: string;
-  disabled: boolean;
-  onSelect: (data: string | null) => void;
+interface ComboBoxProps extends ComboboxProps {
+  optionsList: string[];
   selectedValue: string | null;
-  width?: string;
-  customStyle?: string;
+  setSelectedValue: (val: string) => void;
+  placeholder: string;
 }
-const ComboBox = ({
-  options,
-  defaultPlaceholder,
-  disabled,
-  onSelect,
-  selectedValue,
-  width,
-  customStyle,
-}: ComboBoxProps) => {
-  const [query, setQuery] = useState('');
 
-  const filteredOptions =
-    query === ''
-      ? options
-      : options.filter((option) =>
-          option.toLowerCase().includes(query.toLowerCase())
-        );
+const CustomComboBox = ({
+  optionsList,
+  selectedValue,
+  setSelectedValue,
+  placeholder,
+}: ComboBoxProps) => {
+  const { t } = useTranslation();
+  const combobox = useCombobox({
+    onDropdownClose: () => combobox.resetSelectedOption(),
+  });
+
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    setSearch(selectedValue ?? '');
+  }, [selectedValue]);
+
+  const filteredOptions = useMemo(() => {
+    const shouldFilterOptions = optionsList.every((item) => item !== search);
+    return shouldFilterOptions
+      ? optionsList.filter((item) =>
+          item.toLowerCase().includes(search ? search.toLowerCase().trim() : '')
+        )
+      : optionsList;
+  }, [optionsList, search]);
+
+  const isActiveOption = (item: string) => {
+    return (
+      item === selectedValue ||
+      (selectedValue === '' &&
+        item.toLowerCase() === CONSTANTS.SELECT_ALL_OPTION)
+    );
+  };
+
+  const options = filteredOptions.map((item) => (
+    <Combobox.Option
+      value={item}
+      key={item}
+      style={{
+        backgroundColor: isActiveOption(item)
+          ? 'var(--color-rhino-indigo-blue-highlight)'
+          : '',
+        color: isActiveOption(item) ? 'white' : '',
+      }}
+    >
+      {item}
+    </Combobox.Option>
+  ));
 
   return (
     <Combobox
-      value={selectedValue}
-      onChange={(value) => onSelect(value)}
-      onClose={() => setQuery('')}
+      store={combobox}
+      onOptionSubmit={(val) => {
+        setSelectedValue(val);
+        setSearch(val);
+        if (val.toLowerCase() == CONSTANTS.SELECT_ALL_OPTION) {
+          setSearch('');
+        }
+        combobox.closeDropdown();
+      }}
+      styles={{
+        option: {
+          fontSize: 'var(--font-size-sm)',
+          padding: '8px 14px 8px 10px',
+        },
+      }}
     >
-      <div className="relative">
-        <ComboboxButton as="div" disabled={disabled}>
-          <ComboboxInput
-            className={clsx(
-              'flex items-center cursor-pointer justify-between  pl-[0.875rem] pt-[0.55rem] pb-[0.5rem] pr-[1rem] text-[0.8125rem] leading-[1.47] border-[1px] rounded border[#e5e5e5] whitespace-nowrap overflow-hidden !m-0 ',
-              width,
-              customStyle
+      <Combobox.Target>
+        <InputBase
+          rightSection={<Combobox.Chevron />}
+          rightSectionPointerEvents="none"
+          onClick={() => combobox.openDropdown()}
+          onFocus={() => combobox.openDropdown()}
+          onBlur={() => {
+            combobox.closeDropdown();
+            setSearch(selectedValue || '');
+          }}
+          placeholder={placeholder}
+          value={search ?? ''}
+          onChange={(event) => {
+            if (!event.currentTarget.value) {
+              setSelectedValue(CONSTANTS.SELECT_ALL_OPTION);
+            }
+            combobox.updateSelectedOptionIndex();
+            setSearch(event.currentTarget.value);
+          }}
+        />
+      </Combobox.Target>
+
+      <Combobox.Dropdown>
+        <Combobox.Options>
+          <ScrollArea.Autosize type="scroll" mah={200}>
+            {options.length > 0 ? (
+              options
+            ) : (
+              <Combobox.Empty
+                style={{
+                  fontSize: 'var(--font-size-sm)',
+                }}
+              >
+                {t('comboBox.empty')}
+              </Combobox.Empty>
             )}
-            displayValue={(option: string) => option}
-            onChange={(event) => setQuery(event.target.value)}
-            readOnly={disabled}
-            placeholder={defaultPlaceholder}
-            onKeyDown={(e) => {
-              if (e.key === ' ') {
-                e.stopPropagation();
-              }
-            }}
-          />
-        </ComboboxButton>
-        <ComboboxButton
-          className="group absolute inset-y-0 right-0 px-2.5"
-          hidden={disabled}
-        >
-          <ChevronDownIcon className="size-4 fill-rhino-indigo-blue" />
-        </ComboboxButton>
-        <ComboboxOptions
-          anchor="bottom start"
-          className={clsx(
-            'empty:invisible bg-rhino-white border-[1px] border-rhino-indigo-blue rounded z-30 px-3 py-1  mt-1  text-sm !max-h-72',
-            width
-          )}
-        >
-          <div className="py-3">
-            {filteredOptions.length !== 0 && query === '' && (
-              <ComboboxOption value={'all'}>
-                {({ focus }) => (
-                  <div
-                    className={clsx(
-                      'group flex gap-2 px-2 py-2 text-[13px]',
-                      focus &&
-                        'bg-rhino-indigo-blue-highlight text-rhino-white',
-                      selectedValue == 'all' &&
-                        'bg-rhino-energy-green text-rhino-white'
-                    )}
-                  >
-                    All
-                  </div>
-                )}
-              </ComboboxOption>
-            )}
-            {filteredOptions.map((option, index) => (
-              <ComboboxOption as={Fragment} key={index} value={option}>
-                {({ focus }) => (
-                  <div
-                    className={clsx(
-                      'group flex gap-2 px-2 py-2 text-[13px]',
-                      focus &&
-                        'bg-rhino-indigo-blue-highlight text-rhino-white',
-                      selectedValue == option &&
-                        'bg-rhino-energy-green text-rhino-white'
-                    )}
-                  >
-                    {option}
-                  </div>
-                )}
-              </ComboboxOption>
-            ))}
-          </div>
-          {filteredOptions.length === 0 && (
-            <div className="text-rhino-yellow w-full text-[13px] pb-3">
-              No results
-            </div>
-          )}
-        </ComboboxOptions>
-      </div>
+          </ScrollArea.Autosize>
+        </Combobox.Options>
+      </Combobox.Dropdown>
     </Combobox>
   );
 };
 
-export default ComboBox;
+export default CustomComboBox;

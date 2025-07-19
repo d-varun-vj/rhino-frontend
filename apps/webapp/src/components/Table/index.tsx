@@ -180,7 +180,7 @@ const Table = <T,>({
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap  gap-2 min-h-[50px] justify-start w-38'
+                                ? 'cursor-pointer select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap  gap-2 min-h-[50px] justify-start w-38 '
                                 : '',
                               onClick: () => {
                                 setSelectedSortKey(
@@ -192,7 +192,7 @@ const Table = <T,>({
                             data-testid={`test-${header.id}`}
                           >
                             <div
-                              className="text-start line-clamp-none max-h-[calc(2_*_1.5rem)] overflow-hidden break-words leading-snug"
+                              className="text-start line-clamp-none max-h-[calc(2_*_1.5rem)]  break-words leading-snug"
                               data-testid="label"
                             >
                               {flexRender(

@@ -3,7 +3,8 @@
     "comboBox": {
       "select": "Wybierz",
       "locationNull": "Wszystkie lokalizacje",
-      "groupNull": "Wszystkie grupy"
+      "groupNull": "Wszystkie grupy",
+      "empty": "Brak wyniku"
     },
     "favoriteMeterModel": {
       "mainHeader": "Wybierz ulubione liczniki",
