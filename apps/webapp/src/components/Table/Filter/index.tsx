@@ -3,7 +3,7 @@ import { useState } from 'react';
 import DebouncedInput from './DebouncedInput';
 import { useTranslation } from 'react-i18next';
 import { FilterVariant } from '../types';
-import ComboBox from '../../Comboboxes';
+import CustomComboBox from '../../Comboboxes';
 
 const Filter = <T,>({
   column,
@@ -26,7 +26,7 @@ const Filter = <T,>({
   if (filterVariant === FilterVariant.SELECT)
     return (
       <div className="mb-4">
-        <ComboBox
+        <CustomComboBox
           optionsList={['All', ...options]}
           selectedValue={selectValue}
           setSelectedValue={(value) => {

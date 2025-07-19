@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { InputBase, Combobox, useCombobox, ComboboxProps } from '@mantine/core';
+import {
+  InputBase,
+  Combobox,
+  useCombobox,
+  ComboboxProps,
+  ScrollArea,
+} from '@mantine/core';
 import { t } from 'i18next';
 
 interface ComboBoxProps extends ComboboxProps {
@@ -9,7 +15,7 @@ interface ComboBoxProps extends ComboboxProps {
   placeholder: string;
 }
 
-const ComboBox = ({
+const CustomComboBox = ({
   optionsList,
   selectedValue,
   setSelectedValue,
@@ -57,10 +63,6 @@ const ComboBox = ({
           fontSize: 'var(--font-size-sm)',
           padding: '8px 14px 8px 10px',
         },
-        dropdown: {
-          maxHeight: '16rem',
-          overflowY: 'auto',
-        },
       }}
     >
       <Combobox.Target>
@@ -87,21 +89,23 @@ const ComboBox = ({
 
       <Combobox.Dropdown>
         <Combobox.Options>
-          {options.length > 0 ? (
-            options
-          ) : (
-            <Combobox.Empty
-              style={{
-                fontSize: 'var(--font-size-sm)',
-              }}
-            >
-              {t('comboBox.empty')}
-            </Combobox.Empty>
-          )}
+          <ScrollArea.Autosize type="scroll" mah={200}>
+            {options.length > 0 ? (
+              options
+            ) : (
+              <Combobox.Empty
+                style={{
+                  fontSize: 'var(--font-size-sm)',
+                }}
+              >
+                {t('comboBox.empty')}
+              </Combobox.Empty>
+            )}
+          </ScrollArea.Autosize>
         </Combobox.Options>
       </Combobox.Dropdown>
     </Combobox>
   );
 };
 
-export default ComboBox;
+export default CustomComboBox;
