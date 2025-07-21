@@ -1,8 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { httpClient } from '../../httpClient';
-import API_URLS from '../../endpoints';
-import { PeriodicAlarmType } from '../types';
 import { Sort, TableMeta } from '@rhino/utils';
+
+import API_URLS from '../../endpoints';
+import { DataQueryKeys } from '../../data-query-keys';
+import { PeriodicAlarmType } from '../types';
+import { httpClient } from '../../httpClient';
+import { useQuery } from '@tanstack/react-query';
 
 export type PeriodicAlarmTableData = {
   data: PeriodicAlarmType[];
@@ -58,7 +60,7 @@ export const useGetPeriodicAlarmList = (params: PeriodicAlarmRequestBody) => {
   };
 
   return useQuery({
-    queryKey: [queryParams],
+    queryKey: [DataQueryKeys.PERIODIC_ALARM, queryParams],
     queryFn: async () => {
       const response = await httpClient.get<PeriodicAlarmTableData>(
         API_URLS.getPeriodicAlarmList(),

@@ -7,4 +7,5 @@ export const enum DataQueryKeys {
   LOCATIONS = 'locations',
   GROUPS = 'groups',
   FAVORITE_METERS = 'favoriteMeters',
+  PERIODIC_ALARM = 'periodicAlarm',
 }

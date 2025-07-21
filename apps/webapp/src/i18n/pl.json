@@ -65,8 +65,11 @@
             "actions": "Akcje"
           }
         },
-        "create": {
-          "mainHeader": "Utwórz alarm okresowy"
+        "delete": {
+          "title": "Usuń alarm",
+          "message": "Czy na pewno chcesz usunąć alarm \"{{name}}\"? Tej akcji nie można cofnąć.",
+          "success": "Alarm został pomyślnie usunięty",
+          "error": "Nie udało się usunąć alarmu"
         }
       }
     },
@@ -115,6 +118,12 @@
         "previous": "Poprzednia",
         "next": "Następna"
       }
+    },
+    "common": {
+      "confirmation": "Potwierdzenie",
+      "delete": "Usuń",
+      "cancel": "Anuluj",
+      "confirm": "Potwierdź"
     },
     "topRibbon": {
       "client": "Klient:",

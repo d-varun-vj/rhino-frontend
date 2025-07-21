@@ -20,6 +20,7 @@ const API_URLS = {
 
   //Periodic Alarm
   getPeriodicAlarmList: () => `periodic-alarm`,
+  deletePeriodicAlarm: (uuid: string) => `periodic-alarm/${uuid}`,
 };
 
 export default API_URLS;

@@ -1,33 +1,37 @@
-import MainLayout from '../../layouts/MainLayout';
-import Table from '../../components/common/Table';
-import PageTitle from '../../components/typography/PageTitle';
-import CustomButton from '../../components/common/buttons/CustomButton';
-import { FaClock, FaEdit, FaPlusCircle } from 'react-icons/fa';
-import { RiDeleteBin6Fill } from 'react-icons/ri';
-import { Row, ColumnDef } from '@tanstack/react-table';
-import ActionCell from '../../components/common/Table/ActionCell';
-import IconButton from '../../components/common/buttons/IconButton';
 import {
   PeriodicAlarmFilter,
-  periodicAlarmFrequencyOptions,
   PeriodicAlarmType,
-  useGetPeriodicAlarmList,
   UserViewPermission,
   ViewPermissionsType,
+  periodicAlarmFrequencyOptions,
+  useDeletePeriodicAlarm,
+  useGetPeriodicAlarmList,
 } from '@rhino/apis';
+import { Sort, convertToLocalTime, formatListSummary } from '@rhino/utils';
+import { ColumnDef, Row } from '@tanstack/react-table';
 import { useCallback, useState } from 'react';
-import { CONSTANTS } from '../../constant';
+import { FaClock, FaEdit, FaPlusCircle } from 'react-icons/fa';
+
+import { format } from 'date-fns/format';
 import { useTranslation } from 'react-i18next';
-import { FilterVariant } from '../../components/common/Table/types';
+import { RiDeleteBin6Fill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import CustomButton from '../../components/common/buttons/CustomButton';
+import IconButton from '../../components/common/buttons/IconButton';
 import StatusDot from '../../components/common/indicators/StatusDot';
-import { format } from 'date-fns';
-import { convertToLocalTime, Sort } from '@rhino/utils';
+import openDeleteConfirmationModal from '../../components/common/modals/deleteConfirmationModal';
+import Table from '../../components/common/Table';
+import ActionCell from '../../components/common/Table/ActionCell';
+import { FilterVariant } from '../../components/common/Table/types';
+import PageTitle from '../../components/typography/PageTitle';
+import { CONSTANTS } from '../../constant';
 import { GUIDE_LINKS } from '../../constant/guide-links';
 import { useUserFilter } from '../../context/userFilter';
-import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
-import { useNavigate } from 'react-router-dom';
-import { locations } from '../../routes/locations';
 import { getRibbonParams } from '../../helpers/topribbon';
+import MainLayout from '../../layouts/MainLayout';
+import { locations } from '../../routes/locations';
+import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
 
 export const PeriodicAlarm = () => {
   const translationBaseRoute = 'pages.periodicAlarm.table.';
@@ -59,6 +63,29 @@ export const PeriodicAlarm = () => {
       clientUuid: client ? client.uuid : null,
       locationUuid: location ? location.uuid : null,
     });
+  const { mutate: deleteAlarm, isPending } = useDeletePeriodicAlarm();
+
+  const handleDeleteAlarm = useCallback(
+    (alarm: PeriodicAlarmType) => {
+      openDeleteConfirmationModal({
+        title: t('pages.periodicAlarm.delete.title'),
+        message: t('pages.periodicAlarm.delete.message', { name: alarm.name }),
+        confirmLabel: t('common.delete'),
+        cancelLabel: t('common.cancel'),
+        onConfirm: () => {
+          deleteAlarm(alarm.uuid, {
+            onSuccess: () => {
+              toast.success(t('pages.periodicAlarm.delete.success'));
+            },
+            onError: () => {
+              toast.error(t('pages.periodicAlarm.delete.error'));
+            },
+          });
+        },
+      });
+    },
+    [deleteAlarm, t]
+  );
 
   const ActionCellFn = useCallback(
     (row: Row<PeriodicAlarmType>) => (
@@ -81,18 +108,16 @@ export const PeriodicAlarm = () => {
           <FaEdit />
         </IconButton>
         <IconButton
-          action={() => {
-            // To implement action
-            console.log('Delete alarm:', row.original.id);
-          }}
           type="secondary"
           popupContent="Delete Alarm"
+          action={() => handleDeleteAlarm(row.original)}
+          disabled={isPending || !row.original.isDeletable}
         >
           <RiDeleteBin6Fill />
         </IconButton>
       </ActionCell>
     ),
-    []
+    [handleDeleteAlarm, isPending]
   );
 
   const columns: ColumnDef<PeriodicAlarmType>[] = [
@@ -126,15 +151,7 @@ export const PeriodicAlarm = () => {
         filterKey: 'location',
         sortKey: 'sharedLocalisations',
         sortDirection: sort.direction,
-        renderCell: (value) => {
-          return (
-            <span>
-              {Array.isArray(value) && value.length > 0
-                ? `${value[0]} ${value.length > 1 ? `, +${value.length - 1}` : ''}`
-                : '-'}
-            </span>
-          );
-        },
+        renderCell: (value) => <span>{formatListSummary(value)}</span>,
       },
     },
     {
@@ -148,7 +165,7 @@ export const PeriodicAlarm = () => {
         sortDirection: sort.direction,
         selectionOptions: ['Yes', 'No'],
         renderCell: (value) => {
-          return <StatusDot type={value == true ? 'active' : 'inactive'} />;
+          return <StatusDot type={value ? 'active' : 'inactive'} />;
         },
       },
     },
@@ -186,7 +203,7 @@ export const PeriodicAlarm = () => {
       accessorFn: (row: PeriodicAlarmType) => row.shared,
       header: t(translationBaseRoute + 'header.shared'),
       cell: (info) => {
-        return info.getValue() == true ? 'Yes' : 'No';
+        return info.getValue() ? 'Yes' : 'No';
       },
       meta: {
         filterVariant: FilterVariant.SELECT,

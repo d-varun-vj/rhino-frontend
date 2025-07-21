@@ -65,8 +65,11 @@
             "actions": "Actions"
           }
         },
-        "create": {
-          "mainHeader": "Create periodic alarm"
+        "delete": {
+          "title": "Delete Alarm",
+          "message": "Are you sure you want to delete the alarm \"{{name}}\"? This action cannot be undone.",
+          "success": "Alarm deleted successfully",
+          "error": "Failed to delete alarm"
         }
       }
     },
@@ -110,6 +113,12 @@
         "previous": "Previous",
         "next": "Next"
       }
+    },
+    "common": {
+      "confirmation": "Confirmation",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
     },
     "topRibbon": {
       "client": "Client:",
