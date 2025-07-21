@@ -2,5 +2,8 @@ export const locations = {
   base: '/v1',
   notAllowed: '/not-allowed',
   dashboard: '/dashboard',
-  periodicAlarm: '/alarm/periodic',
+  periodicAlarm: {
+    base: '/alarm/periodic',
+    create: '/alarm/periodic/create',
+  },
 };

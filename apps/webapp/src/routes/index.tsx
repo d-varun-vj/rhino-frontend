@@ -30,7 +30,10 @@ const MainRoute = () => {
     <Router basename={locations.base}>
       <Routes>
         <Route path={locations.dashboard} element={<Dashboard />} />
-        <Route path={locations.periodicAlarm} element={<PeriodicAlarm />} />
+        <Route
+          path={locations.periodicAlarm.base}
+          element={<PeriodicAlarm />}
+        />
         <Route path={locations.notAllowed} element={<NotAllowed />} />
       </Routes>
     </Router>

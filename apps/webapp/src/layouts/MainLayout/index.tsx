@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import SideBar from '../../components/Sidebar';
-import TopRibbon from '../../components/TopRibbon';
 import { ToastContainer } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import SideBar from '../../components/layout/Sidebar';
+import TopRibbon from '../../components/layout/TopRibbon';
 
 type MainLayoutProps = {
   children: React.ReactNode;

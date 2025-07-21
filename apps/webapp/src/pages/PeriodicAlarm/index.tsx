@@ -1,12 +1,12 @@
 import MainLayout from '../../layouts/MainLayout';
-import Table from '../../components/Table';
-import PageTitle from '../../components/PageTitle';
-import Button from '../../components/Buttons/Button';
+import Table from '../../components/common/Table';
+import PageTitle from '../../components/typography/PageTitle';
+import CustomButton from '../../components/common/buttons/CustomButton';
 import { FaClock, FaEdit, FaPlusCircle } from 'react-icons/fa';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
 import { Row, ColumnDef } from '@tanstack/react-table';
-import ActionCell from '../../components/Table/ActionCell';
-import IconButton from '../../components/Buttons/IconButton';
+import ActionCell from '../../components/common/Table/ActionCell';
+import IconButton from '../../components/common/buttons/IconButton';
 import {
   PeriodicAlarmFilter,
   periodicAlarmFrequencyOptions,
@@ -18,13 +18,16 @@ import {
 import { useCallback, useState } from 'react';
 import { CONSTANTS } from '../../constant';
 import { useTranslation } from 'react-i18next';
-import { FilterVariant } from '../../components/Table/types';
-import ActiveDot from '../../components/ActiveDot';
+import { FilterVariant } from '../../components/common/Table/types';
+import StatusDot from '../../components/common/indicators/StatusDot';
 import { format } from 'date-fns';
 import { convertToLocalTime, Sort } from '@rhino/utils';
 import { GUIDE_LINKS } from '../../constant/guide-links';
 import { useUserFilter } from '../../context/userFilter';
 import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
+import { useNavigate } from 'react-router-dom';
+import { locations } from '../../routes/locations';
+import { getRibbonParams } from '../../helpers/topribbon';
 
 export const PeriodicAlarm = () => {
   const translationBaseRoute = 'pages.periodicAlarm.table.';
@@ -42,9 +45,10 @@ export const PeriodicAlarm = () => {
     location: null,
     shared: null,
   });
-  const { client, location } = useUserFilter();
+  const { client, location, group } = useUserFilter();
 
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const { data: periodicAlarmRes, isLoading: isLoadingData } =
     useGetPeriodicAlarmList({
@@ -64,7 +68,6 @@ export const PeriodicAlarm = () => {
             // To implement action
           }}
           popupContent="Go to Consumption Profile Chart"
-          style="bg-rhino-energy-green text-rhino-white"
         >
           <FaClock />
         </IconButton>
@@ -74,7 +77,6 @@ export const PeriodicAlarm = () => {
             console.log('Edit alarm:', row.original.id);
           }}
           popupContent="Edit Alarm"
-          style="bg-rhino-energy-green text-rhino-white"
         >
           <FaEdit />
         </IconButton>
@@ -83,8 +85,8 @@ export const PeriodicAlarm = () => {
             // To implement action
             console.log('Delete alarm:', row.original.id);
           }}
+          type="secondary"
           popupContent="Delete Alarm"
-          style="bg-rhino-indigo-blue text-rhino-white"
         >
           <RiDeleteBin6Fill />
         </IconButton>
@@ -146,7 +148,7 @@ export const PeriodicAlarm = () => {
         sortDirection: sort.direction,
         selectionOptions: ['Yes', 'No'],
         renderCell: (value) => {
-          return <ActiveDot type={value == true ? 'active' : 'inactive'} />;
+          return <StatusDot type={value == true ? 'active' : 'inactive'} />;
         },
       },
     },
@@ -206,12 +208,17 @@ export const PeriodicAlarm = () => {
   ];
 
   const handleCreateAlarm = () => {
-    // To implement action
+    navigate(
+      locations.periodicAlarm.create +
+        getRibbonParams({
+          client,
+          location,
+          group,
+        })
+    );
   };
 
   const onSortClick = (field: string, direction: string) => {
-    console.log(field, direction);
-
     setSort({ field, direction });
   };
 
@@ -257,11 +264,12 @@ export const PeriodicAlarm = () => {
             guide={true}
             guideLink={GUIDE_LINKS.PERIODIC_ALARM}
           />
-          <Button
+          <CustomButton
             text="Create periodic alarm"
             type="primary"
+            iconPosition="right"
             icon={<FaPlusCircle />}
-            action={handleCreateAlarm}
+            onClick={handleCreateAlarm}
           />
         </div>
         <Table

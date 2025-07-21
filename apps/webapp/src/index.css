@@ -34,6 +34,7 @@
   --color-rhino-indigo-blue-highlight: #036983;
   --color-rhino-indigo-blue-light: #496b8d;
   --color-rhino-energy-green: #00cf60;
+  --color-rhino-green-accent: oklch(72.3% 0.219 149.579);
   --color-rhino-energy-green-light: #66e3a0;
   --color-rhino-yellow: 'oklch(79.5% 0.184 86.047)';
   --color-rhino-white: #fff;
@@ -61,4 +62,66 @@ body {
 .mantine-Combobox-option:hover {
   background-color: var(--color-rhino-energy-green) !important;
   color: white;
+}
+
+input {
+  cursor: pointer;
+  padding: 4px 10px !important;
+  width: 100%;
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  line-height: 1.47;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 4px;
+  word-wrap: normal !important;
+  /* margin: 0 16px 16px 0 !important; */
+}
+
+select {
+  cursor: pointer;
+  padding: 4.5px 10px !important;
+  width: 100%;
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  line-height: 1.47;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 4px;
+  word-wrap: normal !important;
+  margin: 0 16px 16px 0 !important;
+  width: 9rem !important;
+}
+
+input:focus {
+  border: 1px solid var(--color-rhino-indigo-blue-light) !important;
+  outline: none;
+}
+
+select:focus {
+  border: 1px solid var(--color-rhino-indigo-blue-light) !important;
+  outline: none;
+}
+
+option {
+  color: var(--color-rhino-indigo-blue);
+}
+
+input:disabled,
+select:disabled {
+  border: 1px solid !important;
+  background-color: '#666' !important;
+  cursor: crosshair;
+}
+
+tbody tr:nth-child(even) td:last-child {
+  background-color: white;
+}
+
+tbody tr:nth-child(odd) td:last-child {
+  background-color: #fafafb;
 }

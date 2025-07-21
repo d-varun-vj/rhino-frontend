@@ -64,6 +64,9 @@
             "shared": "wspólny",
             "actions": "Akcje"
           }
+        },
+        "create": {
+          "mainHeader": "Utwórz alarm okresowy"
         }
       }
     },

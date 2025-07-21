@@ -5,5 +5,5 @@ export const CONSTANTS = {
     desc: '⇂',
     noSort: '⇅',
   },
-  SELECT_ALL_OPTION: 'all',
+  SELECT: { DEFAULT: 'select', ALL_OPTION: 'all' },
 };

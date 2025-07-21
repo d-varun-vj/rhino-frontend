@@ -1,7 +1,10 @@
 import { User, UserType, ViewPermissionsType } from '@rhino/apis';
-import { MenuItemType, SubItemType } from '../../components/Sidebar/config';
 import { getRibbonParams } from '../topribbon';
 import { FilterData } from '../../context/userFilter/user-filter-context';
+import {
+  MenuItemType,
+  SubItemType,
+} from '../../components/layout/Sidebar/config';
 
 const hasUserTypeAccess = ({
   subItem,

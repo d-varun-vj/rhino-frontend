@@ -9,14 +9,14 @@ import {
 import { FaChartBar, FaChartLine } from 'react-icons/fa';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import ActionCell from '../../components/Table/ActionCell';
+import ActionCell from '../../components/common/Table/ActionCell';
 import { CONSTANTS } from '../../constant';
-import { FilterVariant } from '../../components/Table/types';
-import IconButton from '../../components/Buttons/IconButton';
+import { FilterVariant } from '../../components/common/Table/types';
+import IconButton from '../../components/common/buttons/IconButton';
 import MainLayout from '../../layouts/MainLayout';
-import PageTitle from '../../components/PageTitle';
+import PageTitle from '../../components/typography/PageTitle';
 import { convertToLocalTime, Sort } from '@rhino/utils';
-import Table from '../../components/Table';
+import Table from '../../components/common/Table';
 import { format } from 'date-fns';
 import { getRibbonParams } from '../../helpers/topribbon';
 import { shouldSetInitialClient } from '../../helpers/client';
@@ -101,7 +101,6 @@ export const Dashboard = () => {
               `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}&shouldCompareMeasurement=${false}`;
           }}
           popupContent={t(translationBaseRoute + 'popup.goToProfile')}
-          style="bg-rhino-energy-green text-rhino-white"
           dataTestId="consumption-profile-chart-btn"
         >
           <FaChartBar />
@@ -115,7 +114,6 @@ export const Dashboard = () => {
               `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}&shouldCompareMeasurement=${true}`;
           }}
           popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
-          style="bg-rhino-energy-green text-rhino-white"
           dataTestId="consumption-chart-btn"
         >
           <FaChartLine />

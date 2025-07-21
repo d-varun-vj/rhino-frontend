@@ -64,6 +64,9 @@
             "shared": "Shared",
             "actions": "Actions"
           }
+        },
+        "create": {
+          "mainHeader": "Create periodic alarm"
         }
       }
     },
