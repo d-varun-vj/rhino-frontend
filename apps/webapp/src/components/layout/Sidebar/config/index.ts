@@ -1,4 +1,14 @@
 import {
+  getAnalysisViewPermissions,
+  getConfigurationViewPermissions,
+  UserType,
+  UserViewPermission,
+  ViewPermissionsType,
+  VITE_WICKET_BASE_URL,
+} from '@rhino/apis';
+import { AiFillTool } from 'react-icons/ai';
+import { BiSolidNetworkChart } from 'react-icons/bi';
+import {
   FaBalanceScale,
   FaBell,
   FaBuilding,
@@ -14,18 +24,8 @@ import {
   FaUser,
   FaWallet,
 } from 'react-icons/fa';
-import { BiSolidNetworkChart } from 'react-icons/bi';
 import { IoSettingsSharp } from 'react-icons/io5';
-import { AiFillTool } from 'react-icons/ai';
 import { IconType } from 'react-icons/lib';
-import {
-  getAnalysisViewPermissions,
-  getConfigurationViewPermissions,
-  UserType,
-  UserViewPermission,
-  ViewPermissionsType,
-  VITE_WICKET_BASE_URL,
-} from '@rhino/apis';
 
 export type SubItemType = {
   label: string; // label from i18n translation (check src/i18n/...json)

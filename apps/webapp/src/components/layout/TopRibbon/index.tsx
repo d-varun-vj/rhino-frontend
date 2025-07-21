@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import UserDropDown from './UserDropDown';
 
-import { useTranslation } from 'react-i18next';
-import FavoriteMeter from './FavoriteMeter';
-import { useEffect, useState } from 'react';
-import { Location, useGetLocations, Client, useGetClients } from '@rhino/apis';
+import { Client, Location, useGetClients, useGetLocations } from '@rhino/apis';
 import { FieldType, useSearchParamsState } from '@rhino/utils';
+import { useFavoriteMeter } from 'apps/webapp/src/context/favoriteMeter';
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
-import { useFavoriteMeter } from 'apps/webapp/src/context/favoriteMeter';
 import { shouldSetInitialClient } from 'apps/webapp/src/helpers/client';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ClientCombobox from '../../client/ClientCombobox';
-import LocationCombobox from '../../location/LocationCombobox';
 import GroupCombobox from '../../group/GroupCombobox';
+import LocationCombobox from '../../location/LocationCombobox';
+import FavoriteMeter from './FavoriteMeter';
 
 type TopRibbonProps = {
   showFavoriteMeterShow?: boolean;

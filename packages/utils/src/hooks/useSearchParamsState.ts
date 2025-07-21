@@ -1,9 +1,9 @@
-import { useSearchParams } from 'react-router-dom';
 import {
   compressToEncodedURIComponent,
   decompressFromEncodedURIComponent,
 } from 'lz-string';
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 type SearchParam = Record<string, unknown> | undefined;
 

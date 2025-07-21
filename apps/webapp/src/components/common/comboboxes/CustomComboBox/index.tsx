@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
 import {
-  InputBase,
   Combobox,
-  useCombobox,
   ComboboxProps,
+  InputBase,
   ScrollArea,
+  useCombobox,
 } from '@mantine/core';
-import { useTranslation } from 'react-i18next';
 import { CONSTANTS } from 'apps/webapp/src/constant';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CustomComboBox extends ComboboxProps {
   optionsList: {

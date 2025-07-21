@@ -1,6 +1,6 @@
+import { Button, ButtonProps } from '@mantine/core';
 import clsx from 'clsx';
 import React from 'react';
-import { Button, ButtonProps } from '@mantine/core';
 
 type CustomButtonProps = {
   text?: string;

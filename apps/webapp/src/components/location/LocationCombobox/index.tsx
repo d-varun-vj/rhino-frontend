@@ -1,6 +1,6 @@
 import { Location } from '@rhino/apis';
-import { useTranslation } from 'react-i18next';
 import { FieldType } from '@rhino/utils';
+import { useTranslation } from 'react-i18next';
 import { FilterData } from '../../../context/userFilter/user-filter-context';
 import CustomComboBox from '../../common/comboboxes/CustomComboBox';
 

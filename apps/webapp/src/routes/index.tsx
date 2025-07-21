@@ -1,11 +1,11 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { VITE_API_BASE_URL, initHttpClient } from '@rhino/apis';
 import { useEffect, useState } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
-import { Dashboard, PeriodicAlarm } from '../pages';
-import { locations } from './locations';
 import { toast } from 'react-toastify';
+import { Dashboard, PeriodicAlarm } from '../pages';
 import NotAllowed from '../pages/NotAllowed';
+import { locations } from './locations';
 
 const MainRoute = () => {
   const [isFullScreenLoading, setIsFullScreenLoading] = useState(true);

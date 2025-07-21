@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { FavoriteMeterContext } from './favorite-meter-context';
 import { FilterData } from '../userFilter/user-filter-context';
+import { FavoriteMeterContext } from './favorite-meter-context';
 
 export const FavoriteMeterProvider = ({
   children,

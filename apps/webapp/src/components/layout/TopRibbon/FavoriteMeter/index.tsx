@@ -1,21 +1,21 @@
-import { useTranslation } from 'react-i18next';
-import { FaArrowRight } from 'react-icons/fa';
-import React, { useState } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
 import {
   FavoriteMeterFilter,
   FavoriteMeterType,
   useGetAllFavoriteMeters,
 } from '@rhino/apis';
-import { RiCloseCircleFill } from 'react-icons/ri';
 import { Sort } from '@rhino/utils';
-import { useUser } from 'apps/webapp/src/context/user';
+import { ColumnDef } from '@tanstack/react-table';
 import { useFavoriteMeter } from 'apps/webapp/src/context/favoriteMeter';
+import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
-import { FilterVariant } from '../../../common/Table/types';
-import ActionCell from '../../../common/Table/ActionCell';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaArrowRight } from 'react-icons/fa';
+import { RiCloseCircleFill } from 'react-icons/ri';
 import IconButton from '../../../common/buttons/IconButton';
 import Table from '../../../common/Table';
+import ActionCell from '../../../common/Table/ActionCell';
+import { FilterVariant } from '../../../common/Table/types';
 
 type FavoriteMeterProps = {
   selectedFavoriteMeter?: string;

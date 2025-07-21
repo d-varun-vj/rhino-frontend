@@ -1,9 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-import { MenuKeys, MenuItemType } from '../config';
-import './MenuItem.css';
-import { NavLink } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import MinimizePopup from '../MinimizePopup';
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import {
@@ -11,6 +5,12 @@ import {
   getToNavLink,
   resolveMenuLink,
 } from 'apps/webapp/src/helpers/sidebar';
+import { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
+import { MenuItemType, MenuKeys } from '../config';
+import MinimizePopup from '../MinimizePopup';
+import './MenuItem.css';
 
 export type MenuItemProps = {
   menuItem: MenuItemType;

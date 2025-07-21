@@ -1,10 +1,10 @@
 import { Column } from '@tanstack/react-table';
-import React, { useState, useMemo, useCallback } from 'react';
-import DebouncedTextField from '../../input/TextField/DebouncedTextField';
-import { useTranslation } from 'react-i18next';
-import { FilterVariant } from '../types';
 import { CONSTANTS } from 'apps/webapp/src/constant';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CustomComboBox from '../../comboboxes/CustomComboBox';
+import DebouncedTextField from '../../input/TextField/DebouncedTextField';
+import { FilterVariant } from '../types';
 
 const Filter = <T,>({
   column,

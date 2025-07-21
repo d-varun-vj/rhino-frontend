@@ -1,10 +1,10 @@
 import { Sort, TableMeta } from '@rhino/utils';
 
-import API_URLS from '../../endpoints';
-import { DataQueryKeys } from '../../data-query-keys';
-import { PeriodicAlarmType } from '../types';
-import { httpClient } from '../../httpClient';
 import { useQuery } from '@tanstack/react-query';
+import { DataQueryKeys } from '../../data-query-keys';
+import API_URLS from '../../endpoints';
+import { httpClient } from '../../httpClient';
+import { PeriodicAlarmType } from '../types';
 
 export type PeriodicAlarmTableData = {
   data: PeriodicAlarmType[];

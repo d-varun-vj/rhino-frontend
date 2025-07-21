@@ -1,6 +1,6 @@
-import './Sidebar.css';
-import rhinoLogo from '../../../assets/rhino-logo.svg';
-import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
+import { User, UserType, ViewPermissionsType } from '@rhino/apis';
+import { useUser } from 'apps/webapp/src/context/user';
+import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import {
   Dispatch,
   SetStateAction,
@@ -8,11 +8,11 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { MenuKeys, MenuItems, MenuItemType } from './config';
+import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
+import rhinoLogo from '../../../assets/rhino-logo.svg';
+import { MenuItems, MenuItemType, MenuKeys } from './config';
 import MenuItem from './MenuItem';
-import { User, UserType, ViewPermissionsType } from '@rhino/apis';
-import { useUser } from 'apps/webapp/src/context/user';
-import { useUserFilter } from 'apps/webapp/src/context/userFilter';
+import './Sidebar.css';
 
 const handleResizeLogic = (
   setMinimize: Dispatch<

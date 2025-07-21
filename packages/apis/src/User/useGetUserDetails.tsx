@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import { DataQueryKeys } from '../data-query-keys';
+import API_URLS from '../endpoints';
 import { httpClient } from '../httpClient';
 import { User } from './types';
-import API_URLS from '../endpoints';
-import { DataQueryKeys } from '../data-query-keys';
 
 export const useGetUserDetails = () => {
   return useQuery({

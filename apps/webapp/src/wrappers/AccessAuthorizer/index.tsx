@@ -4,8 +4,8 @@ import {
   UserViewPermission,
   ViewPermissionsType,
 } from '@rhino/apis';
-import { useUser } from '../../context/user';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../context/user';
 import { locations } from '../../routes/locations';
 
 type AuthorizeProps = {

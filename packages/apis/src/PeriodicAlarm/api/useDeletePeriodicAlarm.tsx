@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import API_URLS from '../../endpoints';
 import { DataQueryKeys } from '../../data-query-keys';
+import API_URLS from '../../endpoints';
 import { httpClient } from '../../httpClient';
 
 export const useDeletePeriodicAlarm = () => {

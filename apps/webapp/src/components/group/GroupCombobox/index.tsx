@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
-import { FieldType } from '@rhino/utils';
-import { FilterData } from '../../../context/userFilter/user-filter-context';
 import { Location } from '@rhino/apis';
+import { FieldType } from '@rhino/utils';
+import { useTranslation } from 'react-i18next';
+import { FilterData } from '../../../context/userFilter/user-filter-context';
 import OptionsGroupedComboBox from '../../common/comboboxes/OptionsGroupedComboBox';
 
 type GroupComboboxProps = {

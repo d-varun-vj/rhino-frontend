@@ -10,8 +10,8 @@ import axios, {
   RawAxiosRequestHeaders,
 } from 'axios';
 
-import { VITE_WICKET_BASE_URL } from './endpoints';
 import { getCookie } from '@rhino/utils';
+import { VITE_WICKET_BASE_URL } from './endpoints';
 
 // Create a custom adapter using fetch
 const fetchAdapter: AxiosAdapter = async (

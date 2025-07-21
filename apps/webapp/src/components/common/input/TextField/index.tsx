@@ -1,5 +1,5 @@
-import Label from '../../../typography/Label';
 import { TextInput, TextInputProps } from '@mantine/core';
+import Label from '../../../typography/Label';
 
 interface TextFieldProps extends TextInputProps {
   label?: string;

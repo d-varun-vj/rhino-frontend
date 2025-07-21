@@ -11,14 +11,14 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { CONSTANTS } from '../../../constant';
-import { ColumnMeta } from '@tanstack/table-core';
-import Filter from './Filter';
-import { FilterVariant } from './types';
-import React, { useRef, useState } from 'react';
 import { SortDirection } from '@rhino/utils';
-import TableFooter from './Footer';
+import { ColumnMeta } from '@tanstack/table-core';
 import clsx from 'clsx';
+import React, { useRef, useState } from 'react';
+import { CONSTANTS } from '../../../constant';
+import Filter from './Filter';
+import TableFooter from './Footer';
+import { FilterVariant } from './types';
 
 interface CustomColumnMeta {
   selectionOptions?: string[];

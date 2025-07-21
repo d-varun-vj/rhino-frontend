@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import { defineConfig } from 'vite';
 import packageJson from './package.json';
 
 const packageName = packageJson.name.split('/').pop() || packageJson.name;

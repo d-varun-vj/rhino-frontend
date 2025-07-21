@@ -1,11 +1,11 @@
 import { UserType } from '@rhino/apis';
-import { MenuItemType } from '../config';
-import { VscTriangleLeft } from 'react-icons/vsc';
-import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { canViewItem, getToNavLink } from 'apps/webapp/src/helpers/sidebar';
+import { useTranslation } from 'react-i18next';
+import { VscTriangleLeft } from 'react-icons/vsc';
+import { NavLink } from 'react-router-dom';
+import { MenuItemType } from '../config';
 
 const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
   const { t } = useTranslation();

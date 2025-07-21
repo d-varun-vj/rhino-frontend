@@ -1,6 +1,6 @@
+import { Checkbox, CheckboxProps } from '@mantine/core';
 import clsx from 'clsx';
 import Label from '../../../typography/Label';
-import { Checkbox, CheckboxProps } from '@mantine/core';
 
 interface CheckBoxProps extends CheckboxProps {
   label?: string;

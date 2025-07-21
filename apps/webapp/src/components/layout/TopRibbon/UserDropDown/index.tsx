@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FaUserCircle } from 'react-icons/fa';
-import { useTranslation } from 'react-i18next';
 import { changeLanguage } from 'i18next';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FaUserCircle } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import Language from './Language';
 import { VITE_WICKET_BASE_URL } from '@rhino/apis';
 import { useUser } from 'apps/webapp/src/context/user';
+import Language from './Language';
 
 type Item = {
   label: string;

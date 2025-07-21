@@ -1,7 +1,7 @@
-import { FooterType } from '..';
 import { useEffect, useRef, useState } from 'react';
-import { useUserFilter } from '../../../../context/userFilter';
 import { useTranslation } from 'react-i18next';
+import { FooterType } from '..';
+import { useUserFilter } from '../../../../context/userFilter';
 
 type Footer = {
   pagination: FooterType;

@@ -5,5 +5,5 @@ export * from './endpoints';
 export * from './FavoriteMeter';
 export * from './httpClient';
 export * from './Locations';
-export * from './User';
 export * from './PeriodicAlarm';
+export * from './User';

@@ -1,9 +1,9 @@
+import { Sort } from '@rhino/utils';
 import { useQuery } from '@tanstack/react-query';
+import { DataQueryKeys } from '../../data-query-keys';
+import API_URLS from '../../endpoints';
 import { httpClient } from '../../httpClient';
 import { DashboardType } from '../types';
-import API_URLS from '../../endpoints';
-import { DataQueryKeys } from '../../data-query-keys';
-import { Sort } from '@rhino/utils';
 
 export type TableData = {
   content: DashboardType[];

@@ -1,5 +1,5 @@
-import Label from '../../../typography/Label';
 import { Switch, SwitchProps } from '@mantine/core';
+import Label from '../../../typography/Label';
 
 interface ToggleProps extends SwitchProps {
   label?: string;
