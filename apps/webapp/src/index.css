@@ -125,3 +125,23 @@ tbody tr:nth-child(even) td:last-child {
 tbody tr:nth-child(odd) td:last-child {
   background-color: #fafafb;
 }
+
+/* Custom Modal Styles */
+.modal-title-custom {
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  color: var(--color-rhino-indigo-blue) !important;
+  margin-top: 10px !important;
+}
+
+.modal-header-custom {
+  border-top: 8px solid var(--color-rhino-energy-green) !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.rhino-text {
+  color: var(--color-rhino-indigo-blue);
+  font-size: 13px;
+  font-weight: 400;
+}

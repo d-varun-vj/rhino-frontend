@@ -1,9 +1,10 @@
 import { VITE_API_BASE_URL, initHttpClient } from '@rhino/apis';
 import { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Dashboard, PeriodicAlarm } from '../pages';
 
 import { toast } from 'react-toastify';
-import { Dashboard, PeriodicAlarm } from '../pages';
+import { Consumption } from '../pages/Consumption';
 import NotAllowed from '../pages/NotAllowed';
 import { locations } from './locations';
 
@@ -30,6 +31,7 @@ const MainRoute = () => {
     <Router basename={locations.base}>
       <Routes>
         <Route path={locations.dashboard} element={<Dashboard />} />
+        <Route path={locations.consumption} element={<Consumption />} />
         <Route
           path={locations.periodicAlarm.base}
           element={<PeriodicAlarm />}

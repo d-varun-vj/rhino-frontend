@@ -11,7 +11,7 @@ export type PeriodicAlarmTableData = {
   meta: TableMeta;
 };
 
-export type PeriodicAlarmRequestBody = {
+export type PeriodicAlarmRequestFilter = {
   page: number | null;
   size: number | null;
   sort: Sort;
@@ -25,7 +25,7 @@ export type PeriodicAlarmRequestBody = {
   shared: boolean | null;
 };
 
-export const useGetPeriodicAlarmList = (params: PeriodicAlarmRequestBody) => {
+export const useGetPeriodicAlarmList = (params: PeriodicAlarmRequestFilter) => {
   const {
     page,
     size,

@@ -1,4 +1,5 @@
 import { Checkbox, CheckboxProps } from '@mantine/core';
+
 import clsx from 'clsx';
 import Label from '../../../typography/Label';
 

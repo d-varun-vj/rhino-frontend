@@ -1,8 +1,5 @@
-export type DictionaryDto = {
-  name: string;
-  translationEn: string;
-  translationPl: string;
-};
+import { NameWithTranslationDto } from '../../Common';
+
 export type DashboardType = {
   id: string;
   groupName: string;
@@ -21,9 +18,9 @@ export type DashboardType = {
   tenant: string | null;
   incremental: boolean | null;
   manual: boolean | null;
-  levelType: DictionaryDto | null;
-  loadType: DictionaryDto | null;
-  endUseArea: DictionaryDto | null;
+  levelType: NameWithTranslationDto | null;
+  loadType: NameWithTranslationDto | null;
+  endUseArea: NameWithTranslationDto | null;
   percentageColor?: string | null;
   type: string | null;
   action?: string;

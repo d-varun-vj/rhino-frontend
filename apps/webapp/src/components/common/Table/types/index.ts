@@ -7,4 +7,5 @@ export enum FilterVariant {
   SELECT = 'select',
   TEXT = 'text',
   ALL = 'all',
+  SELECT_ALL = 'select_all',
 }

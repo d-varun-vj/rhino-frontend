@@ -1,4 +1,5 @@
 import { Button, ButtonProps } from '@mantine/core';
+
 import clsx from 'clsx';
 import React from 'react';
 
@@ -32,7 +33,7 @@ const CustomButton = ({
       >
         <div
           className={clsx('flex gap-2', {
-            '!flex-row-reverse': iconPosition === 'left',
+            '!flex-row-reverse': iconPosition === 'right',
             '!flex !items-center': !!icon,
           })}
         >

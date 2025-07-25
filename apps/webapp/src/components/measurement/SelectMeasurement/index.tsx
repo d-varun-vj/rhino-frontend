@@ -1,0 +1,164 @@
+import { Accordion, Button, Modal } from '@mantine/core';
+import { useEffect, useRef, useState } from 'react';
+
+import { useUserFilter } from 'apps/webapp/src/context/userFilter';
+import { useTranslation } from 'react-i18next';
+import { FaPlusCircle } from 'react-icons/fa';
+import MeasurementsWithActionsTable from '../MeasurementsWithActionsTable';
+import SelectMeasurementModal from '../SelectMeasurementModal';
+import { MeasurementWithConfig } from './types';
+
+interface SelectMeasurementProps {
+  onMeasurementsChange?: (measurements: MeasurementWithConfig[]) => void;
+  minSelections?: number;
+  selectionMode?: 'single' | 'multiple';
+  showGlobalSettings?: boolean;
+  defaultExpanded?: boolean;
+  allowSameMeasurementMultipleTimes?: boolean;
+}
+
+export const SelectMeasurement = ({
+  onMeasurementsChange,
+  minSelections = 1,
+  selectionMode = 'multiple',
+  showGlobalSettings = false,
+  defaultExpanded = true,
+  allowSameMeasurementMultipleTimes = false,
+}: SelectMeasurementProps) => {
+  const [modalOpened, setModalOpened] = useState(false);
+  const [selectedMeasurements, setSelectedMeasurements] = useState<
+    MeasurementWithConfig[]
+  >([]);
+
+  const { client } = useUserFilter();
+  const prevClientRef = useRef(client);
+
+  const { t } = useTranslation();
+  const baseRoute = 'components.measurement.selectMeasurement.';
+
+  useEffect(() => {
+    if (prevClientRef.current !== client) {
+      handleClearAll();
+    }
+    prevClientRef.current = client;
+  }, [client]);
+
+  const handleMeasurementSelect = (measurements: MeasurementWithConfig[]) => {
+    if (allowSameMeasurementMultipleTimes) {
+      const newMeasurements = [...selectedMeasurements, ...measurements];
+      setSelectedMeasurements(newMeasurements);
+      onMeasurementsChange?.(newMeasurements);
+      return;
+    }
+
+    // if not allow same measurement multiple times, we need to check if the measurement is already selected
+    // if it is, we need to remove it from the selected measurements and add the new measurement
+    // if it is not, we need to add the new measurement to the selected measurements
+    const currentSelectedMeasurementsMap = measurements.reduce(
+      (acc, measurement) => {
+        acc[measurement.measurement.uuid] = measurement;
+        return acc;
+      },
+      {} as Record<string, MeasurementWithConfig>
+    );
+    const modifiedMeasurements = selectedMeasurements.map((measurement) => {
+      const existingMeasurement =
+        currentSelectedMeasurementsMap[measurement.measurement.uuid];
+      if (existingMeasurement) {
+        delete currentSelectedMeasurementsMap[measurement.measurement.uuid];
+        return existingMeasurement;
+      }
+      return measurement;
+    });
+    const newMeasurements = [
+      ...modifiedMeasurements,
+      ...Object.values(currentSelectedMeasurementsMap),
+    ];
+    setSelectedMeasurements(newMeasurements);
+    onMeasurementsChange?.(newMeasurements);
+  };
+
+  const handleRemoveMeasurement = (measurement: MeasurementWithConfig) => {
+    const updatedMeasurements = selectedMeasurements.filter(
+      (m) => m.config.selectionId !== measurement.config.selectionId
+    );
+    setSelectedMeasurements(updatedMeasurements);
+    onMeasurementsChange?.(updatedMeasurements);
+  };
+
+  const handleClearAll = () => {
+    setSelectedMeasurements([]);
+    onMeasurementsChange?.([]);
+  };
+
+  const getButtonText = () => {
+    if (selectedMeasurements.length === 0) {
+      return t(baseRoute + 'add');
+    }
+    return t(baseRoute + 'addMore');
+  };
+
+  return (
+    <div className="flex flex-col">
+      <Accordion
+        defaultValue={defaultExpanded ? '1' : undefined}
+        classNames={{
+          control:
+            'h-10 px-4 !border-t !border-l !border-r !border-black/[0.08] rounded-t-md rhino-text',
+          item: 'border-none',
+          content:
+            '!border-l !border-r !border-l-black/[0.08] !border-r-black/[0.08]',
+          panel: 'border-none',
+        }}
+      >
+        <Accordion.Item value="1">
+          <Accordion.Control>
+            <div className="flex w-full justify-center items-center">
+              <span>
+                {t(baseRoute + 'title')} ( {selectedMeasurements.length} )
+              </span>
+            </div>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <MeasurementsWithActionsTable
+              selectedMeasurements={selectedMeasurements}
+              onRemoveMeasurement={handleRemoveMeasurement}
+              onClearAll={
+                selectedMeasurements.length > 1 ? handleClearAll : undefined
+              }
+            />
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
+
+      <Button
+        className="w-full h-10 !bg-rhino-energy-green text-white !rounded-tl-none !rounded-tr-none rounded-br-md rounded-bl-none transition-all"
+        onClick={() => setModalOpened(true)}
+        leftSection={<FaPlusCircle className="mr-1" />}
+        disabled={!client}
+        title={client ? t(baseRoute + 'title') : t(baseRoute + 'selectClient')}
+      >
+        {getButtonText()}
+      </Button>
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title={t(baseRoute + 'title')}
+        size="80vw"
+        classNames={{
+          title: 'modal-title-custom',
+          header: 'modal-header-custom',
+        }}
+      >
+        <SelectMeasurementModal
+          onClose={() => setModalOpened(false)}
+          onSelect={handleMeasurementSelect}
+          minSelections={minSelections}
+          selectionMode={selectionMode}
+          showGlobalSettings={showGlobalSettings}
+        />
+      </Modal>
+    </div>
+  );
+};

@@ -18,6 +18,9 @@ const API_URLS = {
   getDashboardTableData: () => `dashboard`,
   getDashboardTableDataOptions: () => `metadata`,
 
+  // Measurement
+  getMeasurements: () => `measurements`,
+
   //Periodic Alarm
   getPeriodicAlarmList: () => `periodic-alarm`,
   deletePeriodicAlarm: (uuid: string) => `periodic-alarm/${uuid}`,

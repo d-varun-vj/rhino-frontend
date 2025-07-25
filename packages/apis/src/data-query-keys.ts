@@ -1,11 +1,11 @@
 export const enum DataQueryKeys {
-  DASHBOARD = 'dashboard',
-  OPTIONS = 'options',
-  USER = 'user',
-  // Top Ribbon
   CLIENTS = 'clients',
-  LOCATIONS = 'locations',
-  GROUPS = 'groups',
+  DASHBOARD = 'dashboard',
   FAVORITE_METERS = 'favoriteMeters',
+  GROUPS = 'groups',
+  LOCATIONS = 'locations',
+  MEASUREMENTS = 'measurements',
+  OPTIONS = 'options',
   PERIODIC_ALARM = 'periodicAlarm',
+  USER = 'user',
 }

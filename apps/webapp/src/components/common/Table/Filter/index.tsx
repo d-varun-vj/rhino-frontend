@@ -1,8 +1,10 @@
+import React, { useCallback, useMemo, useState } from 'react';
+
 import { Column } from '@tanstack/react-table';
 import { CONSTANTS } from 'apps/webapp/src/constant';
-import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CustomComboBox from '../../comboboxes/CustomComboBox';
+import CheckBox from '../../input/Checkbox';
 import DebouncedTextField from '../../input/TextField/DebouncedTextField';
 import { FilterVariant } from '../types';
 
@@ -75,6 +77,19 @@ const Filter = <T,>({
   );
 
   const selectPlaceholder = useMemo(() => t('comboBox.select'), [t]);
+
+  if (filterVariant === FilterVariant.SELECT_ALL) {
+    const { selectAllChecked, onSelectAll } = column.columnDef.meta ?? {};
+
+    return (
+      <div className="mt-10  ml-3">
+        <CheckBox
+          checked={selectAllChecked || false}
+          onChange={(e) => onSelectAll?.(e.target.checked)}
+        />
+      </div>
+    );
+  }
 
   if (filterVariant === FilterVariant.SELECT) {
     return (

@@ -10,11 +10,11 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import React, { useRef, useState } from 'react';
 
 import { SortDirection } from '@rhino/utils';
 import { ColumnMeta } from '@tanstack/table-core';
 import clsx from 'clsx';
-import React, { useRef, useState } from 'react';
 import { CONSTANTS } from '../../../constant';
 import Filter from './Filter';
 import TableFooter from './Footer';
@@ -26,6 +26,8 @@ interface CustomColumnMeta {
   sortKey: string | null; // Same as backend sorting field name
   sortDirection?: string;
   renderCell?: (value: unknown, row: unknown) => React.ReactNode;
+  selectAllChecked?: boolean;
+  onSelectAll?: (checked: boolean) => void;
 }
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -171,7 +173,14 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={`${header.id == CONSTANTS.action && 'sticky bg-rhino-white -right-5 pl-2 '} font-thin align-baseline w-32 pr-1.5`}
+                      className={clsx('font-thin align-baseline pr-1.5', {
+                        'sticky bg-rhino-white -right-5 pl-2':
+                          header.id === CONSTANTS.action,
+                        'w-16': header.id === 'select', // Narrower width for select column
+                        'w-32':
+                          header.id !== 'select' &&
+                          header.id !== CONSTANTS.action, // Default width for other columns
+                      })}
                     >
                       {header.isPlaceholder ? null : (
                         <div className="flex flex-col justify-end w-full ">
@@ -247,14 +256,18 @@ const Table = <T,>({
                         >
                           <div
                             className={clsx(
-                              'text-[13px] overflow-hidden w-32  overflow-ellipsis',
+                              'text-[13px] overflow-hidden overflow-ellipsis',
                               {
                                 'text-nowrap':
                                   cell.column.id === 'value' ||
                                   cell.column.id === 'read-time',
-                                'overflow-visible w-fit ':
+                                'overflow-visible w-fit':
                                   cell.column.id === CONSTANTS.action ||
-                                  textFullViewId == cell.column.id,
+                                  textFullViewId === cell.column.id,
+                                'w-16': cell.column.id === 'select', // Narrower width for select column
+                                'w-32':
+                                  cell.column.id !== 'select' &&
+                                  cell.column.id !== CONSTANTS.action, // Default width
                               }
                             )}
                             onMouseEnter={(e) =>
