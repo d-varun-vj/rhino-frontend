@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.10.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.9.0...webapp-v1.10.0) (2025-07-25)
+
+
+### Features
+
+* Add AccessAuthorizer wrapper for protecting page accessibility based on user type and permissions ([b748959](https://github.com/Rhino-Energy/rhino-frontend/commit/b748959b6768ff3e1ae85531c618bcf64a04a134))
+* add alarm list page ([0bf0bb5](https://github.com/Rhino-Energy/rhino-frontend/commit/0bf0bb51bbda5aeb28c7678ea53604a575649684))
+* Add alarm list page UI ([e602631](https://github.com/Rhino-Energy/rhino-frontend/commit/e602631c7878d712679d800be411a18285247b2b))
+* Add alarm list page UI [PRD-3114] ([0b4ca91](https://github.com/Rhino-Energy/rhino-frontend/commit/0b4ca91dfa61ec78a9d8574b54147393f1111fa9))
+* Add alarm list page UI [PRD-3114] ([678a0f1](https://github.com/Rhino-Energy/rhino-frontend/commit/678a0f1d394ad49d792c0d15b29354edac32e7ca))
+* Add alarm list page UI [PRD-3114] ([c81bdf0](https://github.com/Rhino-Energy/rhino-frontend/commit/c81bdf01ef43129dd7d993a7b61a46ac9dcd1ca0))
+* Add alarm list page UI [PRD-3114] ([5c5a542](https://github.com/Rhino-Energy/rhino-frontend/commit/5c5a542e4a85471fe7f1dd5aade55ea4c9689a3f))
+* Add alarm list page UI [PRD-3114] ([3ff2ca6](https://github.com/Rhino-Energy/rhino-frontend/commit/3ff2ca6d9398e9796ac4e5d648d46496c346a701))
+* Add alarm list page UI~ ([3d12c71](https://github.com/Rhino-Energy/rhino-frontend/commit/3d12c71b0851109a281fd917f712e0947cb0cd67))
+* Add basic input component and change headless ui component to mantain ui [PRD-3113] ([#71](https://github.com/Rhino-Energy/rhino-frontend/issues/71)) ([aed0128](https://github.com/Rhino-Energy/rhino-frontend/commit/aed01283e902cad0eb77b0e977693a21716b5c4c))
+* add e2e data test ids [PRD-3125] ([#68](https://github.com/Rhino-Energy/rhino-frontend/issues/68)) ([65c7875](https://github.com/Rhino-Energy/rhino-frontend/commit/65c7875c5dbc6e2984acaca60d1ccf3c83b5da06))
+* add mantain ui ([51cb408](https://github.com/Rhino-Energy/rhino-frontend/commit/51cb4088f7341b60d641e50a8322304492102faf))
+* Add measurement selection component [PRD-3184] ([#78](https://github.com/Rhino-Energy/rhino-frontend/issues/78)) ([03a2dab](https://github.com/Rhino-Energy/rhino-frontend/commit/03a2dabd0a5ffdab446986de4ccf36fa39b613e4))
+* Add Page view permission ([733e08e](https://github.com/Rhino-Energy/rhino-frontend/commit/733e08ea8a140a22ca2fe83a1c008de1d4a15b6a))
+* Implemente deletion functionality for periodic alarms [PRD-3115] ([#74](https://github.com/Rhino-Energy/rhino-frontend/issues/74)) ([620e47a](https://github.com/Rhino-Energy/rhino-frontend/commit/620e47a92971f5f7d23a818f516c956483f626a8))
+* periodic alarm api integrated ([2f201f6](https://github.com/Rhino-Energy/rhino-frontend/commit/2f201f6c593484e92b1dea553dac2dc386c112ee))
+
+
+### Bug Fixes
+
+* Change UI library from HeadLess to Mantain and fix combobox issues [PRD-3113] ([19ccf0d](https://github.com/Rhino-Energy/rhino-frontend/commit/19ccf0d3354a36512f2c892c96111f22b6f95d51))
+* Resolve spacing issue in top ribbon input field ([98173f6](https://github.com/Rhino-Energy/rhino-frontend/commit/98173f67d9fe05fd954f9587a3feb8314363ec5c))
+
 ## [1.9.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.8.1...webapp-v1.9.0) (2025-06-28)
 
 
