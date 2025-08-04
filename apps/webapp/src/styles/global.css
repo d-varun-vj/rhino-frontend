@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: #c4cad433;
+  height: 100%;
+  width: 100%;
+  letter-spacing: 0.1px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+input {
+  cursor: pointer;
+  width: 100%;
+  font-size: 0.8125rem !important;
+  background-color: #fff;
+  border-radius: 4px;
+  word-wrap: normal !important;
+}
+
+select {
+  cursor: pointer;
+  padding: 4.5px 10px !important;
+  width: 100%;
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  line-height: 1.47;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box !important;
+  border: 1px solid #e5e5e5 !important;
+  border-radius: 4px;
+  word-wrap: normal !important;
+  margin: 0 16px 16px 0 !important;
+  width: 9rem !important;
+}
+
+input:focus {
+  border: 1px solid var(--color-rhino-indigo-blue-light) !important;
+  outline: none;
+}
+
+select:focus {
+  border: 1px solid var(--color-rhino-indigo-blue-light) !important;
+  outline: none;
+}
+
+option {
+  color: var(--color-rhino-indigo-blue);
+}
+
+input:disabled,
+select:disabled {
+  border: 1px solid !important;
+  background-color: '#666' !important;
+  cursor: crosshair;
+}
+
+tbody tr:nth-child(even) td:last-child {
+  background-color: white;
+}
+
+tbody tr:nth-child(odd) td:last-child {
+  background-color: #fafafb;
+}
+
+/* Custom Modal Styles */
+.modal-title-custom {
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  color: var(--color-rhino-indigo-blue) !important;
+  margin-top: 10px !important;
+}
+
+.modal-header-custom {
+  border-top: 8px solid var(--color-rhino-energy-green) !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.rhino-text {
+  color: var(--color-rhino-indigo-blue);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 100%;
+  border: 3px solid #f1f1f1;
+}
+
+/* Thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  cursor: grabbing;
+}

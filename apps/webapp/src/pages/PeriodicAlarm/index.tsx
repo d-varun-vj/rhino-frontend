@@ -1,22 +1,21 @@
 import {
+  PERIODIC_ALARM_FREQUENCY_OPTIONS,
   PeriodicAlarmFilter,
   PeriodicAlarmType,
   UserViewPermission,
   ViewPermissionsType,
-  periodicAlarmFrequencyOptions,
   useDeletePeriodicAlarm,
   useGetPeriodicAlarmList,
 } from '@rhino/apis';
 import { Sort, convertToLocalTime, formatListSummary } from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaClock, FaEdit, FaPlusCircle } from 'react-icons/fa';
 
 import { format } from 'date-fns/format';
 import { useTranslation } from 'react-i18next';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/common/buttons/CustomButton';
 import IconButton from '../../components/common/buttons/IconButton';
 import StatusDot from '../../components/common/indicators/StatusDot';
@@ -24,6 +23,7 @@ import openDeleteConfirmationModal from '../../components/common/modals/deleteCo
 import Table from '../../components/common/Table';
 import ActionCell from '../../components/common/Table/ActionCell';
 import { FilterVariant } from '../../components/common/Table/types';
+import message from '../../components/notifier';
 import PageTitle from '../../components/typography/PageTitle';
 import { CONSTANTS } from '../../constant';
 import { GUIDE_LINKS } from '../../constant/guide-links';
@@ -33,8 +33,8 @@ import MainLayout from '../../layouts/MainLayout';
 import { locations } from '../../routes/locations';
 import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
 
-export const PeriodicAlarm = () => {
-  const translationBaseRoute = 'pages.periodicAlarm.table.';
+const PeriodicAlarm = () => {
+  const translationTableBase = 'table.';
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
   const [sort, setSort] = useState<Sort>({
@@ -49,10 +49,19 @@ export const PeriodicAlarm = () => {
     location: null,
     shared: null,
   });
-  const { client, location, group } = useUserFilter();
 
-  const { t } = useTranslation();
+  const { client, location, group } = useUserFilter();
+  const { t } = useTranslation('periodicAlarm');
   const navigate = useNavigate();
+
+  const routeLocation = useLocation();
+  const { isCreated } = (routeLocation.state as never) || {};
+
+  useEffect(() => {
+    if (isCreated) {
+      message.success('Created successfully');
+    }
+  }, [isCreated]);
 
   const { data: periodicAlarmRes, isLoading: isLoadingData } =
     useGetPeriodicAlarmList({
@@ -68,17 +77,17 @@ export const PeriodicAlarm = () => {
   const handleDeleteAlarm = useCallback(
     (alarm: PeriodicAlarmType) => {
       openDeleteConfirmationModal({
-        title: t('pages.periodicAlarm.delete.title'),
-        message: t('pages.periodicAlarm.delete.message', { name: alarm.name }),
-        confirmLabel: t('common.delete'),
-        cancelLabel: t('common.cancel'),
+        title: t('delete.title'),
+        message: t('delete.message', { name: alarm.name }),
+        confirmLabel: t('delete', { ns: 'common' }),
+        cancelLabel: t('cancel', { ns: 'common' }),
         onConfirm: () => {
           deleteAlarm(alarm.uuid, {
             onSuccess: () => {
-              toast.success(t('pages.periodicAlarm.delete.success'));
+              message.success(t('delete.success'));
             },
             onError: () => {
-              toast.error(t('pages.periodicAlarm.delete.error'));
+              message.error(t('delete.error'));
             },
           });
         },
@@ -94,7 +103,7 @@ export const PeriodicAlarm = () => {
           action={() => {
             // To implement action
           }}
-          popupContent="Go to Consumption Profile Chart"
+          popupContent=""
         >
           <FaClock />
         </IconButton>
@@ -107,126 +116,131 @@ export const PeriodicAlarm = () => {
         >
           <FaEdit />
         </IconButton>
-        <IconButton
-          type="secondary"
-          popupContent="Delete Alarm"
-          action={() => handleDeleteAlarm(row.original)}
-          disabled={isPending || !row.original.isDeletable}
-        >
-          <RiDeleteBin6Fill />
-        </IconButton>
+        {row.original.isDeletable && (
+          <IconButton
+            type="secondary"
+            popupContent={t('delete.title')}
+            action={() => handleDeleteAlarm(row.original)}
+            disabled={isPending || !row.original.isDeletable}
+          >
+            <RiDeleteBin6Fill />
+          </IconButton>
+        )}
       </ActionCell>
     ),
-    [handleDeleteAlarm, isPending]
+    [handleDeleteAlarm, isPending, t]
   );
 
-  const columns: ColumnDef<PeriodicAlarmType>[] = [
-    {
-      accessorFn: (row: PeriodicAlarmType) => row.name,
-      header: t(translationBaseRoute + 'header.alarmName'),
-      cell: (info) => info.getValue(),
-      meta: {
-        filterVariant: FilterVariant.TEXT,
-        filterKey: 'name',
-        sortKey: 'name',
-        sortDirection: sort.direction,
-      },
-    },
-    {
-      accessorFn: (row: PeriodicAlarmType) => row.author,
-      header: t(translationBaseRoute + 'header.author'),
-      cell: (info) => info.getValue(),
-      meta: {
-        filterVariant: FilterVariant.TEXT,
-        filterKey: 'author',
-        sortKey: 'author',
-        sortDirection: sort.direction,
-      },
-    },
-    {
-      accessorFn: (row: PeriodicAlarmType) => row.sharedLocations,
-      header: t(translationBaseRoute + 'header.localisationName'),
-      meta: {
-        filterVariant: FilterVariant.TEXT,
-        filterKey: 'location',
-        sortKey: 'sharedLocalisations',
-        sortDirection: sort.direction,
-        renderCell: (value) => <span>{formatListSummary(value)}</span>,
-      },
-    },
-    {
-      accessorFn: (row: PeriodicAlarmType) => row.active,
-      header: t(translationBaseRoute + 'header.active'),
-      cell: (info) => info.getValue(),
-      meta: {
-        filterVariant: FilterVariant.SELECT,
-        filterKey: 'active',
-        sortKey: 'active',
-        sortDirection: sort.direction,
-        selectionOptions: ['Yes', 'No'],
-        renderCell: (value) => {
-          return <StatusDot type={value ? 'active' : 'inactive'} />;
+  const columns = React.useMemo<ColumnDef<PeriodicAlarmType, unknown>[]>(
+    () => [
+      {
+        accessorFn: (row: PeriodicAlarmType) => row.name,
+        header: t(translationTableBase + 'header.alarmName'),
+        cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'name',
+          sortKey: 'name',
+          sortDirection: sort.direction,
         },
       },
-    },
-    {
-      accessorFn: (row: PeriodicAlarmType) => row.lastOccurrenceDate,
-      header: t(translationBaseRoute + 'header.lastOccurrence'),
-      cell: (info) => {
-        if (info.row.original.lastOccurrenceDate) {
-          return format(
-            convertToLocalTime(info.row.original.lastOccurrenceDate),
-            'dd-MM-yyyy HH:mm'
-          );
-        }
-        return '-';
+      {
+        accessorFn: (row: PeriodicAlarmType) => row.author,
+        header: t(translationTableBase + 'header.author'),
+        cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'author',
+          sortKey: 'author',
+          sortDirection: sort.direction,
+        },
       },
-      meta: {
-        filterKey: 'lastOccurrence',
-        sortKey: 'lastOccurrenceDate',
-        sortDirection: sort.direction,
+      {
+        accessorFn: (row: PeriodicAlarmType) => row.sharedLocations,
+        header: t(translationTableBase + 'header.localisationName'),
+        meta: {
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'location',
+          sortKey: 'sharedLocalisations',
+          sortDirection: sort.direction,
+          renderCell: (value) => <span>{formatListSummary(value)}</span>,
+        },
       },
-    },
-    {
-      accessorFn: (row: PeriodicAlarmType) => row.frequency,
-      header: t(translationBaseRoute + 'header.alarmPeriod'),
-      cell: (info) => info.getValue(),
-      meta: {
-        filterVariant: FilterVariant.SELECT,
-        filterKey: 'frequency',
-        sortKey: 'frequency',
-        sortDirection: sort.direction,
-        selectionOptions: periodicAlarmFrequencyOptions,
+      {
+        accessorFn: (row: PeriodicAlarmType) => row.active,
+        header: t(translationTableBase + 'header.active'),
+        cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'active',
+          sortKey: 'active',
+          sortDirection: sort.direction,
+          selectionOptions: ['Yes', 'No'],
+          renderCell: (value) => {
+            return <StatusDot type={value ? 'active' : 'inactive'} />;
+          },
+        },
       },
-    },
-    {
-      accessorFn: (row: PeriodicAlarmType) => row.shared,
-      header: t(translationBaseRoute + 'header.shared'),
-      cell: (info) => {
-        return info.getValue() ? 'Yes' : 'No';
+      {
+        accessorFn: (row: PeriodicAlarmType) => row.lastOccurrenceDate,
+        header: t(translationTableBase + 'header.lastOccurrence'),
+        cell: (info) => {
+          if (info.row.original.lastOccurrenceDate) {
+            return format(
+              convertToLocalTime(info.row.original.lastOccurrenceDate),
+              'dd-MM-yyyy HH:mm'
+            );
+          }
+          return '-';
+        },
+        meta: {
+          filterKey: 'lastOccurrence',
+          sortKey: 'lastOccurrenceDate',
+          sortDirection: sort.direction,
+        },
       },
-      meta: {
-        filterVariant: FilterVariant.SELECT,
-        filterKey: 'shared',
-        sortKey: 'shared',
-        sortDirection: sort.direction,
-        selectionOptions: ['Yes', 'No'],
+      {
+        accessorFn: (row: PeriodicAlarmType) => row.frequency,
+        header: t(translationTableBase + 'header.alarmPeriod'),
+        cell: (info) => info.getValue(),
+        meta: {
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'frequency',
+          sortKey: 'frequency',
+          sortDirection: sort.direction,
+          selectionOptions: PERIODIC_ALARM_FREQUENCY_OPTIONS,
+        },
       },
-    },
-    {
-      id: CONSTANTS.action,
-      accessorFn: (row: PeriodicAlarmType) => row.action,
-      header: t(translationBaseRoute + 'header.actions'),
-      meta: {
-        sortKey: null,
+      {
+        accessorFn: (row: PeriodicAlarmType) => row.shared,
+        header: t(translationTableBase + 'header.shared'),
+        cell: (info) => {
+          return info.getValue() ? 'Yes' : 'No';
+        },
+        meta: {
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'shared',
+          sortKey: 'shared',
+          sortDirection: sort.direction,
+          selectionOptions: ['Yes', 'No'],
+        },
       },
-      cell: ({ row }: { row: Row<PeriodicAlarmType> }) => ActionCellFn(row),
-    },
-  ];
+      {
+        id: CONSTANTS.action,
+        accessorFn: (row: PeriodicAlarmType) => row.action,
+        header: t(translationTableBase + 'header.actions'),
+        meta: {
+          sortKey: null,
+        },
+        cell: ({ row }: { row: Row<PeriodicAlarmType> }) => ActionCellFn(row),
+      },
+    ],
+    [ActionCellFn, sort.direction, t]
+  );
 
   const handleCreateAlarm = () => {
     navigate(
-      locations.periodicAlarm.create +
+      locations.alarm.periodic.create +
         getRibbonParams({
           client,
           location,
@@ -274,17 +288,19 @@ export const PeriodicAlarm = () => {
       viewPermissionType={ViewPermissionsType.ViewRoleBased}
       viewPermissions={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
     >
-      <MainLayout title="sideMenu.periodicAlarm" isFavoriteMeterShow={false}>
-        <div className="flex justify-between ">
+      <MainLayout
+        title={t('sideMenu.periodicAlarm', { ns: 'layout' })}
+        isFavoriteMeterShow={false}
+      >
+        <div className="flex justify-between items-end py-4">
           <PageTitle
-            title={t('pages.periodicAlarm.mainHeader')}
+            title={t('mainHeader')}
             guide={true}
             guideLink={GUIDE_LINKS.PERIODIC_ALARM}
           />
           <CustomButton
             text="Create periodic alarm"
             type="primary"
-            iconPosition="right"
             icon={<FaPlusCircle />}
             onClick={handleCreateAlarm}
           />
@@ -307,3 +323,5 @@ export const PeriodicAlarm = () => {
     </AccessAuthorizer>
   );
 };
+
+export default PeriodicAlarm;

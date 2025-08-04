@@ -19,7 +19,7 @@ type TopRibbonProps = {
 };
 
 const TopRibbon = ({ showFavoriteMeterShow }: TopRibbonProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('layout');
   const { user } = useUser();
   const [disableDropdown, setDisableDropdown] = useState<boolean>(false);
   const {
@@ -255,7 +255,6 @@ const TopRibbon = ({ showFavoriteMeterShow }: TopRibbonProps) => {
           </div>
         </div>
       </div>
-      {/* User Profile */}
       <UserDropDown />
     </header>
   );

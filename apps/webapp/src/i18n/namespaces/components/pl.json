@@ -1,0 +1,85 @@
+{
+  "measurement": {
+    "measurementsWithActionsTable": {
+      "title": "Wybrane liczniki",
+      "emptyMessage": "Brak wybranych liczników",
+      "emptyMessage2": "Kliknij Dodaj licznik, aby rozpocząć",
+      "clearAll": "Wyczyść wszystkie",
+      "header": {
+        "name": "Nazwa",
+        "serialNumber": "Numer seryjny",
+        "timezone": "Strefa czasowa",
+        "medium": "Medium",
+        "type": "Typ",
+        "levelType": "Poziom licznika",
+        "loadType": "Typ pomiaru",
+        "endUseArea": "Mierzony obszar",
+        "location": "Lokalizacja",
+        "group": "Grupa",
+        "tenants": "Najemcy",
+        "actions": "Akcje"
+      },
+      "actions": {
+        "remove": "Usuń licznik"
+      }
+    },
+    "selectMeasurement": {
+      "title": "Wybierz liczniki",
+      "add": "Dodaj licznik",
+      "addMore": "Dodaj więcej liczników",
+      "emptyMessage": "Brak wybranych liczników",
+      "selectClient": "Nie wybrano klienta. Proszę wybrać klienta najpierw."
+    },
+    "selectMeasurementModal": {
+      "title": "Wybierz liczniki",
+      "selectedText": "Wybrane liczniki",
+      "emptyText": "Brak wyników",
+      "selectedMeasurements": "Wybrane liczniki",
+      "choose": "Wybierz ({{count}})",
+      "cancel": "Anuluj"
+    },
+    "measurementsWithPaginationTable": {
+      "header": {
+        "name": "Nazwa",
+        "serialNumber": "Numer seryjny",
+        "timezone": "Strefa czasowa",
+        "medium": "Medium",
+        "type": "Typ",
+        "levelType": "Poziom licznika",
+        "loadType": "Typ pomiaru",
+        "endUseArea": "Mierzony obszar",
+        "location": "Lokalizacja",
+        "group": "Grupa",
+        "tenants": "Najemcy"
+      },
+      "emptyText": "Brak wyników",
+      "selectedText": "Wybrane liczniki",
+      "title": "Wybierz liczniki"
+    }
+  },
+  "sharedSection": {
+    "readOnly": "Tylko do odczytu",
+    "sharedLocations": "Wspólne lokalizacje",
+    "sharedTenants": "Współlokatorzy"
+  },
+  "favoriteMeterModel": {
+    "mainHeader": "Wybierz ulubione liczniki",
+    "table": {
+      "header": {
+        "name": "Nazwa",
+        "author": "Autor",
+        "shared": "Wspólny",
+        "createdDate": "Data utworzenia",
+        "updatedDate": "Data edycji",
+        "actions": "Akcje"
+      },
+      "popup": "Wybierarz"
+    }
+  },
+  "comboBox": {
+    "select": "Wybierz",
+    "locationNull": "Wszystkie lokalizacje",
+    "groupNull": "Wszystkie grupy",
+    "empty": "Brak wyniku"
+  }
+}

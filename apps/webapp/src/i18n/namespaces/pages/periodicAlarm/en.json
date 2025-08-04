@@ -1,0 +1,170 @@
+{
+  "mainHeader": "Periodic alarms",
+  "table": {
+    "header": {
+      "alarmName": "Alarm name",
+      "author": "Author",
+      "localisationName": "Locations",
+      "active": "Active",
+      "lastOccurrence": "Last occurrence",
+      "alarmPeriod": "Alarm period",
+      "shared": "Shared",
+      "actions": "Actions"
+    }
+  },
+  "create": {
+    "mainHeader": "Create periodic alarm",
+    "form": {
+      "basic": {
+        "title": "Basic Information",
+        "alarmName": "Alarm name",
+        "active": "Active",
+        "shared": "Shared Alarm",
+        "mediumType": "Medium type",
+        "userZone": "User zone"
+      },
+      "momentOfExecution": {
+        "title": "Moment of execution",
+        "frequency": "When to send the alarm",
+        "generationTime": {
+          "title": "Planned generation time",
+          "guide": "Planned generation time Sample guide content"
+        },
+        "generationDay": {
+          "title": "Generation day",
+          "guide": "Planned generation day Sample guide content"
+        },
+        "gapAnalysis": {
+          "title": "Gap in analysis of data",
+          "guide": "Sample guide content"
+        }
+      },
+      "timeConfiguration": {
+        "title": "Time configuration",
+        "analysisPeriod": {
+          "title": "Choose analysis period",
+          "guide": "Sample guide content"
+        }
+      },
+      "alarmCriteria": {
+        "title": "Alarm criteria",
+        "compareWith": {
+          "title": "Compare with",
+          "guide": "Sample guide content"
+        },
+        "measureType": "Measure type",
+        "threshold": {
+          "title": "Threshold",
+          "guide": "Sample guide content"
+        },
+        "thresholdValue": {
+          "title": "Threshold value",
+          "guide": "Sample guide content"
+        },
+        "thresholdStartValue": {
+          "title": "Threshold start value",
+          "guide": "Sample guide content"
+        },
+        "thresholdEndValue": {
+          "title": "Threshold end value",
+          "guide": "Sample guide content"
+        }
+      },
+      "recipient": {
+        "title": "Recipient details",
+        "email": {
+          "title": "Recipient",
+          "placeholder": "Type and enter"
+        },
+        "sms": {
+          "title": "Sms recipient",
+          "placeholder": "e.g. +48100100100"
+        }
+      },
+      "selectMeasurement": "Select measurement",
+      "emptyMediumType": "Select Medium type",
+      "action": {
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "validation": {
+        "name": "Name is required",
+        "clientUuid": "Client is required",
+        "meteringPointTypeId": "Metering type is required",
+        "userZone": "User zone is required",
+        "userUuid": "User is required",
+        "frequency": "Alarm frequency is required",
+        "generationDay": "Generation day is required",
+        "generationTime": "Generation time is required",
+        "delayInDays": "Gap in data analysis is required",
+        "analysePeriod": "Analysis period is required",
+        "compareWithPeriod": "Comparison period is required",
+        "comparisonMeasure": "Comparison measure is required",
+        "recipients": "Invalid email address. Please enter a valid email",
+        "phoneNumber": "Invalid phone number. Please enter a valid phone number",
+        "shared": "At least one location or tenant must be selected when shared is enabled",
+        "thresholdType": "Threshold type is required when a comparison period is selected",
+        "thresholdValue": "Threshold value is required",
+        "thresholdStartValue": "Threshold start value is required",
+        "thresholdEndValue": "Threshold end value is required",
+        "measurementUuids": "Select measurements"
+      }
+    }
+  },
+  "delete": {
+    "title": "Delete Alarm",
+    "message": "Are you sure you want to delete the alarm \"{{name}}\"? This action cannot be undone.",
+    "success": "Alarm deleted successfully",
+    "error": "Failed to delete alarm"
+  },
+  "config": {
+    "frequency": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "yearly": "Yearly"
+    },
+    "analysisPeriod": {
+      "lastDay": "Last day",
+      "lastWeek": "Last week",
+      "lastMonth": "Last month",
+      "lastQuarter": "Last quarter",
+      "lastYear": "Last year"
+    },
+    "compareWith": {
+      "const": "Const",
+      "prevDay": "Prev Day",
+      "prevWeek": "Prev Week",
+      "prevMonth": "Prev Month",
+      "prevQuarter": "Prev Quarter",
+      "prevYear": "Prev Year",
+      "prevYearSameDay": "Same Day Last Year",
+      "prevYearSameWeek": "Prev Year Same Week",
+      "prevYearSameMonth": "Prev Year Same Month",
+      "prevYearSameQuarter": "Prev Year Same Quarter"
+    },
+    "measureType": {
+      "totalConsumption": "Total consumption"
+    },
+    "threshold": {
+      "above": "Above",
+      "below": "Below",
+      "equal": "Equal",
+      "between": "Between",
+      "beyond": "Beyond",
+      "abovePercent": "Above Percent",
+      "belowPercent": "Below Percent",
+      "betweenPercent": "Between Percent",
+      "beyondPercent": "Beyond Percent"
+    },
+    "generationDay": {
+      "placeholder": {
+        "weekly": "Enter value between 1 to 7",
+        "monthly": "Enter value between 1 to 31",
+        "quarterly": "Enter value between 1 to 92",
+        "yearly": "Enter value between 1 to 366"
+      }
+    }
+  }
+}

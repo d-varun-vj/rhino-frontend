@@ -1,6 +1,6 @@
 import { useChangeUserLanguage } from '@rhino/apis';
+import message from 'apps/webapp/src/components/notifier';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 const LanguageButton = ({
   languageName,
@@ -12,17 +12,19 @@ const LanguageButton = ({
   const { i18n } = useTranslation();
 
   return (
-    <div
+    <button
+      type="button"
       className={`w-[35px] h-[35px] flex justify-center items-center rounded-[50%] bg-rhino-white mr-[10px] cursor-pointer hover:text-rhino-indigo-blue-light ${languageName.toLowerCase() === i18n.language ? 'text-rhino-indigo-blue border-[2px] border-rhino-indigo-blue' : 'text-black  border-black opacity-[0.2]'}`}
       onClick={() => handleClick(languageName)}
     >
       {languageName.toUpperCase()}
-    </div>
+    </button>
   );
 };
 
 const Language = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('layout');
+  const { t: tCommon } = useTranslation('common');
   const changeLanguage = i18n.changeLanguage.bind(i18n);
 
   const { mutate } = useChangeUserLanguage();
@@ -34,28 +36,28 @@ const Language = () => {
         onSuccess: () => {
           changeLanguage(languageName.toLowerCase())
             .then(() => {
-              toast.success(t('toast.languageChanged.success'));
+              message.success(tCommon('toast.languageChanged.success'));
             })
             .catch(() => {
-              toast.error(t('toast.somethingWantWrong'));
+              message.error(tCommon('toast.somethingWentWrong'));
             });
         },
         onError: () => {
-          toast.error(t('toast.somethingWantWrong'));
+          message.error(tCommon('toast.somethingWentWrong'));
         },
       }
     );
   };
 
   return (
-    <div className="flex justify-between flex-row py-[0.75rem] px-[1.5rem]">
+    <div className="flex justify-between flex-row py-3 px-6">
       <p className="mt-0 mb-[1rem]">
         <label className="pt-[5px] leading-[1.47] inline-block">
-          {t('topRibbon.user.language')}
+          {t('topRibbon.user.language.label')}
         </label>
       </p>
       <div className="">
-        <div className="pl-[2rem] flex ">
+        <div className="pl-8 flex ">
           <LanguageButton languageName={'EN'} handleClick={handleClick} />
           <LanguageButton languageName={'PL'} handleClick={handleClick} />
         </div>

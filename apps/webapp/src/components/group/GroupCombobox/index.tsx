@@ -25,7 +25,7 @@ const GroupCombobox = ({
   selectedGroup,
   selectedLocation,
 }: GroupComboboxProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('components');
 
   return (
     <OptionsGroupedComboBox

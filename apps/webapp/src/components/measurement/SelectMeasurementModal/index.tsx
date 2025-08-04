@@ -15,6 +15,9 @@ interface SelectMeasurementModalProps {
   minSelections?: number;
   selectionMode?: 'single' | 'multiple';
   showGlobalSettings?: boolean;
+  customFilter?: {
+    mediumType?: string;
+  };
 }
 
 const SelectMeasurementModal = ({
@@ -23,13 +26,14 @@ const SelectMeasurementModal = ({
   minSelections = 1,
   selectionMode = 'multiple',
   showGlobalSettings = true,
+  customFilter,
 }: SelectMeasurementModalProps) => {
   const [selectedMeasurements, setSelectedMeasurements] = useState<
     MeasurementType[]
   >([]);
   const [selectionError, setSelectionError] = useState<string>('');
-  const { t } = useTranslation();
-  const translationBaseRoute = 'components.measurement.selectMeasurementModal.';
+  const { t } = useTranslation('components');
+  const translationBaseRoute = 'measurement.selectMeasurementModal.';
 
   const handleSelectionChange = (measurements: MeasurementType[]) => {
     setSelectedMeasurements(measurements);
@@ -72,6 +76,7 @@ const SelectMeasurementModal = ({
           <MeasurementsWithPaginationTable
             selectionMode={selectionMode}
             onSelectionChange={handleSelectionChange}
+            customFilter={customFilter}
           />
         </div>
 

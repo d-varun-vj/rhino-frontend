@@ -27,7 +27,7 @@ export type MenuItemProps = {
 };
 
 const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('layout');
   const { user } = useUser();
   const { client, location, group } = useUserFilter();
 

@@ -1,0 +1,170 @@
+{
+  "mainHeader": "Okresowe alarmy",
+  "table": {
+    "header": {
+      "alarmName": "Nazwa alarmu",
+      "author": "Autor",
+      "localisationName": "Lokalizacja",
+      "active": "Aktywny",
+      "lastOccurrence": "Ostatnie wystąpienie",
+      "alarmPeriod": "Okres alarmowy",
+      "shared": "wspólny",
+      "actions": "Akcje"
+    }
+  },
+  "create": {
+    "mainHeader": "Utwórz alarm okresowy",
+    "form": {
+      "basic": {
+        "title": "Informacje podstawowe",
+        "alarmName": "Nazwa alarmu",
+        "active": "Aktywny",
+        "shared": "Wspólny alarm",
+        "mediumType": "Średni typ",
+        "userZone": "Strefa użytkownika"
+      },
+      "momentOfExecution": {
+        "title": "Moment wykonania",
+        "frequency": "Kiedy wysłać alarm",
+        "generationTime": {
+          "title": "Planowany czas generacji",
+          "guide": "Planned generation time Sample guide content"
+        },
+        "generationDay": {
+          "title": "Generation day",
+          "guide": "Planned generation day Sample guide content"
+        },
+        "gapAnalysis": {
+          "title": "Luka w analizie danych",
+          "guide": "Sample guide content"
+        }
+      },
+      "timeConfiguration": {
+        "title": "Konfiguracja czasu",
+        "analysisPeriod": {
+          "title": "Wybierz okres analizy",
+          "guide": "Sample guide content"
+        }
+      },
+      "alarmCriteria": {
+        "title": "Kryteria alarmowe",
+        "compareWith": {
+          "title": "Porównaj z",
+          "guide": "Sample guide content"
+        },
+        "measureType": "Typ miary",
+        "threshold": {
+          "title": "Próg",
+          "guide": "Sample guide content"
+        },
+        "thresholdValue": {
+          "title": "Wartość progowa",
+          "guide": "Sample guide content"
+        },
+        "thresholdStartValue": {
+          "title": "Wartość początkowa progu",
+          "guide": "Sample guide content"
+        },
+        "thresholdEndValue": {
+          "title": "Wartość końcowa progu",
+          "guide": "Sample guide content"
+        }
+      },
+      "recipient": {
+        "title": "Szczegóły odbiorcy",
+        "email": {
+          "title": "Odbiorca",
+          "placeholder": "Wpisz i naciśnij Enter"
+        },
+        "sms": {
+          "title": "Odbiorca SMS",
+          "placeholder": "np. +48100100100"
+        }
+      },
+      "selectMeasurement": "Wybierz pomiar",
+      "emptyMediumType": "Wybierz typ średni",
+      "action": {
+        "save": "Ratować",
+        "cancel": "Anulować"
+      },
+      "validation": {
+        "name": "Imię jest wymagane",
+        "clientUuid": "Klient jest wymagany",
+        "meteringPointTypeId": "Typ punktu pomiarowego jest wymagany",
+        "userZone": "Strefa użytkownika jest wymagana",
+        "userUuid": "Użytkownik jest wymagany",
+        "frequency": "Częstotliwość alarmów jest wymagana",
+        "generationDay": "Dzień generowania jest wymagany",
+        "generationTime": "Czas generowania jest wymagany",
+        "delayInDays": "Luka w analizie danych jest wymagana",
+        "analysePeriod": "Okres analizy jest wymagany",
+        "compareWithPeriod": "Okres porównania jest wymagany",
+        "comparisonMeasure": "Miara porównania jest wymagana",
+        "recipients": "Nieprawidłowy adres e-mail. Podaj prawidłowy adres e-mail.",
+        "phoneNumber": "Nieprawidłowy numer telefonu. Proszę podać prawidłowy numer telefonu.",
+        "shared": "Musi zostać wybrana co najmniej jedna lokalizacja lub najemca, gdy udostępnianie jest włączone",
+        "thresholdType": "Typ progu jest wymagany, gdy wybrany jest okres porównania",
+        "thresholdValue": "Wartość progu jest wymagana",
+        "thresholdStartValue": "Wartość początkowa progu jest wymagana",
+        "thresholdEndValue": "Wartość końcowa progu jest wymagana",
+        "measurementUuids": "Wybierz pomiary"
+      }
+    }
+  },
+  "delete": {
+    "title": "Usuń alarm",
+    "message": "Czy na pewno chcesz usunąć alarm \"{{name}}\"? Tej akcji nie można cofnąć.",
+    "success": "Alarm został pomyślnie usunięty",
+    "error": "Nie udało się usunąć alarmu"
+  },
+  "config": {
+    "frequency": {
+      "daily": "Codziennie",
+      "weekly": "Tygodnik",
+      "monthly": "Miesięczny",
+      "quarterly": "Kwartalny",
+      "yearly": "Rocznie"
+    },
+    "analysisPeriod": {
+      "lastDay": "Ostatni dzień",
+      "lastWeek": "W zeszłym tygodniu",
+      "lastMonth": "W zeszłym miesiącu",
+      "lastQuarter": "Ostatni kwartał",
+      "lastYear": "W ubiegłym roku"
+    },
+    "compareWith": {
+      "const": "Stała",
+      "prevDay": "Poprzedni dzień",
+      "prevWeek": "Poprzedni tydzień",
+      "prevMonth": "Poprzedni miesiąc",
+      "prevQuarter": "Poprzedni kwartał",
+      "prevYear": "Poprzedni rok",
+      "prevYearSameDay": "Ten sam dzień w poprzednim roku",
+      "prevYearSameWeek": "Ten sam tydzień w poprzednim roku",
+      "prevYearSameMonth": "Ten sam miesiąc w poprzednim roku",
+      "prevYearSameQuarter": "Ten sam kwartał w poprzednim roku"
+    },
+    "measureType": {
+      "totalConsumption": "Całkowite zużycie"
+    },
+    "threshold": {
+      "above": "Powyżej",
+      "below": "Poniżej",
+      "equal": "Równe",
+      "between": "Pomiędzy",
+      "beyond": "Poza",
+      "abovePercent": "Powyżej procent",
+      "belowPercent": "Poniżej procent",
+      "betweenPercent": "Pomiędzy procentami",
+      "beyondPercent": "Poza procentami"
+    },
+    "generationDay": {
+      "placeholder": {
+        "weekly": "Wprowadź wartość od 1 do 7",
+        "monthly": "Wprowadź wartość od 1 do 31",
+        "quarterly": "Wprowadź wartość od 1 do 92",
+        "yearly": "Wprowadź wartość od 1 do 366"
+      }
+    }
+  }
+}

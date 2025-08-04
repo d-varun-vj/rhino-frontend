@@ -1,0 +1,79 @@
+/* mantine custom styles */
+
+.mantine-Combobox-option:hover {
+  background-color: var(--color-rhino-energy-green) !important;
+  color: white;
+}
+
+.mantine-MultiSelect-input,
+.mantine-TagsInput-input {
+  border: 1px solid #e5e5e5 !important;
+}
+
+.mantine-MultiSelect-input:focus-within,
+.mantine-TagsInput-input:focus-within {
+  border: 1px solid var(--color-rhino-indigo-blue-light) !important;
+}
+
+.mantine-MultiSelect-dropdown,
+.mantine-Select-dropdown {
+  border: 1px solid var(--color-rhino-indigo-blue-light) !important;
+}
+
+.mantine-MultiSelect-option,
+.mantine-Select-option {
+  font-size: var(--font-size-sm) !important;
+}
+
+.mantine-MultiSelect-option svg,
+.mantine-Select-option svg {
+  color: var(--color-rhino-indigo-blue) !important;
+  opacity: 100%;
+}
+
+.mantine-MultiSelect-pill,
+.mantine-TagsInput-pill {
+  /* background-color: var(--color-rhino-indigo-blue) !important; */
+  /* color: white !important; */
+  border-radius: 4px !important;
+}
+
+.mantine-MultiSelect-option:hover,
+.mantine-Select-option:hover {
+  background-color: var(--color-rhino-energy-green) !important;
+  color: white;
+}
+
+.mantine-MultiSelect-inputField:focus,
+.mantine-TagsInput-inputField:focus {
+  border: transparent !important;
+}
+
+.mantine-MultiSelect-inputField:disabled,
+.mantine-TagsInput-inputField:disabled {
+  border: transparent !important;
+}
+
+/* .mantine-Pill-remove {
+  color: red !important;
+} */
+
+.mantine-TimePicker-dropdown .mantine-UnstyledButton-root {
+  &[data-active] {
+    background-color: var(--color-rhino-indigo-blue-highlight);
+  }
+
+  @mixin hover {
+    color: white;
+    background-color: var(--color-rhino-energy-green);
+  }
+}
+
+.mantine-TimePicker-dropdown {
+  width: 120px !important;
+  border: 1px solid var(--color-rhino-indigo-blue-light) !important;
+}
+
+.mantine-TimePicker-dropdown .mantine-TimePicker-controlsListGroup {
+  justify-content: space-between;
+}

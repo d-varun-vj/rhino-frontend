@@ -17,7 +17,7 @@ const ClientCombobox = ({
   disableDropdown,
   selectedClient,
 }: ClientComboboxProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('components');
 
   return (
     <CustomComboBox

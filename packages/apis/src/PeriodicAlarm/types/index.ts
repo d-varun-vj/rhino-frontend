@@ -22,10 +22,42 @@ export interface PeriodicAlarmFilter {
   shared: boolean | null;
 }
 
-export const periodicAlarmFrequencyOptions = [
+export const PERIODIC_ALARM_FREQUENCY_OPTIONS = [
   'DAILY',
   'WEEKLY',
   'MONTHLY',
   'QUARTERLY',
   'YEARLY',
 ];
+
+export type PeriodicAlarmCreateReq = {
+  name: string;
+  clientUuid: string;
+  meteringPointTypeId: number;
+  measurementUuids: string[];
+  configuration: {
+    generationDay: number;
+    generationTime: string;
+    delayInDays: number;
+    comparisonMeasure: string;
+    thresholdType: string;
+    thresholdValue?: number;
+    thresholdStartValue?: number;
+    thresholdEndValue?: number;
+  };
+  recipients: {
+    emails?: string[];
+    phoneNumbers?: string[];
+  };
+  frequency: string;
+  shared: boolean;
+  readOnly: boolean;
+  active: boolean;
+  userUuid: string;
+  userZoneId: string;
+  editorId?: string;
+  sharedLocalisationUuids?: string[];
+  sharedTenantUuids?: string[];
+  compareWithPeriod: string;
+  analysePeriod: string;
+};

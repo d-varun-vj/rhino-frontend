@@ -62,9 +62,13 @@ const fetchAdapter: AxiosAdapter = async (
 
   const response = await fetch(url!, fetchOptions);
 
-  if (response.status === 401 || response.status === 500) {
+  if (response.status === 401) {
     document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
     window.location.href = VITE_WICKET_BASE_URL + 'dashboard?-2.-logout';
+  }
+
+  if (response.status === 500) {
+    window.location.href = '/v1/500';
   }
 
   let responseData: unknown;
@@ -123,7 +127,6 @@ export const initHttpClient = async (baseURL?: string) => {
     // Ensure cookies are not sent with each request
     config.withCredentials = false;
 
-    // Check if token exists
     if (!token) {
       // Redirect to login if token is missing
       window.location.href = VITE_WICKET_BASE_URL + 'login';
@@ -141,8 +144,12 @@ export const initHttpClient = async (baseURL?: string) => {
   const errorInterceptor = (error: any) => {
     if (error.response) {
       const { status } = error.response || {};
-      if (status === 401 || status === 500) {
+      if (status === 401) {
         window.location.href = VITE_WICKET_BASE_URL + 'login';
+      }
+
+      if (status === 500) {
+        window.location.href = '/v1/500';
       }
     } else {
       console.error('Unexpected Error:', error.message);

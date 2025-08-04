@@ -23,7 +23,7 @@ const LocationCombobox = ({
   disabled: disenabled,
   selectedLocation,
 }: LocationComboboxProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('components');
 
   return (
     <CustomComboBox

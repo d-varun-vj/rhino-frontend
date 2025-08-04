@@ -31,7 +31,7 @@ const CustomComboBox = ({
   disabled,
   ...props
 }: CustomComboBox) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('components');
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });

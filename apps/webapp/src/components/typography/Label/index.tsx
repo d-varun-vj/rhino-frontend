@@ -1,10 +1,20 @@
-type LabelProps = React.ComponentProps<'label'> & {
+import clsx from 'clsx';
+
+export type LabelProps = React.ComponentProps<'label'> & {
   content: string;
   required?: boolean;
 };
-const Label = ({ content: label, required = false, ...props }: LabelProps) => {
+const Label = ({
+  content: label,
+  className,
+  required = false,
+  ...props
+}: LabelProps) => {
   return (
-    <label className="text-[.9rem] font-bold text-[#91A0B1] " {...props}>
+    <label
+      className={clsx('text-[.9rem] font-bold text-[#91A0B1] w-fit', className)}
+      {...props}
+    >
       {label} <span className="text-red-600">{required && '*'}</span>
     </label>
   );

@@ -2,6 +2,7 @@ import { Accordion, Button, Modal } from '@mantine/core';
 import { useEffect, useRef, useState } from 'react';
 
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { FaPlusCircle } from 'react-icons/fa';
 import MeasurementsWithActionsTable from '../MeasurementsWithActionsTable';
@@ -15,6 +16,11 @@ interface SelectMeasurementProps {
   showGlobalSettings?: boolean;
   defaultExpanded?: boolean;
   allowSameMeasurementMultipleTimes?: boolean;
+  disabled?: boolean;
+  disabledTitle?: string | null;
+  customFilter?: {
+    mediumType?: string;
+  };
 }
 
 export const SelectMeasurement = ({
@@ -24,6 +30,9 @@ export const SelectMeasurement = ({
   showGlobalSettings = false,
   defaultExpanded = true,
   allowSameMeasurementMultipleTimes = false,
+  disabled = false,
+  disabledTitle,
+  customFilter,
 }: SelectMeasurementProps) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedMeasurements, setSelectedMeasurements] = useState<
@@ -32,16 +41,26 @@ export const SelectMeasurement = ({
 
   const { client } = useUserFilter();
   const prevClientRef = useRef(client);
+  const prevCustomFilterRef = useRef(customFilter);
 
-  const { t } = useTranslation();
-  const baseRoute = 'components.measurement.selectMeasurement.';
+  const { t } = useTranslation('components');
+  const baseRoute = 'measurement.selectMeasurement.';
+
+  const handleClearAll = () => {
+    setSelectedMeasurements([]);
+    onMeasurementsChange?.([]);
+  };
 
   useEffect(() => {
-    if (prevClientRef.current !== client) {
+    if (
+      prevClientRef.current !== client ||
+      prevCustomFilterRef.current?.mediumType !== customFilter?.mediumType ||
+      disabled
+    ) {
       handleClearAll();
     }
     prevClientRef.current = client;
-  }, [client]);
+  }, [client, customFilter?.mediumType, disabled]);
 
   const handleMeasurementSelect = (measurements: MeasurementWithConfig[]) => {
     if (allowSameMeasurementMultipleTimes) {
@@ -86,11 +105,6 @@ export const SelectMeasurement = ({
     onMeasurementsChange?.(updatedMeasurements);
   };
 
-  const handleClearAll = () => {
-    setSelectedMeasurements([]);
-    onMeasurementsChange?.([]);
-  };
-
   const getButtonText = () => {
     if (selectedMeasurements.length === 0) {
       return t(baseRoute + 'add');
@@ -132,11 +146,22 @@ export const SelectMeasurement = ({
       </Accordion>
 
       <Button
-        className="w-full h-10 !bg-rhino-energy-green text-white !rounded-tl-none !rounded-tr-none rounded-br-md rounded-bl-none transition-all"
+        className={clsx(
+          'w-full h-10 !bg-rhino-energy-green text-white !rounded-tl-none !rounded-tr-none rounded-br-md rounded-bl-none transition-all',
+          {
+            '!bg-rhino-grey/30 !text-white/80': disabled || !client,
+          }
+        )}
         onClick={() => setModalOpened(true)}
         leftSection={<FaPlusCircle className="mr-1" />}
-        disabled={!client}
-        title={client ? t(baseRoute + 'title') : t(baseRoute + 'selectClient')}
+        disabled={!client || disabled}
+        title={
+          !client
+            ? t(baseRoute + 'selectClient')
+            : disabledTitle
+              ? disabledTitle
+              : t(baseRoute + 'title')
+        }
       >
         {getButtonText()}
       </Button>
@@ -157,6 +182,7 @@ export const SelectMeasurement = ({
           minSelections={minSelections}
           selectionMode={selectionMode}
           showGlobalSettings={showGlobalSettings}
+          customFilter={customFilter}
         />
       </Modal>
     </div>

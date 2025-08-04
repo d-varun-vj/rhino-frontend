@@ -4,19 +4,25 @@ export const VITE_WICKET_BASE_URL: string = import.meta.env
   .VITE_WICKET_BASE_URL as string;
 
 const API_URLS = {
-  //   Top Ribbon
+  // Clients
   getClients: () => `clients`,
-  getLocations: ({ clientId }: { clientId: string | null }) =>
-    `clients/${clientId}/localisations-with-groups`,
-  getGroups: () => `groups`,
-  getUser: () => 'user',
-  changeLanguage: () => `user/language`,
 
-  getAllFavoriteMeters: () => `favoritemeter`,
+  // Common
+  getMeteringPointTypes: () => 'metering-point-types',
 
-  //   Dashboard
+  // Dashboard
   getDashboardTableData: () => `dashboard`,
   getDashboardTableDataOptions: () => `metadata`,
+
+  // FavoriteMeter
+  getAllFavoriteMeters: () => `favoritemeter`,
+
+  // Groups
+  getGroups: () => `groups`,
+
+  // Locations
+  getLocations: ({ clientId }: { clientId: string | null }) =>
+    `clients/${clientId}/localisations-with-groups`,
 
   // Measurement
   getMeasurements: () => `measurements`,
@@ -24,6 +30,14 @@ const API_URLS = {
   //Periodic Alarm
   getPeriodicAlarmList: () => `periodic-alarm`,
   deletePeriodicAlarm: (uuid: string) => `periodic-alarm/${uuid}`,
+  createPeriodicAlarm: () => 'periodic-alarm',
+
+  //Tenants
+  getTenants: () => 'tenants/all',
+
+  // User
+  getUser: () => 'user',
+  changeLanguage: () => `user/language`,
 };
 
 export default API_URLS;

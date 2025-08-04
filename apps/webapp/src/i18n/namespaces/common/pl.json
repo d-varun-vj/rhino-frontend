@@ -1,0 +1,25 @@
+{
+  "confirmation": "Potwierdzenie",
+  "delete": "Usuń",
+  "cancel": "Anuluj",
+  "confirm": "Potwierdź",
+  "table": {
+    "footer": {
+      "show": "Pokaż",
+      "positions": "pozycji",
+      "showing": "Pozycje od ",
+      "to": "do",
+      "of": "z",
+      "previous": "Poprzednia",
+      "next": "Następna"
+    }
+  },
+  "toast": {
+    "somethingWentWrong": "Coś jest nie tak!",
+    "emptyClientWarning": "Wybierz klienta",
+    "fieldsRequiredWarning": "Pola wymagane",
+    "languageChanged": {
+      "success": "Zmieniono język"
+    }
+  }
+}

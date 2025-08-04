@@ -1,0 +1,40 @@
+.timePicker :global(.mantine-TimePicker-input) {
+  border: transparent;
+  width: fit-content;
+}
+
+.timePicker {
+  width: fit-content !important;
+  display: flex;
+  align-items: center;
+}
+
+.timePicker :global(.mantine-TimePicker-wrapper) {
+  margin: 0;
+  width: fit-content;
+}
+
+.timePicker :global(.mantine-TimePicker-fieldsRoot) {
+  overflow: visible;
+}
+
+.timePicker :global(.mantine-TimePicker-input) {
+  padding: 0;
+}
+
+.timePicker :global(.mantine-TimePicker-field) {
+  border: 1px solid var(--border-color) !important;
+  width: 50px;
+  height: 40px;
+  border-radius: var(--border-redius);
+}
+
+.timePicker :global(.mantine-TimePicker-field:focus-within) {
+  background-color: #f8f9fa;
+  color: black;
+  border: 1px solid var(--color-rhino-indigo-blue-light) !important;
+}
+
+.timePicker :global(.mantine-TimePicker-fieldsGroup) {
+  gap: 10px;
+}

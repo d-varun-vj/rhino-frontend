@@ -12,6 +12,7 @@ import {
 } from '@tanstack/react-table';
 import React, { useRef, useState } from 'react';
 
+import { Loader } from '@mantine/core';
 import { SortDirection } from '@rhino/utils';
 import { ColumnMeta } from '@tanstack/table-core';
 import clsx from 'clsx';
@@ -52,6 +53,7 @@ type TableProps<T> = {
   isLoading?: boolean;
   extraStyles?: string;
   emptyText?: string;
+  size?: 'sm';
   onSortSelect?: (field: string, direction: string) => void;
   onFilterChange: (
     val: string | null,
@@ -113,6 +115,7 @@ const Table = <T,>({
   isLoading,
   extraStyles,
   emptyText,
+  size,
   onSortSelect,
   onFilterChange,
 }: TableProps<T>) => {
@@ -154,15 +157,12 @@ const Table = <T,>({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugTable: true,
-    debugHeaders: true,
-    debugColumns: false,
   });
 
   return (
-    <div className="h-full overflow-hidden flex flex-col">
+    <div className="overflow-hidden flex flex-col">
       <div
-        className={`p-2 overflow-auto ${extraStyles ?? 'overflow-y-hidden'} `}
+        className={`p-2 overflow-auto ${extraStyles ?? 'overflow-y-hidden'}`}
       >
         <table className="relative w-full">
           <thead>
@@ -173,13 +173,10 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={clsx('font-thin align-baseline pr-1.5', {
+                      className={clsx('font-thin align-baseline pr-1.5 w-32', {
                         'sticky bg-rhino-white -right-5 pl-2':
                           header.id === CONSTANTS.action,
-                        'w-16': header.id === 'select', // Narrower width for select column
-                        'w-32':
-                          header.id !== 'select' &&
-                          header.id !== CONSTANTS.action, // Default width for other columns
+                        '!w-16': header.id === 'select', // Narrower width for select column
                       })}
                     >
                       {header.isPlaceholder ? null : (
@@ -256,7 +253,7 @@ const Table = <T,>({
                         >
                           <div
                             className={clsx(
-                              'text-[13px] overflow-hidden overflow-ellipsis',
+                              'text-[13px] overflow-hidden overflow-ellipsis w-32 ',
                               {
                                 'text-nowrap':
                                   cell.column.id === 'value' ||
@@ -264,10 +261,8 @@ const Table = <T,>({
                                 'overflow-visible w-fit':
                                   cell.column.id === CONSTANTS.action ||
                                   textFullViewId === cell.column.id,
-                                'w-16': cell.column.id === 'select', // Narrower width for select column
-                                'w-32':
-                                  cell.column.id !== 'select' &&
-                                  cell.column.id !== CONSTANTS.action, // Default width
+                                '!w-16': cell.column.id === 'select', // Narrower width for select column
+                                'text-nowrap h-fit': size == 'sm',
                               }
                             )}
                             onMouseEnter={(e) =>
@@ -298,7 +293,7 @@ const Table = <T,>({
         {isLoading && (
           <div className="flex items-center h-96">
             <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-[95%] mt-10">
-              Loading...
+              <Loader color="var(--color-rhino-indigo-blue)" size={18} />
             </div>
           </div>
         )}

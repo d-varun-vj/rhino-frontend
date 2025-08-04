@@ -23,9 +23,8 @@ const MeasurementsWithActionsTable = ({
   onEditMeasurement,
   onClearAll,
 }: MeasurementsWithActionsTableProps) => {
-  const { t } = useTranslation();
-  const translationBaseRoute =
-    'components.measurement.measurementsWithActionsTable.';
+  const { t } = useTranslation('components');
+  const translationBaseRoute = 'measurement.measurementsWithActionsTable.';
 
   const ActionCellFn = useCallback(
     (row: Row<MeasurementWithConfig>) => {
@@ -35,6 +34,7 @@ const MeasurementsWithActionsTable = ({
             type="secondary"
             action={() => onRemoveMeasurement(row.original)}
             popupContent={t(translationBaseRoute + 'actions.remove')}
+            size="sm"
           >
             <RiDeleteBin6Fill />
           </IconButton>
@@ -125,7 +125,7 @@ const MeasurementsWithActionsTable = ({
 
   return (
     <div>
-      <div className="flex justify-between items-center p-4">
+      <div className="flex justify-between items-center p-4 ">
         {selectedMeasurements.length > 0 && (
           <div>
             <h1 className="text-2xl font-medium text-rhino-indigo-blue">
@@ -148,6 +148,7 @@ const MeasurementsWithActionsTable = ({
             data={selectedMeasurements}
             onFilterChange={() => {}}
             emptyText={t(translationBaseRoute + 'emptyMessage')}
+            size="sm"
           />
         </div>
       ) : (

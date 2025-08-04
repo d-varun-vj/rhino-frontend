@@ -14,7 +14,7 @@ export const useDeletePeriodicAlarm = () => {
     onSuccess: async () => {
       // Invalidate and refetch the periodic alarm list after successful deletion
       await queryClient.invalidateQueries({
-        queryKey: [DataQueryKeys.PERIODIC_ALARM],
+        queryKey: [DataQueryKeys.PERIODIC_ALARM_LIST],
       });
     },
   });

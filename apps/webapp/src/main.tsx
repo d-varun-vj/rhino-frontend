@@ -1,4 +1,5 @@
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import './i18n/index.ts';
 import './index.css';
 
@@ -15,6 +16,7 @@ import { UserFilterProvider } from './context/userFilter/user-filter-provider.ts
 import MainRoute from './routes/index.tsx';
 
 const queryClient = new QueryClient();
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

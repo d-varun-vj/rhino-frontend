@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import API_URLS from '../endpoints';
-import { httpClient } from '../httpClient';
+import API_URLS from '../../endpoints';
+import { httpClient } from '../../httpClient';
 
 export const useChangeUserLanguage = () => {
   return useMutation({

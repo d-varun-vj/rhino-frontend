@@ -1,0 +1,30 @@
+{
+  "mainHeader": "Dashboard",
+  "subHeader": "Tylko automatyczne liczniki",
+  "table": {
+    "header": {
+      "groupName": "Grupa",
+      "localisationName": "Lokalizacja",
+      "translatedMedium": "Medium",
+      "measurementName": "Nazwa Licznika",
+      "serialNumber": "Numer seryjny",
+      "factor": "Mnożna",
+      "value": "Odczyt",
+      "readTime": "Data ostatniego odczytu",
+      "currentMonthConsumption": "Zużycie w tym miesiącu",
+      "lastMonthSameDayConsumption": "Zużycie na ten sam dzień w poprzednim miesiącu",
+      "percentage": "Porównanie w %",
+      "lastMonthConsumption": "Zużycie w poprzednim miesiącu",
+      "unit": "Jednostka",
+      "tenant": "Najemcy",
+      "actions": "Akcje",
+      "levelType": "Poziom licznika",
+      "loadType": "Typ pomiaru",
+      "endUseArea": "Mierzony obszar"
+    },
+    "popup": {
+      "goToProfile": "Przejdź do profilu",
+      "goToComsumptions": "Przejdź do zużycia, aby porównać zużycie pomiarowe"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "sideMenu": {
+    "dashboards": "Dashboardy",
+    "dashboard": "Dashboard",
+    "energyDashboard": "Dashboard energii",
+    "dashboardR": "Panel (R)",
+    "analysisReports": "Analiza i raporty",
+    "consumptionChart": "Zużycie",
+    "consumptionProfileChart": "Profil",
+    "heatMap": "Mapa zużycia",
+    "measurementStructures": "Struktury",
+    "balanceModule": "Moduł bilansów",
+    "report": "Raporty",
+    "utilityCosts": "Koszty mediów",
+    "alarmsAndNotifications": "Alarmy i powiadomienia",
+    "immediateAlarm": "Alarm natychmiastowy",
+    "periodicAlarm": "Alarm okresowy",
+    "configuration": "Konfiguracja",
+    "measurements": "Liczniki",
+    "externalServiceConfiguration": "Konfiguracja zewnętrznych UPC",
+    "technicalView": "Widok instalatora",
+    "inputManagement": "Zarządzanie pomiarami",
+    "maintenanceReport": "Raport utrzymania systemu",
+    "meterStates": "Stany licznikowe",
+    "favoriteMeters": "Ulubione liczniki",
+    "administration": "Administracja ",
+    "clients": "Klienci",
+    "users": "Użytkownicy",
+    "tenants": "Najemcy",
+    "support": "Wsparcie"
+  },
+  "topRibbon": {
+    "client": "Klient:",
+    "location": "Lokalizacja:",
+    "group": "Grupa:",
+    "favoriteMeters": "Wybierz",
+    "favoriteMeterButton": "Wybierz",
+    "user": {
+      "terms": "Regulamin",
+      "manual": "Instrukcja",
+      "logout": "Wyloguj",
+      "language": {
+        "label": "Język",
+        "error": "Nie udało się zmienić języka"
+      }
+    }
+  }
+}

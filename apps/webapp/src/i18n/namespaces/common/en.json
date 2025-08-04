@@ -1,0 +1,25 @@
+{
+  "confirmation": "Confirmation",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "table": {
+    "footer": {
+      "show": "Show",
+      "positions": "positions",
+      "showing": "Showing",
+      "to": "to",
+      "of": "of",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "toast": {
+    "somethingWentWrong": "Something went wrong !",
+    "emptyClientWarning": "Select client",
+    "fieldsRequiredWarning": "Fields Required",
+    "languageChanged": {
+      "success": "Language Changed"
+    }
+  }
+}

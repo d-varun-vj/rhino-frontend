@@ -19,7 +19,7 @@ const Filter = <T,>({
     variant: FilterVariant | null
   ) => void;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('components');
   const columnFilterValue = column.getFilterValue();
 
   const { filterVariant } = column.columnDef.meta ?? {};
@@ -30,10 +30,7 @@ const Filter = <T,>({
     [column?.columnDef?.meta?.selectionOptions]
   );
 
-  const optionsList = useMemo(
-    () => [t('comboBox.select'), ...options],
-    [options, t]
-  );
+  const optionsList = useMemo(() => ['select', ...options], [options]);
 
   const filterKey = useMemo(
     () => column.columnDef.meta?.filterKey,

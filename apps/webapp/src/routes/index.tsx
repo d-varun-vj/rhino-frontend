@@ -1,12 +1,11 @@
 import { VITE_API_BASE_URL, initHttpClient } from '@rhino/apis';
 import { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { Dashboard, PeriodicAlarm } from '../pages';
 
-import { toast } from 'react-toastify';
-import { Consumption } from '../pages/Consumption';
-import NotAllowed from '../pages/NotAllowed';
+import { Loader } from '@mantine/core';
+import message from '../components/notifier';
 import { locations } from './locations';
+import { ROUTES } from './routes';
 
 const MainRoute = () => {
   const [isFullScreenLoading, setIsFullScreenLoading] = useState(true);
@@ -16,13 +15,15 @@ const MainRoute = () => {
       await initHttpClient(VITE_API_BASE_URL);
       setIsFullScreenLoading(false);
     };
-    initialize().catch((error) => toast.error('Initialization failed' + error));
+    initialize().catch((error) =>
+      message.error('Initialization failed' + error)
+    );
   }, []);
 
   if (isFullScreenLoading) {
     return (
       <div className="flex h-screen justify-center items-center ">
-        <h1>Loading...</h1>
+        <Loader color="var(--color-rhino-energy-green)" />
       </div>
     );
   }
@@ -30,13 +31,9 @@ const MainRoute = () => {
   return (
     <Router basename={locations.base}>
       <Routes>
-        <Route path={locations.dashboard} element={<Dashboard />} />
-        <Route path={locations.consumption} element={<Consumption />} />
-        <Route
-          path={locations.periodicAlarm.base}
-          element={<PeriodicAlarm />}
-        />
-        <Route path={locations.notAllowed} element={<NotAllowed />} />
+        {ROUTES.map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
       </Routes>
     </Router>
   );

@@ -28,7 +28,8 @@ const FavoriteMeter = ({
   removeSelectedFavoriteMeter,
   selectedClientUuid,
 }: FavoriteMeterProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('components');
+  const { t: tLayout } = useTranslation('layout');
   const { user } = useUser();
   const { favoriteMeter, setFavoriteMeter } = useFavoriteMeter();
   const { client } = useUserFilter();
@@ -182,7 +183,7 @@ const FavoriteMeter = ({
       >
         {selectedFavoriteMeter ||
           favoriteMeter?.name ||
-          t('topRibbon.favoriteMeterButton')}
+          tLayout('topRibbon.favoriteMeterButton')}
         {favoriteMeter?.uuid || selectedFavoriteMeter?.length ? (
           <RiCloseCircleFill className="font-bold text-[16px]" />
         ) : (

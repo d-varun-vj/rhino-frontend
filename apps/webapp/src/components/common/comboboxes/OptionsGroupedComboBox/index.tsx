@@ -31,7 +31,7 @@ const OptionsGroupedComboBox = ({
   disabled,
   ...props
 }: OptionsGroupedComboBox) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('components');
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });

@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 import { MenuItemType } from '../config';
 
 const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('layout');
   const { user } = useUser();
   const { client, location, group } = useUserFilter();
 

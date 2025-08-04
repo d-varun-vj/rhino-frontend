@@ -1,0 +1,85 @@
+{
+  "measurement": {
+    "measurementsWithActionsTable": {
+      "title": "Selected measurements",
+      "emptyMessage": "No measurements selected",
+      "emptyMessage2": "Click Add Measurement to get started",
+      "clearAll": "Clear all",
+      "header": {
+        "name": "Name",
+        "serialNumber": "Serial number",
+        "timezone": "Timezone",
+        "medium": "Medium",
+        "type": "Type",
+        "levelType": "Level Type",
+        "loadType": "Load Type",
+        "endUseArea": "End Use Area",
+        "location": "Location",
+        "group": "Group",
+        "tenants": "Tenants",
+        "actions": "Actions"
+      },
+      "actions": {
+        "remove": "Remove measurement"
+      }
+    },
+    "selectMeasurement": {
+      "title": "Select measurements",
+      "add": "Add measurement",
+      "addMore": "Add more measurements",
+      "emptyMessage": "No measurements selected",
+      "selectClient": "No client selected. Please select a client first."
+    },
+    "selectMeasurementModal": {
+      "title": "Select measurements",
+      "selectedText": "Selected measurements",
+      "emptyText": "No results",
+      "selectedMeasurements": "Selected measurements",
+      "choose": "Choose ({{count}})",
+      "cancel": "Cancel"
+    },
+    "measurementsWithPaginationTable": {
+      "header": {
+        "name": "Name",
+        "serialNumber": "Serial number",
+        "timezone": "Timezone",
+        "medium": "Medium",
+        "type": "Type",
+        "levelType": "Level Type",
+        "loadType": "Load Type",
+        "endUseArea": "End Use Area",
+        "location": "Location",
+        "group": "Group",
+        "tenants": "Tenants"
+      },
+      "emptyText": "No results",
+      "selectedText": "Selected measurements",
+      "title": "Select measurements"
+    }
+  },
+  "sharedSection": {
+    "readOnly": "Read-only",
+    "sharedLocations": "Shared Localisations",
+    "sharedTenants": "Shared Tenants"
+  },
+  "favoriteMeterModel": {
+    "mainHeader": "Choose favorite meters",
+    "table": {
+      "header": {
+        "name": "Name",
+        "author": "Author",
+        "shared": "Shared",
+        "createdDate": "Created Date",
+        "updatedDate": "Updated Date",
+        "actions": "Actions"
+      },
+      "popup": "Select"
+    }
+  },
+  "comboBox": {
+    "select": "Select",
+    "locationNull": "All locations",
+    "groupNull": "All groups",
+    "empty": "No result"
+  }
+}

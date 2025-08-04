@@ -4,7 +4,7 @@ import { MeasurementWithConfig } from '../../components/measurement/SelectMeasur
 import PageTitle from '../../components/typography/PageTitle';
 import MainLayout from '../../layouts/MainLayout';
 
-export const Consumption = () => {
+const Consumption = () => {
   const [selectedMeasurements, setSelectedMeasurements] = useState<
     MeasurementWithConfig[]
   >([]);
@@ -58,3 +58,5 @@ export const Consumption = () => {
     </MainLayout>
   );
 };
+
+export default Consumption;

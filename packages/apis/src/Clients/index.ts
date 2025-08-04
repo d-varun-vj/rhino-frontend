@@ -1,1 +1,1 @@
-export * from './useGetClients';
+export * from './api';

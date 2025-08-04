@@ -22,6 +22,9 @@ interface MeasurementsWithPaginationTableProps {
   selectedIds?: string[];
   onSelectionChange?: (selectedMeasurements: MeasurementType[]) => void;
   readonly?: boolean;
+  customFilter?: {
+    mediumType?: string;
+  };
 }
 
 const MeasurementsWithPaginationTable = ({
@@ -29,8 +32,9 @@ const MeasurementsWithPaginationTable = ({
   selectedIds = [],
   onSelectionChange,
   readonly = false,
+  customFilter,
 }: MeasurementsWithPaginationTableProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('components');
   const { user } = useUser();
   const { client, location, group } = useUserFilter();
 
@@ -59,8 +63,7 @@ const MeasurementsWithPaginationTable = ({
     tenants: '',
   });
 
-  const translationBaseRoute =
-    'components.measurement.measurementsWithPaginationTable.';
+  const translationBaseRoute = 'measurement.measurementsWithPaginationTable.';
   const { data: Options } = useGetMetaData({
     locale: user?.language ?? null,
   });
@@ -76,7 +79,7 @@ const MeasurementsWithPaginationTable = ({
     groupUuid: group ? group.uuid : null,
     measurementName: filters.name,
     serialNumber: filters.serialNumber,
-    medium: filters.medium,
+    medium: customFilter?.mediumType ?? filters.medium,
     measurementType: filters.type ? filters.type.name : undefined,
     levelType: filters.levelType ? filters.levelType.name : undefined,
     loadType: filters.loadType ? filters.loadType.name : undefined,
@@ -192,7 +195,7 @@ const MeasurementsWithPaginationTable = ({
         meta: {
           filterVariant: FilterVariant.TEXT,
           filterKey: 'name',
-          sortKey: 'name',
+          sortKey: 'displayName',
           sortDirection: sort.direction,
         },
       },
@@ -212,10 +215,7 @@ const MeasurementsWithPaginationTable = ({
         header: t(translationBaseRoute + 'header.timezone'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: FilterVariant.TEXT,
-          filterKey: 'timezone',
-          sortKey: 'timezone',
-          sortDirection: sort.direction,
+          sortKey: null,
         },
       },
       {
@@ -225,7 +225,7 @@ const MeasurementsWithPaginationTable = ({
         meta: {
           filterVariant: FilterVariant.TEXT,
           filterKey: 'medium',
-          sortKey: 'medium',
+          sortKey: 'meteringPointType',
           sortDirection: sort.direction,
         },
       },
@@ -292,7 +292,7 @@ const MeasurementsWithPaginationTable = ({
         meta: {
           filterVariant: FilterVariant.TEXT,
           filterKey: 'location',
-          sortKey: 'location',
+          sortKey: 'group.localisation',
           sortDirection: sort.direction,
         },
       },

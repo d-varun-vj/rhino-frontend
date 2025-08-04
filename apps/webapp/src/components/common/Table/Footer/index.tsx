@@ -7,6 +7,8 @@ type Footer = {
   pagination: FooterType;
 };
 
+const pagePositions = [5, 10, 25, 50];
+
 const TableFooter = ({ pagination }: Footer) => {
   const [showIndex, setShowIndex] = useState<{
     from: number;
@@ -14,7 +16,7 @@ const TableFooter = ({ pagination }: Footer) => {
   }>({ from: 1, to: pagination.pageSize });
 
   const { client, location, group } = useUserFilter();
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const paginationRef = useRef(pagination);
 
   useEffect(() => {
@@ -22,6 +24,10 @@ const TableFooter = ({ pagination }: Footer) => {
     paginationRef.current.setCurrentPage(0);
     paginationRef.current.setPageSize(5);
   }, [client, location, group]);
+
+  useEffect(() => {
+    pagination.setPageSize(pagination.pageSize);
+  }, [pagination]);
 
   return (
     <div className="flex justify-between  my-5 flex-col gap-5 mt-10 lg:flex-row lg:items-center">
@@ -44,7 +50,7 @@ const TableFooter = ({ pagination }: Footer) => {
             }}
             className="!w-fit !py-[8px] text-rhino-indigo-blue"
           >
-            {[5, 10, 25, 50].map((pageSize) => (
+            {pagePositions.map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 {pageSize}
               </option>

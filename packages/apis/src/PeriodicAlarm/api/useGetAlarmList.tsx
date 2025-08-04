@@ -60,7 +60,7 @@ export const useGetPeriodicAlarmList = (params: PeriodicAlarmRequestFilter) => {
   };
 
   return useQuery({
-    queryKey: [DataQueryKeys.PERIODIC_ALARM, queryParams],
+    queryKey: [DataQueryKeys.PERIODIC_ALARM_LIST, queryParams],
     queryFn: async () => {
       const response = await httpClient.get<PeriodicAlarmTableData>(
         API_URLS.getPeriodicAlarmList(),

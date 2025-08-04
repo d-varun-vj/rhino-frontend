@@ -8,4 +8,5 @@ export * from './httpClient';
 export * from './Locations';
 export * from './Measurement';
 export * from './PeriodicAlarm';
+export * from './Tenants';
 export * from './User';

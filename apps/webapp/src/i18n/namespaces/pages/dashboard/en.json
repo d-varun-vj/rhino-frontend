@@ -1,0 +1,30 @@
+{
+  "mainHeader": "Dashboard",
+  "subHeader": "Automatic measurements only",
+  "table": {
+    "header": {
+      "groupName": "Group",
+      "localisationName": "Location",
+      "translatedMedium": "Medium",
+      "measurementName": "Measurement name",
+      "serialNumber": "Serial number",
+      "factor": "Multiplicand",
+      "value": "Value",
+      "readTime": "Last reading date",
+      "currentMonthConsumption": "Current month consumption",
+      "lastMonthSameDayConsumption": "Last month up to same day consumption",
+      "percentage": "Comparison in %",
+      "lastMonthConsumption": "Last month consumption",
+      "unit": "Unit",
+      "tenant": "Tenants",
+      "actions": "Actions",
+      "levelType": "Level Type",
+      "loadType": "Load Type",
+      "endUseArea": "End Use Area"
+    },
+    "popup": {
+      "goToProfile": "Go to profile",
+      "goToComsumptions": "Go to comsumptions to compare measurement comsumptions"
+    }
+  }
+}

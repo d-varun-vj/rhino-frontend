@@ -1,0 +1,49 @@
+.timeField {
+  display: flex;
+  width: max-content;
+  gap: 5px;
+  flex-direction: column;
+}
+
+.timeField :global(.mantine-TimePicker-input:focus-within) {
+  border: 1px solid var(--color-rhino-indigo-blue) !important;
+}
+
+.timeField :global(.mantine-TimePicker-wrapper) {
+  margin: 0;
+}
+
+.timeField :global(.mantine-TimePicker-fieldsRoot) {
+  overflow: visible;
+}
+
+.timeField :global(.mantine-TimePicker-input) {
+  width: 115px;
+  padding: 0;
+  height: 45px;
+}
+
+.timeField :global(.mantine-TimePicker-field) {
+  width: 50px;
+
+  border-radius: var(--border-redius);
+}
+
+.timeField :global(.mantine-TimePicker-field:focus-within) {
+  background-color: transparent;
+  color: black;
+  border: 1px solid transparent !important;
+  text-decoration: underline;
+}
+
+.timeField :global(.mantine-TimePicker-label) {
+  font-size: var(--font-size-sm);
+  color: #444444;
+}
+
+@media (min-width: 1024px) {
+  .timeField {
+    flex-direction: row;
+    align-items: center;
+  }
+}

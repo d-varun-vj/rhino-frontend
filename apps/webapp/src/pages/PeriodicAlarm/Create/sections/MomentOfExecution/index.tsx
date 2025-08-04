@@ -1,0 +1,148 @@
+import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
+import CustomTimePicker from 'apps/webapp/src/components/common/datetime/CustomTimePicker';
+import QuestionCircle from 'apps/webapp/src/components/common/indicators/QuestionCircle';
+import NumberField from 'apps/webapp/src/components/common/input/NumberField';
+import { useMemo } from 'react';
+import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { PeriodicAlarmFrequency, RHFInputProps } from '../../../types';
+import {
+  FREQUENCY_OPTIONS,
+  tFormBase,
+  VALID_GENERATION_DAY_CONFIG,
+} from '../../config';
+import { applyLabelTranslations, shouldShowGenerationDay } from '../../helper';
+import SectionWrapper from '../SectionWrapper';
+
+const MomentOfExecution = ({
+  control,
+  setValue,
+  watch,
+  resetThresholdValues,
+}: RHFInputProps & {
+  resetThresholdValues: () => void;
+}) => {
+  const { t } = useTranslation('periodicAlarm');
+  const selectedFrequency =
+    (watch('frequency') as PeriodicAlarmFrequency) ||
+    PeriodicAlarmFrequency.DAILY;
+
+  const generationDayConfigByFrequency = useMemo(() => {
+    return VALID_GENERATION_DAY_CONFIG[selectedFrequency];
+  }, [selectedFrequency]);
+
+  return (
+    <SectionWrapper
+      title={t(tFormBase + 'momentOfExecution.title')}
+      id="moment-of-execution"
+    >
+      <div className="flex flex-col gap-5">
+        <Controller
+          name={'frequency'}
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState }) => (
+            <FloatingSelector
+              label={t(tFormBase + 'momentOfExecution.frequency')}
+              required
+              data={applyLabelTranslations(FREQUENCY_OPTIONS)}
+              onSelect={(frequency: string) => {
+                field.onChange(frequency);
+                setValue('compareWithPeriod', '');
+                resetThresholdValues();
+              }}
+              selectedValue={FREQUENCY_OPTIONS.find(
+                (val) => val.id === (field.value as PeriodicAlarmFrequency)
+              )}
+              error={!!fieldState.error}
+            />
+          )}
+        />
+
+        {shouldShowGenerationDay(selectedFrequency) && (
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Controller
+              name={'generationDay'}
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <NumberField
+                  label={t(tFormBase + 'momentOfExecution.generationDay.title')}
+                  min={generationDayConfigByFrequency.min}
+                  max={generationDayConfigByFrequency.max}
+                  placeholder={t(generationDayConfigByFrequency.placeholder)}
+                  allowNegative={false}
+                  required
+                  value={field.value}
+                  onChange={(val) => {
+                    const numValue = val ? +val : 0;
+                    field.onChange(numValue);
+                  }}
+                  onBlur={field.onBlur}
+                  error={!!fieldState.error}
+                />
+              )}
+            />
+            <QuestionCircle
+              content={t(tFormBase + 'momentOfExecution.generationDay.guide')}
+              className="mt-6"
+            />
+          </div>
+        )}
+
+        <div className="flex gap-4 items-center">
+          <Controller
+            name={'generationTime'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field, fieldState }) => (
+              <CustomTimePicker
+                label={t(tFormBase + 'momentOfExecution.generationTime.title')}
+                required
+                minutesStep={5}
+                value={field.value}
+                onChange={(time: string) => {
+                  field.onChange(time);
+                }}
+                onBlur={field.onBlur}
+                error={!!fieldState.error}
+              />
+            )}
+          />
+          <QuestionCircle
+            content={t(tFormBase + 'momentOfExecution.generationTime.guide')}
+            className="mt-6"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 items-center gap-4">
+          <Controller
+            name={'delayInDays'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field, fieldState }) => (
+              <NumberField
+                label={t(tFormBase + 'momentOfExecution.gapAnalysis.title')}
+                required
+                allowNegative={false}
+                value={field.value}
+                onChange={(val) => {
+                  const numValue = +val;
+                  field.onChange(numValue);
+                }}
+                onBlur={field.onBlur}
+                error={!!fieldState.error}
+              />
+            )}
+          />
+          <QuestionCircle
+            content={t(tFormBase + 'momentOfExecution.gapAnalysis.guide')}
+            className="mt-6"
+          />
+        </div>
+      </div>
+    </SectionWrapper>
+  );
+};
+
+export default MomentOfExecution;

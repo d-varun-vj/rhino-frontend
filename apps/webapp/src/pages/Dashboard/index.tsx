@@ -6,7 +6,7 @@ import {
   VITE_WICKET_BASE_URL,
 } from '@rhino/apis';
 import { ColumnDef, Row } from '@tanstack/react-table';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FaChartBar, FaChartLine } from 'react-icons/fa';
 
 import { convertToLocalTime, Sort } from '@rhino/utils';
@@ -16,13 +16,13 @@ import Table from '../../components/common/Table';
 import ActionCell from '../../components/common/Table/ActionCell';
 import { FilterVariant } from '../../components/common/Table/types';
 import IconButton from '../../components/common/buttons/IconButton';
+import PageSubTitle from '../../components/typography/PageSubTitle';
 import PageTitle from '../../components/typography/PageTitle';
 import { CONSTANTS } from '../../constant';
 import { GUIDE_LINKS } from '../../constant/guide-links';
 import { useFavoriteMeter } from '../../context/favoriteMeter';
 import { useUser } from '../../context/user';
 import { useUserFilter } from '../../context/userFilter';
-import { shouldSetInitialClient } from '../../helpers/client';
 import { getRibbonParams } from '../../helpers/topribbon';
 import MainLayout from '../../layouts/MainLayout';
 
@@ -38,7 +38,7 @@ const PERCENTAGE_COLORS: ColorMap = {
   DEFAULT: 'text-black',
 };
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const [filters, setFilters] = useState<Filter>({
     locationName: null,
     groupName: null,
@@ -56,11 +56,11 @@ export const Dashboard = () => {
   });
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  const { client, location, group, setClient } = useUserFilter();
+  const { client, location, group } = useUserFilter();
   const { favoriteMeter } = useFavoriteMeter();
   const { user } = useUser();
-  const { t } = useTranslation();
-  const translationBaseRoute = 'pages.dashboard.table.';
+  const { t } = useTranslation('dashboard');
+  const translationBaseRoute = 'table.';
 
   const { data: DashboardDataRes, isLoading: isLoadingTableData } =
     useGetTableData({
@@ -79,15 +79,6 @@ export const Dashboard = () => {
   const { data: Options } = useGetMetaData({
     locale: user?.language ?? null,
   });
-
-  useEffect(() => {
-    if (user && shouldSetInitialClient(user)) {
-      setClient({
-        name: user.clients ? user.clients[0].name : '',
-        uuid: user.clients ? user.clients[0].uuid : '',
-      });
-    }
-  }, [user, setClient]);
 
   const ActionCellFn = useCallback(
     (row: Row<DashboardType>) => (
@@ -402,19 +393,14 @@ export const Dashboard = () => {
   );
 
   return (
-    <MainLayout title="sideMenu.dashboard">
+    <MainLayout title={t('sideMenu.dashboard', { ns: 'layout' })}>
       <PageTitle
-        title={t('pages.dashboard.mainHeader')}
+        title={t('mainHeader')}
         guide={true}
         guideLink={GUIDE_LINKS.DASHBOARD}
         dataTestId="dashboard-page-header"
       />
-      <p
-        className="text-[15px] text-grey-dark mb-2 mt-[19px]"
-        data-testid="dashboard-page-subheader"
-      >
-        {t('pages.dashboard.subHeader')}
-      </p>
+      <PageSubTitle title={t('subHeader')} />
       <Table
         columns={columns}
         data={DashboardDataRes ? DashboardDataRes?.content : []}
@@ -432,3 +418,5 @@ export const Dashboard = () => {
     </MainLayout>
   );
 };
+
+export default Dashboard;

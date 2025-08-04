@@ -1,0 +1,167 @@
+import { TFunction } from 'i18next';
+import z from 'zod';
+import {
+  PeriodicAlarmCompareWith,
+  PeriodicAlarmThresholdType,
+} from '../../types';
+import {
+  shouldShowStartAndEndThresholdValue,
+  shouldShowThresholdValue,
+} from '../helper';
+
+const i18nBase = 'create.form.validation.';
+
+export const buildPeriodicAlarmSchema = (
+  t: TFunction<'periodicAlarm', undefined>
+) => {
+  return z
+    .object({
+      name: z.string().min(1, t(i18nBase + 'name')),
+      clientUuid: z.string().min(1, t(i18nBase + 'clientUuid')),
+      meteringPointTypeId: z
+        .number(t(i18nBase + 'meteringPointTypeId'))
+        .nonnegative(t(i18nBase + 'meteringPointTypeId')),
+      userZone: z
+        .string(t(i18nBase + 'userZone'))
+        .min(1, t(i18nBase + 'userZone')),
+      userUuid: z
+        .string(t(i18nBase + 'userUuid'))
+        .min(1, t(i18nBase + 'userUuid')),
+      frequency: z.string().min(1, t(i18nBase + 'frequency')),
+      generationDay: z.number(t(i18nBase + 'generationDay')),
+      generationTime: z.string().min(1, t(i18nBase + 'generationTime')),
+      delayInDays: z
+        .number(t(i18nBase + 'delayInDays'))
+        .nonnegative(t(i18nBase + 'delayInDays')),
+      analysePeriod: z.string().min(1, t(i18nBase + 'analysePeriod')),
+      compareWithPeriod: z.string().min(1, t(i18nBase + 'compareWithPeriod')),
+      comparisonMeasure: z.string().min(1, t(i18nBase + 'comparisonMeasure')),
+      thresholdType: z.string(),
+      thresholdValue: z.number().nullable(),
+      thresholdStartValue: z.number().nullable(),
+      thresholdEndValue: z.number().nullable(),
+      isActive: z.boolean(),
+      shared: z.boolean(),
+      readOnly: z.boolean(),
+      sharedLocations: z.array(z.string()),
+      sharedTenants: z.array(z.string()),
+      recipientEmails: z.array(z.email(t(i18nBase + 'recipients'))),
+      phoneNumber: z.array(
+        z.string().regex(/^\+\d{11,15}$/, t(i18nBase + 'phoneNumber'))
+      ),
+      measurementUuids: z
+        .array(z.string())
+        .nonempty(t(i18nBase + 'measurementUuids')),
+    })
+    .refine(
+      (data) => {
+        if (data.shared) {
+          return (
+            data.sharedLocations.length > 0 || data.sharedTenants.length > 0
+          );
+        }
+        return true;
+      },
+      {
+        message: t(i18nBase + 'shared'),
+        path: ['shared'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.compareWithPeriod) {
+          return data.thresholdType.trim().length > 0;
+        }
+        return true;
+      },
+      {
+        message: t(i18nBase + 'thresholdType'),
+        path: ['thresholdType'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.frequency === 'DAILY' && data.generationDay == 0) {
+          return true;
+        }
+        return data.generationDay !== 0;
+      },
+      {
+        message: t(i18nBase + 'generationDay'),
+        path: ['generationDay'],
+      }
+    )
+    .refine(
+      (data) => {
+        const _shouldShowThresholdValue = shouldShowThresholdValue(
+          data.compareWithPeriod as PeriodicAlarmCompareWith,
+          data.thresholdType as PeriodicAlarmThresholdType
+        );
+        if (_shouldShowThresholdValue) {
+          return (
+            data.thresholdValue !== null && data.thresholdValue !== undefined
+          );
+        }
+        return true;
+      },
+      {
+        message: t(i18nBase + 'thresholdValue'),
+        path: ['thresholdValue'],
+      }
+    )
+    .refine(
+      (data) => {
+        const shouldShowStartEndFields = shouldShowStartAndEndThresholdValue(
+          data.thresholdType as PeriodicAlarmThresholdType
+        );
+        if (shouldShowStartEndFields) {
+          return (
+            data.thresholdStartValue !== null &&
+            data.thresholdStartValue !== undefined
+          );
+        }
+        return true;
+      },
+      {
+        message: t(i18nBase + 'thresholdStartValue'),
+        path: ['thresholdStartValue'],
+      }
+    )
+    .refine(
+      (data) => {
+        const shouldShowStartEndFields = shouldShowStartAndEndThresholdValue(
+          data.thresholdType as PeriodicAlarmThresholdType
+        );
+        if (shouldShowStartEndFields) {
+          return (
+            data.thresholdEndValue !== null &&
+            data.thresholdEndValue !== undefined
+          );
+        }
+        return true;
+      },
+      {
+        message: t(i18nBase + 'thresholdEndValue'),
+        path: ['thresholdEndValue'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (
+          (data.recipientEmails && data.recipientEmails?.length > 0) ||
+          (data.phoneNumber && data.phoneNumber?.length > 0)
+        ) {
+          return true;
+        }
+        return false;
+      },
+      {
+        message: t(i18nBase + 'recipients'),
+        path: ['recipients'],
+      }
+    );
+};
+
+export type PeriodicAlarmSchema = z.infer<
+  ReturnType<typeof buildPeriodicAlarmSchema>
+>;
