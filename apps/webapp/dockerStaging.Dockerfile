@@ -27,11 +27,8 @@ RUN npx nx build @app/webapp
 # Production stage
 FROM nginx:alpine
 
-# Copy everything to root first
+# Copy the built files to nginx html directory
 COPY --from=build /app/apps/webapp/dist/ /usr/share/nginx/html/
-
-# Then copy assets to v1/assets directory (this order matters)
-COPY --from=build /app/apps/webapp/dist/assets /usr/share/nginx/html/v1/assets
 
 # Copy custom nginx configuration
 COPY apps/webapp/nginx.conf /etc/nginx/nginx.conf

@@ -1,12 +1,12 @@
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
-import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '', // we need to set the base path for the assets, we should change this in the Dockerfile as well
+  base: '/v1/', // Set base path to match your nginx configuration
   resolve: {
     alias: {
       'apps/webapp/src': resolve(__dirname, 'src'),
