@@ -53,8 +53,7 @@ export type PeriodicAlarmCreateReq = {
   shared: boolean;
   readOnly: boolean;
   active: boolean;
-  userUuid: string;
-  userZoneId: string;
+  timezone: string;
   editorId?: string;
   sharedLocalisationUuids?: string[];
   sharedTenantUuids?: string[];

@@ -21,12 +21,9 @@ export const buildPeriodicAlarmSchema = (
       meteringPointTypeId: z
         .number(t(i18nBase + 'meteringPointTypeId'))
         .nonnegative(t(i18nBase + 'meteringPointTypeId')),
-      userZone: z
-        .string(t(i18nBase + 'userZone'))
-        .min(1, t(i18nBase + 'userZone')),
-      userUuid: z
-        .string(t(i18nBase + 'userUuid'))
-        .min(1, t(i18nBase + 'userUuid')),
+      timezone: z
+        .string(t(i18nBase + 'timezone'))
+        .min(1, t(i18nBase + 'timezone')),
       frequency: z.string().min(1, t(i18nBase + 'frequency')),
       generationDay: z.number(t(i18nBase + 'generationDay')),
       generationTime: z.string().min(1, t(i18nBase + 'generationTime')),

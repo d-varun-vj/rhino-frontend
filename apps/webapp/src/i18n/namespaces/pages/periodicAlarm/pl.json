@@ -21,7 +21,7 @@
         "active": "Aktywny",
         "shared": "Wspólny alarm",
         "mediumType": "Średni typ",
-        "userZone": "Strefa użytkownika"
+        "timezone": "Strefa użytkownika"
       },
       "momentOfExecution": {
         "title": "Moment wykonania",
@@ -91,7 +91,7 @@
         "name": "Imię jest wymagane",
         "clientUuid": "Klient jest wymagany",
         "meteringPointTypeId": "Typ punktu pomiarowego jest wymagany",
-        "userZone": "Strefa użytkownika jest wymagana",
+        "timezone": "Strefa użytkownika jest wymagana",
         "userUuid": "Użytkownik jest wymagany",
         "frequency": "Częstotliwość alarmów jest wymagana",
         "generationDay": "Dzień generowania jest wymagany",

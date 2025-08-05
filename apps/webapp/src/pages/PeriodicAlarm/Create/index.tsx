@@ -7,7 +7,6 @@ import {
 import message from 'apps/webapp/src/components/notifier';
 import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
 import { GUIDE_LINKS } from 'apps/webapp/src/constant/guide-links';
-import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import MainLayout from 'apps/webapp/src/layouts/MainLayout';
@@ -37,7 +36,6 @@ const CreatePeriodicAlarm = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('periodicAlarm');
   const { client, location, group } = useUserFilter();
-  const { user } = useUser();
 
   const { mutate: createAlarm, isPending } = usePostPeriodicAlarm();
 
@@ -62,7 +60,7 @@ const CreatePeriodicAlarm = () => {
       frequency: PeriodicAlarmFrequency.DAILY,
       analysePeriod: PeriodicAlarmPeriod.LAST_DAY,
       comparisonMeasure: COMPARISON_MEASURE_TYPE_OPTIONS[0].value,
-      userZone: SUPPORTED_TIMEZONES[0].value,
+      timezone: SUPPORTED_TIMEZONES[0].value,
       compareWithPeriod: PeriodicAlarmCompareWith.CONSTANT,
       generationDay: 1,
       delayInDays: 0,
@@ -90,8 +88,7 @@ const CreatePeriodicAlarm = () => {
 
   useEffect(() => {
     setValue('clientUuid', client ? client?.uuid : '');
-    setValue('userUuid', user ? user?.uuid : '');
-  }, [client, setValue, user]);
+  }, [client, setValue]);
 
   const resetThresholdValues = useCallback(() => {
     setValue('thresholdType', '');

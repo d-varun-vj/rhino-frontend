@@ -86,12 +86,12 @@ const BasicInformation = ({
           )}
         />
         <Controller
-          name="userZone"
+          name="timezone"
           control={control}
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <CustomSelect
-              label={t(tFormBase + 'basic.userZone')}
+              label={t(tFormBase + 'basic.timezone')}
               required
               data={SUPPORTED_TIMEZONES}
               value={field.value || null}

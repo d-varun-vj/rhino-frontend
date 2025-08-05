@@ -21,7 +21,7 @@
         "active": "Active",
         "shared": "Shared Alarm",
         "mediumType": "Medium type",
-        "userZone": "User zone"
+        "timezone": "Time zone"
       },
       "momentOfExecution": {
         "title": "Moment of execution",
@@ -91,7 +91,7 @@
         "name": "Name is required",
         "clientUuid": "Client is required",
         "meteringPointTypeId": "Metering type is required",
-        "userZone": "User zone is required",
+        "timezone": "Time zone is required",
         "userUuid": "User is required",
         "frequency": "Alarm frequency is required",
         "generationDay": "Generation day is required",

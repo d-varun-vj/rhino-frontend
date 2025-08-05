@@ -107,8 +107,7 @@ export const buildCreateRequestForm = (
     shared: values.shared,
     readOnly: values.readOnly,
     active: values.isActive,
-    userUuid: values.userUuid,
-    userZoneId: values.userZone,
+    timezone: values.timezone,
     ...(!!values.sharedLocations && {
       sharedLocalisationUuids: values.sharedLocations,
     }),
