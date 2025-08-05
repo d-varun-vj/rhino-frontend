@@ -2,13 +2,13 @@
   "mainHeader": "Okresowe alarmy",
   "table": {
     "header": {
-      "alarmName": "Nazwa alarmu",
+      "alarmName": "Nazwa",
       "author": "Autor",
-      "localisationName": "Lokalizacja",
+      "localisationName": "Lokalizacje",
       "active": "Aktywny",
       "lastOccurrence": "Ostatnie wystąpienie",
-      "alarmPeriod": "Okres alarmowy",
-      "shared": "wspólny",
+      "alarmPeriod": "Okres",
+      "shared": "Współdzielony",
       "actions": "Akcje"
     }
   },
@@ -16,64 +16,64 @@
     "mainHeader": "Utwórz alarm okresowy",
     "form": {
       "basic": {
-        "title": "Informacje podstawowe",
+        "title": "Podstawowe informacje",
         "alarmName": "Nazwa alarmu",
         "active": "Aktywny",
-        "shared": "Wspólny alarm",
-        "mediumType": "Średni typ",
-        "timezone": "Strefa użytkownika"
+        "shared": "Alarm współdzielony",
+        "mediumType": "Typ medium",
+        "timezone": "Strefa czasowa"
       },
       "momentOfExecution": {
         "title": "Moment wykonania",
-        "frequency": "Kiedy wysłać alarm",
+        "frequency": "Częstotliwość",
         "generationTime": {
-          "title": "Planowany czas generacji",
-          "guide": "Planned generation time Sample guide content"
+          "title": "Planowany czas wygenerowania",
+          "guide": "Czas po którym zostanie wygenerowany raport"
         },
         "generationDay": {
-          "title": "Generation day",
-          "guide": "Planned generation day Sample guide content"
+          "title": "Planowany dzień wygenerowania",
+          "guide": "Dzień tygodnia / miesiąca / kwartału / roku, w którym zostanie wygenerowany raport"
         },
         "gapAnalysis": {
-          "title": "Luka w analizie danych",
-          "guide": "Sample guide content"
+          "title": "Opóźnienie odbieranych danych",
+          "guide": "Liczba dni opóźnienia w odbiorze danych. Liczba ta jest odejmowana od daty generowania raportu w momencie jego przetwarzania"
         }
       },
       "timeConfiguration": {
         "title": "Konfiguracja czasu",
         "analysisPeriod": {
           "title": "Wybierz okres analizy",
-          "guide": "Sample guide content"
+          "guide": ""
         }
       },
       "alarmCriteria": {
-        "title": "Kryteria alarmowe",
+        "title": "Kryteria",
         "compareWith": {
           "title": "Porównaj z",
-          "guide": "Sample guide content"
+          "guide": ""
         },
-        "measureType": "Typ miary",
+        "measureType": "Sposób pomiaru",
         "threshold": {
           "title": "Próg",
-          "guide": "Sample guide content"
+          "guide": ""
         },
         "thresholdValue": {
-          "title": "Wartość progowa",
-          "guide": "Sample guide content"
+          "title": "Wartość progu",
+          "guide": ""
         },
         "thresholdStartValue": {
           "title": "Wartość początkowa progu",
-          "guide": "Sample guide content"
+          "guide": ""
         },
         "thresholdEndValue": {
           "title": "Wartość końcowa progu",
-          "guide": "Sample guide content"
+          "guide": ""
         }
       },
       "recipient": {
         "title": "Szczegóły odbiorcy",
         "email": {
-          "title": "Odbiorca",
+          "title": "Odbiorca mailowy",
           "placeholder": "Wpisz i naciśnij Enter"
         },
         "sms": {
@@ -81,25 +81,25 @@
           "placeholder": "np. +48100100100"
         }
       },
-      "selectMeasurement": "Wybierz pomiar",
-      "emptyMediumType": "Wybierz typ średni",
+      "selectMeasurement": "Wybierz licznik",
+      "emptyMediumType": "Wybierz typ medium",
       "action": {
-        "save": "Ratować",
-        "cancel": "Anulować"
+        "save": "Zapisz",
+        "cancel": "Anuluj"
       },
       "validation": {
         "name": "Imię jest wymagane",
         "clientUuid": "Klient jest wymagany",
-        "meteringPointTypeId": "Typ punktu pomiarowego jest wymagany",
-        "timezone": "Strefa użytkownika jest wymagana",
+        "meteringPointTypeId": "Typ medium jest wymagany",
+        "timezone": "Strefa czasowa jest wymagana",
         "userUuid": "Użytkownik jest wymagany",
-        "frequency": "Częstotliwość alarmów jest wymagana",
+        "frequency": "Częstotliwość jest wymagana",
         "generationDay": "Dzień generowania jest wymagany",
         "generationTime": "Czas generowania jest wymagany",
-        "delayInDays": "Luka w analizie danych jest wymagana",
+        "delayInDays": "Opóźnienie w odbiorze danych jest wymagane",
         "analysePeriod": "Okres analizy jest wymagany",
         "compareWithPeriod": "Okres porównania jest wymagany",
-        "comparisonMeasure": "Miara porównania jest wymagana",
+        "comparisonMeasure": "Sposób pomiaru jest wymagany",
         "recipients": "Nieprawidłowy adres e-mail. Podaj prawidłowy adres e-mail.",
         "phoneNumber": "Nieprawidłowy numer telefonu. Proszę podać prawidłowy numer telefonu.",
         "shared": "Musi zostać wybrana co najmniej jedna lokalizacja lub najemca, gdy udostępnianie jest włączone",
@@ -107,7 +107,7 @@
         "thresholdValue": "Wartość progu jest wymagana",
         "thresholdStartValue": "Wartość początkowa progu jest wymagana",
         "thresholdEndValue": "Wartość końcowa progu jest wymagana",
-        "measurementUuids": "Wybierz pomiary"
+        "measurementUuids": "Wybierz liczniki"
       }
     }
   },
@@ -120,17 +120,17 @@
   "config": {
     "frequency": {
       "daily": "Codziennie",
-      "weekly": "Tygodnik",
-      "monthly": "Miesięczny",
-      "quarterly": "Kwartalny",
+      "weekly": "Tygodniowo",
+      "monthly": "Miesięcznie",
+      "quarterly": "Kwartalnie",
       "yearly": "Rocznie"
     },
     "analysisPeriod": {
-      "lastDay": "Ostatni dzień",
-      "lastWeek": "W zeszłym tygodniu",
-      "lastMonth": "W zeszłym miesiącu",
-      "lastQuarter": "Ostatni kwartał",
-      "lastYear": "W ubiegłym roku"
+      "lastDay": "Zeszły dzień",
+      "lastWeek": "Zeszły tydzień",
+      "lastMonth": "Zeszły miesiąc",
+      "lastQuarter": "Zeszły kwartał",
+      "lastYear": "Zeszły rok"
     },
     "compareWith": {
       "const": "Stała",

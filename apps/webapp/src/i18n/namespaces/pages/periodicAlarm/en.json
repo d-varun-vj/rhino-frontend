@@ -2,12 +2,12 @@
   "mainHeader": "Periodic alarms",
   "table": {
     "header": {
-      "alarmName": "Alarm name",
+      "alarmName": "Name",
       "author": "Author",
       "localisationName": "Locations",
       "active": "Active",
       "lastOccurrence": "Last occurrence",
-      "alarmPeriod": "Alarm period",
+      "alarmPeriod": "Period",
       "shared": "Shared",
       "actions": "Actions"
     }
@@ -17,7 +17,7 @@
     "form": {
       "basic": {
         "title": "Basic Information",
-        "alarmName": "Alarm name",
+        "alarmName": "Name",
         "active": "Active",
         "shared": "Shared Alarm",
         "mediumType": "Medium type",
@@ -25,55 +25,55 @@
       },
       "momentOfExecution": {
         "title": "Moment of execution",
-        "frequency": "When to send the alarm",
+        "frequency": "Frequency",
         "generationTime": {
           "title": "Planned generation time",
-          "guide": "Planned generation time Sample guide content"
+          "guide": "Time after which the alarm will be generated"
         },
         "generationDay": {
           "title": "Generation day",
-          "guide": "Planned generation day Sample guide content"
+          "guide": "Day of the week / month / quarter / year on which the alarm will be generated"
         },
         "gapAnalysis": {
-          "title": "Gap in analysis of data",
-          "guide": "Sample guide content"
+          "title": "Data reception delay",
+          "guide": "No of days indicating the delay in data reception on the moment of generation. These many number of days will be reduced from the generation day to calculate the analysis period"
         }
       },
       "timeConfiguration": {
         "title": "Time configuration",
         "analysisPeriod": {
           "title": "Choose analysis period",
-          "guide": "Sample guide content"
+          "guide": ""
         }
       },
       "alarmCriteria": {
-        "title": "Alarm criteria",
+        "title": "Criteria",
         "compareWith": {
           "title": "Compare with",
-          "guide": "Sample guide content"
+          "guide": ""
         },
         "measureType": "Measure type",
         "threshold": {
-          "title": "Threshold",
-          "guide": "Sample guide content"
+          "title": "Threshold Type",
+          "guide": ""
         },
         "thresholdValue": {
           "title": "Threshold value",
-          "guide": "Sample guide content"
+          "guide": ""
         },
         "thresholdStartValue": {
           "title": "Threshold start value",
-          "guide": "Sample guide content"
+          "guide": ""
         },
         "thresholdEndValue": {
           "title": "Threshold end value",
-          "guide": "Sample guide content"
+          "guide": ""
         }
       },
       "recipient": {
         "title": "Recipient details",
         "email": {
-          "title": "Recipient",
+          "title": "Email recipient",
           "placeholder": "Type and enter"
         },
         "sms": {
@@ -90,19 +90,19 @@
       "validation": {
         "name": "Name is required",
         "clientUuid": "Client is required",
-        "meteringPointTypeId": "Metering type is required",
+        "meteringPointTypeId": "Medium type is required",
         "timezone": "Time zone is required",
         "userUuid": "User is required",
-        "frequency": "Alarm frequency is required",
+        "frequency": "Period is required",
         "generationDay": "Generation day is required",
         "generationTime": "Generation time is required",
-        "delayInDays": "Gap in data analysis is required",
+        "delayInDays": "Delay in data reception is required",
         "analysePeriod": "Analysis period is required",
         "compareWithPeriod": "Comparison period is required",
         "comparisonMeasure": "Comparison measure is required",
         "recipients": "Invalid email address. Please enter a valid email",
         "phoneNumber": "Invalid phone number. Please enter a valid phone number",
-        "shared": "At least one location or tenant must be selected when shared is enabled",
+        "shared": "At least one location or tenant must be selected when sharing is enabled",
         "thresholdType": "Threshold type is required when a comparison period is selected",
         "thresholdValue": "Threshold value is required",
         "thresholdStartValue": "Threshold start value is required",
@@ -134,15 +134,15 @@
     },
     "compareWith": {
       "const": "Const",
-      "prevDay": "Prev Day",
-      "prevWeek": "Prev Week",
-      "prevMonth": "Prev Month",
-      "prevQuarter": "Prev Quarter",
-      "prevYear": "Prev Year",
+      "prevDay": "Previous Day",
+      "prevWeek": "Previous Week",
+      "prevMonth": "Previous Month",
+      "prevQuarter": "Previous Quarter",
+      "prevYear": "Previous Year",
       "prevYearSameDay": "Same Day Last Year",
-      "prevYearSameWeek": "Prev Year Same Week",
-      "prevYearSameMonth": "Prev Year Same Month",
-      "prevYearSameQuarter": "Prev Year Same Quarter"
+      "prevYearSameWeek": "Previous Year Same Week",
+      "prevYearSameMonth": "Previous Year Same Month",
+      "prevYearSameQuarter": "Previous Year Same Quarter"
     },
     "measureType": {
       "totalConsumption": "Total consumption"
