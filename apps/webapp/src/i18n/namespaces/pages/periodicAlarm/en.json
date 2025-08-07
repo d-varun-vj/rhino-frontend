@@ -68,6 +68,10 @@
         "thresholdEndValue": {
           "title": "Threshold end value {{unit}}",
           "guide": ""
+        },
+        "sendOnlyWhenExceeded": {
+          "title": "Send report only when exceeded",
+          "guide": ""
         }
       },
       "recipient": {

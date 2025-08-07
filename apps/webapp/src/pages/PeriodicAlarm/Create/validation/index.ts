@@ -56,6 +56,7 @@ export const buildPeriodicAlarmSchema = (
       measurementUuids: z
         .array(z.string())
         .nonempty(t(i18nBase + 'measurementUuids')),
+      sendOnlyWhenExceeded: z.boolean(),
     })
     .refine(
       (data) => {

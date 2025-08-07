@@ -70,6 +70,7 @@ const CreatePeriodicAlarm = () => {
       recipientEmails: [],
       phoneNumber: [],
       measurementUuids: [],
+      sendOnlyWhenExceeded: true,
     },
     resolver: zodResolver(schema),
   });

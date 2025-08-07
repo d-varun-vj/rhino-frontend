@@ -68,6 +68,10 @@
         "thresholdEndValue": {
           "title": "Wartość końcowa progu",
           "guide": ""
+        },
+        "sendOnlyWhenExceeded": {
+          "title": "Wyślij raport tylko kiedy przekracza próg",
+          "guide": ""
         }
       },
       "recipient": {

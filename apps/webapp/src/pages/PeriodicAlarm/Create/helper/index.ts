@@ -95,6 +95,7 @@ export const buildCreateRequestForm = (
       ...(!!values.thresholdEndValue && {
         thresholdEndValue: values.thresholdEndValue,
       }),
+      sendOnlyWhenExceeded: values.sendOnlyWhenExceeded,
     },
     recipients: {
       ...(!!values.recipientEmails && { emails: values.recipientEmails }),

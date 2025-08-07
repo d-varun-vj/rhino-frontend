@@ -44,6 +44,7 @@ export type PeriodicAlarmCreateReq = {
     thresholdValue?: number;
     thresholdStartValue?: number;
     thresholdEndValue?: number;
+    sendOnlyWhenExceeded: boolean;
   };
   recipients: {
     emails?: string[];
