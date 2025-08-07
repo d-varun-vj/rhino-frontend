@@ -31,6 +31,6 @@ export const useGetMeteringPointTypes = ({
       );
       return response.data;
     },
-    enabled: clientUuid ? true : false,
+    enabled: !!clientUuid,
   });
 };

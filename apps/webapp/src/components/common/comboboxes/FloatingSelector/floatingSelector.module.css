@@ -3,6 +3,9 @@
   background-color: white;
   width: fit-content;
   border-radius: var(--border-redius);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .control {

@@ -1,6 +1,6 @@
 import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
 import QuestionCircle from 'apps/webapp/src/components/common/indicators/QuestionCircle';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { PeriodicAlarmPeriod, RHFInputProps } from '../../../types';
@@ -22,17 +22,13 @@ const TimeConfiguration = ({
 }) => {
   const { t } = useTranslation('periodicAlarm');
   const selectedFrequency = watch('frequency') || 'DAILY';
+  const validOptionMap =
+    VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS[
+      selectedFrequency as keyof typeof VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS
+    ];
 
   const filteredAnalysisPeriodOptions = useMemo(() => {
-    const validOptionMap =
-      VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS[
-        selectedFrequency as keyof typeof VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS
-      ];
-
     if (validOptionMap) {
-      const defaultAnalysisPeriod = validOptionMap.default;
-      setValue('analysePeriod', defaultAnalysisPeriod);
-
       return ANALYSE_PERIOD_OPTIONS.map((option) => ({
         ...option,
         disabled: !validOptionMap.allowed.includes(option.id),
@@ -43,7 +39,13 @@ const TimeConfiguration = ({
       ...option,
       disabled: true,
     }));
-  }, [selectedFrequency, setValue]);
+  }, [validOptionMap]);
+
+  useEffect(() => {
+    if (validOptionMap?.default) {
+      setValue('analysePeriod', validOptionMap.default);
+    }
+  }, [selectedFrequency, setValue, validOptionMap.default]);
 
   return (
     <SectionWrapper
@@ -69,7 +71,7 @@ const TimeConfiguration = ({
                 field.onChange(period);
                 resetThresholdValues();
               }}
-              error={!!fieldState.error}
+              error={fieldState.error?.message}
             />
           )}
         />

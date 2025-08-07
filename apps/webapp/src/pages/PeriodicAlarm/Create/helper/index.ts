@@ -55,15 +55,12 @@ export const onError = (errors: FieldErrors<PeriodicAlarmSchema>) => {
     return;
   }
 
-  Object.entries(errors).forEach(([, val]) => {
-    if (Array.isArray(val)) {
-      val.forEach((item: { message: string }, i) => {
-        message.warn(`${item.message} ${i + 1}`);
-      });
-    } else if (val?.message) {
-      message.warn(val.message);
-    }
-  });
+  if (errors.measurementUuids?.message) {
+    message.warn(errors.measurementUuids.message);
+  }
+  if (errors.shared?.message) {
+    message.warn(errors.shared.message);
+  }
 };
 
 export const applyLabelTranslations = <T extends { label: string }>(
@@ -84,7 +81,7 @@ export const buildCreateRequestForm = (
     meteringPointTypeId: values.meteringPointTypeId,
     measurementUuids: values.measurementUuids,
     configuration: {
-      generationDay: values.generationDay,
+      generationDay: values.generationDay ?? 1,
       generationTime: values.generationTime,
       delayInDays: values.delayInDays,
       comparisonMeasure: values.comparisonMeasure,

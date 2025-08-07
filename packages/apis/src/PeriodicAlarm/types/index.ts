@@ -36,7 +36,7 @@ export type PeriodicAlarmCreateReq = {
   meteringPointTypeId: number;
   measurementUuids: string[];
   configuration: {
-    generationDay: number;
+    generationDay?: number;
     generationTime: string;
     delayInDays: number;
     comparisonMeasure: string;

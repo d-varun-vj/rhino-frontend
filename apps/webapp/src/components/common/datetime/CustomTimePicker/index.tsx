@@ -1,10 +1,11 @@
 import { TimePicker, TimePickerProps } from '@mantine/dates';
-import clsx from 'clsx';
+import ErrorText from '../../../typography/ErrorText';
 import Label from '../../../typography/Label';
 import styles from './customtimepicker.module.css';
 
 interface CustomTimePickerProps extends TimePickerProps {
   label?: string;
+  error?: string;
 }
 
 const CustomTimePicker = ({
@@ -20,15 +21,15 @@ const CustomTimePicker = ({
           content={label}
           htmlFor={label.toLowerCase()}
           required={required}
-          className={clsx({ 'text-red-500': error })}
         />
       )}
       <TimePicker
         withDropdown
         className={styles.timePicker}
-        error={error}
+        error={!!error}
         {...props}
       />
+      {error && <ErrorText content={error} />}
     </div>
   );
 };

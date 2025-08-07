@@ -1,14 +1,16 @@
 import { Select, SelectProps } from '@mantine/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import ErrorText from '../../../typography/ErrorText';
 import Label from '../../../typography/Label';
 
 interface CustomSelectProps extends SelectProps {
   label?: string;
+  error?: string;
 }
 
 const CustomSelect = React.forwardRef<HTMLInputElement, CustomSelectProps>(
-  ({ label, required, ...props }, ref) => {
+  ({ label, required, error, ...props }, ref) => {
     const { t } = useTranslation('components');
     return (
       <div className="flex flex-col gap-1.5">
@@ -22,11 +24,13 @@ const CustomSelect = React.forwardRef<HTMLInputElement, CustomSelectProps>(
         <Select
           ref={ref}
           searchable
+          error={!!error}
           {...props}
           placeholder={t('comboBox.select')}
           checkIconPosition="right"
           nothingFoundMessage={t('comboBox.empty')}
         />
+        {error && <ErrorText content={error} />}
       </div>
     );
   }

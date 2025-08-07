@@ -58,15 +58,15 @@
           "guide": ""
         },
         "thresholdValue": {
-          "title": "Threshold value",
+          "title": "Threshold value {{unit}}",
           "guide": ""
         },
         "thresholdStartValue": {
-          "title": "Threshold start value",
+          "title": "Threshold start value {{unit}}",
           "guide": ""
         },
         "thresholdEndValue": {
-          "title": "Threshold end value",
+          "title": "Threshold end value {{unit}}",
           "guide": ""
         }
       },
@@ -109,7 +109,8 @@
         "thresholdEndValue": "Threshold end value is required",
         "measurementUuids": "Select measurements"
       }
-    }
+    },
+    "error": "Failed to create periodic alarm"
   },
   "delete": {
     "title": "Delete Alarm",
@@ -133,7 +134,7 @@
       "lastYear": "Last year"
     },
     "compareWith": {
-      "const": "Const",
+      "const": "Constant",
       "prevDay": "Previous Day",
       "prevWeek": "Previous Week",
       "prevMonth": "Previous Month",

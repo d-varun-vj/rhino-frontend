@@ -21,12 +21,12 @@ const SharingTenantPanel = ({
     <MultiSelectComboBox
       label={t('sharedSection.sharedTenants')}
       data={
-        tenantData
-          ? tenantData.data.map((tenant) => ({
-              label: tenant.displayNameWithLeaseNumber,
-              value: tenant.uuid,
-            }))
-          : []
+        tenantData?.data
+          ?.map((tenant) => ({
+            label: tenant.displayNameWithLeaseNumber,
+            value: tenant.uuid,
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label)) || []
       }
       disabled={tenantData?.data?.length === 0 || disabled}
       {...props}

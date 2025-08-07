@@ -3,6 +3,7 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RHFInputProps } from '../../../types';
 import { tFormBase } from '../../config';
+import { i18nBase } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
 const RecipientDetails = ({ control, errors }: RHFInputProps) => {
@@ -18,29 +19,49 @@ const RecipientDetails = ({ control, errors }: RHFInputProps) => {
           name="recipientEmails"
           control={control}
           rules={{ required: true }}
-          render={({ field }) => (
-            <MultiTextField
-              {...field}
-              label={t(tFormBase + 'recipient.email.title')}
-              placeholder={t(tFormBase + 'recipient.email.placeholder')}
-              onChange={(val) => field.onChange(val)}
-              error={!!errors.recipientEmails}
-            />
-          )}
+          render={({ field, fieldState }) => {
+            let errMessage = fieldState.error?.message;
+            if (
+              Array.isArray(errors.recipientEmails) &&
+              errors.recipientEmails?.some(Boolean)
+            ) {
+              errMessage = t(i18nBase + 'recipients');
+            }
+
+            return (
+              <MultiTextField
+                {...field}
+                label={t(tFormBase + 'recipient.email.title')}
+                placeholder={t(tFormBase + 'recipient.email.placeholder')}
+                onChange={(val) => field.onChange(val ?? '')}
+                error={errMessage}
+                required
+              />
+            );
+          }}
         />
 
         <Controller
           name="phoneNumber"
           control={control}
-          render={({ field }) => (
-            <MultiTextField
-              {...field}
-              label={t(tFormBase + 'recipient.sms.title')}
-              placeholder={t(tFormBase + 'recipient.sms.placeholder')}
-              onChange={(val) => field.onChange(val)}
-              error={!!errors.phoneNumber}
-            />
-          )}
+          render={({ field, fieldState }) => {
+            let errMessage = fieldState.error?.message;
+            if (
+              Array.isArray(errors.phoneNumber) &&
+              errors.phoneNumber?.some(Boolean)
+            ) {
+              errMessage = t(i18nBase + 'phoneNumber');
+            }
+            return (
+              <MultiTextField
+                {...field}
+                label={t(tFormBase + 'recipient.sms.title')}
+                placeholder={t(tFormBase + 'recipient.sms.placeholder')}
+                onChange={(val) => field.onChange(val ?? '')}
+                error={errMessage}
+              />
+            );
+          }}
         />
       </div>
     </SectionWrapper>

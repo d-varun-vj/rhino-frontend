@@ -9,7 +9,7 @@ import {
   shouldShowThresholdValue,
 } from '../helper';
 
-const i18nBase = 'create.form.validation.';
+export const i18nBase = 'create.form.validation.';
 
 export const buildPeriodicAlarmSchema = (
   t: TFunction<'periodicAlarm', undefined>
@@ -25,18 +25,25 @@ export const buildPeriodicAlarmSchema = (
         .string(t(i18nBase + 'timezone'))
         .min(1, t(i18nBase + 'timezone')),
       frequency: z.string().min(1, t(i18nBase + 'frequency')),
-      generationDay: z.number(t(i18nBase + 'generationDay')),
-      generationTime: z.string().min(1, t(i18nBase + 'generationTime')),
-      delayInDays: z
-        .number(t(i18nBase + 'delayInDays'))
-        .nonnegative(t(i18nBase + 'delayInDays')),
+      generationDay: z
+        .number(t(i18nBase + 'generationDay'))
+        .min(1, t(i18nBase + 'generationDay'))
+        .nullable(),
+      generationTime: z
+        .string(t(i18nBase + 'generationTime'))
+        .min(1, t(i18nBase + 'generationTime')),
+      delayInDays: z.number(t(i18nBase + 'delayInDays')),
       analysePeriod: z.string().min(1, t(i18nBase + 'analysePeriod')),
       compareWithPeriod: z.string().min(1, t(i18nBase + 'compareWithPeriod')),
       comparisonMeasure: z.string().min(1, t(i18nBase + 'comparisonMeasure')),
-      thresholdType: z.string(),
-      thresholdValue: z.number().nullable(),
-      thresholdStartValue: z.number().nullable(),
-      thresholdEndValue: z.number().nullable(),
+      thresholdType: z
+        .string(t(i18nBase + 'thresholdType'))
+        .min(1, t(i18nBase + 'thresholdType')),
+      thresholdValue: z.number(t(i18nBase + 'thresholdValue')).optional(),
+      thresholdStartValue: z
+        .number(t(i18nBase + 'thresholdStartValue'))
+        .optional(),
+      thresholdEndValue: z.number(t(i18nBase + 'thresholdEndValue')).optional(),
       isActive: z.boolean(),
       shared: z.boolean(),
       readOnly: z.boolean(),
@@ -78,10 +85,10 @@ export const buildPeriodicAlarmSchema = (
     )
     .refine(
       (data) => {
-        if (data.frequency === 'DAILY' && data.generationDay == 0) {
+        if (data.frequency === 'DAILY') {
           return true;
         }
-        return data.generationDay !== 0;
+        return data.generationDay !== null;
       },
       {
         message: t(i18nBase + 'generationDay'),
@@ -96,7 +103,7 @@ export const buildPeriodicAlarmSchema = (
         );
         if (_shouldShowThresholdValue) {
           return (
-            data.thresholdValue !== null && data.thresholdValue !== undefined
+            data.thresholdValue !== undefined && data.thresholdValue !== null
           );
         }
         return true;
@@ -154,7 +161,7 @@ export const buildPeriodicAlarmSchema = (
       },
       {
         message: t(i18nBase + 'recipients'),
-        path: ['recipients'],
+        path: ['recipientEmails'],
       }
     );
 };

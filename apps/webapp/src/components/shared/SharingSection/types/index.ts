@@ -21,9 +21,11 @@ export type SharingAction =
 
 export type SharingSectionProps<T extends FieldValues> = {
   label: string;
-  error?: boolean;
+  error?: string;
   control: Control<T>;
   onValuesChange?: (values: SharingState) => void;
+  mode?: 'create' | 'update';
   setValue?: UseFormSetValue<T>;
   watch: UseFormWatch<T>;
+  authorUuid?: string;
 };

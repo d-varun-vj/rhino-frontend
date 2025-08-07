@@ -20,10 +20,14 @@ const SharingLocationPanel = ({
   return (
     <MultiSelectComboBox
       label={t('sharedSection.sharedLocations')}
-      data={locationsData?.map((location) => ({
-        label: location.name,
-        value: location.uuid,
-      }))}
+      data={
+        locationsData
+          ?.map((location) => ({
+            label: location.name,
+            value: location.uuid,
+          }))
+          .sort((a, b) => a.label.localeCompare(b.label)) || []
+      }
       disabled={locationsData?.length === 0 || disabled}
       {...props}
     />

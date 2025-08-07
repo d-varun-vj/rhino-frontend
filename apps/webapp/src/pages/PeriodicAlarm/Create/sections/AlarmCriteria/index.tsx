@@ -30,11 +30,15 @@ import SectionWrapper from '../SectionWrapper';
 const AlarmCriteria = ({
   control,
   setValue,
-  errors,
   watch,
   resetThresholdValues,
+  selectedMediumType,
 }: RHFInputProps & {
   resetThresholdValues: () => void;
+  selectedMediumType?: {
+    name: string | null;
+    unit: string | null;
+  } | null;
 }) => {
   const { t } = useTranslation('periodicAlarm');
 
@@ -62,13 +66,13 @@ const AlarmCriteria = ({
       id="alarm-criteria"
     >
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 h-fit">
           <div className="block w-full">
             <Controller
               name="compareWithPeriod"
               control={control}
               rules={{ required: true }}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <CustomSelect
                   key={selectedAnalysisPeriod}
                   label={t(tFormBase + 'alarmCriteria.compareWith.title')}
@@ -83,7 +87,7 @@ const AlarmCriteria = ({
                   value={field.value || null}
                   onBlur={field.onBlur}
                   searchable={false}
-                  error={!!errors.compareWithPeriod}
+                  error={fieldState.error?.message}
                 />
               )}
             />
@@ -97,7 +101,7 @@ const AlarmCriteria = ({
           name="comparisonMeasure"
           control={control}
           rules={{ required: true }}
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <CustomSelect
               label={t(tFormBase + 'alarmCriteria.measureType')}
               required
@@ -106,7 +110,8 @@ const AlarmCriteria = ({
               value={field.value || null}
               onBlur={field.onBlur}
               searchable={false}
-              error={!!errors.comparisonMeasure}
+              error={fieldState.error?.message}
+              disabled
             />
           )}
         />
@@ -120,7 +125,7 @@ const AlarmCriteria = ({
                 name="thresholdType"
                 control={control}
                 rules={{ required: true }}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <CustomSelect
                     key={`${selectedAnalysisPeriod}-${selectedCompareWith}`}
                     label={t(tFormBase + 'alarmCriteria.threshold.title')}
@@ -128,14 +133,16 @@ const AlarmCriteria = ({
                     data={applyLabelTranslations(filteredThresholdOptions)}
                     onChange={(val) => {
                       field.onChange(val ?? '');
-                      setValue('thresholdValue', null);
-                      setValue('thresholdStartValue', null);
-                      setValue('thresholdEndValue', null);
+                      setValue('thresholdValue', undefined);
+                      setValue('thresholdStartValue', undefined);
+                      setValue('thresholdEndValue', undefined);
                     }}
                     value={field.value || null}
                     onBlur={field.onBlur}
                     searchable={false}
-                    error={!!errors.thresholdType}
+                    error={fieldState.error?.message}
+                    disabled={!selectedMediumType}
+                    title={t(tFormBase + 'emptyMediumType')}
                   />
                 )}
               />
@@ -157,18 +164,19 @@ const AlarmCriteria = ({
                 name="thresholdValue"
                 control={control}
                 rules={{ required: true }}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <NumberField
                     key={`${selectedAnalysisPeriod}-${selectedCompareWith}`}
-                    label={t(tFormBase + 'alarmCriteria.thresholdValue.title')}
-                    allowNegative={false}
+                    label={t(tFormBase + 'alarmCriteria.thresholdValue.title', {
+                      unit: `(${selectedMediumType?.unit || '-'})`,
+                    })}
                     required
                     onChange={(val) => {
                       field.onChange(val ? +val : null);
                     }}
                     value={field.value || ''}
                     onBlur={field.onBlur}
-                    error={!!errors.thresholdValue}
+                    error={fieldState.error?.message}
                   />
                 )}
               />
@@ -191,18 +199,20 @@ const AlarmCriteria = ({
                 name="thresholdStartValue"
                 control={control}
                 rules={{ required: true }}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <NumberField
                     key={`${selectedAnalysisPeriod}-${selectedCompareWith}-${selectedThresholdType}`}
                     label={t(
-                      tFormBase + 'alarmCriteria.thresholdStartValue.title'
+                      tFormBase + 'alarmCriteria.thresholdStartValue.title',
+                      {
+                        unit: `(${selectedMediumType?.unit || '-'})`,
+                      }
                     )}
-                    allowNegative={false}
                     required
                     onChange={(val) => field.onChange(val ? +val : null)}
                     value={field.value || ''}
                     onBlur={field.onBlur}
-                    error={!!errors.thresholdStartValue}
+                    error={fieldState.error?.message}
                   />
                 )}
               />
@@ -212,24 +222,26 @@ const AlarmCriteria = ({
               className="mt-6"
             />
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 h-fit">
             <div className="block w-full">
               <Controller
                 name="thresholdEndValue"
                 control={control}
                 rules={{ required: true }}
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <NumberField
                     key={`${selectedAnalysisPeriod}-${selectedCompareWith}-${selectedThresholdType}`}
                     label={t(
-                      tFormBase + 'alarmCriteria.thresholdEndValue.title'
+                      tFormBase + 'alarmCriteria.thresholdEndValue.title',
+                      {
+                        unit: `(${selectedMediumType?.unit || '-'})`,
+                      }
                     )}
-                    allowNegative={false}
                     required
-                    value={field.value || ''}
+                    value={field.value || undefined}
                     onBlur={field.onBlur}
-                    onChange={(val) => field.onChange(+val)}
-                    error={!!errors.thresholdEndValue}
+                    onChange={(val) => field.onChange(val ? +val : null)}
+                    error={fieldState.error?.message}
                   />
                 )}
               />

@@ -132,19 +132,34 @@ export const VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS: Record<
   },
   WEEKLY: {
     default: PeriodicAlarmPeriod.LAST_WEEK,
-    allowed: [PeriodicAlarmPeriod.LAST_WEEK, PeriodicAlarmPeriod.LAST_MONTH],
+    allowed: [PeriodicAlarmPeriod.LAST_DAY, PeriodicAlarmPeriod.LAST_WEEK],
   },
   MONTHLY: {
     default: PeriodicAlarmPeriod.LAST_MONTH,
-    allowed: [PeriodicAlarmPeriod.LAST_MONTH],
+    allowed: [
+      PeriodicAlarmPeriod.LAST_DAY,
+      PeriodicAlarmPeriod.LAST_WEEK,
+      PeriodicAlarmPeriod.LAST_MONTH,
+    ],
   },
   QUARTERLY: {
     default: PeriodicAlarmPeriod.LAST_QUARTER,
-    allowed: [PeriodicAlarmPeriod.LAST_QUARTER],
+    allowed: [
+      PeriodicAlarmPeriod.LAST_DAY,
+      PeriodicAlarmPeriod.LAST_WEEK,
+      PeriodicAlarmPeriod.LAST_MONTH,
+      PeriodicAlarmPeriod.LAST_QUARTER,
+    ],
   },
   YEARLY: {
     default: PeriodicAlarmPeriod.LAST_YEAR,
-    allowed: [PeriodicAlarmPeriod.LAST_YEAR],
+    allowed: [
+      PeriodicAlarmPeriod.LAST_DAY,
+      PeriodicAlarmPeriod.LAST_WEEK,
+      PeriodicAlarmPeriod.LAST_MONTH,
+      PeriodicAlarmPeriod.LAST_QUARTER,
+      PeriodicAlarmPeriod.LAST_YEAR,
+    ],
   },
 };
 

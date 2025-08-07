@@ -109,7 +109,8 @@
         "thresholdEndValue": "Wartość końcowa progu jest wymagana",
         "measurementUuids": "Wybierz liczniki"
       }
-    }
+    },
+    "error": "Nie udało się utworzyć alarmu okresowego"
   },
   "delete": {
     "title": "Usuń alarm",
@@ -133,7 +134,7 @@
       "lastYear": "Zeszły rok"
     },
     "compareWith": {
-      "const": "Stała",
+      "const": "Stały",
       "prevDay": "Poprzedni dzień",
       "prevWeek": "Poprzedni tydzień",
       "prevMonth": "Poprzedni miesiąc",

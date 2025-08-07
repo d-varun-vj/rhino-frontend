@@ -4,10 +4,12 @@ import TextField from 'apps/webapp/src/components/common/input/TextField';
 import Toggle from 'apps/webapp/src/components/common/input/Toggle';
 import SharingSection from 'apps/webapp/src/components/shared/SharingSection';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
+import moment from 'moment-timezone';
+import { useMemo } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RHFInputProps } from '../../../types';
-import { SUPPORTED_TIMEZONES, tFormBase } from '../../config';
+import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
@@ -19,7 +21,13 @@ const BasicInformation = ({
   errors,
   setSelectedMediumType,
 }: RHFInputProps & {
-  setSelectedMediumType: (val: string | null) => void;
+  setSelectedMediumType: ({
+    name,
+    unit,
+  }: {
+    name: string | null;
+    unit: string | null;
+  }) => void;
 }) => {
   const { t, i18n } = useTranslation('periodicAlarm');
   const { client } = useUserFilter();
@@ -27,6 +35,16 @@ const BasicInformation = ({
     clientUuid: client ? client?.uuid : null,
     queryKey: [i18n.language],
   });
+
+  const TIMEZONES = useMemo(() => {
+    return moment.tz
+      .names()
+      .map((tz) => ({
+        value: tz,
+        label: `${tz} (${moment.tz(tz).format('Z')})`,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, []);
 
   return (
     <SectionWrapper title={t(tFormBase + 'basic.title')} id="basic-information">
@@ -49,7 +67,7 @@ const BasicInformation = ({
       <SharingSection<PeriodicAlarmSchema>
         label={t(tFormBase + 'basic.shared')}
         control={control}
-        error={!!errors.shared}
+        error={errors.shared?.message}
         setValue={setValue}
         watch={watch}
       />
@@ -71,11 +89,13 @@ const BasicInformation = ({
               value={field.value?.toString() || null}
               onChange={(val) => {
                 field.onChange(val ? +val : -1);
-                setSelectedMediumType(
-                  meteringPointTypesRes?.data.find(
-                    (type) => type.id === (val ? +val : '')
-                  )?.name ?? null
+                const selectedVal = meteringPointTypesRes?.data.find(
+                  (type) => type.id === (val ? +val : '')
                 );
+                setSelectedMediumType({
+                  name: selectedVal?.name ?? null,
+                  unit: selectedVal?.unit ?? null,
+                });
               }}
               onBlur={field.onBlur}
               disabled={!client}
@@ -93,7 +113,7 @@ const BasicInformation = ({
             <CustomSelect
               label={t(tFormBase + 'basic.timezone')}
               required
-              data={SUPPORTED_TIMEZONES}
+              data={TIMEZONES}
               value={field.value || null}
               onChange={(val) => {
                 field.onChange(val || '');
@@ -101,7 +121,6 @@ const BasicInformation = ({
               onBlur={field.onBlur}
               error={fieldState.error?.message}
               clearable
-              searchable={false}
             />
           )}
         />

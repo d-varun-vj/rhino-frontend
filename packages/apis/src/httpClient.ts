@@ -80,6 +80,20 @@ const fetchAdapter: AxiosAdapter = async (
     responseData = null;
   }
 
+  if (!response.ok) {
+    const errorData = responseData || { message: '', error: '' };
+
+    (errorData as any).response = {
+      data: errorData,
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+      config,
+    };
+
+    throw errorData;
+  }
+
   const axiosResponse: AxiosResponse<unknown> = {
     data: responseData,
     status: response.status,

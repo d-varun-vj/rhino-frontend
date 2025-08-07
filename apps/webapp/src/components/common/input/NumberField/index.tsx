@@ -1,13 +1,15 @@
 import { NumberInput, NumberInputProps } from '@mantine/core';
 import React from 'react';
+import ErrorText from '../../../typography/ErrorText';
 import Label from '../../../typography/Label';
 
 interface NumberFieldProps extends NumberInputProps {
   label?: string;
+  error?: string;
 }
 
 const NumberField = React.forwardRef<HTMLInputElement, NumberFieldProps>(
-  ({ label, required, ...props }, ref) => {
+  ({ label, required, error, ...props }, ref) => {
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
@@ -17,7 +19,8 @@ const NumberField = React.forwardRef<HTMLInputElement, NumberFieldProps>(
             required={required}
           />
         )}
-        <NumberInput ref={ref} {...props} />
+        <NumberInput ref={ref} error={!!error} {...props} />
+        {error && <ErrorText content={error} />}
       </div>
     );
   }

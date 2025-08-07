@@ -1,6 +1,6 @@
 import { FloatingIndicator, UnstyledButton } from '@mantine/core';
-import clsx from 'clsx';
 import { useEffect, useState } from 'react';
+import ErrorText from '../../../typography/ErrorText';
 import Label from '../../../typography/Label';
 import classes from './floatingSelector.module.css';
 
@@ -12,7 +12,7 @@ export type Item = {
 
 type FloatingSelectorProps<TMultiple extends boolean = false> = {
   label?: string;
-  error?: boolean;
+  error?: string;
   data: Item[];
   multipleSelect?: TMultiple;
   required?: boolean;
@@ -119,11 +119,10 @@ const FloatingSelector = <T extends boolean = false>({
           content={label}
           htmlFor={label.toLowerCase()}
           required={required ?? false}
-          className={clsx({ 'text-red-500': error })}
         />
       )}
       <div className={classes.root} ref={setRootRef}>
-        {controls}
+        <div>{controls}</div>
 
         {!multipleSelect && (
           <FloatingIndicator
@@ -132,6 +131,7 @@ const FloatingSelector = <T extends boolean = false>({
             className={classes.indicator}
           />
         )}
+        {error && <ErrorText content={error} />}
       </div>
     </div>
   );

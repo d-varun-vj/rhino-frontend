@@ -21,14 +21,13 @@ import {
   PeriodicAlarmFrequency,
   PeriodicAlarmPeriod,
 } from '../types';
-import { COMPARISON_MEASURE_TYPE_OPTIONS, SUPPORTED_TIMEZONES } from './config';
+import { COMPARISON_MEASURE_TYPE_OPTIONS } from './config';
 import { buildCreateRequestForm, onError } from './helper';
 import AlarmCriteria from './sections/AlarmCriteria';
 import BasicInformation from './sections/BasicInformation';
 import FormFooter from './sections/FormFooter';
 import MomentOfExecution from './sections/MomentOfExecution';
 import RecipientDetails from './sections/RecipientDetails';
-import StickyMenu from './sections/StickyMenu';
 import TimeConfiguration from './sections/TimeConfiguration';
 import { buildPeriodicAlarmSchema, PeriodicAlarmSchema } from './validation';
 
@@ -39,9 +38,10 @@ const CreatePeriodicAlarm = () => {
 
   const { mutate: createAlarm, isPending } = usePostPeriodicAlarm();
 
-  const [selectedMediumType, setSelectedMediumType] = useState<string | null>(
-    null
-  );
+  const [selectedMediumType, setSelectedMediumType] = useState<{
+    name: string | null;
+    unit: string | null;
+  } | null>(null);
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -55,15 +55,13 @@ const CreatePeriodicAlarm = () => {
     trigger,
     formState: { errors },
   } = useForm<PeriodicAlarmSchema>({
-    mode: 'onChange',
+    mode: 'all',
     defaultValues: {
       frequency: PeriodicAlarmFrequency.DAILY,
       analysePeriod: PeriodicAlarmPeriod.LAST_DAY,
       comparisonMeasure: COMPARISON_MEASURE_TYPE_OPTIONS[0].value,
-      timezone: SUPPORTED_TIMEZONES[0].value,
       compareWithPeriod: PeriodicAlarmCompareWith.CONSTANT,
-      generationDay: 1,
-      delayInDays: 0,
+      timezone: 'Europe/Warsaw',
       isActive: true,
       readOnly: true,
       shared: false,
@@ -92,9 +90,9 @@ const CreatePeriodicAlarm = () => {
 
   const resetThresholdValues = useCallback(() => {
     setValue('thresholdType', '');
-    setValue('thresholdValue', null);
-    setValue('thresholdStartValue', null);
-    setValue('thresholdEndValue', null);
+    setValue('thresholdValue', undefined);
+    setValue('thresholdStartValue', undefined);
+    setValue('thresholdEndValue', undefined);
   }, [setValue]);
 
   const onSubmit = (values: PeriodicAlarmSchema) => {
@@ -112,8 +110,14 @@ const CreatePeriodicAlarm = () => {
           }
         );
       },
-      onError: () => {
-        message.error(t('toast.somethingWentWrong', { ns: 'common' }));
+      onError: (error: Error | { error: string; message: string }) => {
+        const errMessage =
+          ('error' in error ? error.error : '') +
+            ('message' in error ? error.message : '') || t('create.error');
+
+        message.error(
+          errMessage ?? t('toast.somethingWentWrong', { ns: 'common' })
+        );
       },
     });
   };
@@ -149,16 +153,16 @@ const CreatePeriodicAlarm = () => {
                   <AlarmCriteria
                     {...commonFormProps}
                     resetThresholdValues={resetThresholdValues}
+                    selectedMediumType={selectedMediumType}
                   />
                   <RecipientDetails {...commonFormProps} />
                 </div>
-                <StickyMenu />
               </div>
             </div>
           </div>
           <FormFooter
             {...commonFormProps}
-            selectedMediumType={selectedMediumType}
+            selectedMediumType={selectedMediumType?.name || null}
             isPending={isPending}
           />
         </form>

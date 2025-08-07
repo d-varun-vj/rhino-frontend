@@ -2,7 +2,7 @@ import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/Float
 import CustomTimePicker from 'apps/webapp/src/components/common/datetime/CustomTimePicker';
 import QuestionCircle from 'apps/webapp/src/components/common/indicators/QuestionCircle';
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { PeriodicAlarmFrequency, RHFInputProps } from '../../../types';
@@ -26,6 +26,10 @@ const MomentOfExecution = ({
   const selectedFrequency =
     (watch('frequency') as PeriodicAlarmFrequency) ||
     PeriodicAlarmFrequency.DAILY;
+
+  useEffect(() => {
+    setValue('generationDay', null);
+  }, [selectedFrequency, setValue]);
 
   const generationDayConfigByFrequency = useMemo(() => {
     return VALID_GENERATION_DAY_CONFIG[selectedFrequency];
@@ -54,7 +58,7 @@ const MomentOfExecution = ({
               selectedValue={FREQUENCY_OPTIONS.find(
                 (val) => val.id === (field.value as PeriodicAlarmFrequency)
               )}
-              error={!!fieldState.error}
+              error={fieldState.error ? fieldState.error.message : ''}
             />
           )}
         />
@@ -71,15 +75,13 @@ const MomentOfExecution = ({
                   min={generationDayConfigByFrequency.min}
                   max={generationDayConfigByFrequency.max}
                   placeholder={t(generationDayConfigByFrequency.placeholder)}
-                  allowNegative={false}
                   required
-                  value={field.value}
+                  value={field.value ?? ''}
                   onChange={(val) => {
-                    const numValue = val ? +val : 0;
-                    field.onChange(numValue);
+                    field.onChange(val === '' ? undefined : +val);
                   }}
                   onBlur={field.onBlur}
-                  error={!!fieldState.error}
+                  error={fieldState.error ? fieldState.error.message : ''}
                 />
               )}
             />
@@ -105,7 +107,7 @@ const MomentOfExecution = ({
                   field.onChange(time);
                 }}
                 onBlur={field.onBlur}
-                error={!!fieldState.error}
+                error={fieldState.error ? fieldState.error.message : ''}
               />
             )}
           />
@@ -125,13 +127,14 @@ const MomentOfExecution = ({
                 label={t(tFormBase + 'momentOfExecution.gapAnalysis.title')}
                 required
                 allowNegative={false}
-                value={field.value}
+                value={field.value ?? ''}
                 onChange={(val) => {
-                  const numValue = +val;
-                  field.onChange(numValue);
+                  field.onChange(val === '' ? undefined : +val);
                 }}
+                min={0}
+                max={366}
                 onBlur={field.onBlur}
-                error={!!fieldState.error}
+                error={fieldState.error ? fieldState.error.message : ''}
               />
             )}
           />
