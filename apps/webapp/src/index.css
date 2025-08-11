@@ -13,6 +13,7 @@
   --color-rhino-green-accent: oklch(72.3% 0.219 149.579);
   --color-rhino-energy-green-light: #66e3a0;
   --color-rhino-yellow: oklch(79.5% 0.184 86.047);
+  --color-rhino-red: var(--color-rhino-red);
   --color-rhino-white: #fff;
   --color-grey-light: #e6e6fa;
   --color-grey-dark: #91a0b1;

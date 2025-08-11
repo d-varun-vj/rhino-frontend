@@ -1,3 +1,48 @@
+export type ExecutionStateProps = {
+  openExecution: boolean;
+  selectedAlarmUuid: string;
+  selectedAlarmName: string;
+};
+
+export type ExecutionActionProps =
+  | { type: 'SET_OPEN_EXECUTION' }
+  | { type: 'SET_ALARM_UUID'; payload: string }
+  | { type: 'SET_ALARM_NAME'; payload: string }
+  | { type: 'RESET' };
+
+export enum ExecutionStatus {
+  ERROR = 'ERROR',
+  NO_DATA = 'NO_DATA',
+  EXCEEDED = 'EXCEEDED',
+  OK = 'OK',
+  PENDING = 'PENDING',
+}
+
+export enum PeriodicAlarmStatus {
+  SUCCESS = 'SUCCESS',
+  FAILURE = 'FAILURE',
+  IN_PROGRESS = 'IN_PROGRESS',
+  PENDING = 'PENDING',
+}
+
+export type ExecutionFilter = {
+  executionStatus: ExecutionStatus | null;
+  startDate: string | null;
+  endDate: string | null;
+};
+
+export type PeriodicAlarmExecution = {
+  uuid: string;
+  occurence: string;
+  startRange: string | null;
+  endRange: string | null;
+  executionStatus: string;
+  status: string;
+  downloadPath: string | null;
+  timeRange?: string;
+  action?: string;
+};
+
 export enum PeriodicAlarmFrequency {
   DAILY = 'DAILY',
   WEEKLY = 'WEEKLY',

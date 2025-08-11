@@ -25,6 +25,7 @@ import { FilterVariant } from './types';
 interface CustomColumnMeta {
   selectionOptions?: { label: string; value: string }[];
   filterKey?: string;
+  customFilter?: React.ReactNode;
   sortKey: string | null; // Same as backend sorting field name
   sortDirection?: string;
   renderCell?: (value: unknown, row: unknown) => React.ReactNode;
@@ -55,6 +56,7 @@ type TableProps<T> = {
   extraStyles?: string;
   emptyText?: string;
   size?: 'sm';
+  textNowarp?: boolean;
   onSortSelect?: (field: string, direction: string) => void;
   onFilterChange: (
     val: string | null,
@@ -117,6 +119,7 @@ const Table = <T,>({
   extraStyles,
   emptyText,
   size,
+  textNowarp,
   onSortSelect,
   onFilterChange,
 }: TableProps<T>) => {
@@ -162,7 +165,7 @@ const Table = <T,>({
   });
 
   return (
-    <div className="overflow-hidden flex flex-col">
+    <div className="overflow-hidden flex flex-col w-full">
       <div
         className={`p-2 overflow-auto ${extraStyles ?? 'overflow-y-hidden'}`}
       >
@@ -179,6 +182,7 @@ const Table = <T,>({
                         'sticky bg-rhino-white -right-5 pl-2':
                           header.id === CONSTANTS.action,
                         '!w-16': header.id === 'select', // Narrower width for select column
+                        'text-nowrap w-auto': textNowarp,
                       })}
                     >
                       {header.isPlaceholder ? null : (
@@ -265,6 +269,8 @@ const Table = <T,>({
                                   textFullViewId === cell.column.id,
                                 '!w-16': cell.column.id === 'select', // Narrower width for select column
                                 'text-nowrap h-fit': size == 'sm',
+                                'text-nowrap w-auto overflow-y-auto':
+                                  textNowarp,
                               }
                             )}
                             onMouseEnter={(e) =>

@@ -22,8 +22,8 @@ const Filter = <T,>({
   const { t } = useTranslation('components');
   const columnFilterValue = column.getFilterValue();
 
-  const { filterVariant } = column.columnDef.meta ?? {};
-  const [selectValue, setSelectedValue] = useState<string>('');
+  const { filterVariant, customFilter } = column.columnDef.meta ?? {};
+  const [selectValue, setSelectValue] = useState<string>('');
 
   const options = useMemo(
     () => column?.columnDef?.meta?.selectionOptions || [],
@@ -43,7 +43,7 @@ const Filter = <T,>({
   const handleSelectValueChange = useCallback(
     (value: string | null) => {
       if (!value) {
-        setSelectedValue('');
+        setSelectValue('');
         onFilterChange(null, CONSTANTS.SELECT.ALL_OPTION, null);
         return;
       }
@@ -53,7 +53,7 @@ const Filter = <T,>({
           onFilterChange(null, CONSTANTS.SELECT.ALL_OPTION, null);
         }
         column.setFilterValue(null);
-        setSelectedValue('');
+        setSelectValue('');
         return;
       }
 
@@ -62,7 +62,7 @@ const Filter = <T,>({
       }
 
       column.setFilterValue(value);
-      setSelectedValue(value || '');
+      setSelectValue(value || '');
     },
     [filterKey, onFilterChange, column]
   );
@@ -121,6 +121,10 @@ const Filter = <T,>({
         value={(columnFilterValue ?? '') as string}
       />
     );
+  }
+
+  if (filterVariant === FilterVariant.CUSTOM && customFilter) {
+    return customFilter;
   }
 
   return null;

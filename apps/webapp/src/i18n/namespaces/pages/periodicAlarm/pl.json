@@ -118,6 +118,18 @@
     },
     "error": "Nie udało się utworzyć alarmu okresowego"
   },
+  "execution": {
+    "table": {
+      "occurence": "Moment wystąpienia",
+      "executionStatus": "Status",
+      "timeRange": "Zakres czasu",
+      "action": "Akcje"
+    },
+    "download": {
+      "btn": "Pobierz Excela",
+      "error": "Pobieranie nie powiodło się"
+    }
+  },
   "delete": {
     "title": "Usuń alarm",
     "message": "Czy na pewno chcesz usunąć alarm \"{{name}}\"? Tej akcji nie można cofnąć.",

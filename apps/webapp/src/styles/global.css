@@ -78,6 +78,15 @@ tbody tr:nth-child(odd) td:last-child {
   margin-top: 10px !important;
 }
 
+.modal-content-custom {
+  height: 80vh;
+}
+
+.modal-body-custom {
+  padding: 25px;
+  padding-top: 0;
+}
+
 .modal-header-custom {
   border-top: 8px solid var(--color-rhino-energy-green) !important;
   border-top-left-radius: 0 !important;

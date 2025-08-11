@@ -8,7 +8,7 @@ import {
 } from '@rhino/apis';
 import { convertToLocalTime, formatListSummary, Sort } from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { FaClock, FaEdit, FaPlusCircle } from 'react-icons/fa';
 
 import { format } from 'date-fns/format';
@@ -31,7 +31,33 @@ import { getRibbonParams } from '../../helpers/topribbon';
 import MainLayout from '../../layouts/MainLayout';
 import { locations } from '../../routes/locations';
 import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
+import Execution from './Execution';
 import { getTranslationOptions } from './helper';
+import { ExecutionActionProps, ExecutionStateProps } from './types';
+
+const initialExecutionState = {
+  openExecution: false,
+  selectedAlarmUuid: '',
+  selectedAlarmName: '',
+};
+
+function executionReducer(
+  state: ExecutionStateProps,
+  action: ExecutionActionProps
+) {
+  switch (action.type) {
+    case 'SET_OPEN_EXECUTION':
+      return { ...state, openExecution: !state.openExecution };
+    case 'SET_ALARM_UUID':
+      return { ...state, selectedAlarmUuid: action.payload };
+    case 'SET_ALARM_NAME':
+      return { ...state, selectedAlarmName: action.payload };
+    case 'RESET':
+      return initialExecutionState;
+    default:
+      return state;
+  }
+}
 
 const PeriodicAlarm = () => {
   const translationTableBase = 'table.';
@@ -49,6 +75,11 @@ const PeriodicAlarm = () => {
     location: null,
     shared: null,
   });
+
+  const [executionState, dispatch] = useReducer(
+    executionReducer,
+    initialExecutionState
+  );
 
   const { client, location, group } = useUserFilter();
   const { t } = useTranslation('periodicAlarm');
@@ -101,15 +132,15 @@ const PeriodicAlarm = () => {
       <ActionCell>
         <IconButton
           action={() => {
-            // To implement action
+            dispatch({ type: 'SET_OPEN_EXECUTION' });
+            dispatch({ type: 'SET_ALARM_UUID', payload: row.original.uuid });
+            dispatch({ type: 'SET_ALARM_NAME', payload: row.original.name });
           }}
-          popupContent=""
         >
           <FaClock />
         </IconButton>
         <IconButton
           action={() => {
-            // To implement action
             console.log('Edit alarm:', row.original.id);
           }}
           popupContent="Edit Alarm"
@@ -128,9 +159,8 @@ const PeriodicAlarm = () => {
         )}
       </ActionCell>
     ),
-    [handleDeleteAlarm, isPending, t]
+    [handleDeleteAlarm, isPending, t, dispatch]
   );
-
   const columns = React.useMemo<ColumnDef<PeriodicAlarmType, unknown>[]>(
     () => [
       {
@@ -319,6 +349,18 @@ const PeriodicAlarm = () => {
           onFilterChange={onFilterChange}
           onSortSelect={onSortClick}
           isLoading={isLoadingData}
+        />
+        <Execution
+          modalProps={{
+            opened: executionState.openExecution,
+            onClose() {
+              dispatch({ type: 'SET_OPEN_EXECUTION' });
+            },
+          }}
+          alarmConfig={{
+            name: executionState.selectedAlarmName,
+            uuid: executionState.selectedAlarmUuid,
+          }}
         />
       </MainLayout>
     </AccessAuthorizer>

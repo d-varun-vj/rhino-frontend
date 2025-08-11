@@ -1,3 +1,5 @@
+import { Sort } from '@rhino/utils';
+
 export interface PeriodicAlarmType {
   id?: string;
   uuid: string;
@@ -52,4 +54,27 @@ export type PeriodicAlarmCreateReq = {
   sharedTenantUuids?: string[];
   compareWithPeriod: string;
   analysePeriod: string;
+};
+
+export type PeriodicAlarmExecutionParam = {
+  page: number | null;
+  size: number | null;
+  sort: Sort;
+  uuid: string;
+  startDate: string | null;
+  endDate: string | null;
+  executionStatus: string | null;
+  status?: string;
+};
+
+export type PeriodicAlarmExecution = {
+  uuid: string;
+  occurence: string;
+  startRange: string | null;
+  endRange: string | null;
+  executionStatus: string;
+  status: string;
+  downloadPath: string | null;
+  timeRange?: string;
+  action?: string;
 };

@@ -118,6 +118,18 @@
     },
     "error": "Failed to create periodic alarm"
   },
+  "execution": {
+    "table": {
+      "occurence": "Moment of occurrence",
+      "executionStatus": "Status",
+      "timeRange": "Time range",
+      "action": "Action"
+    },
+    "download": {
+      "btn": "Download excel",
+      "error": "Download failed"
+    }
+  },
   "delete": {
     "title": "Delete Alarm",
     "message": "Are you sure you want to delete the alarm \"{{name}}\"? This action cannot be undone.",
