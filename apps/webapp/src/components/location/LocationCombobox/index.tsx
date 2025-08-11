@@ -27,16 +27,20 @@ const LocationCombobox = ({
 
   return (
     <CustomComboBox
-      optionsList={[
-        {
-          name: 'Select',
-          uuid: '',
-        },
-        ...(locations?.map((location) => ({
-          name: location.name,
-          uuid: location.uuid,
-        })) || []),
-      ]}
+      optionsList={
+        locations?.length
+          ? [
+              {
+                name: 'Select',
+                uuid: '',
+              },
+              ...(locations?.map((location) => ({
+                name: location.name,
+                uuid: location.uuid,
+              })) || []),
+            ]
+          : []
+      }
       placeholder={t('comboBox.locationNull')}
       selectedValue={selectedLocation ?? null}
       setSelectedValue={(uuid) => {

@@ -69,7 +69,21 @@ export const buildPeriodicAlarmSchema = (
       },
       {
         message: t(i18nBase + 'shared'),
-        path: ['shared'],
+        path: ['sharedLocations'],
+      }
+    )
+    .refine(
+      (data) => {
+        if (data.shared) {
+          return (
+            data.sharedLocations.length > 0 || data.sharedTenants.length > 0
+          );
+        }
+        return true;
+      },
+      {
+        message: t(i18nBase + 'shared'),
+        path: ['sharedTenants'],
       }
     )
     .refine(
@@ -152,17 +166,23 @@ export const buildPeriodicAlarmSchema = (
     )
     .refine(
       (data) => {
-        if (
-          (data.recipientEmails && data.recipientEmails?.length > 0) ||
-          (data.phoneNumber && data.phoneNumber?.length > 0)
-        ) {
-          return true;
+        const shouldShowStartEndFields = shouldShowStartAndEndThresholdValue(
+          data.thresholdType as PeriodicAlarmThresholdType
+        );
+
+        if (data.thresholdStartValue && data.thresholdEndValue) {
+          if (
+            shouldShowStartEndFields &&
+            data.thresholdStartValue > data.thresholdEndValue
+          ) {
+            return false;
+          }
         }
-        return false;
+        return true;
       },
       {
-        message: t(i18nBase + 'recipients'),
-        path: ['recipientEmails'],
+        message: t(i18nBase + 'thresholdValueOutOfRange'),
+        path: ['thresholdEndValue'],
       }
     );
 };

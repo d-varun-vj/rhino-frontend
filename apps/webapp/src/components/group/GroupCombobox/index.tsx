@@ -29,29 +29,33 @@ const GroupCombobox = ({
 
   return (
     <OptionsGroupedComboBox
-      optionsList={[
-        {
-          label: '',
-          options: [
-            {
-              name: 'Select',
-              uuid: '',
-            },
-          ],
-        },
-        ...(locations
-          ? locations
-              .filter((location) =>
-                selectedLocation?.name
-                  ? location.name === selectedLocation.name
-                  : true
-              )
-              .map((location) => ({
-                label: location.name,
-                options: location.groups ? location.groups : [],
-              }))
-          : []),
-      ]}
+      optionsList={
+        locations?.length
+          ? [
+              {
+                label: '',
+                options: [
+                  {
+                    name: 'Select',
+                    uuid: '',
+                  },
+                ],
+              },
+              ...(locations
+                ? locations
+                    .filter((location) =>
+                      selectedLocation?.name
+                        ? location.name === selectedLocation.name
+                        : true
+                    )
+                    .map((location) => ({
+                      label: location.name,
+                      options: location.groups ? location.groups : [],
+                    }))
+                : []),
+            ]
+          : []
+      }
       placeholder={t('comboBox.groupNull')}
       selectedValue={selectedGroup ?? null}
       setSelectedValue={(uuid) => {

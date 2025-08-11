@@ -1,12 +1,15 @@
 import MultiTextField from 'apps/webapp/src/components/common/input/MultiTextField';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { RHFInputProps } from '../../../types';
 import { tFormBase } from '../../config';
-import { i18nBase } from '../../validation';
+import { i18nBase, PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
-const RecipientDetails = ({ control, errors }: RHFInputProps) => {
+const RecipientDetails = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
 
   return (
@@ -35,7 +38,6 @@ const RecipientDetails = ({ control, errors }: RHFInputProps) => {
                 placeholder={t(tFormBase + 'recipient.email.placeholder')}
                 onChange={(val) => field.onChange(val ?? '')}
                 error={errMessage}
-                required
               />
             );
           }}

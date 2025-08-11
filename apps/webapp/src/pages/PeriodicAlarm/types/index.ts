@@ -1,25 +1,3 @@
-import {
-  Control,
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormTrigger,
-  UseFormWatch,
-} from 'react-hook-form';
-import { PeriodicAlarmSchema } from '../Create/validation';
-
-// React Hook Form Props
-export type RHFInputProps = {
-  register: UseFormRegister<PeriodicAlarmSchema>;
-  control: Control<PeriodicAlarmSchema>;
-  trigger: UseFormTrigger<PeriodicAlarmSchema>;
-  setValue: UseFormSetValue<PeriodicAlarmSchema>;
-  getValues: UseFormGetValues<PeriodicAlarmSchema>;
-  watch: UseFormWatch<PeriodicAlarmSchema>;
-  errors: FieldErrors<PeriodicAlarmSchema>;
-};
-
 export enum PeriodicAlarmFrequency {
   DAILY = 'DAILY',
   WEEKLY = 'WEEKLY',

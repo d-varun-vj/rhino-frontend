@@ -3,7 +3,7 @@ import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { shouldSharingFieldBeVisible } from 'apps/webapp/src/helpers/sharing';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Controller, FieldValues, Path, useWatch } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import CheckBox from '../../common/input/Checkbox';
 import message from '../../notifier';
@@ -11,14 +11,13 @@ import SharingLocationPanel from './SharingLocation';
 import SharingTenantPanel from './SharingTenant';
 import { SharingSectionProps } from './types';
 
-const SharingSection = <T extends FieldValues>({
-  control,
-  setValue,
-  error,
+const SharingSection = ({
   label,
   mode = 'create',
   authorUuid,
-}: SharingSectionProps<T>) => {
+}: SharingSectionProps) => {
+  const { control, setValue, resetField, watch, clearErrors } =
+    useFormContext();
   const { t } = useTranslation('common');
   const { user } = useUser();
   const { client } = useUserFilter();
@@ -47,15 +46,10 @@ const SharingSection = <T extends FieldValues>({
   const shouldFieldBeDisabled = client === null;
   const showSharingSection = isLocationSharingVisible || isTenantSharingVisible;
 
-  const shared = useWatch({ control, name: 'shared' as Path<T> });
-  const sharedLocations = useWatch({
-    control,
-    name: 'sharedLocations' as Path<T>,
-  }) as string[];
-  const sharedTenants = useWatch({
-    control,
-    name: 'sharedTenants' as Path<T>,
-  }) as string[];
+  const shared = watch('shared') as boolean;
+
+  const sharedLocations = watch('sharedLocations') as string[];
+  const sharedTenants = watch('sharedTenants') as string[];
 
   const { data: locationsData, isLoading: locationsLoading } = useGetLocations({
     clientId: client ? client?.uuid : null,
@@ -68,20 +62,16 @@ const SharingSection = <T extends FieldValues>({
   });
 
   const resetSharingFields = useCallback(() => {
-    if (setValue) {
-      setValue('shared' as Path<T>, false as never);
-      setValue('readOnly' as Path<T>, true as never);
-      setValue('sharedLocations' as Path<T>, [] as never);
-      setValue('sharedTenants' as Path<T>, [] as never);
-    }
-  }, [setValue]);
+    resetField('shared');
+    resetField('readOnly');
+    resetField('sharedLocations');
+    resetField('sharedTenants');
+  }, [resetField]);
 
   const clearSharedItems = useCallback(() => {
-    if (setValue) {
-      setValue('sharedLocations' as Path<T>, [] as never);
-      setValue('sharedTenants' as Path<T>, [] as never);
-    }
-  }, [setValue]);
+    resetField('sharedLocations');
+    resetField('sharedTenants');
+  }, [resetField]);
 
   useEffect(() => {
     if (!initializedRef.current) {
@@ -105,7 +95,7 @@ const SharingSection = <T extends FieldValues>({
           locationsData.some((location) => location.uuid === uuid)
         );
         if (validLocations.length !== sharedLocations.length) {
-          setValue('sharedLocations' as Path<T>, validLocations as never);
+          setValue('sharedLocations', validLocations as never);
         }
       }
 
@@ -114,7 +104,7 @@ const SharingSection = <T extends FieldValues>({
           tenantData.data?.some((tenant) => tenant.uuid === uuid)
         );
         if (validTenants.length !== sharedTenants.length) {
-          setValue('sharedTenants' as Path<T>, validTenants as never);
+          setValue('sharedTenants', validTenants as never);
         }
       }
     }
@@ -150,7 +140,7 @@ const SharingSection = <T extends FieldValues>({
 
   useEffect(() => {
     if (!shared && setValue && initializedRef.current && allowReactiveEffects) {
-      setValue('readOnly' as Path<T>, true as never);
+      setValue('readOnly', true as never);
       clearSharedItems();
     }
   }, [shared, setValue, clearSharedItems, allowReactiveEffects]);
@@ -187,12 +177,12 @@ const SharingSection = <T extends FieldValues>({
     <div className="flex gap-5 flex-col">
       <div className="flex gap-6">
         <Controller
-          name={'shared' as Path<T>}
+          name={'shared'}
           control={control}
           render={({ field }) => (
             <CheckBox
               label={label}
-              checked={field.value}
+              checked={field.value as boolean}
               onChange={(e) => {
                 const isChecked = e.currentTarget.checked;
                 if (client === null) {
@@ -205,12 +195,12 @@ const SharingSection = <T extends FieldValues>({
           )}
         />
         <Controller
-          name={'readOnly' as Path<T>}
+          name={'readOnly'}
           control={control}
           render={({ field }) => (
             <CheckBox
               label={t('sharedSection.readOnly', { ns: 'components' })}
-              checked={field.value}
+              checked={field.value as boolean}
               disabled={!shared}
               onChange={(e) => field.onChange(e.currentTarget.checked)}
             />
@@ -221,30 +211,36 @@ const SharingSection = <T extends FieldValues>({
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
         {isLocationSharingVisible && (
           <Controller
-            name={'sharedLocations' as Path<T>}
+            name={'sharedLocations'}
             control={control}
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <SharingLocationPanel
                 value={getValidatedLocations()}
-                onChange={field.onChange}
+                onChange={(e) => {
+                  field.onChange(e);
+                  clearErrors('sharedTenants');
+                }}
                 clearable
                 disabled={!shared || shouldFieldBeDisabled}
-                error={error}
+                error={fieldState.error?.message}
               />
             )}
           />
         )}
         {isTenantSharingVisible && (
           <Controller
-            name={'sharedTenants' as Path<T>}
+            name={'sharedTenants'}
             control={control}
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <SharingTenantPanel
                 value={getValidatedTenants()}
-                onChange={field.onChange}
+                onChange={(e) => {
+                  field.onChange(e);
+                  clearErrors('sharedLocations');
+                }}
                 clearable
                 disabled={!shared || shouldFieldBeDisabled}
-                error={error}
+                error={fieldState.error?.message}
               />
             )}
           />

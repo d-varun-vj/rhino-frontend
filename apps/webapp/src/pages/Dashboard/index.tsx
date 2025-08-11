@@ -336,9 +336,10 @@ const Dashboard = () => {
           filterKey: 'levelType',
           sortKey: 'levelType',
           sortDirection: sort.direction,
-          selectionOptions: Options?.levelTypes.map(
-            (type) => type.translationEn
-          ),
+          selectionOptions: Options?.levelTypes.map((type) => ({
+            label: type.translationEn,
+            value: type.translationEn,
+          })),
         },
       },
       {
@@ -351,9 +352,10 @@ const Dashboard = () => {
           filterKey: 'loadType',
           sortKey: 'loadType',
           sortDirection: sort.direction,
-          selectionOptions: Options?.loadTypes.map(
-            (type) => type.translationEn
-          ),
+          selectionOptions: Options?.loadTypes.map((type) => ({
+            label: type.translationEn,
+            value: type.translationEn,
+          })),
         },
       },
       {
@@ -366,9 +368,10 @@ const Dashboard = () => {
           filterKey: 'endUseAreaType',
           sortKey: 'endUseArea',
           sortDirection: sort.direction,
-          selectionOptions: Options?.endUseAreaTypes?.map(
-            (type) => type.translationEn
-          ),
+          selectionOptions: Options?.endUseAreaTypes?.map((type) => ({
+            label: type.translationEn,
+            value: type.translationEn,
+          })),
         },
       },
       {

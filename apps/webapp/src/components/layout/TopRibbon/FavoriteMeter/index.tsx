@@ -80,7 +80,16 @@ const FavoriteMeter = ({
           filterKey: 'shared',
           sortKey: 'shared',
           sortDirection: sort.direction,
-          selectionOptions: ['Yes', 'No'],
+          selectionOptions: [
+            {
+              label: 'Yes',
+              value: 'Yes',
+            },
+            {
+              label: 'No',
+              value: 'No',
+            },
+          ],
         },
       },
       {

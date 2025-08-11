@@ -13,7 +13,7 @@ import MainLayout from 'apps/webapp/src/layouts/MainLayout';
 import { locations } from 'apps/webapp/src/routes/locations';
 import AccessAuthorizer from 'apps/webapp/src/wrappers/AccessAuthorizer';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -45,26 +45,19 @@ const CreatePeriodicAlarm = () => {
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    setValue,
-    getValues,
-    watch,
-    trigger,
-    formState: { errors },
-  } = useForm<PeriodicAlarmSchema>({
-    mode: 'all',
+  const methods = useForm<PeriodicAlarmSchema>({
+    mode: 'onChange',
     defaultValues: {
       frequency: PeriodicAlarmFrequency.DAILY,
       analysePeriod: PeriodicAlarmPeriod.LAST_DAY,
       comparisonMeasure: COMPARISON_MEASURE_TYPE_OPTIONS[0].value,
       compareWithPeriod: PeriodicAlarmCompareWith.CONSTANT,
+      generationDay: 1,
       timezone: 'Europe/Warsaw',
       isActive: true,
       readOnly: true,
       shared: false,
+      delayInDays: 0,
       sharedLocations: [],
       sharedTenants: [],
       recipientEmails: [],
@@ -75,26 +68,18 @@ const CreatePeriodicAlarm = () => {
     resolver: zodResolver(schema),
   });
 
-  const commonFormProps = {
-    register,
-    control,
-    setValue,
-    getValues,
-    watch,
-    trigger,
-    errors,
-  };
+  const { setValue, handleSubmit, resetField } = methods;
 
   useEffect(() => {
     setValue('clientUuid', client ? client?.uuid : '');
   }, [client, setValue]);
 
   const resetThresholdValues = useCallback(() => {
-    setValue('thresholdType', '');
-    setValue('thresholdValue', undefined);
-    setValue('thresholdStartValue', undefined);
-    setValue('thresholdEndValue', undefined);
-  }, [setValue]);
+    resetField('thresholdType');
+    resetField('thresholdValue');
+    resetField('thresholdStartValue');
+    resetField('thresholdEndValue');
+  }, [resetField]);
 
   const onSubmit = (values: PeriodicAlarmSchema) => {
     createAlarm(buildCreateRequestForm(values), {
@@ -111,10 +96,9 @@ const CreatePeriodicAlarm = () => {
           }
         );
       },
-      onError: (error: Error | { error: string; message: string }) => {
+      onError: (error: Error | { title: string; detail: string }) => {
         const errMessage =
-          ('error' in error ? error.error : '') +
-            ('message' in error ? error.message : '') || t('create.error');
+          ('detail' in error ? error.detail : '') || t('create.error');
 
         message.error(
           errMessage ?? t('toast.somethingWentWrong', { ns: 'common' })
@@ -129,44 +113,41 @@ const CreatePeriodicAlarm = () => {
       viewPermissions={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
     >
       <MainLayout title={t('create.mainHeader')} isFavoriteMeterShow={false}>
-        <form onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}>
-          <div className="flex flex-col gap-20 mb-20">
-            <div>
-              <PageTitle
-                title={t('create.mainHeader')}
-                guide={true}
-                guideLink={GUIDE_LINKS.PERIODIC_ALARM}
-              />
-              <div className="grid min-lg:grid-cols-5 gap-14 w-full">
-                <div className="flex gap-8 py-2 flex-col col-span-3">
-                  <BasicInformation
-                    {...commonFormProps}
-                    setSelectedMediumType={setSelectedMediumType}
-                  />
-                  <MomentOfExecution
-                    {...commonFormProps}
-                    resetThresholdValues={resetThresholdValues}
-                  />
-                  <TimeConfiguration
-                    {...commonFormProps}
-                    resetThresholdValues={resetThresholdValues}
-                  />
-                  <AlarmCriteria
-                    {...commonFormProps}
-                    resetThresholdValues={resetThresholdValues}
-                    selectedMediumType={selectedMediumType}
-                  />
-                  <RecipientDetails {...commonFormProps} />
+        <FormProvider {...methods}>
+          <form onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}>
+            <div className="flex flex-col gap-20 mb-20">
+              <div>
+                <PageTitle
+                  title={t('create.mainHeader')}
+                  guide={true}
+                  guideLink={GUIDE_LINKS.PERIODIC_ALARM}
+                />
+                <div className="grid min-lg:grid-cols-5 gap-14 w-full">
+                  <div className="flex gap-8 py-2 flex-col col-span-3">
+                    <BasicInformation
+                      setSelectedMediumType={setSelectedMediumType}
+                    />
+                    <MomentOfExecution
+                      resetThresholdValues={resetThresholdValues}
+                    />
+                    <TimeConfiguration
+                      resetThresholdValues={resetThresholdValues}
+                    />
+                    <AlarmCriteria
+                      resetThresholdValues={resetThresholdValues}
+                      selectedMediumType={selectedMediumType}
+                    />
+                    <RecipientDetails />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <FormFooter
-            {...commonFormProps}
-            selectedMediumType={selectedMediumType?.name || null}
-            isPending={isPending}
-          />
-        </form>
+            <FormFooter
+              selectedMediumType={selectedMediumType?.name || null}
+              isPending={isPending}
+            />
+          </form>
+        </FormProvider>
       </MainLayout>
     </AccessAuthorizer>
   );

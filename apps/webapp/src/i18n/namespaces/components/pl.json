@@ -59,8 +59,8 @@
   },
   "sharedSection": {
     "readOnly": "Tylko do odczytu",
-    "sharedLocations": "Wspólne lokalizacje",
-    "sharedTenants": "Współlokatorzy"
+    "sharedLocations": "Udostępnione Lokalizacje",
+    "sharedTenants": "Udostępnieni najemcy"
   },
   "favoriteMeterModel": {
     "mainHeader": "Wybierz ulubione liczniki",

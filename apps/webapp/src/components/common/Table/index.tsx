@@ -16,13 +16,14 @@ import { Loader } from '@mantine/core';
 import { SortDirection } from '@rhino/utils';
 import { ColumnMeta } from '@tanstack/table-core';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import { CONSTANTS } from '../../../constant';
 import Filter from './Filter';
 import TableFooter from './Footer';
 import { FilterVariant } from './types';
 
 interface CustomColumnMeta {
-  selectionOptions?: string[];
+  selectionOptions?: { label: string; value: string }[];
   filterKey?: string;
   sortKey: string | null; // Same as backend sorting field name
   sortDirection?: string;
@@ -88,7 +89,7 @@ const handleSortClick = <T,>(
 const getSortIndicator = (
   meta?: {
     sortDirection?: SortDirection | string;
-    sortKey?: string | null | undefined;
+    sortKey: string | null | undefined;
   },
   selectedSortKey?: string | null
 ): string => {
@@ -119,6 +120,7 @@ const Table = <T,>({
   onSortSelect,
   onFilterChange,
 }: TableProps<T>) => {
+  const { t } = useTranslation();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -301,7 +303,7 @@ const Table = <T,>({
         {!isLoading && data.length === 0 && (
           <div className="flex items-center h-96">
             <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-[95%] mt-10">
-              {emptyText || 'Not Found'}
+              {emptyText || t('table.notFound', { ns: 'common' })}
             </div>
           </div>
         )}

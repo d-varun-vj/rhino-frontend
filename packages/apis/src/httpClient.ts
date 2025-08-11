@@ -81,8 +81,7 @@ const fetchAdapter: AxiosAdapter = async (
   }
 
   if (!response.ok) {
-    const errorData = responseData || { message: '', error: '' };
-
+    const errorData = responseData || { detail: '', title: '' };
     (errorData as any).response = {
       data: errorData,
       status: response.status,

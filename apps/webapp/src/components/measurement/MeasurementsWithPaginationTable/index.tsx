@@ -237,7 +237,11 @@ const MeasurementsWithPaginationTable = ({
           filterVariant: FilterVariant.SELECT,
           filterKey: 'type',
           sortKey: null,
-          selectionOptions: ['AUTOMATIC', 'MANUAL', 'VIRTUAL'],
+          selectionOptions: [
+            { label: 'AUTOMATIC', value: 'AUTOMATIC' },
+            { label: 'MANUAL', value: 'MANUAL' },
+            { label: 'VIRTUAL', value: 'VIRTUAL' },
+          ],
         },
       },
       {
@@ -250,9 +254,10 @@ const MeasurementsWithPaginationTable = ({
           filterKey: 'levelType',
           sortKey: 'levelType',
           sortDirection: sort.direction,
-          selectionOptions: Options?.levelTypes?.map(
-            (type) => type[translationKey] ?? ''
-          ),
+          selectionOptions: Options?.levelTypes?.map((type) => ({
+            label: type[translationKey] ?? '',
+            value: type[translationKey] ?? '',
+          })),
         },
       },
       {
@@ -265,9 +270,10 @@ const MeasurementsWithPaginationTable = ({
           filterKey: 'loadType',
           sortKey: 'loadType',
           sortDirection: sort.direction,
-          selectionOptions: Options?.loadTypes?.map(
-            (type) => type[translationKey] ?? ''
-          ),
+          selectionOptions: Options?.loadTypes?.map((type) => ({
+            label: type[translationKey] ?? '',
+            value: type[translationKey] ?? '',
+          })),
         },
       },
       {
@@ -280,9 +286,10 @@ const MeasurementsWithPaginationTable = ({
           filterKey: 'endUseArea',
           sortKey: 'endUseArea',
           sortDirection: sort.direction,
-          selectionOptions: Options?.endUseAreaTypes?.map(
-            (type) => type[translationKey] ?? ''
-          ),
+          selectionOptions: Options?.endUseAreaTypes?.map((type) => ({
+            label: type[translationKey] ?? '',
+            value: type[translationKey] ?? '',
+          })),
         },
       },
       {

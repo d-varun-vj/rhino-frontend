@@ -22,14 +22,6 @@ export interface PeriodicAlarmFilter {
   shared: boolean | null;
 }
 
-export const PERIODIC_ALARM_FREQUENCY_OPTIONS = [
-  'DAILY',
-  'WEEKLY',
-  'MONTHLY',
-  'QUARTERLY',
-  'YEARLY',
-];
-
 export type PeriodicAlarmCreateReq = {
   name: string;
   clientUuid: string;

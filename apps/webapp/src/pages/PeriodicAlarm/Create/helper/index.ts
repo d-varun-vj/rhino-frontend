@@ -55,12 +55,23 @@ export const onError = (errors: FieldErrors<PeriodicAlarmSchema>) => {
     return;
   }
 
-  if (errors.measurementUuids?.message) {
-    message.warn(errors.measurementUuids.message);
-  }
-  if (errors.shared?.message) {
-    message.warn(errors.shared.message);
-  }
+  Object.entries(errors).forEach(([, val]) => {
+    if (
+      'ref' in val &&
+      val.ref &&
+      'name' in val.ref &&
+      val.ref.name === 'sharedTenants'
+    )
+      return;
+
+    if (Array.isArray(val)) {
+      val.forEach((item: { message: string }, i) => {
+        message.warn(`${item.message} ${i + 1}`);
+      });
+    } else if (val?.message) {
+      message.warn(val.message);
+    }
+  });
 };
 
 export const applyLabelTranslations = <T extends { label: string }>(

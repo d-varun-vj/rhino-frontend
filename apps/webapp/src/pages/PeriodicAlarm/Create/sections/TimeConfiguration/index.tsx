@@ -1,25 +1,23 @@
 import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
-import QuestionCircle from 'apps/webapp/src/components/common/indicators/QuestionCircle';
 import { useEffect, useMemo } from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { PeriodicAlarmPeriod, RHFInputProps } from '../../../types';
+import { PeriodicAlarmPeriod } from '../../../types';
 import {
   ANALYSE_PERIOD_OPTIONS,
   tFormBase,
   VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS,
 } from '../../config';
 import { applyLabelTranslations } from '../../helper';
+import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
 const TimeConfiguration = ({
-  control,
-  watch,
-  setValue,
   resetThresholdValues,
-}: RHFInputProps & {
+}: {
   resetThresholdValues: () => void;
 }) => {
+  const { control, watch, setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
   const selectedFrequency = watch('frequency') || 'DAILY';
   const validOptionMap =
@@ -75,10 +73,10 @@ const TimeConfiguration = ({
             />
           )}
         />
-        <QuestionCircle
+        {/* <QuestionCircle
           content={t(tFormBase + 'timeConfiguration.analysisPeriod.guide')}
           className="mt-6"
-        />
+        /> */}
       </div>
     </SectionWrapper>
   );

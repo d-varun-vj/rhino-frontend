@@ -1,10 +1,3 @@
-import {
-  Control,
-  FieldValues,
-  UseFormSetValue,
-  UseFormWatch,
-} from 'react-hook-form';
-
 export type SharingState = {
   shared: boolean;
   readOnly: boolean;
@@ -19,13 +12,9 @@ export type SharingAction =
   | { type: 'SET_TENANTS'; payload: string[] }
   | { type: 'RESET' };
 
-export type SharingSectionProps<T extends FieldValues> = {
+export type SharingSectionProps = {
   label: string;
-  error?: string;
-  control: Control<T>;
   onValuesChange?: (values: SharingState) => void;
   mode?: 'create' | 'update';
-  setValue?: UseFormSetValue<T>;
-  watch: UseFormWatch<T>;
   authorUuid?: string;
 };

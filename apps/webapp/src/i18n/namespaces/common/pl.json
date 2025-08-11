@@ -12,7 +12,12 @@
       "of": "z",
       "previous": "Poprzednia",
       "next": "Następna"
-    }
+    },
+    "options": {
+      "yes": "Tak",
+      "no": "Nie"
+    },
+    "notFound": "Brak wyników"
   },
   "toast": {
     "somethingWentWrong": "Coś jest nie tak!",

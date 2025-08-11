@@ -7,7 +7,7 @@ import {
   TimeZone,
 } from '../../types';
 
-const tConfigBase = 'config.';
+export const tConfigBase = 'config.';
 export const tFormBase = 'create.form.';
 
 const T_COMPARE_WITH = {
@@ -295,8 +295,8 @@ export const VALID_GENERATION_DAY_CONFIG: Record<
   }
 > = {
   DAILY: {
-    min: 0,
-    max: 0,
+    min: 1,
+    max: 1,
     placeholder: '',
   },
   WEEKLY: {

@@ -30,7 +30,10 @@ const Filter = <T,>({
     [column?.columnDef?.meta?.selectionOptions]
   );
 
-  const optionsList = useMemo(() => ['select', ...options], [options]);
+  const optionsList = useMemo(
+    () => [{ label: t('comboBox.select'), value: 'select' }, ...options],
+    [options, t]
+  );
 
   const filterKey = useMemo(
     () => column.columnDef.meta?.filterKey,
@@ -93,13 +96,19 @@ const Filter = <T,>({
       <div className="mb-4">
         <CustomComboBox
           optionsList={optionsList.map((option) => ({
-            name: option,
+            name: option.label,
           }))}
           placeholder={selectPlaceholder}
           selectedValue={{
-            name: selectValue,
+            name:
+              optionsList.find((option) => option.value === selectValue)
+                ?.label ?? '',
           }}
-          setSelectedValue={(val) => handleSelectValueChange(val)}
+          setSelectedValue={(val) => {
+            handleSelectValueChange(
+              optionsList.find((option) => option.label === val)?.value ?? null
+            );
+          }}
         />
       </div>
     );

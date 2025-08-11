@@ -12,7 +12,12 @@
       "of": "of",
       "previous": "Previous",
       "next": "Next"
-    }
+    },
+    "options": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "notFound": "Not Found"
   },
   "toast": {
     "somethingWentWrong": "Something went wrong !",

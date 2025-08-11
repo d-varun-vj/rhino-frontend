@@ -12,6 +12,7 @@
       "actions": "Actions"
     }
   },
+  "createBtn": "Create periodic alarm",
   "create": {
     "mainHeader": "Create periodic alarm",
     "form": {
@@ -70,7 +71,7 @@
           "guide": ""
         },
         "sendOnlyWhenExceeded": {
-          "title": "Send report only when exceeded",
+          "title": "Send alarm only when exceeded",
           "guide": ""
         }
       },
@@ -111,6 +112,7 @@
         "thresholdValue": "Threshold value is required",
         "thresholdStartValue": "Threshold start value is required",
         "thresholdEndValue": "Threshold end value is required",
+        "thresholdValueOutOfRange": "Threshold end value should be greater than threshold start value",
         "measurementUuids": "Select measurements"
       }
     },

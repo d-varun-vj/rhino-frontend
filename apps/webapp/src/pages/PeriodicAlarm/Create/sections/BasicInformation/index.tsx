@@ -5,22 +5,16 @@ import Toggle from 'apps/webapp/src/components/common/input/Toggle';
 import SharingSection from 'apps/webapp/src/components/shared/SharingSection';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import moment from 'moment-timezone';
-import { useMemo } from 'react';
-import { Controller } from 'react-hook-form';
+import { useEffect, useMemo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { RHFInputProps } from '../../../types';
 import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
 const BasicInformation = ({
-  register,
-  control,
-  setValue,
-  watch,
-  errors,
   setSelectedMediumType,
-}: RHFInputProps & {
+}: {
   setSelectedMediumType: ({
     name,
     unit,
@@ -29,6 +23,12 @@ const BasicInformation = ({
     unit: string | null;
   }) => void;
 }) => {
+  const {
+    control,
+    register,
+    resetField,
+    formState: { errors },
+  } = useFormContext<PeriodicAlarmSchema>();
   const { t, i18n } = useTranslation('periodicAlarm');
   const { client } = useUserFilter();
   const { data: meteringPointTypesRes } = useGetMeteringPointTypes({
@@ -45,6 +45,10 @@ const BasicInformation = ({
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
   }, []);
+
+  useEffect(() => {
+    resetField('meteringPointTypeId');
+  }, [client, resetField]);
 
   return (
     <SectionWrapper title={t(tFormBase + 'basic.title')} id="basic-information">
@@ -64,13 +68,7 @@ const BasicInformation = ({
           />
         </div>
       </div>
-      <SharingSection<PeriodicAlarmSchema>
-        label={t(tFormBase + 'basic.shared')}
-        control={control}
-        error={errors.shared?.message}
-        setValue={setValue}
-        watch={watch}
-      />
+      <SharingSection label={t(tFormBase + 'basic.shared')} />
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
         <Controller

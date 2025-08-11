@@ -1,13 +1,12 @@
 import {
-  PERIODIC_ALARM_FREQUENCY_OPTIONS,
   PeriodicAlarmFilter,
   PeriodicAlarmType,
-  UserViewPermission,
-  ViewPermissionsType,
   useDeletePeriodicAlarm,
   useGetPeriodicAlarmList,
+  UserViewPermission,
+  ViewPermissionsType,
 } from '@rhino/apis';
-import { Sort, convertToLocalTime, formatListSummary } from '@rhino/utils';
+import { convertToLocalTime, formatListSummary, Sort } from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FaClock, FaEdit, FaPlusCircle } from 'react-icons/fa';
@@ -32,6 +31,7 @@ import { getRibbonParams } from '../../helpers/topribbon';
 import MainLayout from '../../layouts/MainLayout';
 import { locations } from '../../routes/locations';
 import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
+import { getTranslationOptions } from './helper';
 
 const PeriodicAlarm = () => {
   const translationTableBase = 'table.';
@@ -175,7 +175,7 @@ const PeriodicAlarm = () => {
           filterKey: 'active',
           sortKey: 'active',
           sortDirection: sort.direction,
-          selectionOptions: ['Yes', 'No'],
+          selectionOptions: getTranslationOptions({ t }).SHARED,
           renderCell: (value) => {
             return <StatusDot type={value ? 'active' : 'inactive'} />;
           },
@@ -208,7 +208,8 @@ const PeriodicAlarm = () => {
           filterKey: 'frequency',
           sortKey: 'frequency',
           sortDirection: sort.direction,
-          selectionOptions: PERIODIC_ALARM_FREQUENCY_OPTIONS,
+          selectionOptions: getTranslationOptions({ t })
+            .PERIODIC_ALARM_FREQUENCY_OPTIONS,
         },
       },
       {
@@ -222,7 +223,7 @@ const PeriodicAlarm = () => {
           filterKey: 'shared',
           sortKey: 'shared',
           sortDirection: sort.direction,
-          selectionOptions: ['Yes', 'No'],
+          selectionOptions: getTranslationOptions({ t }).SHARED,
         },
       },
       {
@@ -299,7 +300,7 @@ const PeriodicAlarm = () => {
             guideLink={GUIDE_LINKS.PERIODIC_ALARM}
           />
           <CustomButton
-            text="Create periodic alarm"
+            text={t('createBtn')}
             type="primary"
             icon={<FaPlusCircle />}
             onClick={handleCreateAlarm}

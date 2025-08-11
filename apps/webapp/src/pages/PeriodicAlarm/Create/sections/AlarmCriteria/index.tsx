@@ -1,15 +1,13 @@
 import { useMemo } from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import CustomSelect from 'apps/webapp/src/components/common/comboboxes/CustomSelect';
-import QuestionCircle from 'apps/webapp/src/components/common/indicators/QuestionCircle';
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
 
 import {
   PeriodicAlarmCompareWith,
   PeriodicAlarmThresholdType,
-  RHFInputProps,
 } from '../../../types';
 
 import {
@@ -26,21 +24,21 @@ import {
 } from '../../helper';
 
 import CheckBox from 'apps/webapp/src/components/common/input/Checkbox';
+import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
 const AlarmCriteria = ({
-  control,
-  setValue,
-  watch,
   resetThresholdValues,
   selectedMediumType,
-}: RHFInputProps & {
+}: {
   resetThresholdValues: () => void;
   selectedMediumType?: {
     name: string | null;
     unit: string | null;
   } | null;
 }) => {
+  const { control, watch, resetField } = useFormContext<PeriodicAlarmSchema>();
+
   const { t } = useTranslation('periodicAlarm');
 
   const selectedAnalysisPeriod = watch('analysePeriod');
@@ -60,6 +58,9 @@ const AlarmCriteria = ({
     }
     return VALID_THRESHOLD_OPTIONS.OTHERS;
   }, [selectedCompareWith]);
+
+  const shouldUnitPercent =
+    selectedCompareWith !== PeriodicAlarmCompareWith.CONSTANT;
 
   return (
     <SectionWrapper
@@ -93,10 +94,10 @@ const AlarmCriteria = ({
               )}
             />
           </div>
-          <QuestionCircle
+          {/* <QuestionCircle
             content={t(tFormBase + 'alarmCriteria.compareWith.guide')}
             className="mt-6"
-          />
+          /> */}
         </div>
         <Controller
           name="comparisonMeasure"
@@ -134,9 +135,9 @@ const AlarmCriteria = ({
                     data={applyLabelTranslations(filteredThresholdOptions)}
                     onChange={(val) => {
                       field.onChange(val ?? '');
-                      setValue('thresholdValue', undefined);
-                      setValue('thresholdStartValue', undefined);
-                      setValue('thresholdEndValue', undefined);
+                      resetField('thresholdValue');
+                      resetField('thresholdStartValue');
+                      resetField('thresholdEndValue');
                     }}
                     value={field.value || null}
                     onBlur={field.onBlur}
@@ -148,10 +149,10 @@ const AlarmCriteria = ({
                 )}
               />
             </div>
-            <QuestionCircle
+            {/* <QuestionCircle
               content={t(tFormBase + 'alarmCriteria.threshold.guide')}
               className="mt-6"
-            />
+            /> */}
           </div>
         )}
 
@@ -169,23 +170,29 @@ const AlarmCriteria = ({
                   <NumberField
                     key={`${selectedAnalysisPeriod}-${selectedCompareWith}`}
                     label={t(tFormBase + 'alarmCriteria.thresholdValue.title', {
-                      unit: `(${selectedMediumType?.unit || '-'})`,
+                      unit: `(${shouldUnitPercent ? '%' : selectedMediumType?.unit || '-'})`,
                     })}
                     required
                     onChange={(val) => {
-                      field.onChange(val ? +val : null);
+                      field.onChange(val === '' ? undefined : +val);
                     }}
-                    value={field.value || ''}
+                    value={field.value || undefined}
+                    max={shouldUnitPercent ? 100 : undefined}
+                    min={shouldUnitPercent ? 0 : undefined}
+                    maxLength={shouldUnitPercent ? 3 : 10}
+                    decimalScale={10}
+                    allowNegative={!shouldUnitPercent}
                     onBlur={field.onBlur}
+                    allowLeadingZeros={false}
                     error={fieldState.error?.message}
                   />
                 )}
               />
             </div>
-            <QuestionCircle
+            {/* <QuestionCircle
               content={t(tFormBase + 'alarmCriteria.thresholdValue.guide')}
               className="mt-6"
-            />
+            /> */}
           </div>
         )}
       </div>
@@ -206,22 +213,30 @@ const AlarmCriteria = ({
                     label={t(
                       tFormBase + 'alarmCriteria.thresholdStartValue.title',
                       {
-                        unit: `(${selectedMediumType?.unit || '-'})`,
+                        unit: `(${shouldUnitPercent ? '%' : selectedMediumType?.unit || '-'})`,
                       }
                     )}
                     required
-                    onChange={(val) => field.onChange(val ? +val : null)}
-                    value={field.value || ''}
+                    onChange={(val) =>
+                      field.onChange(val === '' ? undefined : +val)
+                    }
+                    value={field.value || undefined}
+                    max={shouldUnitPercent ? 100 : undefined}
+                    min={shouldUnitPercent ? 0 : undefined}
+                    maxLength={shouldUnitPercent ? 3 : 10}
+                    decimalScale={10}
+                    allowNegative={!shouldUnitPercent}
                     onBlur={field.onBlur}
+                    allowLeadingZeros={false}
                     error={fieldState.error?.message}
                   />
                 )}
               />
             </div>
-            <QuestionCircle
+            {/* <QuestionCircle
               content={t(tFormBase + 'alarmCriteria.thresholdStartValue.guide')}
               className="mt-6"
-            />
+            /> */}
           </div>
           <div className="flex items-center gap-4 h-fit">
             <div className="block w-full">
@@ -235,22 +250,30 @@ const AlarmCriteria = ({
                     label={t(
                       tFormBase + 'alarmCriteria.thresholdEndValue.title',
                       {
-                        unit: `(${selectedMediumType?.unit || '-'})`,
+                        unit: `(${shouldUnitPercent ? '%' : selectedMediumType?.unit || '-'})`,
                       }
                     )}
                     required
                     value={field.value || undefined}
+                    max={shouldUnitPercent ? 100 : undefined}
+                    min={shouldUnitPercent ? 0 : undefined}
+                    maxLength={shouldUnitPercent ? 3 : 10}
+                    decimalScale={10}
+                    allowNegative={!shouldUnitPercent}
                     onBlur={field.onBlur}
-                    onChange={(val) => field.onChange(val ? +val : null)}
+                    onChange={(val) =>
+                      field.onChange(val === '' ? undefined : +val)
+                    }
+                    allowLeadingZeros={false}
                     error={fieldState.error?.message}
                   />
                 )}
               />
             </div>
-            <QuestionCircle
+            {/* <QuestionCircle
               content={t(tFormBase + 'alarmCriteria.thresholdEndValue.guide')}
               className="mt-6"
-            />
+            /> */}
           </div>
         </div>
       )}

@@ -1,25 +1,26 @@
 {
-  "mainHeader": "Okresowe alarmy",
+  "mainHeader": "Alarmy okresowe",
   "table": {
     "header": {
       "alarmName": "Nazwa",
       "author": "Autor",
       "localisationName": "Lokalizacje",
-      "active": "Aktywny",
+      "active": "Aktywność",
       "lastOccurrence": "Ostatnie wystąpienie",
       "alarmPeriod": "Okres",
       "shared": "Współdzielony",
       "actions": "Akcje"
     }
   },
+  "createBtn": "Utwórz alarm okresowy",
   "create": {
     "mainHeader": "Utwórz alarm okresowy",
     "form": {
       "basic": {
         "title": "Podstawowe informacje",
         "alarmName": "Nazwa alarmu",
-        "active": "Aktywny",
-        "shared": "Alarm współdzielony",
+        "active": "Aktywność",
+        "shared": "Alarm udostępniony",
         "mediumType": "Typ medium",
         "timezone": "Strefa czasowa"
       },
@@ -27,7 +28,7 @@
         "title": "Moment wykonania",
         "frequency": "Częstotliwość",
         "generationTime": {
-          "title": "Planowany czas wygenerowania",
+          "title": "Częstotliwość",
           "guide": "Czas po którym zostanie wygenerowany raport"
         },
         "generationDay": {
@@ -35,8 +36,8 @@
           "guide": "Dzień tygodnia / miesiąca / kwartału / roku, w którym zostanie wygenerowany raport"
         },
         "gapAnalysis": {
-          "title": "Opóźnienie odbieranych danych",
-          "guide": "Liczba dni opóźnienia w odbiorze danych. Liczba ta jest odejmowana od daty generowania raportu w momencie jego przetwarzania"
+          "title": "Opóźnienie w odbiorze danych",
+          "guide": "Liczba dni opóźnienia w odbiorze danych. Liczba ta jest odejmowana od daty generowania alarmu w momencie jego przetwarzania"
         }
       },
       "timeConfiguration": {
@@ -58,19 +59,19 @@
           "guide": ""
         },
         "thresholdValue": {
-          "title": "Wartość progu",
+          "title": "Wartość progu {{unit}}",
           "guide": ""
         },
         "thresholdStartValue": {
-          "title": "Wartość początkowa progu",
+          "title": "Wartość początkowa progu {{unit}}",
           "guide": ""
         },
         "thresholdEndValue": {
-          "title": "Wartość końcowa progu",
+          "title": "Wartość końcowa progu {{unit}}",
           "guide": ""
         },
         "sendOnlyWhenExceeded": {
-          "title": "Wyślij raport tylko kiedy przekracza próg",
+          "title": "Wyślij alarm tylko kiedy przekracza próg",
           "guide": ""
         }
       },
@@ -92,7 +93,7 @@
         "cancel": "Anuluj"
       },
       "validation": {
-        "name": "Imię jest wymagane",
+        "name": "Nazwa jest wymagana",
         "clientUuid": "Klient jest wymagany",
         "meteringPointTypeId": "Typ medium jest wymagany",
         "timezone": "Strefa czasowa jest wymagana",
@@ -111,6 +112,7 @@
         "thresholdValue": "Wartość progu jest wymagana",
         "thresholdStartValue": "Wartość początkowa progu jest wymagana",
         "thresholdEndValue": "Wartość końcowa progu jest wymagana",
+        "thresholdValueOutOfRange": "Wartość końcowa progu powinna być większa niż wartość początkowa progu",
         "measurementUuids": "Wybierz liczniki"
       }
     },
@@ -124,11 +126,11 @@
   },
   "config": {
     "frequency": {
-      "daily": "Codziennie",
-      "weekly": "Tygodniowo",
-      "monthly": "Miesięcznie",
-      "quarterly": "Kwartalnie",
-      "yearly": "Rocznie"
+      "daily": "Dzienny",
+      "weekly": "Tygodniowy",
+      "monthly": "Miesięczny",
+      "quarterly": "Kwartalny",
+      "yearly": "Roczny"
     },
     "analysisPeriod": {
       "lastDay": "Zeszły dzień",
@@ -138,7 +140,7 @@
       "lastYear": "Zeszły rok"
     },
     "compareWith": {
-      "const": "Stały",
+      "const": "Stała wartość",
       "prevDay": "Poprzedni dzień",
       "prevWeek": "Poprzedni tydzień",
       "prevMonth": "Poprzedni miesiąc",
@@ -155,7 +157,7 @@
     "threshold": {
       "above": "Powyżej",
       "below": "Poniżej",
-      "equal": "Równe",
+      "equal": "Równy",
       "between": "Pomiędzy",
       "beyond": "Poza",
       "abovePercent": "Powyżej procent",

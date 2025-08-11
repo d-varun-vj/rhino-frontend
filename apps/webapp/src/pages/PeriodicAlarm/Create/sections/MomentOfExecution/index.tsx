@@ -2,34 +2,30 @@ import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/Float
 import CustomTimePicker from 'apps/webapp/src/components/common/datetime/CustomTimePicker';
 import QuestionCircle from 'apps/webapp/src/components/common/indicators/QuestionCircle';
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
-import { useEffect, useMemo } from 'react';
-import { Controller } from 'react-hook-form';
+import { useMemo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { PeriodicAlarmFrequency, RHFInputProps } from '../../../types';
+import { PeriodicAlarmFrequency } from '../../../types';
 import {
   FREQUENCY_OPTIONS,
   tFormBase,
   VALID_GENERATION_DAY_CONFIG,
 } from '../../config';
 import { applyLabelTranslations, shouldShowGenerationDay } from '../../helper';
+import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
 const MomentOfExecution = ({
-  control,
-  setValue,
-  watch,
   resetThresholdValues,
-}: RHFInputProps & {
+}: {
   resetThresholdValues: () => void;
 }) => {
+  const { control, watch, setValue, resetField } =
+    useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
   const selectedFrequency =
     (watch('frequency') as PeriodicAlarmFrequency) ||
     PeriodicAlarmFrequency.DAILY;
-
-  useEffect(() => {
-    setValue('generationDay', null);
-  }, [selectedFrequency, setValue]);
 
   const generationDayConfigByFrequency = useMemo(() => {
     return VALID_GENERATION_DAY_CONFIG[selectedFrequency];
@@ -52,7 +48,8 @@ const MomentOfExecution = ({
               data={applyLabelTranslations(FREQUENCY_OPTIONS)}
               onSelect={(frequency: string) => {
                 field.onChange(frequency);
-                setValue('compareWithPeriod', '');
+                resetField('compareWithPeriod');
+                setValue('generationDay', 1);
                 resetThresholdValues();
               }}
               selectedValue={FREQUENCY_OPTIONS.find(
@@ -72,13 +69,13 @@ const MomentOfExecution = ({
               render={({ field, fieldState }) => (
                 <NumberField
                   label={t(tFormBase + 'momentOfExecution.generationDay.title')}
+                  required
+                  value={field.value ?? 1}
                   min={generationDayConfigByFrequency.min}
                   max={generationDayConfigByFrequency.max}
                   placeholder={t(generationDayConfigByFrequency.placeholder)}
-                  required
-                  value={field.value ?? ''}
                   onChange={(val) => {
-                    field.onChange(val === '' ? undefined : +val);
+                    field.onChange(val === '' ? 1 : +val);
                   }}
                   onBlur={field.onBlur}
                   error={fieldState.error ? fieldState.error.message : ''}

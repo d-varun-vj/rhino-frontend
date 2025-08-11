@@ -3,21 +3,22 @@ import { SelectMeasurement } from 'apps/webapp/src/components/measurement/Select
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import { locations } from 'apps/webapp/src/routes/locations';
+import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { FaPlus } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom';
-import { RHFInputProps } from '../../../types';
 import { tFormBase } from '../../config';
+import { PeriodicAlarmSchema } from '../../validation';
 
 const FormFooter = ({
-  setValue,
   selectedMediumType,
   isPending,
-}: RHFInputProps & {
+}: {
   selectedMediumType: string | null;
   isPending: boolean;
 }) => {
+  const { setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
   const navigate = useNavigate();
   const { client, location, group } = useUserFilter();
