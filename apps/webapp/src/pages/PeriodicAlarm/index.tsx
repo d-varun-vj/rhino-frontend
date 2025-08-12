@@ -1,20 +1,21 @@
 import {
   PeriodicAlarmFilter,
   PeriodicAlarmType,
-  useDeletePeriodicAlarm,
-  useGetPeriodicAlarmList,
   UserViewPermission,
   ViewPermissionsType,
+  useDeletePeriodicAlarm,
+  useGetPeriodicAlarmList,
 } from '@rhino/apis';
-import { convertToLocalTime, formatListSummary, Sort } from '@rhino/utils';
+import { Sort, convertToLocalTime, formatListSummary } from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { FaClock, FaEdit, FaPlusCircle } from 'react-icons/fa';
+import { generatePath, useLocation, useNavigate } from 'react-router-dom';
+import { ExecutionActionProps, ExecutionStateProps } from './types';
 
 import { format } from 'date-fns/format';
 import { useTranslation } from 'react-i18next';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
-import { useLocation, useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/common/buttons/CustomButton';
 import IconButton from '../../components/common/buttons/IconButton';
 import StatusDot from '../../components/common/indicators/StatusDot';
@@ -33,7 +34,6 @@ import { locations } from '../../routes/locations';
 import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
 import Execution from './Execution';
 import { getTranslationOptions } from './helper';
-import { ExecutionActionProps, ExecutionStateProps } from './types';
 
 const initialExecutionState = {
   openExecution: false,
@@ -86,13 +86,16 @@ const PeriodicAlarm = () => {
   const navigate = useNavigate();
 
   const routeLocation = useLocation();
-  const { isCreated } = (routeLocation.state as never) || {};
+  const { isCreated, isUpdated } = (routeLocation.state as never) || {};
 
   useEffect(() => {
     if (isCreated) {
-      message.success('Created successfully');
+      message.success(t('create.success'));
     }
-  }, [isCreated]);
+    if (isUpdated) {
+      message.success(t('update.success'));
+    }
+  }, [isCreated, isUpdated]);
 
   const { data: periodicAlarmRes, isLoading: isLoadingData } =
     useGetPeriodicAlarmList({
@@ -144,7 +147,11 @@ const PeriodicAlarm = () => {
         )}
         <IconButton
           action={() => {
-            console.log('Edit alarm:', row.original.id);
+            navigate(
+              generatePath(locations.alarm.periodic.update, {
+                uuid: row.original.uuid,
+              })
+            );
           }}
           popupContent="Edit Alarm"
         >
@@ -164,6 +171,7 @@ const PeriodicAlarm = () => {
     ),
     [handleDeleteAlarm, isPending, t, dispatch]
   );
+
   const columns = React.useMemo<ColumnDef<PeriodicAlarmType, unknown>[]>(
     () => [
       {

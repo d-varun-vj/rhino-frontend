@@ -1,4 +1,8 @@
 import { Sort } from '@rhino/utils';
+import { ClientInfo } from '../../Clients';
+import { MeteringPointTypes } from '../../Common/types';
+import { Location } from '../../Locations';
+import { MeasurementType } from '../../Measurement/types';
 
 export interface PeriodicAlarmType {
   id?: string;
@@ -78,3 +82,78 @@ export type PeriodicAlarmExecution = {
   timeRange?: string;
   action?: string;
 };
+
+export type PeriodicAlarmUpdateReq = {
+  name: string;
+  clientUuid: string;
+  meteringPointTypeId: number;
+  measurementUuids: string[];
+  configuration: {
+    generationDay?: number;
+    generationTime: string;
+    delayInDays: number;
+    comparisonMeasure: string;
+    thresholdType: string;
+    thresholdValue?: number;
+    thresholdStartValue?: number;
+    thresholdEndValue?: number;
+    sendOnlyWhenExceeded: boolean;
+    timezone: string;
+  };
+  recipients: {
+    emails?: string[];
+    phoneNumbers?: string[];
+  };
+  frequency: string;
+  shared: boolean;
+  readOnly: boolean;
+  active: boolean;
+  timezone: string;
+  sharedLocalisationUuids?: string[];
+  sharedTenantUuids?: string[];
+  compareWithPeriod: string;
+  analysePeriod: string;
+};
+
+export interface PeriodicAlarmDetail {
+  id: number;
+  uuid: string;
+  name: string;
+  client: ClientInfo;
+  meteringPointTypeDto: MeteringPointTypes;
+  measurements: MeasurementType[];
+  configuration: {
+    generationTime: string;
+    delayInDays: number;
+    generationDay?: number;
+    comparisonMeasure: string;
+    thresholdType: string;
+    thresholdStartValue?: number;
+    thresholdEndValue?: number;
+    thresholdValue?: number | null;
+    sendOnlyWhenExceeded: boolean;
+    timezone: string;
+  };
+  recipientDetails: {
+    emails?: string[];
+    phoneNumbers?: string[];
+  };
+  frequency: string;
+  shared: boolean;
+  readOnly: boolean;
+  active: boolean;
+  userUuid: string;
+  editorUuid: string | null;
+  sharedLocalisations: Location[];
+  sharedTenants: {
+    id: number;
+    uuid: string;
+    displayName: string;
+    leaseNumber: string;
+    groupName: string;
+    localizationName: string;
+  }[];
+  compareWithPeriod: string;
+  analysePeriod: string;
+  nextExecutionTime: string;
+}

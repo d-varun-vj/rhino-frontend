@@ -2,18 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { DataQueryKeys } from '../../data-query-keys';
 import API_URLS from '../../endpoints';
 import { httpClient } from '../../httpClient';
-
-type MeteringPointTypes = {
-  id: number;
-  mappId: number;
-  name: string;
-  unit: string;
-  subunit: string;
-};
-
-type MeteringPointTypesRes = {
-  data: MeteringPointTypes[];
-};
+import { MeteringPointTypesRes } from '../types';
 
 export const useGetMeteringPointTypes = ({
   clientUuid,

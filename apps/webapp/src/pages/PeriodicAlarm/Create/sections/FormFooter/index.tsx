@@ -1,5 +1,6 @@
 import CustomButton from 'apps/webapp/src/components/common/buttons/CustomButton';
 import { SelectMeasurement } from 'apps/webapp/src/components/measurement/SelectMeasurement';
+import { MeasurementWithConfig } from 'apps/webapp/src/components/measurement/SelectMeasurement/types';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import { locations } from 'apps/webapp/src/routes/locations';
@@ -14,9 +15,11 @@ import { PeriodicAlarmSchema } from '../../validation';
 const FormFooter = ({
   selectedMediumType,
   isPending,
+  initialMeasurements,
 }: {
   selectedMediumType: string | null;
   isPending: boolean;
+  initialMeasurements?: MeasurementWithConfig[];
 }) => {
   const { setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
@@ -44,6 +47,7 @@ const FormFooter = ({
             !selectedMediumType ? t(tFormBase + 'emptyMediumType') : null
           }
           customFilter={{ mediumType: selectedMediumType ?? '' }}
+          initialMeasurements={initialMeasurements}
         />
       </div>
 

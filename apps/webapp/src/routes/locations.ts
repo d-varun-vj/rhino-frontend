@@ -11,6 +11,7 @@ export const locations = {
     periodic: {
       base: '/alarm/periodic',
       create: '/alarm/periodic/create',
+      update: '/alarm/periodic/update/:uuid',
     },
   },
 };

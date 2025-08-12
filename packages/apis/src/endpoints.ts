@@ -37,6 +37,8 @@ const API_URLS = {
   getPeriodicReportDownloadUrl: (uuid: string) => {
     return `periodic-alarm/report/${uuid}`;
   },
+  getAlarmDetails: (uuid: string) => `periodic-alarm/${uuid}`,
+  updateAlarm: (uuid: string) => `periodic-alarm/${uuid}`,
 
   //Tenants
   getTenants: () => 'tenants/all',

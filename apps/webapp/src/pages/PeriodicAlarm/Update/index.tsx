@@ -1,0 +1,275 @@
+import {
+  PeriodicAlarmUpdateReq,
+  UserViewPermission,
+  ViewPermissionsType,
+  useGetAlarmDetails,
+  useUpdatePeriodicAlarm,
+} from '@rhino/apis';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  PeriodicAlarmSchema,
+  buildPeriodicAlarmSchema,
+} from '../Create/validation';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader } from '@mantine/core';
+import { MeasurementWithConfig } from 'apps/webapp/src/components/measurement/SelectMeasurement/types';
+import message from 'apps/webapp/src/components/notifier';
+import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
+import { GUIDE_LINKS } from 'apps/webapp/src/constant/guide-links';
+import { useUserFilter } from 'apps/webapp/src/context/userFilter';
+import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
+import MainLayout from 'apps/webapp/src/layouts/MainLayout';
+import { locations } from 'apps/webapp/src/routes/locations';
+import AccessAuthorizer from 'apps/webapp/src/wrappers/AccessAuthorizer';
+import { useTranslation } from 'react-i18next';
+import { onError } from '../Create/helper';
+import AlarmCriteria from '../Create/sections/AlarmCriteria';
+import BasicInformation from '../Create/sections/BasicInformation';
+import FormFooter from '../Create/sections/FormFooter';
+import MomentOfExecution from '../Create/sections/MomentOfExecution';
+import RecipientDetails from '../Create/sections/RecipientDetails';
+import TimeConfiguration from '../Create/sections/TimeConfiguration';
+import { PeriodicAlarmPeriod } from '../types';
+
+const UpdatePeriodicAlarm = () => {
+  const navigate = useNavigate();
+  const { uuid } = useParams();
+  const { t } = useTranslation('periodicAlarm');
+  const { client, location, group, setClient } = useUserFilter();
+
+  const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
+    uuid as string
+  );
+  const { data: alarmDetails, isLoading } = useGetAlarmDetails(uuid as string);
+
+  const [selectedMediumType, setSelectedMediumType] = useState<{
+    name: string | null;
+    unit: string | null;
+  } | null>(null);
+  const [initialMeasurements, setInitialMeasurements] = useState<
+    MeasurementWithConfig[]
+  >([]);
+
+  const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
+
+  const methods = useForm<PeriodicAlarmSchema>({
+    mode: 'onChange',
+    defaultValues: {
+      analysePeriod: PeriodicAlarmPeriod.LAST_DAY,
+      timezone: 'Europe/Warsaw',
+      isActive: true,
+      readOnly: true,
+      shared: false,
+      sharedLocations: [],
+      sharedTenants: [],
+      recipientEmails: [],
+      phoneNumber: [],
+      measurementUuids: [],
+      sendOnlyWhenExceeded: true,
+    },
+    resolver: zodResolver(schema),
+  });
+
+  const { handleSubmit, resetField, reset } = methods;
+
+  useEffect(() => {
+    if (!alarmDetails?.data) return;
+
+    reset({
+      name: alarmDetails.data.name,
+      clientUuid: alarmDetails.data.client.uuid,
+      frequency: alarmDetails.data.frequency,
+      analysePeriod:
+        alarmDetails.data.analysePeriod || PeriodicAlarmPeriod.LAST_DAY,
+      comparisonMeasure: alarmDetails.data.configuration?.comparisonMeasure,
+      compareWithPeriod: alarmDetails.data.compareWithPeriod,
+      timezone: alarmDetails.data.configuration?.timezone || 'Europe/Warsaw',
+      isActive: alarmDetails.data.active ?? true,
+      readOnly: alarmDetails.data.readOnly ?? true,
+      shared: alarmDetails.data.shared ?? false,
+      sharedLocations:
+        alarmDetails.data.sharedLocalisations?.map(
+          (location) => location.uuid
+        ) || [],
+      sharedTenants:
+        alarmDetails.data.sharedTenants?.map((tenant) => tenant.uuid) || [],
+      recipientEmails: alarmDetails.data.recipientDetails?.emails || [],
+      phoneNumber: alarmDetails.data.recipientDetails?.phoneNumbers || [],
+      measurementUuids:
+        alarmDetails.data.measurements?.map(
+          (measurement) => measurement.uuid
+        ) || [],
+      sendOnlyWhenExceeded:
+        alarmDetails.data.configuration?.sendOnlyWhenExceeded ?? true,
+      generationDay: alarmDetails.data.configuration?.generationDay,
+      generationTime: alarmDetails.data.configuration?.generationTime,
+      delayInDays: alarmDetails.data.configuration?.delayInDays,
+      thresholdType: alarmDetails.data.configuration?.thresholdType,
+      thresholdValue:
+        alarmDetails.data.configuration?.thresholdValue ?? undefined,
+      thresholdStartValue: alarmDetails.data.configuration?.thresholdStartValue,
+      thresholdEndValue: alarmDetails.data.configuration?.thresholdEndValue,
+      meteringPointTypeId: alarmDetails.data.meteringPointTypeDto?.id,
+    });
+
+    if (alarmDetails.data.meteringPointTypeDto) {
+      setSelectedMediumType({
+        name: alarmDetails.data.meteringPointTypeDto.name,
+        unit: alarmDetails.data.meteringPointTypeDto.unit,
+      });
+    }
+
+    setInitialMeasurements(
+      alarmDetails.data.measurements.map((measurement) => ({
+        measurement: measurement,
+        config: {
+          startDate: null,
+          endDate: null,
+          selectionId: new Date().toISOString() + measurement.uuid,
+        },
+      })) as MeasurementWithConfig[]
+    );
+
+    setClient({
+      name: alarmDetails.data.client.name,
+      uuid: alarmDetails.data.client.uuid,
+    });
+  }, [alarmDetails?.data, reset]);
+
+  const resetThresholdValues = useCallback(() => {
+    resetField('thresholdType');
+    resetField('thresholdValue');
+    resetField('thresholdStartValue');
+    resetField('thresholdEndValue');
+  }, [resetField]);
+
+  const buildUpdateRequestForm = (
+    values: PeriodicAlarmSchema
+  ): PeriodicAlarmUpdateReq => {
+    return {
+      name: values.name,
+      clientUuid: values.clientUuid,
+      meteringPointTypeId: values.meteringPointTypeId,
+      measurementUuids: values.measurementUuids,
+      configuration: {
+        generationDay: values.generationDay ?? 1,
+        generationTime: values.generationTime,
+        delayInDays: values.delayInDays,
+        comparisonMeasure: values.comparisonMeasure,
+        thresholdType: values.thresholdType,
+        ...(!!values.thresholdValue && {
+          thresholdValue: values.thresholdValue,
+        }),
+        ...(!!values.thresholdStartValue && {
+          thresholdStartValue: values.thresholdStartValue,
+        }),
+        ...(!!values.thresholdEndValue && {
+          thresholdEndValue: values.thresholdEndValue,
+        }),
+        sendOnlyWhenExceeded: values.sendOnlyWhenExceeded,
+        timezone: values.timezone,
+      },
+      recipients: {
+        ...(!!values.recipientEmails && { emails: values.recipientEmails }),
+        ...(!!values.phoneNumber && { phoneNumbers: values.phoneNumber }),
+      },
+      frequency: values.frequency,
+      shared: values.shared,
+      readOnly: values.readOnly,
+      active: values.isActive,
+      timezone: values.timezone,
+      ...(!!values.sharedLocations && {
+        sharedLocalisationUuids: values.sharedLocations,
+      }),
+      ...(!!values.sharedTenants && {
+        sharedTenantUuids: values.sharedTenants,
+      }),
+      compareWithPeriod: values.compareWithPeriod,
+      analysePeriod: values.analysePeriod,
+    };
+  };
+
+  const onSubmit = (values: PeriodicAlarmSchema) => {
+    updateAlarm(buildUpdateRequestForm(values), {
+      onSuccess: () => {
+        navigate(
+          locations.alarm.periodic.base +
+            getRibbonParams({
+              client: client,
+              location: location,
+              group: group,
+            }),
+          {
+            state: { isUpdated: true },
+          }
+        );
+      },
+      onError: (error: Error | { error: string; message: string }) => {
+        const errMessage =
+          ('error' in error ? error.error : '') +
+            ('message' in error ? error.message : '') || t('update.error');
+
+        message.error(
+          errMessage ?? t('toast.somethingWentWrong', { ns: 'common' })
+        );
+      },
+    });
+  };
+
+  return (
+    <AccessAuthorizer
+      viewPermissionType={ViewPermissionsType.ViewRoleBased}
+      viewPermissions={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
+    >
+      <MainLayout title={t('update.mainHeader')} isFavoriteMeterShow={false}>
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader color="var(--color-rhino-indigo-blue)" size={24} />
+          </div>
+        ) : (
+          <FormProvider {...methods}>
+            <form onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}>
+              <div className="flex flex-col gap-20 mb-20">
+                <div>
+                  <PageTitle
+                    title={t('update.mainHeader')}
+                    guide={true}
+                    guideLink={GUIDE_LINKS.PERIODIC_ALARM}
+                  />
+                  <div className="grid min-lg:grid-cols-5 gap-14 w-full">
+                    <div className="flex gap-8 py-2 flex-col col-span-3">
+                      <BasicInformation
+                        setSelectedMediumType={setSelectedMediumType}
+                      />
+                      <MomentOfExecution
+                        resetThresholdValues={resetThresholdValues}
+                      />
+                      <TimeConfiguration
+                        resetThresholdValues={resetThresholdValues}
+                      />
+                      <AlarmCriteria
+                        resetThresholdValues={resetThresholdValues}
+                        selectedMediumType={selectedMediumType}
+                      />
+                      <RecipientDetails />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <FormFooter
+                selectedMediumType={selectedMediumType?.name || null}
+                isPending={isPending}
+                initialMeasurements={initialMeasurements}
+              />
+            </form>
+          </FormProvider>
+        )}
+      </MainLayout>
+    </AccessAuthorizer>
+  );
+};
+
+export default UpdatePeriodicAlarm;

@@ -4,6 +4,7 @@ import NotAllowed from '../pages/NotAllowed';
 import NotFound from '../pages/NotFound';
 import PeriodicAlarm from '../pages/PeriodicAlarm';
 import CreatePeriodicAlarm from '../pages/PeriodicAlarm/Create';
+import UpdatePeriodicAlarm from '../pages/PeriodicAlarm/Update';
 import { locations } from './locations';
 
 export const ROUTES: { path: string; element: JSX.Element }[] = [
@@ -16,4 +17,5 @@ export const ROUTES: { path: string; element: JSX.Element }[] = [
   { path: locations.consumption, element: <Consumption /> },
   { path: locations.alarm.periodic.base, element: <PeriodicAlarm /> },
   { path: locations.alarm.periodic.create, element: <CreatePeriodicAlarm /> },
+  { path: locations.alarm.periodic.update, element: <UpdatePeriodicAlarm /> },
 ];

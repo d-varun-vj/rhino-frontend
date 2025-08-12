@@ -10,6 +10,14 @@ export type Client = {
   useAggregateData: boolean;
 };
 
+export type ClientInfo = {
+  id: number;
+  name: string;
+  uuid: string;
+  logo: string;
+  useAggregateData: boolean;
+};
+
 export const useGetClients = ({ userUuid }: { userUuid: string }) => {
   return useQuery({
     queryKey: [DataQueryKeys.CLIENTS],

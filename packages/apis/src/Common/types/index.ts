@@ -9,3 +9,15 @@ export type Options = {
   loadTypes: NameWithTranslationDto[];
   endUseAreaTypes: NameWithTranslationDto[];
 };
+
+export type MeteringPointTypes = {
+  id: number;
+  mappId: number;
+  name: string;
+  unit: string;
+  subunit: string;
+};
+
+export type MeteringPointTypesRes = {
+  data: MeteringPointTypes[];
+};

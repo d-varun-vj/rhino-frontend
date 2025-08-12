@@ -13,7 +13,13 @@
     }
   },
   "createBtn": "Create periodic alarm",
+  "update": {
+    "mainHeader": "Update periodic alarm",
+    "success": "Periodic alarm updated successfully",
+    "error": "Failed to update periodic alarm"
+  },
   "create": {
+    "success": "Periodic alarm created successfully",
     "mainHeader": "Create periodic alarm",
     "form": {
       "basic": {

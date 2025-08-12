@@ -21,6 +21,7 @@ interface SelectMeasurementProps {
   customFilter?: {
     mediumType?: string;
   };
+  initialMeasurements?: MeasurementWithConfig[];
 }
 
 export const SelectMeasurement = ({
@@ -33,15 +34,16 @@ export const SelectMeasurement = ({
   disabled = false,
   disabledTitle,
   customFilter,
+  initialMeasurements = [],
 }: SelectMeasurementProps) => {
   const [modalOpened, setModalOpened] = useState(false);
-  const [selectedMeasurements, setSelectedMeasurements] = useState<
-    MeasurementWithConfig[]
-  >([]);
+  const [selectedMeasurements, setSelectedMeasurements] =
+    useState<MeasurementWithConfig[]>(initialMeasurements);
 
   const { client } = useUserFilter();
   const prevClientRef = useRef(client);
   const prevCustomFilterRef = useRef(customFilter);
+  const isInitialMount = useRef(true);
 
   const { t } = useTranslation('components');
   const baseRoute = 'measurement.selectMeasurement.';
@@ -52,6 +54,13 @@ export const SelectMeasurement = ({
   };
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      prevClientRef.current = client;
+      prevCustomFilterRef.current = customFilter;
+      return;
+    }
+
     if (
       prevClientRef.current !== client ||
       prevCustomFilterRef.current?.mediumType !== customFilter?.mediumType ||
@@ -60,7 +69,16 @@ export const SelectMeasurement = ({
       handleClearAll();
     }
     prevClientRef.current = client;
+    prevCustomFilterRef.current = customFilter;
   }, [client, customFilter?.mediumType, disabled]);
+
+  // // Notify parent about initial measurements on moun
+  useEffect(() => {
+    if (initialMeasurements.length > 0) {
+      setSelectedMeasurements(initialMeasurements);
+      onMeasurementsChange?.(initialMeasurements);
+    }
+  }, [initialMeasurements]);
 
   const handleMeasurementSelect = (measurements: MeasurementWithConfig[]) => {
     if (allowSameMeasurementMultipleTimes) {

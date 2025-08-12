@@ -13,7 +13,13 @@
     }
   },
   "createBtn": "Utwórz alarm okresowy",
+  "update": {
+    "mainHeader": "Update periodic alarm",
+    "success": "Alarm okresowy został pomyślnie zaktualizowany",
+    "error": "Nie udało się zaktualizować alarmu okresowego"
+  },
   "create": {
+    "success": "Alarm okresowy został pomyślnie utworzony",
     "mainHeader": "Utwórz alarm okresowy",
     "form": {
       "basic": {
