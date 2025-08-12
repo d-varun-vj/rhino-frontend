@@ -119,6 +119,7 @@
     "error": "Nie udało się utworzyć alarmu okresowego"
   },
   "execution": {
+    "btnPopup": "Wykonanie",
     "table": {
       "occurence": "Moment wystąpienia",
       "executionStatus": "Status",

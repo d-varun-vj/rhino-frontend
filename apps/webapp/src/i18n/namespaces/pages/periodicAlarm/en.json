@@ -119,6 +119,7 @@
     "error": "Failed to create periodic alarm"
   },
   "execution": {
+    "btnPopup": "Execution",
     "table": {
       "occurence": "Moment of occurrence",
       "executionStatus": "Status",

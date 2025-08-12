@@ -130,15 +130,18 @@ const PeriodicAlarm = () => {
   const ActionCellFn = useCallback(
     (row: Row<PeriodicAlarmType>) => (
       <ActionCell>
-        <IconButton
-          action={() => {
-            dispatch({ type: 'SET_OPEN_EXECUTION' });
-            dispatch({ type: 'SET_ALARM_UUID', payload: row.original.uuid });
-            dispatch({ type: 'SET_ALARM_NAME', payload: row.original.name });
-          }}
-        >
-          <FaClock />
-        </IconButton>
+        {row.original.showExecutionButton && (
+          <IconButton
+            action={() => {
+              dispatch({ type: 'SET_OPEN_EXECUTION' });
+              dispatch({ type: 'SET_ALARM_UUID', payload: row.original.uuid });
+              dispatch({ type: 'SET_ALARM_NAME', payload: row.original.name });
+            }}
+            popupContent={t('execution.btnPopup')}
+          >
+            <FaClock />
+          </IconButton>
+        )}
         <IconButton
           action={() => {
             console.log('Edit alarm:', row.original.id);
