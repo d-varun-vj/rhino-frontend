@@ -40,7 +40,7 @@ export type PeriodicAlarmCreateReq = {
     thresholdEndValue?: number;
     sendOnlyWhenExceeded: boolean;
   };
-  recipients: {
+  recipients?: {
     emails?: string[];
     phoneNumbers?: string[];
   };

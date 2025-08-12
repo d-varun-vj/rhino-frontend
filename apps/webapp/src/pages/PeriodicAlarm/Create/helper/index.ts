@@ -108,10 +108,12 @@ export const buildCreateRequestForm = (
       }),
       sendOnlyWhenExceeded: values.sendOnlyWhenExceeded,
     },
-    recipients: {
-      ...(!!values.recipientEmails && { emails: values.recipientEmails }),
-      ...(!!values.phoneNumber && { phoneNumbers: values.phoneNumber }),
-    },
+    ...((!!values.recipientEmails?.length || !!values.phoneNumber?.length) && {
+      recipients: {
+        ...(!!values.recipientEmails && { emails: values.recipientEmails }),
+        ...(!!values.phoneNumber && { phoneNumbers: values.phoneNumber }),
+      },
+    }),
     frequency: values.frequency,
     shared: values.shared,
     readOnly: values.readOnly,
