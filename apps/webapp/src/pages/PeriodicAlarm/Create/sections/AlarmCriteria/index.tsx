@@ -62,6 +62,8 @@ const AlarmCriteria = ({
   const shouldUnitPercent =
     selectedCompareWith !== PeriodicAlarmCompareWith.CONSTANT;
 
+  console.log(typeof watch('thresholdValue'));
+
   return (
     <SectionWrapper
       title={t(tFormBase + 'alarmCriteria.title')}
@@ -173,18 +175,12 @@ const AlarmCriteria = ({
                       unit: `(${shouldUnitPercent ? '%' : selectedMediumType?.unit || '-'})`,
                     })}
                     required
-                    onChange={(val) => {
-                      field.onChange(val === '' ? undefined : +val);
-                    }}
-                    value={field.value || undefined}
-                    max={shouldUnitPercent ? 100 : undefined}
-                    min={shouldUnitPercent ? 0 : undefined}
-                    maxLength={shouldUnitPercent ? 3 : 20}
-                    decimalScale={10}
-                    allowNegative={!shouldUnitPercent}
+                    decimalScale={6}
+                    onChange={field.onChange}
+                    value={field.value}
                     onBlur={field.onBlur}
-                    allowLeadingZeros={false}
                     error={fieldState.error?.message}
+                    trimLeadingZeroesOnBlur={true}
                   />
                 )}
               />
@@ -217,17 +213,9 @@ const AlarmCriteria = ({
                       }
                     )}
                     required
-                    onChange={(val) =>
-                      field.onChange(val === '' ? undefined : +val)
-                    }
-                    value={field.value || undefined}
-                    max={shouldUnitPercent ? 100 : undefined}
-                    min={shouldUnitPercent ? 0 : undefined}
-                    maxLength={shouldUnitPercent ? 3 : 20}
-                    decimalScale={10}
-                    allowNegative={!shouldUnitPercent}
+                    onChange={field.onChange}
+                    value={field.value}
                     onBlur={field.onBlur}
-                    allowLeadingZeros={false}
                     error={fieldState.error?.message}
                   />
                 )}
@@ -254,17 +242,9 @@ const AlarmCriteria = ({
                       }
                     )}
                     required
-                    value={field.value || undefined}
-                    max={shouldUnitPercent ? 100 : undefined}
-                    min={shouldUnitPercent ? 0 : undefined}
-                    maxLength={shouldUnitPercent ? 3 : 20}
-                    decimalScale={10}
-                    allowNegative={!shouldUnitPercent}
+                    value={field.value}
                     onBlur={field.onBlur}
-                    onChange={(val) =>
-                      field.onChange(val === '' ? undefined : +val)
-                    }
-                    allowLeadingZeros={false}
+                    onChange={field.onChange}
                     error={fieldState.error?.message}
                   />
                 )}

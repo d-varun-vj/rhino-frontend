@@ -43,7 +43,7 @@
       "timeConfiguration": {
         "title": "Time configuration",
         "analysisPeriod": {
-          "title": "Choose analysis period",
+          "title": "analysis period",
           "guide": ""
         }
       },
@@ -101,7 +101,7 @@
         "frequency": "Period is required",
         "generationDay": "Generation day is required",
         "generationTime": "Generation time is required",
-        "delayInDays": "Delay in data reception is required",
+        "delayInDays": "Delay in data reception should be less than 366",
         "analysePeriod": "Analysis period is required",
         "compareWithPeriod": "Comparison period is required",
         "comparisonMeasure": "Comparison measure is required",
@@ -109,11 +109,12 @@
         "phoneNumber": "Invalid phone number. Please enter a valid phone number",
         "shared": "At least one location or tenant must be selected when sharing is enabled",
         "thresholdType": "Threshold type is required when a comparison period is selected",
-        "thresholdValue": "Threshold value is required",
-        "thresholdStartValue": "Threshold start value is required",
-        "thresholdEndValue": "Threshold end value is required",
+        "thresholdValue": "Invalid value",
+        "thresholdStartValue": "Invalid value",
+        "thresholdEndValue": "Invalid value",
         "thresholdValueOutOfRange": "Threshold end value should be greater than threshold start value",
-        "measurementUuids": "Select measurements"
+        "measurementUuids": "Select measurements",
+        "inValid": "Invalid value"
       }
     },
     "error": "Failed to create periodic alarm"
@@ -173,10 +174,10 @@
       "equal": "Equal",
       "between": "Between",
       "beyond": "Beyond",
-      "abovePercent": "Above Percent",
-      "belowPercent": "Below Percent",
-      "betweenPercent": "Between Percent",
-      "beyondPercent": "Beyond Percent"
+      "abovePercent": "Above [%]",
+      "belowPercent": "Below [%]",
+      "betweenPercent": "Between [%]",
+      "beyondPercent": "Beyond [%]"
     },
     "generationDay": {
       "placeholder": {

@@ -60,7 +60,7 @@
   },
   "sharedSection": {
     "readOnly": "Tylko do odczytu",
-    "sharedLocations": "Udostępnione Lokalizacje",
+    "sharedLocations": "Udostępnione lokalizacje",
     "sharedTenants": "Udostępnieni najemcy"
   },
   "favoriteMeterModel": {

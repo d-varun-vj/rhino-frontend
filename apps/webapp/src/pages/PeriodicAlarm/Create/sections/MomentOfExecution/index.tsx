@@ -74,9 +74,8 @@ const MomentOfExecution = ({
                   min={generationDayConfigByFrequency.min}
                   max={generationDayConfigByFrequency.max}
                   placeholder={t(generationDayConfigByFrequency.placeholder)}
-                  onChange={(val) => {
-                    field.onChange(val === '' ? 1 : +val);
-                  }}
+                  allowDecimal={false}
+                  onChange={field.onChange}
                   onBlur={field.onBlur}
                   error={fieldState.error ? fieldState.error.message : ''}
                 />
@@ -125,11 +124,8 @@ const MomentOfExecution = ({
                 required
                 allowNegative={false}
                 value={field.value ?? ''}
-                onChange={(val) => {
-                  field.onChange(val === '' ? undefined : +val);
-                }}
-                min={0}
-                max={366}
+                onChange={field.onChange}
+                allowDecimal={false}
                 onBlur={field.onBlur}
                 error={fieldState.error ? fieldState.error.message : ''}
               />

@@ -18,7 +18,7 @@
     "form": {
       "basic": {
         "title": "Podstawowe informacje",
-        "alarmName": "Nazwa alarmu",
+        "alarmName": "Nazwa",
         "active": "Aktywność",
         "shared": "Alarm udostępniony",
         "mediumType": "Typ medium",
@@ -28,12 +28,12 @@
         "title": "Moment wykonania",
         "frequency": "Częstotliwość",
         "generationTime": {
-          "title": "Częstotliwość",
-          "guide": "Czas po którym zostanie wygenerowany raport"
+          "title": "Czas generowania",
+          "guide": "Czas po którym zostanie wygenerowany alarm"
         },
         "generationDay": {
           "title": "Planowany dzień wygenerowania",
-          "guide": "Dzień tygodnia / miesiąca / kwartału / roku, w którym zostanie wygenerowany raport"
+          "guide": "Dzień tygodnia / miesiąca / kwartału / roku, w którym zostanie wygenerowany alarm"
         },
         "gapAnalysis": {
           "title": "Opóźnienie w odbiorze danych",
@@ -43,7 +43,7 @@
       "timeConfiguration": {
         "title": "Konfiguracja czasu",
         "analysisPeriod": {
-          "title": "Wybierz okres analizy",
+          "title": "Okres analizy",
           "guide": ""
         }
       },
@@ -101,7 +101,7 @@
         "frequency": "Częstotliwość jest wymagana",
         "generationDay": "Dzień generowania jest wymagany",
         "generationTime": "Czas generowania jest wymagany",
-        "delayInDays": "Opóźnienie w odbiorze danych jest wymagane",
+        "delayInDays": "Opóźnienie w odbiorze danych powinno być mniejsze niż 366",
         "analysePeriod": "Okres analizy jest wymagany",
         "compareWithPeriod": "Okres porównania jest wymagany",
         "comparisonMeasure": "Sposób pomiaru jest wymagany",
@@ -109,11 +109,12 @@
         "phoneNumber": "Nieprawidłowy numer telefonu. Proszę podać prawidłowy numer telefonu.",
         "shared": "Musi zostać wybrana co najmniej jedna lokalizacja lub najemca, gdy udostępnianie jest włączone",
         "thresholdType": "Typ progu jest wymagany, gdy wybrany jest okres porównania",
-        "thresholdValue": "Wartość progu jest wymagana",
-        "thresholdStartValue": "Wartość początkowa progu jest wymagana",
-        "thresholdEndValue": "Wartość końcowa progu jest wymagana",
+        "thresholdValue": "Nieprawidłowa wartość",
+        "thresholdStartValue": "Nieprawidłowa wartość",
+        "thresholdEndValue": "Nieprawidłowa wartość",
         "thresholdValueOutOfRange": "Wartość końcowa progu powinna być większa niż wartość początkowa progu",
-        "measurementUuids": "Wybierz liczniki"
+        "measurementUuids": "Wybierz liczniki",
+        "inValid": "Nieprawidłowa wartość"
       }
     },
     "error": "Nie udało się utworzyć alarmu okresowego"
@@ -173,10 +174,10 @@
       "equal": "Równy",
       "between": "Pomiędzy",
       "beyond": "Poza",
-      "abovePercent": "Powyżej procent",
-      "belowPercent": "Poniżej procent",
-      "betweenPercent": "Pomiędzy procentami",
-      "beyondPercent": "Poza procentami"
+      "abovePercent": "Powyżej [%]",
+      "belowPercent": "Poniżej [%]",
+      "betweenPercent": "Pomiędzy [%]",
+      "beyondPercent": "Poza [%]"
     },
     "generationDay": {
       "placeholder": {

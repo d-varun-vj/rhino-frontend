@@ -60,8 +60,8 @@
   },
   "sharedSection": {
     "readOnly": "Read-only",
-    "sharedLocations": "Shared Localisations",
-    "sharedTenants": "Shared Tenants"
+    "sharedLocations": "Shared localisations",
+    "sharedTenants": "Shared tenants"
   },
   "favoriteMeterModel": {
     "mainHeader": "Choose favorite meters",
