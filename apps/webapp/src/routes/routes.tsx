@@ -4,14 +4,12 @@ import NotAllowed from '../pages/NotAllowed';
 import NotFound from '../pages/NotFound';
 import PeriodicAlarm from '../pages/PeriodicAlarm';
 import CreatePeriodicAlarm from '../pages/PeriodicAlarm/Create';
-import ServerError from '../pages/ServerError';
 import { locations } from './locations';
 
 export const ROUTES: { path: string; element: JSX.Element }[] = [
   // Common
   { path: locations.notAllowed, element: <NotAllowed /> },
   { path: locations.notFound, element: <NotFound /> },
-  { path: locations.serverError, element: <ServerError /> },
 
   // Pages
   { path: locations.dashboard, element: <Dashboard /> },
