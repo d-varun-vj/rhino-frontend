@@ -50,7 +50,8 @@
         "endUseArea": "Mierzony obszar",
         "location": "Lokalizacja",
         "group": "Grupa",
-        "tenants": "Najemcy"
+        "tenants": "Najemcy",
+        "actions": "Akcje"
       },
       "emptyText": "Brak wyników",
       "selectedText": "Wybrane liczniki",
@@ -81,5 +82,10 @@
     "locationNull": "Wszystkie lokalizacje",
     "groupNull": "Wszystkie grupy",
     "empty": "Brak wyniku"
+  },
+  "consumption": {
+    "goToConsumptionIcon": {
+      "popup": "Przejdź do zużycia, aby porównać zużycie pomiarowe"
+    }
   }
 }

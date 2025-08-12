@@ -50,7 +50,8 @@
         "endUseArea": "End Use Area",
         "location": "Location",
         "group": "Group",
-        "tenants": "Tenants"
+        "tenants": "Tenants",
+        "actions": "Actions"
       },
       "emptyText": "No results",
       "selectedText": "Selected measurements",
@@ -81,5 +82,10 @@
     "locationNull": "All locations",
     "groupNull": "All groups",
     "empty": "No result"
+  },
+  "consumption": {
+    "goToConsumptionIcon": {
+      "popup": "Go to consumptions to compare measurement consumptions"
+    }
   }
 }

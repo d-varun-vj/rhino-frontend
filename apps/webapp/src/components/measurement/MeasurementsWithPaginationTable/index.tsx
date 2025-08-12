@@ -15,7 +15,9 @@ import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../context/user';
 import CheckBox from '../../common/input/Checkbox';
 import Table from '../../common/Table';
+import ActionCell from '../../common/Table/ActionCell';
 import { FilterVariant } from '../../common/Table/types';
+import GoToConsumptionIcon from '../../consumption/GoToConsumptionIcon';
 
 interface MeasurementsWithPaginationTableProps {
   selectionMode?: 'none' | 'single' | 'multiple';
@@ -323,6 +325,23 @@ const MeasurementsWithPaginationTable = ({
           filterKey: 'tenants',
           sortKey: null,
         },
+      },
+      {
+        accessorFn: (row) => row.actions,
+        header: t(translationBaseRoute + 'header.actions'),
+        meta: {
+          sortKey: null,
+        },
+        cell: ({ row }) => (
+          <ActionCell>
+            <GoToConsumptionIcon
+              measurementUuid={row.original.uuid}
+              incremental={row.original.incremental}
+              type={row.original.type}
+              shouldCompareMeasurements={false}
+            />
+          </ActionCell>
+        ),
       }
     );
 

@@ -7,7 +7,7 @@ import {
 } from '@rhino/apis';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import React, { useCallback, useState } from 'react';
-import { FaChartBar, FaChartLine } from 'react-icons/fa';
+import { FaChartBar } from 'react-icons/fa';
 
 import { convertToLocalTime, Sort } from '@rhino/utils';
 import { format } from 'date-fns';
@@ -16,6 +16,7 @@ import Table from '../../components/common/Table';
 import ActionCell from '../../components/common/Table/ActionCell';
 import { FilterVariant } from '../../components/common/Table/types';
 import IconButton from '../../components/common/buttons/IconButton';
+import GoToConsumptionIcon from '../../components/consumption/GoToConsumptionIcon';
 import PageSubTitle from '../../components/typography/PageSubTitle';
 import PageTitle from '../../components/typography/PageTitle';
 import { CONSTANTS } from '../../constant';
@@ -96,19 +97,11 @@ const Dashboard = () => {
         >
           <FaChartBar />
         </IconButton>
-        <IconButton
-          action={() => {
-            window.location.href =
-              VITE_WICKET_BASE_URL +
-              'consumptionChart' +
-              getRibbonParams({ client, location, group }) +
-              `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}&shouldCompareMeasurement=${true}`;
-          }}
-          popupContent={t(translationBaseRoute + 'popup.goToComsumptions')}
-          dataTestId="consumption-chart-btn"
-        >
-          <FaChartLine />
-        </IconButton>
+        <GoToConsumptionIcon
+          measurementUuid={row.original.id}
+          incremental={row.original.incremental}
+          type={row.original.type}
+        />
       </ActionCell>
     ),
     [t, client, location, group]

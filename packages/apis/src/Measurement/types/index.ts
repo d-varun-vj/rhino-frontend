@@ -42,6 +42,7 @@ export interface MeasurementType {
   reaggregationStatus: string | null;
   reaggregationStatusUpdatedAt: string | null;
   subVirtualMeasurement: boolean | null;
+  actions: string | null;
 }
 
 export type MeasurementListResponse = {
