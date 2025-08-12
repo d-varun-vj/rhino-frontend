@@ -121,7 +121,7 @@ const AlarmCriteria = ({
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
         {selectedCompareWith && (
-          <div className="flex items-center gap-4">
+          <div className="flex  gap-4">
             <div className="block w-full">
               <Controller
                 name="thresholdType"
@@ -160,7 +160,7 @@ const AlarmCriteria = ({
           selectedCompareWith,
           selectedThresholdType as PeriodicAlarmThresholdType
         ) && (
-          <div className="flex items-center gap-4">
+          <div className="flex gap-4">
             <div className="block w-full">
               <Controller
                 name="thresholdValue"
@@ -179,7 +179,7 @@ const AlarmCriteria = ({
                     value={field.value || undefined}
                     max={shouldUnitPercent ? 100 : undefined}
                     min={shouldUnitPercent ? 0 : undefined}
-                    maxLength={shouldUnitPercent ? 3 : 10}
+                    maxLength={shouldUnitPercent ? 3 : 20}
                     decimalScale={10}
                     allowNegative={!shouldUnitPercent}
                     onBlur={field.onBlur}
@@ -201,7 +201,7 @@ const AlarmCriteria = ({
         selectedThresholdType as PeriodicAlarmThresholdType
       ) && (
         <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-          <div className="flex items-center gap-4">
+          <div className="flex  gap-4">
             <div className="block w-full">
               <Controller
                 name="thresholdStartValue"
@@ -223,7 +223,7 @@ const AlarmCriteria = ({
                     value={field.value || undefined}
                     max={shouldUnitPercent ? 100 : undefined}
                     min={shouldUnitPercent ? 0 : undefined}
-                    maxLength={shouldUnitPercent ? 3 : 10}
+                    maxLength={shouldUnitPercent ? 3 : 20}
                     decimalScale={10}
                     allowNegative={!shouldUnitPercent}
                     onBlur={field.onBlur}
@@ -238,7 +238,7 @@ const AlarmCriteria = ({
               className="mt-6"
             /> */}
           </div>
-          <div className="flex items-center gap-4 h-fit">
+          <div className="flex  gap-4 h-fit">
             <div className="block w-full">
               <Controller
                 name="thresholdEndValue"
@@ -257,7 +257,7 @@ const AlarmCriteria = ({
                     value={field.value || undefined}
                     max={shouldUnitPercent ? 100 : undefined}
                     min={shouldUnitPercent ? 0 : undefined}
-                    maxLength={shouldUnitPercent ? 3 : 10}
+                    maxLength={shouldUnitPercent ? 3 : 20}
                     decimalScale={10}
                     allowNegative={!shouldUnitPercent}
                     onBlur={field.onBlur}
