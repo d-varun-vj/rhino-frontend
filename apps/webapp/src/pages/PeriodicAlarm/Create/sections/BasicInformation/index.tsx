@@ -13,9 +13,7 @@ import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
-const BasicInformation = ({
-  setSelectedMediumType,
-}: {
+interface BasicInformationProps {
   setSelectedMediumType: ({
     name,
     unit,
@@ -23,7 +21,13 @@ const BasicInformation = ({
     name: string | null;
     unit: string | null;
   }) => void;
-}) => {
+  isReadOnly?: boolean;
+}
+
+const BasicInformation = ({
+  setSelectedMediumType,
+  isReadOnly = false,
+}: BasicInformationProps) => {
   const {
     control,
     register,
@@ -59,6 +63,7 @@ const BasicInformation = ({
           required
           {...(register && { ...register('name') })}
           error={errors.name?.message}
+          disabled={isReadOnly}
         />
         <div className="flex min-lg:justify-end ">
           <Controller
@@ -71,12 +76,16 @@ const BasicInformation = ({
                 onChange={(e) => field.onChange(e.currentTarget.checked)}
                 onBlur={field.onBlur}
                 activeColor="var(--color-rhino-indigo-blue-highlight)"
+                disabled={isReadOnly}
               />
             )}
           />
         </div>
       </div>
-      <SharingSection label={t(tFormBase + 'basic.shared')} />
+      <SharingSection
+        label={t(tFormBase + 'basic.shared')}
+        isReadOnly={isReadOnly}
+      />
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
         <Controller
@@ -104,7 +113,7 @@ const BasicInformation = ({
                 });
               }}
               onBlur={field.onBlur}
-              disabled={!client}
+              disabled={!client || isReadOnly}
               title={t('Select client')}
               error={fieldState.error?.message}
               clearable
@@ -127,6 +136,7 @@ const BasicInformation = ({
               onBlur={field.onBlur}
               error={fieldState.error?.message}
               clearable
+              disabled={isReadOnly}
             />
           )}
         />

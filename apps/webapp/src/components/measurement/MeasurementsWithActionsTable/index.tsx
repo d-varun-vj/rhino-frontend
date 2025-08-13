@@ -15,12 +15,14 @@ interface MeasurementsWithActionsTableProps {
   selectedMeasurements: MeasurementWithConfig[];
   onRemoveMeasurement: (measurement: MeasurementWithConfig) => void;
   onClearAll?: () => void;
+  isReadOnly?: boolean;
 }
 
 const MeasurementsWithActionsTable = ({
   selectedMeasurements,
   onRemoveMeasurement,
   onClearAll,
+  isReadOnly = false,
 }: MeasurementsWithActionsTableProps) => {
   const { t } = useTranslation('components');
   const translationBaseRoute = 'measurement.measurementsWithActionsTable.';
@@ -29,14 +31,6 @@ const MeasurementsWithActionsTable = ({
     (row: Row<MeasurementWithConfig>) => {
       return (
         <ActionCell>
-          <IconButton
-            type="secondary"
-            action={() => onRemoveMeasurement(row.original)}
-            popupContent={t(translationBaseRoute + 'actions.remove')}
-            size="sm"
-          >
-            <RiDeleteBin6Fill />
-          </IconButton>
           <GoToConsumptionIcon
             measurementUuid={row.original.measurement.uuid}
             incremental={row.original.measurement.incremental}
@@ -45,6 +39,16 @@ const MeasurementsWithActionsTable = ({
             openInNewTab={true}
             iconSize="sm"
           />
+          {!isReadOnly && (
+            <IconButton
+              type="secondary"
+              action={() => onRemoveMeasurement(row.original)}
+              popupContent={t(translationBaseRoute + 'actions.remove')}
+              size="sm"
+            >
+              <RiDeleteBin6Fill />
+            </IconButton>
+          )}
         </ActionCell>
       );
     },
@@ -141,7 +145,7 @@ const MeasurementsWithActionsTable = ({
           </div>
         )}
 
-        {selectedMeasurements.length > 0 && onClearAll && (
+        {selectedMeasurements.length > 0 && onClearAll && !isReadOnly && (
           <IconButton action={onClearAll} type="secondary">
             <p className="text-sm font-medium">Clear All</p>
           </IconButton>

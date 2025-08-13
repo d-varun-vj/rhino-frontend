@@ -1,11 +1,16 @@
-import MultiTextField from 'apps/webapp/src/components/common/input/MultiTextField';
 import { Controller, useFormContext } from 'react-hook-form';
+import { PeriodicAlarmSchema, i18nBase } from '../../validation';
+
+import MultiTextField from 'apps/webapp/src/components/common/input/MultiTextField';
 import { useTranslation } from 'react-i18next';
 import { tFormBase } from '../../config';
-import { i18nBase, PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
-const RecipientDetails = () => {
+interface RecipientDetailsProps {
+  isReadOnly?: boolean;
+}
+
+const RecipientDetails = ({ isReadOnly = false }: RecipientDetailsProps) => {
   const {
     control,
     formState: { errors },
@@ -38,6 +43,7 @@ const RecipientDetails = () => {
                 placeholder={t(tFormBase + 'recipient.email.placeholder')}
                 onChange={(val) => field.onChange(val ?? '')}
                 error={errMessage}
+                disabled={isReadOnly}
               />
             );
           }}
@@ -61,6 +67,7 @@ const RecipientDetails = () => {
                 placeholder={t(tFormBase + 'recipient.sms.placeholder')}
                 onChange={(val) => field.onChange(val ?? '')}
                 error={errMessage}
+                disabled={isReadOnly}
               />
             );
           }}

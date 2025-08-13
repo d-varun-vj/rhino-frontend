@@ -1,25 +1,30 @@
+import { Controller, useFormContext } from 'react-hook-form';
+import {
+  FREQUENCY_OPTIONS,
+  VALID_GENERATION_DAY_CONFIG,
+  tFormBase,
+} from '../../config';
+import { applyLabelTranslations, shouldShowGenerationDay } from '../../helper';
+
 import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
 import CustomTimePicker from 'apps/webapp/src/components/common/datetime/CustomTimePicker';
 import QuestionCircle from 'apps/webapp/src/components/common/indicators/QuestionCircle';
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
 import { useMemo } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { PeriodicAlarmFrequency } from '../../../types';
-import {
-  FREQUENCY_OPTIONS,
-  tFormBase,
-  VALID_GENERATION_DAY_CONFIG,
-} from '../../config';
-import { applyLabelTranslations, shouldShowGenerationDay } from '../../helper';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
+interface MomentOfExecutionProps {
+  resetThresholdValues: () => void;
+  isReadOnly?: boolean;
+}
+
 const MomentOfExecution = ({
   resetThresholdValues,
-}: {
-  resetThresholdValues: () => void;
-}) => {
+  isReadOnly = false,
+}: MomentOfExecutionProps) => {
   const { control, watch, setValue, resetField } =
     useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
@@ -56,6 +61,7 @@ const MomentOfExecution = ({
                 (val) => val.id === (field.value as PeriodicAlarmFrequency)
               )}
               error={fieldState.error ? fieldState.error.message : ''}
+              isReadOnly={isReadOnly}
             />
           )}
         />
@@ -78,6 +84,7 @@ const MomentOfExecution = ({
                   onChange={field.onChange}
                   onBlur={field.onBlur}
                   error={fieldState.error ? fieldState.error.message : ''}
+                  disabled={isReadOnly}
                 />
               )}
             />
@@ -104,6 +111,7 @@ const MomentOfExecution = ({
                 }}
                 onBlur={field.onBlur}
                 error={fieldState.error ? fieldState.error.message : ''}
+                disabled={isReadOnly}
               />
             )}
           />
@@ -128,6 +136,7 @@ const MomentOfExecution = ({
                 allowDecimal={false}
                 onBlur={field.onBlur}
                 error={fieldState.error ? fieldState.error.message : ''}
+                disabled={isReadOnly}
               />
             )}
           />

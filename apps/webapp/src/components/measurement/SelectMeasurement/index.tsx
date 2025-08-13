@@ -22,6 +22,7 @@ interface SelectMeasurementProps {
     mediumType?: string;
   };
   initialMeasurements?: MeasurementWithConfig[];
+  isReadOnly?: boolean;
 }
 
 export const SelectMeasurement = ({
@@ -35,6 +36,7 @@ export const SelectMeasurement = ({
   disabledTitle,
   customFilter,
   initialMeasurements = [],
+  isReadOnly = false,
 }: SelectMeasurementProps) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedMeasurements, setSelectedMeasurements] =
@@ -164,31 +166,34 @@ export const SelectMeasurement = ({
               onClearAll={
                 selectedMeasurements.length > 1 ? handleClearAll : undefined
               }
+              isReadOnly={isReadOnly}
             />
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
 
-      <Button
-        className={clsx(
-          'w-full h-10 !bg-rhino-energy-green text-white !rounded-tl-none !rounded-tr-none rounded-br-md rounded-bl-none transition-all',
-          {
-            '!bg-rhino-grey/30 !text-white/80': disabled || !client,
+      {!isReadOnly && (
+        <Button
+          className={clsx(
+            'w-full h-10 !bg-rhino-energy-green text-white !rounded-tl-none !rounded-tr-none rounded-br-md rounded-bl-none transition-all',
+            {
+              '!bg-rhino-grey/30 !text-white/80': disabled || !client,
+            }
+          )}
+          onClick={() => setModalOpened(true)}
+          leftSection={<FaPlusCircle className="mr-1" />}
+          disabled={!client || disabled}
+          title={
+            !client
+              ? t(baseRoute + 'selectClient')
+              : disabledTitle
+                ? disabledTitle
+                : t(baseRoute + 'title')
           }
-        )}
-        onClick={() => setModalOpened(true)}
-        leftSection={<FaPlusCircle className="mr-1" />}
-        disabled={!client || disabled}
-        title={
-          !client
-            ? t(baseRoute + 'selectClient')
-            : disabledTitle
-              ? disabledTitle
-              : t(baseRoute + 'title')
-        }
-      >
-        {getButtonText()}
-      </Button>
+        >
+          {getButtonText()}
+        </Button>
+      )}
 
       <Modal
         opened={modalOpened}

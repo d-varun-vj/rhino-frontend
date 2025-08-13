@@ -12,15 +12,19 @@ import { useNavigate } from 'react-router-dom';
 import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 
+interface FormFooterProps {
+  selectedMediumType: string | null;
+  isPending: boolean;
+  initialMeasurements?: MeasurementWithConfig[];
+  isReadOnly?: boolean;
+}
+
 const FormFooter = ({
   selectedMediumType,
   isPending,
   initialMeasurements,
-}: {
-  selectedMediumType: string | null;
-  isPending: boolean;
-  initialMeasurements?: MeasurementWithConfig[];
-}) => {
+  isReadOnly = false,
+}: FormFooterProps) => {
   const { setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
   const navigate = useNavigate();
@@ -48,33 +52,37 @@ const FormFooter = ({
           }
           customFilter={{ mediumType: selectedMediumType ?? '' }}
           initialMeasurements={initialMeasurements}
+          isReadOnly={isReadOnly}
         />
       </div>
 
-      <div className="flex gap-2 justify-end mt-10">
-        <CustomButton
-          text={t(tFormBase + 'action.cancel')}
-          type="default"
-          icon={<RxCross2 />}
-          onClick={() =>
-            navigate(
-              locations.alarm.periodic.base +
-                getRibbonParams({
-                  client: client,
-                  location: location,
-                  group: group,
-                }),
-              { replace: false }
-            )
-          }
-        />
-        <CustomButton
-          text={t(tFormBase + 'action.save')}
-          btnType="submit"
-          icon={<FaPlus />}
-          loading={isPending}
-        />
-      </div>
+      {!isReadOnly && (
+        <div className="flex gap-2 justify-end mt-10">
+          <CustomButton
+            text={t(tFormBase + 'action.cancel')}
+            type="default"
+            icon={<RxCross2 />}
+            disabled={isReadOnly}
+            onClick={() =>
+              navigate(
+                locations.alarm.periodic.base +
+                  getRibbonParams({
+                    client: client,
+                    location: location,
+                    group: group,
+                  }),
+                { replace: false }
+              )
+            }
+          />
+          <CustomButton
+            text={t(tFormBase + 'action.save')}
+            btnType="submit"
+            icon={<FaPlus />}
+            loading={isPending}
+          />
+        </div>
+      )}
     </>
   );
 };

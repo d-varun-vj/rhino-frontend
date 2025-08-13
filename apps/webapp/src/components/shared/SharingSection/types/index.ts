@@ -17,4 +17,5 @@ export type SharingSectionProps = {
   onValuesChange?: (values: SharingState) => void;
   mode?: 'create' | 'update';
   authorUuid?: string;
+  isReadOnly?: boolean;
 };

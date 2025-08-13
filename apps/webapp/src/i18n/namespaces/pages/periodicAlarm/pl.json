@@ -14,6 +14,7 @@
   },
   "createBtn": "Utwórz alarm okresowy",
   "update": {
+    "mainHeaderReadOnly": "Wyświetl alarm okresowy",
     "mainHeader": "Update periodic alarm",
     "success": "Alarm okresowy został pomyślnie zaktualizowany",
     "error": "Nie udało się zaktualizować alarmu okresowego"

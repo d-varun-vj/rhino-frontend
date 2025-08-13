@@ -15,6 +15,7 @@
   "createBtn": "Create periodic alarm",
   "update": {
     "mainHeader": "Update periodic alarm",
+    "mainHeaderReadOnly": "View periodic alarm",
     "success": "Periodic alarm updated successfully",
     "error": "Failed to update periodic alarm"
   },

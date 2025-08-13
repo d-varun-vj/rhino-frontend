@@ -1,5 +1,6 @@
 import { FloatingIndicator, UnstyledButton } from '@mantine/core';
 import { useEffect, useState } from 'react';
+
 import ErrorText from '../../../typography/ErrorText';
 import Label from '../../../typography/Label';
 import classes from './floatingSelector.module.css';
@@ -16,6 +17,7 @@ type FloatingSelectorProps<TMultiple extends boolean = false> = {
   data: Item[];
   multipleSelect?: TMultiple;
   required?: boolean;
+  isReadOnly?: boolean;
 } & (TMultiple extends true
   ? {
       onSelect: (val: string[]) => void;
@@ -34,6 +36,7 @@ const FloatingSelector = <T extends boolean = false>({
   onSelect,
   required,
   multipleSelect,
+  isReadOnly = false,
 }: FloatingSelectorProps<T>) => {
   const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
   const [controlsRefs, setControlsRefs] = useState<
@@ -106,7 +109,7 @@ const FloatingSelector = <T extends boolean = false>({
       ref={setControlRef(index)}
       onClick={() => handleItemClick(item, index)}
       mod={{ active: isItemSelected(item, index) }}
-      disabled={item.disabled ?? false}
+      disabled={(item.disabled ?? false) || isReadOnly}
     >
       <span className={classes.controlLabel}>{item.label}</span>
     </UnstyledButton>

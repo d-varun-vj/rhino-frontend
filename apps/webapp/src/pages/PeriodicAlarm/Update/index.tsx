@@ -39,6 +39,7 @@ const UpdatePeriodicAlarm = () => {
   const { uuid } = useParams();
   const { t } = useTranslation('periodicAlarm');
   const { client, location, group, setClient } = useUserFilter();
+  const [isReadOnly, setIsReadOnly] = useState(false);
 
   const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
     uuid as string
@@ -139,6 +140,8 @@ const UpdatePeriodicAlarm = () => {
       name: alarmDetails.data.client.name,
       uuid: alarmDetails.data.client.uuid,
     });
+
+    setIsReadOnly(!alarmDetails?.data?.isManageable);
   }, [alarmDetails?.data, reset, setClient]);
 
   const resetThresholdValues = useCallback(() => {
@@ -237,26 +240,34 @@ const UpdatePeriodicAlarm = () => {
               <div className="flex flex-col gap-20 mb-20">
                 <div>
                   <PageTitle
-                    title={t('update.mainHeader')}
+                    title={
+                      isReadOnly
+                        ? t('update.mainHeaderReadOnly')
+                        : t('update.mainHeader')
+                    }
                     guide={true}
                     guideLink={GUIDE_LINKS.PERIODIC_ALARM}
                   />
                   <div className="grid min-lg:grid-cols-5 gap-14 w-full">
                     <div className="flex gap-8 py-2 flex-col col-span-3">
                       <BasicInformation
+                        isReadOnly={isReadOnly}
                         setSelectedMediumType={setSelectedMediumType}
                       />
                       <MomentOfExecution
+                        isReadOnly={isReadOnly}
                         resetThresholdValues={resetThresholdValues}
                       />
                       <TimeConfiguration
+                        isReadOnly={isReadOnly}
                         resetThresholdValues={resetThresholdValues}
                       />
                       <AlarmCriteria
+                        isReadOnly={isReadOnly}
                         resetThresholdValues={resetThresholdValues}
                         selectedMediumType={selectedMediumType}
                       />
-                      <RecipientDetails />
+                      <RecipientDetails isReadOnly={isReadOnly} />
                     </div>
                   </div>
                 </div>
@@ -265,6 +276,7 @@ const UpdatePeriodicAlarm = () => {
                 selectedMediumType={selectedMediumType?.name || null}
                 isPending={isPending}
                 initialMeasurements={initialMeasurements}
+                isReadOnly={isReadOnly}
               />
             </form>
           </FormProvider>

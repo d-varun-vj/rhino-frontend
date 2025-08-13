@@ -9,7 +9,7 @@ import {
 import { Sort, convertToLocalTime, formatListSummary } from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import { FaClock, FaEdit, FaPlusCircle } from 'react-icons/fa';
+import { FaClock, FaEdit, FaEye, FaPlusCircle } from 'react-icons/fa';
 import { generatePath, useLocation, useNavigate } from 'react-router-dom';
 import { ExecutionActionProps, ExecutionStateProps } from './types';
 
@@ -145,7 +145,21 @@ const PeriodicAlarm = () => {
             <FaClock />
           </IconButton>
         )}
-        {row.original.isDeletable && (
+        {!row.original.isManageable && (
+          <IconButton
+            action={() => {
+              navigate(
+                generatePath(locations.alarm.periodic.update, {
+                  uuid: row.original.uuid,
+                })
+              );
+            }}
+            popupContent="View Alarm"
+          >
+            <FaEye />
+          </IconButton>
+        )}
+        {row.original.isManageable && (
           <IconButton
             action={() => {
               navigate(
@@ -159,12 +173,12 @@ const PeriodicAlarm = () => {
             <FaEdit />
           </IconButton>
         )}
-        {row.original.isDeletable && (
+        {row.original.isManageable && (
           <IconButton
             type="secondary"
             popupContent={t('delete.title')}
             action={() => handleDeleteAlarm(row.original)}
-            disabled={isPending || !row.original.isDeletable}
+            disabled={isPending}
           >
             <RiDeleteBin6Fill />
           </IconButton>

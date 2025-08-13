@@ -14,7 +14,7 @@ export interface PeriodicAlarmType {
   lastOccurrenceDate: string;
   shared: string;
   frequency?: string;
-  isDeletable?: boolean;
+  isManageable?: boolean;
   showExecutionButton?: boolean;
   action?: string;
 }
@@ -156,4 +156,5 @@ export interface PeriodicAlarmDetail {
   compareWithPeriod: string;
   analysePeriod: string;
   nextExecutionTime: string;
+  isManageable: boolean;
 }

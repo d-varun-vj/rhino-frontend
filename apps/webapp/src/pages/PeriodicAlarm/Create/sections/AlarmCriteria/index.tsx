@@ -1,42 +1,42 @@
-import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-
-import CustomSelect from 'apps/webapp/src/components/common/comboboxes/CustomSelect';
-import NumberField from 'apps/webapp/src/components/common/input/NumberField';
-
 import {
   PeriodicAlarmCompareWith,
   PeriodicAlarmThresholdType,
 } from '../../../types';
-
 import {
   COMPARISON_MEASURE_TYPE_OPTIONS,
-  tFormBase,
   VALID_ANALYSE_COMPARE_COMBINATIONS,
   VALID_THRESHOLD_OPTIONS,
+  tFormBase,
 } from '../../config';
-
 import {
   applyLabelTranslations,
   shouldShowStartAndEndThresholdValue,
   shouldShowThresholdValue,
 } from '../../helper';
 
+import CustomSelect from 'apps/webapp/src/components/common/comboboxes/CustomSelect';
 import CheckBox from 'apps/webapp/src/components/common/input/Checkbox';
+import NumberField from 'apps/webapp/src/components/common/input/NumberField';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
-const AlarmCriteria = ({
-  resetThresholdValues,
-  selectedMediumType,
-}: {
+interface AlarmCriteriaProps {
+  isReadOnly?: boolean;
   resetThresholdValues: () => void;
   selectedMediumType?: {
     name: string | null;
     unit: string | null;
   } | null;
-}) => {
+}
+
+const AlarmCriteria = ({
+  resetThresholdValues,
+  selectedMediumType,
+  isReadOnly = false,
+}: AlarmCriteriaProps) => {
   const { control, watch, resetField } = useFormContext<PeriodicAlarmSchema>();
 
   const { t } = useTranslation('periodicAlarm');
@@ -90,6 +90,7 @@ const AlarmCriteria = ({
                   onBlur={field.onBlur}
                   searchable={false}
                   error={fieldState.error?.message}
+                  disabled={isReadOnly}
                 />
               )}
             />
@@ -143,7 +144,7 @@ const AlarmCriteria = ({
                     onBlur={field.onBlur}
                     searchable={false}
                     error={fieldState.error?.message}
-                    disabled={!selectedMediumType}
+                    disabled={!selectedMediumType || isReadOnly}
                     title={t(tFormBase + 'emptyMediumType')}
                   />
                 )}
@@ -180,6 +181,7 @@ const AlarmCriteria = ({
                     onBlur={field.onBlur}
                     error={fieldState.error?.message}
                     trimLeadingZeroesOnBlur={true}
+                    disabled={isReadOnly}
                   />
                 )}
               />
@@ -218,6 +220,7 @@ const AlarmCriteria = ({
                     value={field.value}
                     onBlur={field.onBlur}
                     error={fieldState.error?.message}
+                    disabled={isReadOnly}
                   />
                 )}
               />
@@ -249,6 +252,7 @@ const AlarmCriteria = ({
                     onBlur={field.onBlur}
                     onChange={field.onChange}
                     error={fieldState.error?.message}
+                    disabled={isReadOnly}
                   />
                 )}
               />
@@ -274,6 +278,7 @@ const AlarmCriteria = ({
                 const isChecked = e.currentTarget.checked;
                 field.onChange(isChecked);
               }}
+              disabled={isReadOnly}
             />
           )}
         />

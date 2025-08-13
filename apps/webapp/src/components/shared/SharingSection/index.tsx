@@ -1,9 +1,10 @@
 import { useGetLocations, useGetTenants } from '@rhino/apis';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { shouldSharingFieldBeVisible } from 'apps/webapp/src/helpers/sharing';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import CheckBox from '../../common/input/Checkbox';
 import message from '../../notifier';
@@ -12,6 +13,7 @@ import SharingTenantPanel from './SharingTenant';
 import { SharingSectionProps } from './types';
 
 const SharingSection = ({
+  isReadOnly = false,
   label,
   mode = 'create',
   authorUuid,
@@ -183,6 +185,7 @@ const SharingSection = ({
             <CheckBox
               label={label}
               checked={field.value as boolean}
+              disabled={isReadOnly}
               onChange={(e) => {
                 const isChecked = e.currentTarget.checked;
                 if (client === null) {
@@ -201,7 +204,7 @@ const SharingSection = ({
             <CheckBox
               label={t('sharedSection.readOnly', { ns: 'components' })}
               checked={field.value as boolean}
-              disabled={!shared}
+              disabled={!shared || isReadOnly}
               onChange={(e) => field.onChange(e.currentTarget.checked)}
             />
           )}
@@ -221,7 +224,7 @@ const SharingSection = ({
                   clearErrors('sharedTenants');
                 }}
                 clearable
-                disabled={!shared || shouldFieldBeDisabled}
+                disabled={!shared || shouldFieldBeDisabled || isReadOnly}
                 error={fieldState.error?.message}
               />
             )}
@@ -239,7 +242,7 @@ const SharingSection = ({
                   clearErrors('sharedLocations');
                 }}
                 clearable
-                disabled={!shared || shouldFieldBeDisabled}
+                disabled={!shared || shouldFieldBeDisabled || isReadOnly}
                 error={fieldState.error?.message}
               />
             )}
