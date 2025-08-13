@@ -57,7 +57,7 @@ const UserDropDown = () => {
         message.error(t('topRibbon.user.language.error'));
       });
     }
-  }, [user, t]);
+  }, [user]);
 
   return (
     <div className="flex justify-end mt-[.25rem] px-[.75rem] items-center h-[4.125rem] pr-[2.5rem] cursor-pointer">
