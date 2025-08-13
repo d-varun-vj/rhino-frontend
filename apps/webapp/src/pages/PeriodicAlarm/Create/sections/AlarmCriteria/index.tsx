@@ -37,7 +37,8 @@ const AlarmCriteria = ({
   selectedMediumType,
   isReadOnly = false,
 }: AlarmCriteriaProps) => {
-  const { control, watch, resetField } = useFormContext<PeriodicAlarmSchema>();
+  const { control, watch, resetField, clearErrors } =
+    useFormContext<PeriodicAlarmSchema>();
 
   const { t } = useTranslation('periodicAlarm');
 
@@ -175,7 +176,7 @@ const AlarmCriteria = ({
                     })}
                     required
                     decimalScale={shouldUnitPercent ? 2 : 6}
-                    maxLength={shouldUnitPercent ? 10 : undefined}
+                    maxLength={shouldUnitPercent ? 10 : 13}
                     onChange={field.onChange}
                     value={field.value}
                     onBlur={field.onBlur}
@@ -214,9 +215,13 @@ const AlarmCriteria = ({
                       }
                     )}
                     required
-                    onChange={field.onChange}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      clearErrors('thresholdStartValue');
+                      clearErrors('thresholdEndValue');
+                    }}
                     decimalScale={shouldUnitPercent ? 2 : 6}
-                    maxLength={shouldUnitPercent ? 10 : undefined}
+                    maxLength={shouldUnitPercent ? 10 : 13}
                     value={field.value}
                     onBlur={field.onBlur}
                     error={fieldState.error?.message}
@@ -248,9 +253,13 @@ const AlarmCriteria = ({
                     required
                     value={field.value}
                     decimalScale={shouldUnitPercent ? 2 : 6}
-                    maxLength={shouldUnitPercent ? 10 : undefined}
+                    maxLength={shouldUnitPercent ? 10 : 13}
                     onBlur={field.onBlur}
-                    onChange={field.onChange}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      clearErrors('thresholdStartValue');
+                      clearErrors('thresholdEndValue');
+                    }}
                     error={fieldState.error?.message}
                     disabled={isReadOnly}
                   />

@@ -259,7 +259,13 @@ const PeriodicAlarm = () => {
       {
         accessorFn: (row: PeriodicAlarmType) => row.frequency,
         header: t(translationTableBase + 'header.alarmPeriod'),
-        cell: (info) => info.getValue(),
+        cell: (info) => {
+          return getTranslationOptions({
+            t,
+          }).PERIODIC_ALARM_FREQUENCY_OPTIONS.find(
+            (option) => option.value === info.getValue()
+          )?.label as string;
+        },
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'frequency',
@@ -273,7 +279,11 @@ const PeriodicAlarm = () => {
         accessorFn: (row: PeriodicAlarmType) => row.shared,
         header: t(translationTableBase + 'header.shared'),
         cell: (info) => {
-          return info.getValue() ? 'Yes' : 'No';
+          return getTranslationOptions({
+            t,
+          }).SHARED.find(
+            (option) => option.value === (info.getValue() ? 'Yes' : 'No')
+          )?.label as string;
         },
         meta: {
           filterVariant: FilterVariant.SELECT,

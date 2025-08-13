@@ -21,6 +21,15 @@ const validateNumberFormat = (val: number | undefined) => {
   return integerPart.length <= 13 && decimalPart.length <= 6;
 };
 
+const validateBetweenNumbers = (
+  startVal: number | undefined,
+  endVal: number | undefined
+): boolean => {
+  if (startVal === undefined || endVal === undefined) return true;
+
+  return startVal < endVal;
+};
+
 export const buildPeriodicAlarmSchema = (
   t: TFunction<'periodicAlarm', undefined>
 ) => {
@@ -189,48 +198,31 @@ export const buildPeriodicAlarmSchema = (
         path: ['thresholdEndValue'],
       }
     )
-    .refine(
-      (data) => {
-        const shouldShowStartEndFields = shouldShowStartAndEndThresholdValue(
-          data.thresholdType as PeriodicAlarmThresholdType
-        );
+    .superRefine((data, ctx) => {
+      const shouldShowStartEndFields = shouldShowStartAndEndThresholdValue(
+        data.thresholdType as PeriodicAlarmThresholdType
+      );
 
-        if (data.thresholdStartValue && data.thresholdEndValue) {
-          if (
-            shouldShowStartEndFields &&
-            data.thresholdStartValue >= data.thresholdEndValue
-          ) {
-            return false;
-          }
-        }
-        return true;
-      },
-      {
-        message: t(i18nBase + 'thresholdValueOutOfRange'),
-        path: ['thresholdStartValue'],
-      }
-    )
-    .refine(
-      (data) => {
-        const shouldShowStartEndFields = shouldShowStartAndEndThresholdValue(
-          data.thresholdType as PeriodicAlarmThresholdType
-        );
+      if (
+        shouldShowStartEndFields &&
+        !validateBetweenNumbers(
+          data.thresholdStartValue,
+          data.thresholdEndValue
+        )
+      ) {
+        ctx.addIssue({
+          code: 'custom',
+          message: t(i18nBase + 'thresholdValueOutOfRange'),
+          path: ['thresholdStartValue'],
+        });
 
-        if (data.thresholdStartValue && data.thresholdEndValue) {
-          if (
-            shouldShowStartEndFields &&
-            data.thresholdStartValue >= data.thresholdEndValue
-          ) {
-            return false;
-          }
-        }
-        return true;
-      },
-      {
-        message: t(i18nBase + 'thresholdValueOutOfRange'),
-        path: ['thresholdEndValue'],
+        ctx.addIssue({
+          code: 'custom',
+          message: t(i18nBase + 'thresholdValueOutOfRange'),
+          path: ['thresholdEndValue'],
+        });
       }
-    );
+    });
 };
 
 export type PeriodicAlarmSchema = z.infer<
