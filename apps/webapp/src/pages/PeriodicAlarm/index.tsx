@@ -145,18 +145,20 @@ const PeriodicAlarm = () => {
             <FaClock />
           </IconButton>
         )}
-        <IconButton
-          action={() => {
-            navigate(
-              generatePath(locations.alarm.periodic.update, {
-                uuid: row.original.uuid,
-              })
-            );
-          }}
-          popupContent="Edit Alarm"
-        >
-          <FaEdit />
-        </IconButton>
+        {row.original.isDeletable && (
+          <IconButton
+            action={() => {
+              navigate(
+                generatePath(locations.alarm.periodic.update, {
+                  uuid: row.original.uuid,
+                })
+              );
+            }}
+            popupContent="Edit Alarm"
+          >
+            <FaEdit />
+          </IconButton>
+        )}
         {row.original.isDeletable && (
           <IconButton
             type="secondary"

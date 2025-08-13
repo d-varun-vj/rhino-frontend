@@ -1,3 +1,6 @@
+import { useEffect, useMemo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { useGetMeteringPointTypes } from '@rhino/apis';
 import CustomSelect from 'apps/webapp/src/components/common/comboboxes/CustomSelect';
 import TextField from 'apps/webapp/src/components/common/input/TextField';
@@ -5,8 +8,6 @@ import Toggle from 'apps/webapp/src/components/common/input/Toggle';
 import SharingSection from 'apps/webapp/src/components/shared/SharingSection';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import moment from 'moment-timezone';
-import { useEffect, useMemo } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
@@ -60,11 +61,18 @@ const BasicInformation = ({
           error={errors.name?.message}
         />
         <div className="flex min-lg:justify-end ">
-          <Toggle
-            label={t(tFormBase + 'basic.active')}
-            {...(register && { ...register('isActive') })}
-            activeColor="var(--color-rhino-indigo-blue-highlight)"
-            defaultChecked
+          <Controller
+            name="isActive"
+            control={control}
+            render={({ field }) => (
+              <Toggle
+                label={t(tFormBase + 'basic.active')}
+                checked={field.value}
+                onChange={(e) => field.onChange(e.currentTarget.checked)}
+                onBlur={field.onBlur}
+                activeColor="var(--color-rhino-indigo-blue-highlight)"
+              />
+            )}
           />
         </div>
       </div>

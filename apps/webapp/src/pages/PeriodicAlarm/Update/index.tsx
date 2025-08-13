@@ -87,9 +87,9 @@ const UpdatePeriodicAlarm = () => {
       comparisonMeasure: alarmDetails.data.configuration?.comparisonMeasure,
       compareWithPeriod: alarmDetails.data.compareWithPeriod,
       timezone: alarmDetails.data.configuration?.timezone || 'Europe/Warsaw',
-      isActive: alarmDetails.data.active ?? true,
-      readOnly: alarmDetails.data.readOnly ?? true,
-      shared: alarmDetails.data.shared ?? false,
+      isActive: alarmDetails.data.active,
+      readOnly: alarmDetails.data.readOnly,
+      shared: alarmDetails.data.shared,
       sharedLocations:
         alarmDetails.data.sharedLocalisations?.map(
           (location) => location.uuid
@@ -110,8 +110,10 @@ const UpdatePeriodicAlarm = () => {
       thresholdType: alarmDetails.data.configuration?.thresholdType,
       thresholdValue:
         alarmDetails.data.configuration?.thresholdValue ?? undefined,
-      thresholdStartValue: alarmDetails.data.configuration?.thresholdStartValue,
-      thresholdEndValue: alarmDetails.data.configuration?.thresholdEndValue,
+      thresholdStartValue:
+        alarmDetails.data.configuration?.thresholdStartValue ?? undefined,
+      thresholdEndValue:
+        alarmDetails.data.configuration?.thresholdEndValue ?? undefined,
       meteringPointTypeId: alarmDetails.data.meteringPointTypeDto?.id,
     });
 
