@@ -46,6 +46,7 @@ export const SelectMeasurement = ({
   const prevClientRef = useRef(client);
   const prevCustomFilterRef = useRef(customFilter);
   const isInitialMount = useRef(true);
+  const hasInitialMeasurementsBeenSet = useRef(false);
 
   const { t } = useTranslation('components');
   const baseRoute = 'measurement.selectMeasurement.';
@@ -80,11 +81,14 @@ export const SelectMeasurement = ({
     customFilter,
   ]);
 
-  // // Notify parent about initial measurements on moun
   useEffect(() => {
-    if (initialMeasurements.length > 0) {
+    if (
+      initialMeasurements.length > 0 &&
+      !hasInitialMeasurementsBeenSet.current
+    ) {
       setSelectedMeasurements(initialMeasurements);
       onMeasurementsChange?.(initialMeasurements);
+      hasInitialMeasurementsBeenSet.current = true;
     }
   }, [initialMeasurements, onMeasurementsChange]);
 
