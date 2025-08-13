@@ -1,5 +1,12 @@
 {
   "measurement": {
+    "common": {
+      "measurementTypes": {
+        "AUTOMATIC": "Automatic",
+        "MANUAL": "Manual",
+        "VIRTUAL": "Virtual"
+      }
+    },
     "measurementsWithActionsTable": {
       "title": "Selected measurements",
       "emptyMessage": "No measurements selected",

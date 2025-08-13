@@ -13,10 +13,10 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../context/user';
-import CheckBox from '../../common/input/Checkbox';
 import Table from '../../common/Table';
 import ActionCell from '../../common/Table/ActionCell';
 import { FilterVariant } from '../../common/Table/types';
+import CheckBox from '../../common/input/Checkbox';
 import GoToConsumptionIcon from '../../consumption/GoToConsumptionIcon';
 
 interface MeasurementsWithPaginationTableProps {
@@ -225,24 +225,36 @@ const MeasurementsWithPaginationTable = ({
         header: t(translationBaseRoute + 'header.medium'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: FilterVariant.TEXT,
-          filterKey: 'medium',
-          sortKey: 'meteringPointType',
+          filterVariant: null,
+          filterKey: '',
+          sortKey: customFilter?.mediumType ? null : 'meteringPointType',
           sortDirection: sort.direction,
         },
       },
       {
         accessorFn: (row) => row.type,
         header: t(translationBaseRoute + 'header.type'),
-        cell: (info) => info.getValue(),
+        cell: (info) =>
+          t(
+            'measurement.common.measurementTypes.' + (info.getValue() as string)
+          ),
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'type',
           sortKey: null,
           selectionOptions: [
-            { label: 'AUTOMATIC', value: 'AUTOMATIC' },
-            { label: 'MANUAL', value: 'MANUAL' },
-            { label: 'VIRTUAL', value: 'VIRTUAL' },
+            {
+              label: t('measurement.common.measurementTypes.AUTOMATIC'),
+              value: 'AUTOMATIC',
+            },
+            {
+              label: t('measurement.common.measurementTypes.MANUAL'),
+              value: 'MANUAL',
+            },
+            {
+              label: t('measurement.common.measurementTypes.VIRTUAL'),
+              value: 'VIRTUAL',
+            },
           ],
         },
       },
@@ -254,8 +266,8 @@ const MeasurementsWithPaginationTable = ({
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'levelType',
-          sortKey: 'levelType',
-          sortDirection: sort.direction,
+          sortKey: null,
+          sortDirection: '',
           selectionOptions: Options?.levelTypes?.map((type) => ({
             label: type[translationKey] ?? '',
             value: type[translationKey] ?? '',
@@ -270,8 +282,8 @@ const MeasurementsWithPaginationTable = ({
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'loadType',
-          sortKey: 'loadType',
-          sortDirection: sort.direction,
+          sortKey: null,
+          sortDirection: '',
           selectionOptions: Options?.loadTypes?.map((type) => ({
             label: type[translationKey] ?? '',
             value: type[translationKey] ?? '',
@@ -286,8 +298,8 @@ const MeasurementsWithPaginationTable = ({
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'endUseArea',
-          sortKey: 'endUseArea',
-          sortDirection: sort.direction,
+          sortKey: null,
+          sortDirection: '',
           selectionOptions: Options?.endUseAreaTypes?.map((type) => ({
             label: type[translationKey] ?? '',
             value: type[translationKey] ?? '',
@@ -312,7 +324,7 @@ const MeasurementsWithPaginationTable = ({
         meta: {
           filterVariant: FilterVariant.TEXT,
           filterKey: 'group',
-          sortKey: 'group',
+          sortKey: 'group.name',
           sortDirection: sort.direction,
         },
       },
@@ -357,6 +369,7 @@ const MeasurementsWithPaginationTable = ({
     isAllPageSelected,
     isSelected,
     translationKey,
+    customFilter?.mediumType,
   ]);
 
   const onSortClick = useCallback((field: string, direction: string) => {

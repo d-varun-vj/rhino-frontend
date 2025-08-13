@@ -1,5 +1,5 @@
 import { Accordion, Button, Modal } from '@mantine/core';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import clsx from 'clsx';
@@ -48,10 +48,10 @@ export const SelectMeasurement = ({
   const { t } = useTranslation('components');
   const baseRoute = 'measurement.selectMeasurement.';
 
-  const handleClearAll = () => {
+  const handleClearAll = useCallback(() => {
     setSelectedMeasurements([]);
     onMeasurementsChange?.([]);
-  };
+  }, [onMeasurementsChange]);
 
   useEffect(() => {
     if (isInitialMount.current) {
@@ -70,7 +70,13 @@ export const SelectMeasurement = ({
     }
     prevClientRef.current = client;
     prevCustomFilterRef.current = customFilter;
-  }, [client, customFilter?.mediumType, disabled]);
+  }, [
+    client,
+    customFilter?.mediumType,
+    disabled,
+    handleClearAll,
+    customFilter,
+  ]);
 
   // // Notify parent about initial measurements on moun
   useEffect(() => {
@@ -78,7 +84,7 @@ export const SelectMeasurement = ({
       setSelectedMeasurements(initialMeasurements);
       onMeasurementsChange?.(initialMeasurements);
     }
-  }, [initialMeasurements]);
+  }, [initialMeasurements, onMeasurementsChange]);
 
   const handleMeasurementSelect = (measurements: MeasurementWithConfig[]) => {
     if (allowSameMeasurementMultipleTimes) {

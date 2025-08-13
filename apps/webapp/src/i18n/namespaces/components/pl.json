@@ -1,5 +1,12 @@
 {
   "measurement": {
+    "common": {
+      "measurementTypes": {
+        "AUTOMATIC": "Automatyczny",
+        "MANUAL": "Manualny",
+        "VIRTUAL": "Wirtualny"
+      }
+    },
     "measurementsWithActionsTable": {
       "title": "Wybrane liczniki",
       "emptyMessage": "Brak wybranych liczników",

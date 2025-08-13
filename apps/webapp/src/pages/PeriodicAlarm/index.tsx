@@ -95,7 +95,7 @@ const PeriodicAlarm = () => {
     if (isUpdated) {
       message.success(t('update.success'));
     }
-  }, [isCreated, isUpdated]);
+  }, [isCreated, isUpdated, t]);
 
   const { data: periodicAlarmRes, isLoading: isLoadingData } =
     useGetPeriodicAlarmList({
@@ -169,7 +169,7 @@ const PeriodicAlarm = () => {
         )}
       </ActionCell>
     ),
-    [handleDeleteAlarm, isPending, t, dispatch]
+    [handleDeleteAlarm, isPending, t, dispatch, navigate]
   );
 
   const columns = React.useMemo<ColumnDef<PeriodicAlarmType, unknown>[]>(

@@ -137,7 +137,7 @@ const UpdatePeriodicAlarm = () => {
       name: alarmDetails.data.client.name,
       uuid: alarmDetails.data.client.uuid,
     });
-  }, [alarmDetails?.data, reset]);
+  }, [alarmDetails?.data, reset, setClient]);
 
   const resetThresholdValues = useCallback(() => {
     resetField('thresholdType');

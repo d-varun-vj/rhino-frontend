@@ -13,14 +13,12 @@ import { MeasurementWithConfig } from '../SelectMeasurement/types';
 interface MeasurementsWithActionsTableProps {
   selectedMeasurements: MeasurementWithConfig[];
   onRemoveMeasurement: (measurement: MeasurementWithConfig) => void;
-  onEditMeasurement?: (measurement: MeasurementWithConfig) => void;
   onClearAll?: () => void;
 }
 
 const MeasurementsWithActionsTable = ({
   selectedMeasurements,
   onRemoveMeasurement,
-  onEditMeasurement,
   onClearAll,
 }: MeasurementsWithActionsTableProps) => {
   const { t } = useTranslation('components');
@@ -120,7 +118,7 @@ const MeasurementsWithActionsTable = ({
         cell: ({ row }) => ActionCellFn(row),
       },
     ],
-    [t, onRemoveMeasurement, onEditMeasurement]
+    [t, ActionCellFn]
   );
 
   return (
