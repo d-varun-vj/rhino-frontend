@@ -130,7 +130,7 @@
     "btnPopup": "Wykonanie",
     "table": {
       "occurence": "Moment wystąpienia",
-      "executionStatus": "Wykonanie status",
+      "executionStatus": "Status wykonania",
       "status": "Status",
       "timeRange": "Zakres czasu",
       "action": "Akcje"

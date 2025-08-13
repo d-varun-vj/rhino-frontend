@@ -8,7 +8,6 @@ import Table from 'apps/webapp/src/components/common/Table';
 import ActionCell from 'apps/webapp/src/components/common/Table/ActionCell';
 import { FilterVariant } from 'apps/webapp/src/components/common/Table/types';
 import message from 'apps/webapp/src/components/notifier';
-import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
 import { CONSTANTS } from 'apps/webapp/src/constant';
 import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,8 +34,8 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
   const [sort, setSort] = useState<Sort>({
-    field: '',
-    direction: '',
+    field: 'occurence',
+    direction: 'desc',
   });
   const downloadUrlMutation = useDownloadPeriodicReportUrl();
   const downloadMutationRef = useRef(downloadUrlMutation);
@@ -151,6 +150,30 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         },
       },
       {
+        accessorFn: (row: PeriodicAlarmExecution) => row.status,
+        header: t('execution.table.status'),
+        meta: {
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'status',
+          sortKey: 'status',
+          sortDirection: sort.direction,
+          selectionOptions: getEnumKeys(PeriodicAlarmStatus).map((option) => ({
+            label: capitalizeString(option).replace('_', ' '),
+            value: option,
+          })),
+          renderCell: (value, row) => {
+            const status = (row as PeriodicAlarmExecution)
+              .status as keyof typeof STATUS_COLOUR;
+            const color = STATUS_COLOUR[status] || STATUS_COLOUR.DEFAULT;
+            return (
+              <span className={`${color}  font-semibold text-[12px]`}>
+                {capitalizeString(value as string).replace('_', ' ')}
+              </span>
+            );
+          },
+        },
+      },
+      {
         accessorFn: (row: PeriodicAlarmExecution) => row.executionStatus,
         header: t('execution.table.executionStatus'),
         cell: (info) => {
@@ -159,7 +182,8 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'executionStatus',
-          sortKey: null,
+          sortKey: 'executionStatus',
+          sortDirection: sort.direction,
           selectionOptions: getEnumKeys(ExecutionStatus).map((option) => ({
             label: capitalizeString(option).replace('_', ' '),
             value: option,
@@ -170,29 +194,6 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
             const color =
               EXECUTION_STATUS_COLOUR[status] ||
               EXECUTION_STATUS_COLOUR.DEFAULT;
-            return (
-              <span className={`${color}  font-semibold text-[12px]`}>
-                {capitalizeString(value as string).replace('_', ' ')}
-              </span>
-            );
-          },
-        },
-      },
-      {
-        accessorFn: (row: PeriodicAlarmExecution) => row.status,
-        header: t('execution.table.status'),
-        meta: {
-          filterVariant: FilterVariant.SELECT,
-          filterKey: 'status',
-          sortKey: null,
-          selectionOptions: getEnumKeys(PeriodicAlarmStatus).map((option) => ({
-            label: capitalizeString(option).replace('_', ' '),
-            value: option,
-          })),
-          renderCell: (value, row) => {
-            const status = (row as PeriodicAlarmExecution)
-              .status as keyof typeof STATUS_COLOUR;
-            const color = STATUS_COLOUR[status] || STATUS_COLOUR.DEFAULT;
             return (
               <span className={`${color}  font-semibold text-[12px]`}>
                 {capitalizeString(value as string).replace('_', ' ')}
@@ -235,14 +236,21 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
   return (
     <CustomModal
       {...modalProps}
-      size={'80%'}
-      title={<PageTitle title={alarmConfig.name} />}
+      size={'70%'}
+      title={
+        <h1
+          className="pl-0  text-left font-bold text-[32px] tracking-[0]
+              text-rhino-indigo-blue  "
+        >
+          {alarmConfig.name}
+        </h1>
+      }
     >
       <Table
         columns={columns}
         data={executionRes ? executionRes.data : []}
         onFilterChange={onFilterChange}
-        textNowarp
+        // textNowarp
         footer={{
           currentPage: page,
           pageSize: pageSize,

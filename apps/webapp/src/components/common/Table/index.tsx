@@ -165,11 +165,15 @@ const Table = <T,>({
   });
 
   return (
-    <div className="overflow-hidden flex flex-col w-full">
+    <div className="overflow-hidden flex flex-col w-full ">
       <div
-        className={`p-2 overflow-auto ${extraStyles ?? 'overflow-y-hidden'}`}
+        className={`p-2 overflow-auto ${extraStyles ?? 'overflow-y-hidden'} ${size !== 'sm' && data.length !== 0 && 'min-h-[500px]'}`}
       >
-        <table className="relative w-full">
+        <table
+          className={clsx('relative w-full', {
+            'min-h-[500px]': size !== 'sm' && data.length > 3,
+          })}
+        >
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -244,7 +248,7 @@ const Table = <T,>({
             <tbody>
               {table.getCoreRowModel().rows.map((row) => {
                 return (
-                  <tr key={row.id} className={`odd:bg-[#03030405]`}>
+                  <tr key={row.id} className={`odd:bg-[#03030405] `}>
                     {row.getVisibleCells().map((cell) => {
                       return (
                         <td

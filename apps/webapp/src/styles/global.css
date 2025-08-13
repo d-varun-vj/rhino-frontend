@@ -75,22 +75,30 @@ tbody tr:nth-child(odd) td:last-child {
   font-size: 2rem !important;
   font-weight: 600 !important;
   color: var(--color-rhino-indigo-blue) !important;
-  margin-top: 10px !important;
+  padding: 20px 20px 20px 10px;
 }
 
 .modal-content-custom {
   height: 80vh;
+  border-radius: 2px !important;
 }
 
 .modal-body-custom {
-  padding: 25px;
-  padding-top: 0;
+  padding: 20px;
+  padding-top: 1px;
+  border-radius: 2px !important;
 }
 
 .modal-header-custom {
   border-top: 8px solid var(--color-rhino-energy-green) !important;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
+  border-radius: 1px !important;
+}
+
+.modal-close-btn-custom {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 20px 20px;
 }
 
 .rhino-text {

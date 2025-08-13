@@ -13,6 +13,7 @@ const CustomModal = ({
         header: 'modal-header-custom',
         content: 'modal-content-custom',
         body: 'modal-body-custom',
+        close: 'modal-close-btn-custom',
       }}
       overlayProps={{
         backgroundOpacity: 0.55,
