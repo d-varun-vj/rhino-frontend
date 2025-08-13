@@ -112,7 +112,10 @@ const CreatePeriodicAlarm = () => {
       viewPermissionType={ViewPermissionsType.ViewRoleBased}
       viewPermissions={[UserViewPermission.PERIODIC_ALARM_ROLE]}
     >
-      <MainLayout title={t('create.mainHeader')} isFavoriteMeterShow={false}>
+      <MainLayout
+        title={t('create.mainHeader')}
+        topRibbon={{ hideFavoriteMeter: true }}
+      >
         <FormProvider {...methods}>
           <form onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}>
             <div className="flex flex-col gap-20 mb-20">

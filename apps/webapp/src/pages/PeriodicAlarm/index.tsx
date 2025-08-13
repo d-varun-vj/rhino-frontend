@@ -358,7 +358,7 @@ const PeriodicAlarm = () => {
     >
       <MainLayout
         title={t('sideMenu.periodicAlarm', { ns: 'layout' })}
-        isFavoriteMeterShow={false}
+        topRibbon={{ hideFavoriteMeter: true }}
       >
         <div className="flex justify-between items-end py-4">
           <PageTitle

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import SideBar from '../../components/layout/Sidebar';
-import TopRibbon from '../../components/layout/TopRibbon';
+import TopRibbon, { TopRibbonProps } from '../../components/layout/TopRibbon';
 import { useUser } from '../../context/user';
 import { useUserFilter } from '../../context/userFilter';
 import { shouldSetInitialClient } from '../../helpers/client';
@@ -9,13 +9,15 @@ import { shouldSetInitialClient } from '../../helpers/client';
 type MainLayoutProps = {
   children: React.ReactNode;
   title: string;
-  isFavoriteMeterShow?: boolean;
+  topRibbon?: TopRibbonProps;
+  hideTopRibbon?: boolean;
 };
 
 const MainLayout = ({
   children,
   title,
-  isFavoriteMeterShow = true,
+  hideTopRibbon = false,
+  topRibbon,
 }: MainLayoutProps) => {
   const { user } = useUser();
   const { setClient, location, group } = useUserFilter();
@@ -38,7 +40,7 @@ const MainLayout = ({
       <ToastContainer theme="colored" />
       <SideBar />
       <div className="bg-rhino-white flex items-stretch flex-auto p-0 basis-full flex-col w-0 min-w-0 max-w-full min-h-[1px] relative">
-        <TopRibbon showFavoriteMeterShow={isFavoriteMeterShow} />
+        {!hideTopRibbon && <TopRibbon {...topRibbon} />}
         <div className="py-[1.5rem] px-[2rem]">{children}</div>
       </div>
     </div>

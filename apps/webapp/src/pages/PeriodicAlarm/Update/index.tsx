@@ -229,7 +229,15 @@ const UpdatePeriodicAlarm = () => {
       viewPermissionType={ViewPermissionsType.ViewRoleBased}
       viewPermissions={[UserViewPermission.PERIODIC_ALARM_ROLE]}
     >
-      <MainLayout title={t('update.mainHeader')} isFavoriteMeterShow={false}>
+      <MainLayout
+        title={t('update.mainHeader')}
+        topRibbon={{
+          hideFavoriteMeter: true,
+          disableClient: true,
+          disableLocation: true,
+          disableGroup: true,
+        }}
+      >
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <Loader color="var(--color-rhino-indigo-blue)" size={24} />

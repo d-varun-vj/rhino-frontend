@@ -14,11 +14,19 @@ import GroupCombobox from '../../group/GroupCombobox';
 import LocationCombobox from '../../location/LocationCombobox';
 import FavoriteMeter from './FavoriteMeter';
 
-type TopRibbonProps = {
-  showFavoriteMeterShow?: boolean;
+export type TopRibbonProps = {
+  hideFavoriteMeter?: boolean;
+  disableClient?: boolean;
+  disableLocation?: boolean;
+  disableGroup?: boolean;
 };
 
-const TopRibbon = ({ showFavoriteMeterShow }: TopRibbonProps) => {
+const TopRibbon = ({
+  hideFavoriteMeter = false,
+  disableClient,
+  disableLocation,
+  disableGroup,
+}: TopRibbonProps) => {
   const { t } = useTranslation('layout');
   const { user } = useUser();
   const [disableDropdown, setDisableDropdown] = useState<boolean>(false);
@@ -172,7 +180,7 @@ const TopRibbon = ({ showFavoriteMeterShow }: TopRibbonProps) => {
       component: (
         <ClientCombobox
           onSelect={onFilterChange}
-          disableDropdown={disableDropdown}
+          disableDropdown={disableDropdown || disableClient}
           clients={clients}
           selectedClient={activeClient ?? selectedClient}
         />
@@ -185,7 +193,7 @@ const TopRibbon = ({ showFavoriteMeterShow }: TopRibbonProps) => {
         <LocationCombobox
           onSelect={onFilterChange}
           locations={locations}
-          disabled={isComboboxDisabled}
+          disabled={isComboboxDisabled || disableLocation}
           selectedLocation={activeLocation}
         />
       ),
@@ -197,14 +205,14 @@ const TopRibbon = ({ showFavoriteMeterShow }: TopRibbonProps) => {
         <GroupCombobox
           onSelect={onFilterChange}
           locations={locations}
-          disabled={isComboboxDisabled}
+          disabled={isComboboxDisabled || disableGroup}
           selectedGroup={activeGroup}
           selectedLocation={selectedLocation}
         />
       ),
       dataTestId: 'ribbon-group-label',
     },
-    ...(showFavoriteMeterShow
+    ...(!hideFavoriteMeter
       ? [
           {
             labelKey: 'topRibbon.favoriteMeters',
