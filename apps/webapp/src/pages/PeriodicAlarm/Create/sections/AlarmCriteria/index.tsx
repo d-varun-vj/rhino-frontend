@@ -62,8 +62,6 @@ const AlarmCriteria = ({
   const shouldUnitPercent =
     selectedCompareWith !== PeriodicAlarmCompareWith.CONSTANT;
 
-  console.log(typeof watch('thresholdValue'));
-
   return (
     <SectionWrapper
       title={t(tFormBase + 'alarmCriteria.title')}

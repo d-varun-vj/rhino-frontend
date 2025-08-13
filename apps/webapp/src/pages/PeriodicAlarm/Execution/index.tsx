@@ -1,6 +1,6 @@
 import { ModalProps } from '@mantine/core';
 import { useDownloadPeriodicReportUrl, useGetExecutions } from '@rhino/apis';
-import { capitalizeString, Sort } from '@rhino/utils';
+import { capitalizeString, formatLocalDateTime, Sort } from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import IconButton from 'apps/webapp/src/components/common/buttons/IconButton';
 import CustomModal from 'apps/webapp/src/components/common/modals/CustomModal';
@@ -10,7 +10,6 @@ import { FilterVariant } from 'apps/webapp/src/components/common/Table/types';
 import message from 'apps/webapp/src/components/notifier';
 import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
 import { CONSTANTS } from 'apps/webapp/src/constant';
-import { format } from 'date-fns';
 import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RiDownload2Line } from 'react-icons/ri';
@@ -19,8 +18,9 @@ import {
   ExecutionStatus,
   getEnumKeys,
   PeriodicAlarmExecution,
+  PeriodicAlarmStatus,
 } from '../types';
-import { STATUS_COLOUR } from './config';
+import { EXECUTION_STATUS_COLOUR, STATUS_COLOUR } from './config';
 
 interface ExecutionProps {
   modalProps: ModalProps;
@@ -59,29 +59,31 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
   const ActionCellFn = useCallback(
     (row: Row<PeriodicAlarmExecution>) => (
       <ActionCell>
-        <IconButton
-          action={() => {
-            downloadMutationRef.current.mutate(row.original.uuid, {
-              onSuccess: (data) => {
-                if (data.presignedUrl) {
-                  window.location.href = data.presignedUrl;
-                }
-              },
-              onError: () => {
-                message.error(t('execution.download.error'));
-              },
-            });
-          }}
-          loading={
-            downloadMutationRef.current.isPending &&
-            downloadMutationRef.current.variables === row.original.uuid
-          }
-        >
-          <div className="flex gap-2 items-center">
-            <RiDownload2Line className="text-lg" />
-            <span className="text-sm">{t('execution.download.btn')}</span>
-          </div>
-        </IconButton>
+        {row.original.executionStatus !== (ExecutionStatus.ERROR as string) && (
+          <IconButton
+            action={() => {
+              downloadMutationRef.current.mutate(row.original.uuid, {
+                onSuccess: (data) => {
+                  if (data.presignedUrl) {
+                    window.location.href = data.presignedUrl;
+                  }
+                },
+                onError: () => {
+                  message.error(t('execution.download.error'));
+                },
+              });
+            }}
+            loading={
+              downloadMutationRef.current.isPending &&
+              downloadMutationRef.current.variables === row.original.uuid
+            }
+          >
+            <div className="flex gap-2 items-center">
+              <RiDownload2Line className="text-lg" />
+              <span className="text-sm">{t('execution.download.btn')}</span>
+            </div>
+          </IconButton>
+        )}
       </ActionCell>
     ),
     [downloadMutationRef, t]
@@ -125,15 +127,13 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         header: t('execution.table.occurence'),
         cell: (info) => {
           if (info.row.original.occurence) {
-            return format(
-              new Date(info.row.original.occurence),
-              'dd-MM-yyyy HH:mm'
-            );
+            return formatLocalDateTime(info.row.original.occurence);
           }
           return '-';
         },
         meta: {
-          sortKey: null,
+          sortKey: 'occurence',
+          sortDirection: sort.direction,
           filterVariant: FilterVariant.CUSTOM,
           // customFilter: (
           //   <DateRangeWithTimePickerField
@@ -159,15 +159,39 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'executionStatus',
-          sortKey: 'executionStatus',
-          sortDirection: sort.direction,
+          sortKey: null,
           selectionOptions: getEnumKeys(ExecutionStatus).map((option) => ({
-            label: option,
+            label: capitalizeString(option).replace('_', ' '),
             value: option,
           })),
           renderCell: (value, row) => {
             const status = (row as PeriodicAlarmExecution)
-              .executionStatus as keyof typeof STATUS_COLOUR;
+              .executionStatus as keyof typeof EXECUTION_STATUS_COLOUR;
+            const color =
+              EXECUTION_STATUS_COLOUR[status] ||
+              EXECUTION_STATUS_COLOUR.DEFAULT;
+            return (
+              <span className={`${color}  font-semibold text-[12px]`}>
+                {capitalizeString(value as string).replace('_', ' ')}
+              </span>
+            );
+          },
+        },
+      },
+      {
+        accessorFn: (row: PeriodicAlarmExecution) => row.status,
+        header: t('execution.table.status'),
+        meta: {
+          filterVariant: FilterVariant.SELECT,
+          filterKey: 'status',
+          sortKey: null,
+          selectionOptions: getEnumKeys(PeriodicAlarmStatus).map((option) => ({
+            label: capitalizeString(option).replace('_', ' '),
+            value: option,
+          })),
+          renderCell: (value, row) => {
+            const status = (row as PeriodicAlarmExecution)
+              .status as keyof typeof STATUS_COLOUR;
             const color = STATUS_COLOUR[status] || STATUS_COLOUR.DEFAULT;
             return (
               <span className={`${color}  font-semibold text-[12px]`}>
@@ -181,9 +205,11 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         accessorFn: (row: PeriodicAlarmExecution) => row.timeRange,
         header: t('execution.table.timeRange'),
         cell: (info) => {
-          if (info.row.original.startRange) {
+          if (info.row.original.startRange && info.row.original.endRange) {
             return (
-              info.row.original.startRange + ' ' + info.row.original.endRange
+              formatLocalDateTime(info.row.original.startRange) +
+              ' - ' +
+              formatLocalDateTime(info.row.original.endRange)
             );
           }
           return '-';
@@ -209,7 +235,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
   return (
     <CustomModal
       {...modalProps}
-      size={'70%'}
+      size={'80%'}
       title={<PageTitle title={alarmConfig.name} />}
     >
       <Table
