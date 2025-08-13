@@ -1,4 +1,5 @@
 import {
+  getAlarmViewPermissions,
   getAnalysisViewPermissions,
   getConfigurationViewPermissions,
   UserType,
@@ -199,14 +200,14 @@ export const MenuItems: MenuItemType[] = [
         key: 'periodic-alarm',
         route: '/alarm/periodic',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
-        viewPermissions: [UserViewPermission.IMMEDIATE_ALARM_ROLE],
+        viewPermissions: [UserViewPermission.PERIODIC_ALARM_ROLE],
         renderCondition: () => {
           return true; // set false to hide
         },
       },
     ],
     viewPermissionType: ViewPermissionsType.ViewRoleBased,
-    viewPermissions: [UserViewPermission.IMMEDIATE_ALARM_ROLE],
+    viewPermissions: [...getAlarmViewPermissions()],
   },
   //   Configuration
   {

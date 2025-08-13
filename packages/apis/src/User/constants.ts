@@ -22,3 +22,10 @@ export const getConfigurationViewPermissions = () => {
     UserViewPermission.METER_STATES_ROLE,
   ];
 };
+
+export const getAlarmViewPermissions = () => {
+  return [
+    UserViewPermission.IMMEDIATE_ALARM_ROLE,
+    UserViewPermission.PERIODIC_ALARM_ROLE,
+  ];
+};

@@ -328,7 +328,7 @@ const PeriodicAlarm = () => {
   return (
     <AccessAuthorizer
       viewPermissionType={ViewPermissionsType.ViewRoleBased}
-      viewPermissions={[UserViewPermission.IMMEDIATE_ALARM_ROLE]}
+      viewPermissions={[UserViewPermission.PERIODIC_ALARM_ROLE]}
     >
       <MainLayout
         title={t('sideMenu.periodicAlarm', { ns: 'layout' })}
