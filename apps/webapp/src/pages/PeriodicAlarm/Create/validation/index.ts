@@ -37,7 +37,7 @@ export const buildPeriodicAlarmSchema = (
       frequency: z.string().min(1, t(i18nBase + 'frequency')),
       generationDay: z
         .number(t(i18nBase + 'generationDay'))
-        .min(1, t(i18nBase + 'generationDay'))
+        .min(0, t(i18nBase + 'generationDay'))
         .nullable(),
       generationTime: z
         .string(t(i18nBase + 'generationTime'))
