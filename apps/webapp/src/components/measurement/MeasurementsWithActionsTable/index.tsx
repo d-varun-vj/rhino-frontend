@@ -8,6 +8,7 @@ import { RiDeleteBin6Fill } from 'react-icons/ri';
 import IconButton from '../../common/buttons/IconButton';
 import Table from '../../common/Table';
 import ActionCell from '../../common/Table/ActionCell';
+import GoToConsumptionIcon from '../../consumption/GoToConsumptionIcon';
 import { MeasurementWithConfig } from '../SelectMeasurement/types';
 
 interface MeasurementsWithActionsTableProps {
@@ -36,6 +37,14 @@ const MeasurementsWithActionsTable = ({
           >
             <RiDeleteBin6Fill />
           </IconButton>
+          <GoToConsumptionIcon
+            measurementUuid={row.original.measurement.uuid}
+            incremental={row.original.measurement.incremental}
+            type={row.original.measurement.type}
+            shouldCompareMeasurements={false}
+            openInNewTab={true}
+            iconSize="sm"
+          />
         </ActionCell>
       );
     },
