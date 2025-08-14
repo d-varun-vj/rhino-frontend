@@ -12,7 +12,6 @@ import {
 } from '@tanstack/react-table';
 import React, { useRef, useState } from 'react';
 
-import { Loader } from '@mantine/core';
 import { SortDirection } from '@rhino/utils';
 import { ColumnMeta } from '@tanstack/table-core';
 import clsx from 'clsx';
@@ -165,15 +164,13 @@ const Table = <T,>({
   });
 
   return (
-    <div className="overflow-hidden flex flex-col w-full ">
+    <div className="overflow-hidden flex flex-col w-full h-full">
       <div
-        className={`p-2 overflow-auto ${extraStyles ?? 'overflow-y-hidden'} ${size !== 'sm' && data.length !== 0 && 'min-h-[500px]'}`}
+        className={clsx(`p-2 overflow-auto overflow-y-hidden ${extraStyles}`, {
+          'h-full': data.length > 3,
+        })}
       >
-        <table
-          className={clsx('relative w-full', {
-            'min-h-[500px]': size !== 'sm' && data.length > 3,
-          })}
-        >
+        <table className={clsx('relative w-full h-full')}>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -182,7 +179,7 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={clsx('font-thin align-baseline pr-1.5 w-32', {
+                      className={clsx('font-thin align-baseline pr-1.5 w-32 ', {
                         'sticky bg-rhino-white -right-5 pl-2':
                           header.id === CONSTANTS.action,
                         '!w-16': header.id === 'select', // Narrower width for select column
@@ -244,79 +241,75 @@ const Table = <T,>({
           </thead>
           {/* Table Data Body */}
 
-          {!isLoading && table.getCoreRowModel().rows.length !== 0 && (
-            <tbody>
-              {table.getCoreRowModel().rows.map((row) => {
-                return (
-                  <tr key={row.id} className={`odd:bg-[#03030405] `}>
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <td
-                          key={cell.id}
-                          className={clsx(
-                            'p-[.75rem] align-top first:pl-[.75rem] relative pl-0',
-                            {
-                              'sticky -right-5 bg-white':
-                                cell.column.id === CONSTANTS.action,
-                            }
-                          )}
-                        >
-                          <div
+          <tbody className="h-full">
+            {!isLoading && table.getCoreRowModel().rows.length !== 0 && (
+              <>
+                {table.getCoreRowModel().rows.map((row) => {
+                  return (
+                    <tr key={row.id} className={`odd:bg-[#03030405] `}>
+                      {row.getVisibleCells().map((cell) => {
+                        return (
+                          <td
+                            key={cell.id}
                             className={clsx(
-                              'text-[13px] overflow-hidden overflow-ellipsis w-32 ',
+                              'p-[.75rem] align-top first:pl-[.75rem] relative pl-0',
                               {
-                                'text-nowrap':
-                                  cell.column.id === 'value' ||
-                                  cell.column.id === 'read-time',
-                                'overflow-visible w-fit':
-                                  cell.column.id === CONSTANTS.action ||
-                                  textFullViewId === cell.column.id,
-                                '!w-16': cell.column.id === 'select', // Narrower width for select column
-                                'text-nowrap h-fit': size == 'sm',
-                                'text-nowrap w-auto overflow-y-auto':
-                                  textNowarp,
+                                'sticky -right-5 bg-white':
+                                  cell.column.id === CONSTANTS.action,
                               }
                             )}
-                            onMouseEnter={(e) =>
-                              handleMouseEnter(cell.column.id, e.currentTarget)
-                            }
-                            onMouseLeave={handleMouseLeave}
                           >
-                            {cell.column.columnDef.meta?.renderCell
-                              ? cell.column.columnDef.meta.renderCell(
-                                  cell.getValue(),
-                                  cell.row.original
+                            <div
+                              className={clsx(
+                                'text-[13px] overflow-hidden overflow-ellipsis w-32 ',
+                                {
+                                  'text-nowrap':
+                                    cell.column.id === 'value' ||
+                                    cell.column.id === 'read-time',
+                                  'overflow-visible w-fit':
+                                    cell.column.id === CONSTANTS.action ||
+                                    textFullViewId === cell.column.id,
+                                  '!w-16': cell.column.id === 'select', // Narrower width for select column
+                                  'text-nowrap h-fit': size == 'sm',
+                                  'text-nowrap w-auto overflow-y-auto':
+                                    textNowarp,
+                                }
+                              )}
+                              onMouseEnter={(e) =>
+                                handleMouseEnter(
+                                  cell.column.id,
+                                  e.currentTarget
                                 )
-                              : flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext()
-                                )}
-                          </div>
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          )}
+                              }
+                              onMouseLeave={handleMouseLeave}
+                            >
+                              {cell.column.columnDef.meta?.renderCell
+                                ? cell.column.columnDef.meta.renderCell(
+                                    cell.getValue(),
+                                    cell.row.original
+                                  )
+                                : flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext()
+                                  )}
+                            </div>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </>
+            )}
+            {!isLoading && data.length === 0 && (
+              <div className="flex items-center h-96">
+                <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-[95%] mt-10">
+                  {emptyText || t('table.notFound', { ns: 'common' })}
+                </div>
+              </div>
+            )}
+          </tbody>
         </table>
-
-        {isLoading && (
-          <div className="flex items-center h-96">
-            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-[95%] mt-10">
-              <Loader color="var(--color-rhino-indigo-blue)" size={18} />
-            </div>
-          </div>
-        )}
-
-        {!isLoading && data.length === 0 && (
-          <div className="flex items-center h-96">
-            <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-[95%] mt-10">
-              {emptyText || t('table.notFound', { ns: 'common' })}
-            </div>
-          </div>
-        )}
       </div>
       {/* Footer */}
       {footer && <TableFooter pagination={footer} />}

@@ -246,20 +246,21 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         </h1>
       }
     >
-      <Table
-        columns={columns}
-        data={executionRes ? executionRes.data : []}
-        onFilterChange={onFilterChange}
-        // textNowarp
-        footer={{
-          currentPage: page,
-          pageSize: pageSize,
-          totalCount: executionRes ? executionRes.meta.totalItems : 0,
-          setCurrentPage: setPage,
-          setPageSize: setPageSize,
-        }}
-        onSortSelect={onSortClick}
-      />
+      <div className="h-[70vh]">
+        <Table
+          columns={columns}
+          data={executionRes ? executionRes.data : []}
+          onFilterChange={onFilterChange}
+          footer={{
+            currentPage: page,
+            pageSize: pageSize,
+            totalCount: executionRes ? executionRes.meta.totalItems : 0,
+            setCurrentPage: setPage,
+            setPageSize: setPageSize,
+          }}
+          onSortSelect={onSortClick}
+        />
+      </div>
     </CustomModal>
   );
 };
