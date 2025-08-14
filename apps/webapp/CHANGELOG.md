@@ -1,5 +1,42 @@
 # Changelog
 
+## [1.11.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.10.0...webapp-v1.11.0) (2025-08-14)
+
+
+### Features
+
+* Add links to consumption chart in the selected measurements panel in periodic alarm [PRD-3215] ([#92](https://github.com/Rhino-Energy/rhino-frontend/issues/92)) ([5fcd0b4](https://github.com/Rhino-Energy/rhino-frontend/commit/5fcd0b418e20ec9a8d71bb3276a8110c8c163a28))
+* Add links to consumption chart in the selected measurements panel in periodic alarm [PRD-3215] ([#98](https://github.com/Rhino-Energy/rhino-frontend/issues/98)) ([1adee9c](https://github.com/Rhino-Energy/rhino-frontend/commit/1adee9c66694d9559ef5b0ba18da85aa04890ab7))
+* Add option for disabling and hiding top ribbon items [PRD-3116] ([#106](https://github.com/Rhino-Energy/rhino-frontend/issues/106)) ([1b0004a](https://github.com/Rhino-Energy/rhino-frontend/commit/1b0004a1b5d6a2c1a54bd6d1b48158cf6224f38f))
+* Add Periodic Alarm permission and use it for accessing periodic alarm feature [PRD-3227] ([#94](https://github.com/Rhino-Energy/rhino-frontend/issues/94)) ([807493e](https://github.com/Rhino-Energy/rhino-frontend/commit/807493e2186280fdfa58d8591d0265a434e986a4))
+* Add readonly mode for shared users [PRD-3116] ([#100](https://github.com/Rhino-Energy/rhino-frontend/issues/100)) ([3dae62d](https://github.com/Rhino-Energy/rhino-frontend/commit/3dae62d75f730fef2c72de5a06e876e67b63c24a))
+* Add support for configuring periodic alarm to send report only when atleast one is exceeded [PRD-3203] ([#86](https://github.com/Rhino-Energy/rhino-frontend/issues/86)) ([18e2337](https://github.com/Rhino-Energy/rhino-frontend/commit/18e233768823d62c27fd833fe73a9269532c6c1f))
+* Create modal for showing details of an alarm ( executions) [PRD-3117] ([#84](https://github.com/Rhino-Energy/rhino-frontend/issues/84)) ([0baafe0](https://github.com/Rhino-Energy/rhino-frontend/commit/0baafe03a4a814d302b36c27b8ccc661ce3eb96a))
+* Implement periodic alarm update [PRD-3116] ([#88](https://github.com/Rhino-Energy/rhino-frontend/issues/88)) ([e4c6e84](https://github.com/Rhino-Energy/rhino-frontend/commit/e4c6e842464140e006dccb0c1a8dd3491286d469))
+* Remove validation for recipients [PRD-3220] ([#93](https://github.com/Rhino-Energy/rhino-frontend/issues/93)) ([74878a7](https://github.com/Rhino-Energy/rhino-frontend/commit/74878a79f436878b59df8785d2e85d1ecdb3b436))
+* Rename user zone to timezone [PRD-3113] ([#80](https://github.com/Rhino-Energy/rhino-frontend/issues/80)) ([14846ae](https://github.com/Rhino-Energy/rhino-frontend/commit/14846ae84ee4bfe623e9f5db3866155ba5502349))
+
+
+### Bug Fixes
+
+* Add limit for percent number input [PRD-3117] ([#101](https://github.com/Rhino-Energy/rhino-frontend/issues/101)) ([198b004](https://github.com/Rhino-Energy/rhino-frontend/commit/198b0045368fa9b876f30f97843f99943b8bc3a4))
+* Change threshold value decimal place to 2 [PRD-3113] ([#107](https://github.com/Rhino-Energy/rhino-frontend/issues/107)) ([2b2ae52](https://github.com/Rhino-Energy/rhino-frontend/commit/2b2ae52d4b6ca0ab8e0976b664daf0c22ebc0472))
+* Fix active button and validation error in periodic alarm form [PRD-3116] ([#99](https://github.com/Rhino-Energy/rhino-frontend/issues/99)) ([d78c6a1](https://github.com/Rhino-Energy/rhino-frontend/commit/d78c6a1935ad04e5744c27dc797a01e8ed7157c0))
+* Fix asset loading issues [PRD-3209] ([#81](https://github.com/Rhino-Energy/rhino-frontend/issues/81)) ([7b6c80c](https://github.com/Rhino-Energy/rhino-frontend/commit/7b6c80c4979715f8c844b0e28fc3acda3b1c5706))
+* Fix Execution button visibility issue [PRD-3117] ([#91](https://github.com/Rhino-Energy/rhino-frontend/issues/91)) ([7badeb9](https://github.com/Rhino-Energy/rhino-frontend/commit/7badeb9bbca33c0e19b77ae902845f9231c11b15))
+* Fix form validations and sharing component issues [PRD-3113] ([#87](https://github.com/Rhino-Energy/rhino-frontend/issues/87)) ([496a61f](https://github.com/Rhino-Energy/rhino-frontend/commit/496a61f04278f51f4fa6ee1f14ab448b84ff9031))
+* Fix issues in measurement select component [PRD-3184] ([#97](https://github.com/Rhino-Energy/rhino-frontend/issues/97)) ([8cf7908](https://github.com/Rhino-Energy/rhino-frontend/commit/8cf7908f98cba86c58d3c9f216cfb6483de9cf80))
+* Fix issues periodic alarm creation [PRD-3113] ([#85](https://github.com/Rhino-Energy/rhino-frontend/issues/85)) ([79fe3a0](https://github.com/Rhino-Energy/rhino-frontend/commit/79fe3a07f3fd8114d7dd980102e4e2af7cb99ae0))
+* Fix measurement selection issue in periodic update  [PRD-3116] ([#102](https://github.com/Rhino-Energy/rhino-frontend/issues/102)) ([44766ea](https://github.com/Rhino-Energy/rhino-frontend/commit/44766ea4ee29c1abf559c18b60f9b013e2c2890a))
+* Fix periodic alarm translation and namings [PRD-3116] ([#83](https://github.com/Rhino-Energy/rhino-frontend/issues/83)) ([4046bc2](https://github.com/Rhino-Energy/rhino-frontend/commit/4046bc27847489122dd865f4b87046fb80969415))
+* Handle login page crash for inactive users and prevent server 500 errors ([#89](https://github.com/Rhino-Energy/rhino-frontend/issues/89)) ([e117ba2](https://github.com/Rhino-Energy/rhino-frontend/commit/e117ba2f2ce68ac93d289e936fa5953ea9011632))
+* Handle number field validation issue [PRD-3113] ([#95](https://github.com/Rhino-Energy/rhino-frontend/issues/95)) ([6daf15b](https://github.com/Rhino-Energy/rhino-frontend/commit/6daf15bf626da613bcb340adc3ec5d0b6c780a63))
+* Prevent UI break on threshold fields errors and increase max length for threshold values [PRD-3113] ([#90](https://github.com/Rhino-Energy/rhino-frontend/issues/90)) ([0f20e34](https://github.com/Rhino-Energy/rhino-frontend/commit/0f20e34b6c99919979cd4a64bf0b7c5aab3aab5e))
+* Resolve execution modal issues [PRD-3117] ([#96](https://github.com/Rhino-Energy/rhino-frontend/issues/96)) ([6c1102d](https://github.com/Rhino-Energy/rhino-frontend/commit/6c1102d9c6011c87d90a32b300c26fa7de63d5ac))
+* Resolve execution modal ui issues [PRD-3117] ([#105](https://github.com/Rhino-Energy/rhino-frontend/issues/105)) ([a162ae6](https://github.com/Rhino-Energy/rhino-frontend/commit/a162ae6cacd64a57008d260fddd94dfb69b2e788))
+* Resolve re rendering issue when change the language ([#103](https://github.com/Rhino-Energy/rhino-frontend/issues/103)) ([bced7b2](https://github.com/Rhino-Energy/rhino-frontend/commit/bced7b258fcb9bd02b6011284d10da19c3f6fbff))
+* Resolve threshold value field zero validation issue [PRD-3113] ([#104](https://github.com/Rhino-Energy/rhino-frontend/issues/104)) ([67a3195](https://github.com/Rhino-Energy/rhino-frontend/commit/67a31952405568d0c6efd1e6a846b6efc84a6530))
+
 ## [1.10.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.9.0...webapp-v1.10.0) (2025-07-25)
 
 
