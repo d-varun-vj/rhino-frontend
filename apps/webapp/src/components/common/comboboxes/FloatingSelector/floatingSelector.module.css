@@ -52,8 +52,3 @@
   position: relative;
   z-index: 1;
 }
-
-.indicator {
-  /* background-color: var(--color-rhino-energy-green); */
-  /* border-radius: var(--mantine-radius-md); */
-}

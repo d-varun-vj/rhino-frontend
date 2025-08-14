@@ -18,7 +18,7 @@ const validateNumberFormat = (val: number | undefined) => {
   const integerPart = parts[0].replace('-', '');
   const decimalPart = parts[1] || '';
 
-  return integerPart.length <= 13 && decimalPart.length <= 6;
+  return integerPart.length <= 13 && decimalPart.length <= 2;
 };
 
 const validateBetweenNumbers = (

@@ -33,8 +33,6 @@
 
 .mantine-MultiSelect-pill,
 .mantine-TagsInput-pill {
-  /* background-color: var(--color-rhino-indigo-blue) !important; */
-  /* color: white !important; */
   border-radius: 4px !important;
 }
 
@@ -54,16 +52,12 @@
   border: transparent !important;
 }
 
-/* .mantine-Pill-remove {
-  color: red !important;
-} */
-
 .mantine-TimePicker-dropdown .mantine-UnstyledButton-root {
   &[data-active] {
     background-color: var(--color-rhino-indigo-blue-highlight);
   }
 
-  @mixin hover {
+  &:hover {
     color: white;
     background-color: var(--color-rhino-energy-green);
   }

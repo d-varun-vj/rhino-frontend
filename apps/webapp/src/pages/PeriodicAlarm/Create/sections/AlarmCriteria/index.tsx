@@ -175,7 +175,7 @@ const AlarmCriteria = ({
                       unit: `(${shouldUnitPercent ? '%' : selectedMediumType?.unit || '-'})`,
                     })}
                     required
-                    decimalScale={shouldUnitPercent ? 2 : 6}
+                    decimalScale={2}
                     maxLength={shouldUnitPercent ? 10 : 13}
                     onChange={field.onChange}
                     value={field.value}
@@ -220,7 +220,7 @@ const AlarmCriteria = ({
                       clearErrors('thresholdStartValue');
                       clearErrors('thresholdEndValue');
                     }}
-                    decimalScale={shouldUnitPercent ? 2 : 6}
+                    decimalScale={2}
                     maxLength={shouldUnitPercent ? 10 : 13}
                     value={field.value}
                     onBlur={field.onBlur}
@@ -252,7 +252,7 @@ const AlarmCriteria = ({
                     )}
                     required
                     value={field.value}
-                    decimalScale={shouldUnitPercent ? 2 : 6}
+                    decimalScale={2}
                     maxLength={shouldUnitPercent ? 10 : 13}
                     onBlur={field.onBlur}
                     onChange={(e) => {
