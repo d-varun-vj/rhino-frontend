@@ -339,15 +339,6 @@ const PeriodicAlarm = () => {
         }));
         break;
       }
-      case null:
-        setFilters({
-          name: null,
-          author: null,
-          active: null,
-          frequency: null,
-          location: null,
-          shared: null,
-        });
     }
   };
 
@@ -373,6 +364,7 @@ const PeriodicAlarm = () => {
             onClick={handleCreateAlarm}
           />
         </div>
+
         <Table
           columns={columns}
           data={periodicAlarmRes ? periodicAlarmRes.data : []}
@@ -387,7 +379,9 @@ const PeriodicAlarm = () => {
           onSortSelect={onSortClick}
           isLoading={isLoadingData}
         />
+
         <Execution
+          key={`${executionState.selectedAlarmUuid}-${Date.now().toString()}`}
           modalProps={{
             opened: executionState.openExecution,
             onClose() {

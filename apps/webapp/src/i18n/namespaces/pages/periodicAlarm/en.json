@@ -194,6 +194,19 @@
         "quarterly": "Enter value between 1 to 92",
         "yearly": "Enter value between 1 to 366"
       }
+    },
+    "status": {
+      "success": "Success",
+      "failure": "Failure",
+      "inProgress": "In progress",
+      "pending": "Pending"
+    },
+    "executionStatus": {
+      "error": "Error",
+      "noData": "No data",
+      "exceeded": "Exceeded",
+      "ok": "Ok",
+      "pending": "Pending"
     }
   }
 }

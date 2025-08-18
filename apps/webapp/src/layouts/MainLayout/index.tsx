@@ -39,7 +39,7 @@ const MainLayout = ({
     <div className="flex items-stretch flex-auto w-full min-h-screen">
       <ToastContainer theme="colored" />
       <SideBar />
-      <div className="bg-rhino-white flex items-stretch flex-auto p-0 basis-full flex-col w-0 min-w-0 max-w-full min-h-[1px] relative">
+      <div className="bg-rhino-white flex items-stretch flex-auto p-0 basis-full flex-col w-0 max-w-full relative ">
         {!hideTopRibbon && <TopRibbon {...topRibbon} />}
         <div className="py-[1.5rem] px-[2rem]">{children}</div>
       </div>

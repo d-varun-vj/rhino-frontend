@@ -1,6 +1,6 @@
 import { ModalProps } from '@mantine/core';
 import { useDownloadPeriodicReportUrl, useGetExecutions } from '@rhino/apis';
-import { capitalizeString, formatLocalDateTime, Sort } from '@rhino/utils';
+import { formatLocalDateTime, Sort } from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import IconButton from 'apps/webapp/src/components/common/buttons/IconButton';
 import CustomModal from 'apps/webapp/src/components/common/modals/CustomModal';
@@ -9,15 +9,15 @@ import ActionCell from 'apps/webapp/src/components/common/Table/ActionCell';
 import { FilterVariant } from 'apps/webapp/src/components/common/Table/types';
 import message from 'apps/webapp/src/components/notifier';
 import { CONSTANTS } from 'apps/webapp/src/constant';
+import clsx from 'clsx';
 import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RiDownload2Line } from 'react-icons/ri';
+import { getTranslationOptions } from '../helper';
 import {
   ExecutionFilter,
   ExecutionStatus,
-  getEnumKeys,
   PeriodicAlarmExecution,
-  PeriodicAlarmStatus,
 } from '../types';
 import { EXECUTION_STATUS_COLOUR, STATUS_COLOUR } from './config';
 
@@ -47,7 +47,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
     endDate: null,
   });
 
-  const { data: executionRes } = useGetExecutions({
+  const { data: executionRes, isLoading } = useGetExecutions({
     page: page,
     size: pageSize,
     sort: sort,
@@ -58,31 +58,32 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
   const ActionCellFn = useCallback(
     (row: Row<PeriodicAlarmExecution>) => (
       <ActionCell>
-        {row.original.executionStatus !== (ExecutionStatus.ERROR as string) && (
-          <IconButton
-            action={() => {
-              downloadMutationRef.current.mutate(row.original.uuid, {
-                onSuccess: (data) => {
-                  if (data.presignedUrl) {
-                    window.location.href = data.presignedUrl;
-                  }
-                },
-                onError: () => {
-                  message.error(t('execution.download.error'));
-                },
-              });
-            }}
-            loading={
-              downloadMutationRef.current.isPending &&
-              downloadMutationRef.current.variables === row.original.uuid
-            }
-          >
-            <div className="flex gap-2 items-center">
-              <RiDownload2Line className="text-lg" />
-              <span className="text-sm">{t('execution.download.btn')}</span>
-            </div>
-          </IconButton>
-        )}
+        <IconButton
+          action={() => {
+            downloadMutationRef.current.mutate(row.original.uuid, {
+              onSuccess: (data) => {
+                if (data.presignedUrl) {
+                  window.location.href = data.presignedUrl;
+                }
+              },
+              onError: () => {
+                message.error(t('execution.download.error'));
+              },
+            });
+          }}
+          loading={
+            downloadMutationRef.current.isPending &&
+            downloadMutationRef.current.variables === row.original.uuid
+          }
+          disabled={
+            row.original.executionStatus === (ExecutionStatus.ERROR as string)
+          }
+        >
+          <div className={clsx('flex gap-2 items-center')}>
+            <RiDownload2Line className="text-lg" />
+            <span className="text-sm">{t('execution.download.btn')}</span>
+          </div>
+        </IconButton>
       </ActionCell>
     ),
     [downloadMutationRef, t]
@@ -157,17 +158,18 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
           filterKey: 'status',
           sortKey: 'status',
           sortDirection: sort.direction,
-          selectionOptions: getEnumKeys(PeriodicAlarmStatus).map((option) => ({
-            label: capitalizeString(option).replace('_', ' '),
-            value: option,
-          })),
+          selectionOptions: getTranslationOptions({ t }).STATUS,
           renderCell: (value, row) => {
             const status = (row as PeriodicAlarmExecution)
               .status as keyof typeof STATUS_COLOUR;
             const color = STATUS_COLOUR[status] || STATUS_COLOUR.DEFAULT;
             return (
               <span className={`${color}  font-semibold text-[12px]`}>
-                {capitalizeString(value as string).replace('_', ' ')}
+                {
+                  getTranslationOptions({ t }).STATUS.find(
+                    (option) => option.value === value
+                  )?.label as string
+                }
               </span>
             );
           },
@@ -184,10 +186,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
           filterKey: 'executionStatus',
           sortKey: 'executionStatus',
           sortDirection: sort.direction,
-          selectionOptions: getEnumKeys(ExecutionStatus).map((option) => ({
-            label: capitalizeString(option).replace('_', ' '),
-            value: option,
-          })),
+          selectionOptions: getTranslationOptions({ t }).EXECUTION_STATUS,
           renderCell: (value, row) => {
             const status = (row as PeriodicAlarmExecution)
               .executionStatus as keyof typeof EXECUTION_STATUS_COLOUR;
@@ -196,7 +195,11 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
               EXECUTION_STATUS_COLOUR.DEFAULT;
             return (
               <span className={`${color}  font-semibold text-[12px]`}>
-                {capitalizeString(value as string).replace('_', ' ')}
+                {
+                  getTranslationOptions({ t }).EXECUTION_STATUS.find(
+                    (option) => option.value === value
+                  )?.label as string
+                }
               </span>
             );
           },
@@ -236,7 +239,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
   return (
     <CustomModal
       {...modalProps}
-      size={'70%'}
+      size={'75%'}
       title={
         <h1
           className="pl-0  text-left font-bold text-[32px] tracking-[0]
@@ -246,10 +249,11 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         </h1>
       }
     >
-      <div className="h-[70vh]">
+      <div>
         <Table
           columns={columns}
           data={executionRes ? executionRes.data : []}
+          textNowarp
           onFilterChange={onFilterChange}
           footer={{
             currentPage: page,
@@ -259,6 +263,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
             setPageSize: setPageSize,
           }}
           onSortSelect={onSortClick}
+          isLoading={isLoading}
         />
       </div>
     </CustomModal>

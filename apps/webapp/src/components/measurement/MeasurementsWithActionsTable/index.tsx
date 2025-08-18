@@ -9,6 +9,7 @@ import IconButton from '../../common/buttons/IconButton';
 import Table from '../../common/Table';
 import ActionCell from '../../common/Table/ActionCell';
 import GoToConsumptionIcon from '../../consumption/GoToConsumptionIcon';
+import { getTranslationOptions } from '../helper';
 import { MeasurementWithConfig } from '../SelectMeasurement/types';
 
 interface MeasurementsWithActionsTableProps {
@@ -92,7 +93,10 @@ const MeasurementsWithActionsTable = ({
       {
         accessorFn: (row) => row.measurement.type,
         header: t(translationBaseRoute + 'header.type'),
-        cell: (info) => info.getValue(),
+        cell: (info) =>
+          getTranslationOptions({ t }).MEASUREMENT_TYPE.find(
+            (option) => option.value === info.getValue()
+          )?.label,
         meta: {
           sortKey: null,
         },

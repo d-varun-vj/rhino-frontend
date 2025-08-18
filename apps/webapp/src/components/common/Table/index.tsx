@@ -12,6 +12,7 @@ import {
 } from '@tanstack/react-table';
 import React, { useRef, useState } from 'react';
 
+import { Loader } from '@mantine/core';
 import { SortDirection } from '@rhino/utils';
 import { ColumnMeta } from '@tanstack/table-core';
 import clsx from 'clsx';
@@ -164,13 +165,11 @@ const Table = <T,>({
   });
 
   return (
-    <div className="overflow-hidden flex flex-col w-full h-full">
+    <div className=" overflow-hidden relative w-full">
       <div
-        className={clsx(`p-2 overflow-auto overflow-y-hidden ${extraStyles}`, {
-          'h-full': data.length > 3,
-        })}
+        className={clsx(`p-2 overflow-auto overflow-y-hidden ${extraStyles}`)}
       >
-        <table className={clsx('relative w-full h-full')}>
+        <table className={clsx('relative w-full ')}>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -241,12 +240,12 @@ const Table = <T,>({
           </thead>
           {/* Table Data Body */}
 
-          <tbody className="h-full">
+          <tbody>
             {!isLoading && table.getCoreRowModel().rows.length !== 0 && (
               <>
                 {table.getCoreRowModel().rows.map((row) => {
                   return (
-                    <tr key={row.id} className={`odd:bg-[#03030405] `}>
+                    <tr key={row.id} className={`odd:bg-[#03030405]`}>
                       {row.getVisibleCells().map((cell) => {
                         return (
                           <td
@@ -301,10 +300,19 @@ const Table = <T,>({
                 })}
               </>
             )}
+
             {!isLoading && data.length === 0 && (
               <div className="flex items-center h-96">
-                <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute  w-[95%] mt-10">
+                <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute w-full mt-10">
                   {emptyText || t('table.notFound', { ns: 'common' })}
+                </div>
+              </div>
+            )}
+
+            {isLoading && (
+              <div className="flex items-center h-96">
+                <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute w-full mt-10">
+                  <Loader color="var(--color-rhino-indigo-blue)" size={'sm'} />
                 </div>
               </div>
             )}
@@ -312,6 +320,7 @@ const Table = <T,>({
         </table>
       </div>
       {/* Footer */}
+
       {footer && <TableFooter pagination={footer} />}
     </div>
   );

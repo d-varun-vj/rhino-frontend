@@ -15,7 +15,7 @@
   "createBtn": "Utwórz alarm okresowy",
   "update": {
     "mainHeaderReadOnly": "Wyświetl alarm okresowy",
-    "mainHeader": "Update periodic alarm",
+    "mainHeader": "Edycja alarmu okresowego",
     "success": "Alarm okresowy został pomyślnie zaktualizowany",
     "error": "Nie udało się zaktualizować alarmu okresowego"
   },
@@ -194,6 +194,19 @@
         "quarterly": "Wprowadź wartość od 1 do 92",
         "yearly": "Wprowadź wartość od 1 do 366"
       }
+    },
+    "status": {
+      "success": "Sukces",
+      "failure": "Niepowodzenie",
+      "inProgress": "W trakcie",
+      "pending": "Oczekuje"
+    },
+    "executionStatus": {
+      "error": "Błąd",
+      "noData": "Brak danych",
+      "exceeded": "Próg przekroczony",
+      "ok": "Ok",
+      "pending": "Oczekuje"
     }
   }
 }

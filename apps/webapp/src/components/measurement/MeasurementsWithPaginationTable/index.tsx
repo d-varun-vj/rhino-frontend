@@ -16,6 +16,7 @@ import { useUser } from '../../../context/user';
 import Table from '../../common/Table';
 import { FilterVariant } from '../../common/Table/types';
 import CheckBox from '../../common/input/Checkbox';
+import { getTranslationOptions } from '../helper';
 
 interface MeasurementsWithPaginationTableProps {
   selectionMode?: 'none' | 'single' | 'multiple';
@@ -233,27 +234,14 @@ const MeasurementsWithPaginationTable = ({
         accessorFn: (row) => row.type,
         header: t(translationBaseRoute + 'header.type'),
         cell: (info) =>
-          t(
-            'measurement.common.measurementTypes.' + (info.getValue() as string)
-          ),
+          getTranslationOptions({ t }).MEASUREMENT_TYPE.find(
+            (option) => option.value === info.getValue()
+          )?.label,
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'type',
           sortKey: null,
-          selectionOptions: [
-            {
-              label: t('measurement.common.measurementTypes.AUTOMATIC'),
-              value: 'AUTOMATIC',
-            },
-            {
-              label: t('measurement.common.measurementTypes.MANUAL'),
-              value: 'MANUAL',
-            },
-            {
-              label: t('measurement.common.measurementTypes.VIRTUAL'),
-              value: 'VIRTUAL',
-            },
-          ],
+          selectionOptions: getTranslationOptions({ t }).MEASUREMENT_TYPE,
         },
       },
       {

@@ -130,24 +130,10 @@ const Dashboard = () => {
 
         setFilters((prev: Filter) => ({
           ...prev,
-          [field]: selectedType
-            ? selectedType.name
-            : prev[field as keyof Filter],
+          [field]: selectedType ? selectedType.name : val,
         }));
         break;
       }
-      case null:
-        setFilters({
-          locationName: null,
-          groupName: null,
-          measurementName: null,
-          serialNumber: null,
-          tenant: null,
-          medium: null,
-          levelType: null,
-          loadType: null,
-          endUseAreaType: null,
-        });
     }
   };
 

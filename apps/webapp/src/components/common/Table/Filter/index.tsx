@@ -42,15 +42,19 @@ const Filter = <T,>({
 
   const handleSelectValueChange = useCallback(
     (value: string | null) => {
+      if (!filterKey) {
+        return;
+      }
+
       if (!value) {
         setSelectValue('');
-        onFilterChange(null, CONSTANTS.SELECT.ALL_OPTION, null);
+        onFilterChange(null, filterKey, FilterVariant.SELECT);
         return;
       }
 
       if (value.toLowerCase() === CONSTANTS.SELECT.DEFAULT) {
         if (filterKey) {
-          onFilterChange(null, CONSTANTS.SELECT.ALL_OPTION, null);
+          onFilterChange(null, filterKey, FilterVariant.SELECT);
         }
         column.setFilterValue(null);
         setSelectValue('');

@@ -190,9 +190,7 @@ export const SelectMeasurement = ({
           title={
             !client
               ? t(baseRoute + 'selectClient')
-              : disabledTitle
-                ? disabledTitle
-                : t(baseRoute + 'title')
+              : disabledTitle || t(baseRoute + 'title')
           }
         >
           {getButtonText()}
