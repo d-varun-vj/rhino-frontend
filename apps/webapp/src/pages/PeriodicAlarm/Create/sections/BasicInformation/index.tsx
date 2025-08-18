@@ -22,11 +22,13 @@ interface BasicInformationProps {
     unit: string | null;
   }) => void;
   isReadOnly?: boolean;
+  hasCreatorAccess?: boolean;
 }
 
 const BasicInformation = ({
   setSelectedMediumType,
   isReadOnly = false,
+  hasCreatorAccess = true,
 }: BasicInformationProps) => {
   const {
     control,
@@ -82,10 +84,12 @@ const BasicInformation = ({
           />
         </div>
       </div>
-      <SharingSection
-        label={t(tFormBase + 'basic.shared')}
-        isReadOnly={isReadOnly}
-      />
+      {hasCreatorAccess && (
+        <SharingSection
+          label={t(tFormBase + 'basic.shared')}
+          isReadOnly={isReadOnly}
+        />
+      )}
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
         <Controller

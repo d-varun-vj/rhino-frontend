@@ -133,18 +133,17 @@ const PeriodicAlarm = () => {
   const ActionCellFn = useCallback(
     (row: Row<PeriodicAlarmType>) => (
       <ActionCell>
-        {row.original.showExecutionButton && (
-          <IconButton
-            action={() => {
-              dispatch({ type: 'SET_OPEN_EXECUTION' });
-              dispatch({ type: 'SET_ALARM_UUID', payload: row.original.uuid });
-              dispatch({ type: 'SET_ALARM_NAME', payload: row.original.name });
-            }}
-            popupContent={t('execution.btnPopup')}
-          >
-            <FaClock />
-          </IconButton>
-        )}
+        <IconButton
+          action={() => {
+            dispatch({ type: 'SET_OPEN_EXECUTION' });
+            dispatch({ type: 'SET_ALARM_UUID', payload: row.original.uuid });
+            dispatch({ type: 'SET_ALARM_NAME', payload: row.original.name });
+          }}
+          popupContent={t('execution.btnPopup')}
+        >
+          <FaClock />
+        </IconButton>
+
         {!row.original.isManageable && (
           <IconButton
             action={() => {
@@ -173,7 +172,7 @@ const PeriodicAlarm = () => {
             <FaEdit />
           </IconButton>
         )}
-        {row.original.isManageable && (
+        {row.original.hasCreatorAccess && (
           <IconButton
             type="secondary"
             popupContent={t('delete.title')}

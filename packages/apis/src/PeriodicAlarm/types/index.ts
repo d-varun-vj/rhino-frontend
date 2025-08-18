@@ -16,6 +16,7 @@ export interface PeriodicAlarmType {
   frequency?: string;
   isManageable?: boolean;
   showExecutionButton?: boolean;
+  hasCreatorAccess?: boolean;
   action?: string;
 }
 
@@ -157,4 +158,5 @@ export interface PeriodicAlarmDetail {
   analysePeriod: string;
   nextExecutionTime: string;
   isManageable: boolean;
+  hasCreatorAccess: boolean;
 }

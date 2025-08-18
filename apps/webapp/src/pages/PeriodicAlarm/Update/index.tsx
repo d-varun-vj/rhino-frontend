@@ -230,7 +230,9 @@ const UpdatePeriodicAlarm = () => {
       viewPermissions={[UserViewPermission.PERIODIC_ALARM_ROLE]}
     >
       <MainLayout
-        title={t('update.mainHeader')}
+        title={
+          isReadOnly ? t('update.mainHeaderReadOnly') : t('update.mainHeader')
+        }
         topRibbon={{
           hideFavoriteMeter: true,
           disableClient: true,
@@ -261,6 +263,7 @@ const UpdatePeriodicAlarm = () => {
                       <BasicInformation
                         isReadOnly={isReadOnly}
                         setSelectedMediumType={setSelectedMediumType}
+                        hasCreatorAccess={alarmDetails?.data.hasCreatorAccess}
                       />
                       <MomentOfExecution
                         isReadOnly={isReadOnly}
