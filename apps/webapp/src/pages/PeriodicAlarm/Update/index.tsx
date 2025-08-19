@@ -264,6 +264,7 @@ const UpdatePeriodicAlarm = () => {
                         isReadOnly={isReadOnly}
                         setSelectedMediumType={setSelectedMediumType}
                         hasCreatorAccess={alarmDetails?.data.hasCreatorAccess}
+                        isUpdate
                       />
                       <MomentOfExecution
                         isReadOnly={isReadOnly}

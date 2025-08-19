@@ -147,6 +147,19 @@ const SharingSection = ({
     }
   }, [shared, setValue, clearSharedItems, allowReactiveEffects]);
 
+  useEffect(() => {
+    if (
+      !shared &&
+      initializedRef.current &&
+      allowReactiveEffects &&
+      isUpdateMode
+    ) {
+      setValue('readOnly', true);
+      setValue('sharedLocations', []);
+      setValue('sharedTenants', []);
+    }
+  }, [shared, setValue, clearSharedItems, allowReactiveEffects, isUpdateMode]);
+
   const getValidatedLocations = () => {
     if (!shared || shouldFieldBeDisabled) return [];
     if (!Array.isArray(sharedLocations)) return [];

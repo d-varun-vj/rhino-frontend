@@ -23,12 +23,14 @@ interface BasicInformationProps {
   }) => void;
   isReadOnly?: boolean;
   hasCreatorAccess?: boolean;
+  isUpdate?: boolean;
 }
 
 const BasicInformation = ({
   setSelectedMediumType,
   isReadOnly = false,
   hasCreatorAccess = true,
+  isUpdate = false,
 }: BasicInformationProps) => {
   const {
     control,
@@ -88,6 +90,7 @@ const BasicInformation = ({
         <SharingSection
           label={t(tFormBase + 'basic.shared')}
           isReadOnly={isReadOnly}
+          mode={isUpdate ? 'update' : 'create'}
         />
       )}
 
