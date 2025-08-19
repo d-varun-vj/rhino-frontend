@@ -45,7 +45,6 @@ export const SelectMeasurement = ({
   const { client } = useUserFilter();
   const prevClientRef = useRef(client);
   const prevCustomFilterRef = useRef(customFilter);
-  const isInitialMount = useRef(true);
   const hasInitialMeasurementsBeenSet = useRef(false);
 
   const { t } = useTranslation('components');
@@ -57,13 +56,6 @@ export const SelectMeasurement = ({
   }, [onMeasurementsChange]);
 
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-      prevClientRef.current = client;
-      prevCustomFilterRef.current = customFilter;
-      return;
-    }
-
     if (
       prevClientRef.current !== client ||
       prevCustomFilterRef.current?.mediumType !== customFilter?.mediumType ||

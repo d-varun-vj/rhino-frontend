@@ -45,6 +45,7 @@ const UpdatePeriodicAlarm = () => {
   const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
     uuid as string
   );
+
   const {
     data: alarmDetails,
     isLoading,
@@ -55,9 +56,6 @@ const UpdatePeriodicAlarm = () => {
     name: string | null;
     unit: string | null;
   } | null>(null);
-  const [initialMeasurements, setInitialMeasurements] = useState<
-    MeasurementWithConfig[]
-  >([]);
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -93,19 +91,6 @@ const UpdatePeriodicAlarm = () => {
       name: alarmDetails.data.meteringPointTypeDto.name,
       unit: alarmDetails.data.meteringPointTypeDto.unit,
     });
-
-    const measurements = alarmDetails.data.measurements?.map((measurement) => ({
-      measurement: measurement,
-      config: {
-        startDate: null,
-        endDate: null,
-        selectionId: new Date().getTime() + '-' + measurement.uuid,
-      },
-    })) as MeasurementWithConfig[];
-
-    setTimeout(() => {
-      setInitialMeasurements(measurements);
-    }, 100);
 
     setIsReadOnly(!alarmDetails?.data?.isManageable);
 
@@ -305,7 +290,17 @@ const UpdatePeriodicAlarm = () => {
               <FormFooter
                 selectedMediumType={selectedMediumType?.name || null}
                 isPending={isPending}
-                initialMeasurements={initialMeasurements}
+                initialMeasurements={
+                  alarmDetails.data.measurements?.map((measurement) => ({
+                    measurement: measurement,
+                    config: {
+                      startDate: null,
+                      endDate: null,
+                      selectionId:
+                        new Date().getTime() + '-' + measurement.uuid,
+                    },
+                  })) as MeasurementWithConfig[]
+                }
                 isReadOnly={isReadOnly}
               />
             </form>
