@@ -25,6 +25,7 @@ const TimeConfiguration = ({
   const { control, watch, setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
   const selectedFrequency = watch('frequency') || 'DAILY';
+  const currentAnalysisPeriod = watch('analysePeriod');
   const validOptionMap =
     VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS[
       selectedFrequency as keyof typeof VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS
@@ -45,10 +46,16 @@ const TimeConfiguration = ({
   }, [validOptionMap]);
 
   useEffect(() => {
-    if (validOptionMap?.default) {
+    if (
+      validOptionMap?.default &&
+      (!currentAnalysisPeriod ||
+        !validOptionMap.allowed.includes(
+          currentAnalysisPeriod as PeriodicAlarmPeriod
+        ))
+    ) {
       setValue('analysePeriod', validOptionMap.default);
     }
-  }, [selectedFrequency, setValue, validOptionMap.default]);
+  }, [selectedFrequency, setValue, validOptionMap, currentAnalysisPeriod]);
 
   return (
     <SectionWrapper

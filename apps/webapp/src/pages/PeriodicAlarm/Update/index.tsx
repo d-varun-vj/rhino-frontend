@@ -40,6 +40,7 @@ const UpdatePeriodicAlarm = () => {
   const { t } = useTranslation('periodicAlarm');
   const { client, location, group, setClient } = useUserFilter();
   const [isReadOnly, setIsReadOnly] = useState(false);
+  const [isFormInitialized, setIsFormInitialized] = useState(false);
 
   const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
     uuid as string
@@ -79,69 +80,74 @@ const UpdatePeriodicAlarm = () => {
   useEffect(() => {
     if (!alarmDetails?.data) return;
 
-    reset({
-      name: alarmDetails.data.name,
-      clientUuid: alarmDetails.data.client.uuid,
-      frequency: alarmDetails.data.frequency,
-      analysePeriod:
-        alarmDetails.data.analysePeriod || PeriodicAlarmPeriod.LAST_DAY,
-      comparisonMeasure: alarmDetails.data.configuration?.comparisonMeasure,
-      compareWithPeriod: alarmDetails.data.compareWithPeriod,
-      timezone: alarmDetails.data.configuration?.timezone || 'Europe/Warsaw',
-      isActive: alarmDetails.data.active,
-      readOnly: alarmDetails.data.readOnly,
-      shared: alarmDetails.data.shared,
-      sharedLocations:
-        alarmDetails.data.sharedLocalisations?.map(
-          (location) => location.uuid
-        ) || [],
-      sharedTenants:
-        alarmDetails.data.sharedTenants?.map((tenant) => tenant.uuid) || [],
-      recipientEmails: alarmDetails.data.recipientDetails?.emails || [],
-      phoneNumber: alarmDetails.data.recipientDetails?.phoneNumbers || [],
-      measurementUuids:
-        alarmDetails.data.measurements?.map(
-          (measurement) => measurement.uuid
-        ) || [],
-      sendOnlyWhenExceeded:
-        alarmDetails.data.configuration?.sendOnlyWhenExceeded ?? true,
-      generationDay: alarmDetails.data.configuration?.generationDay,
-      generationTime: alarmDetails.data.configuration?.generationTime,
-      delayInDays: alarmDetails.data.configuration?.delayInDays,
-      thresholdType: alarmDetails.data.configuration?.thresholdType,
-      thresholdValue:
-        alarmDetails.data.configuration?.thresholdValue ?? undefined,
-      thresholdStartValue:
-        alarmDetails.data.configuration?.thresholdStartValue ?? undefined,
-      thresholdEndValue:
-        alarmDetails.data.configuration?.thresholdEndValue ?? undefined,
-      meteringPointTypeId: alarmDetails.data.meteringPointTypeDto?.id,
-    });
-
-    if (alarmDetails.data.meteringPointTypeDto) {
-      setSelectedMediumType({
-        name: alarmDetails.data.meteringPointTypeDto.name,
-        unit: alarmDetails.data.meteringPointTypeDto.unit,
-      });
-    }
-
-    setInitialMeasurements(
-      alarmDetails.data.measurements.map((measurement) => ({
-        measurement: measurement,
-        config: {
-          startDate: null,
-          endDate: null,
-          selectionId: new Date().toISOString() + measurement.uuid,
-        },
-      })) as MeasurementWithConfig[]
-    );
-
     setClient({
       name: alarmDetails.data.client.name,
       uuid: alarmDetails.data.client.uuid,
     });
 
+    setSelectedMediumType({
+      name: alarmDetails.data.meteringPointTypeDto.name,
+      unit: alarmDetails.data.meteringPointTypeDto.unit,
+    });
+
+    const measurements = alarmDetails.data.measurements?.map((measurement) => ({
+      measurement: measurement,
+      config: {
+        startDate: null,
+        endDate: null,
+        selectionId: new Date().getTime() + '-' + measurement.uuid,
+      },
+    })) as MeasurementWithConfig[];
+
+    setTimeout(() => {
+      setInitialMeasurements(measurements);
+    }, 100);
+
     setIsReadOnly(!alarmDetails?.data?.isManageable);
+
+    setTimeout(() => {
+      reset({
+        name: alarmDetails.data.name,
+        clientUuid: alarmDetails.data.client.uuid,
+        frequency: alarmDetails.data.frequency,
+        analysePeriod:
+          (alarmDetails.data.analysePeriod as PeriodicAlarmPeriod) ||
+          PeriodicAlarmPeriod.LAST_DAY,
+        comparisonMeasure: alarmDetails.data.configuration?.comparisonMeasure,
+        compareWithPeriod: alarmDetails.data.compareWithPeriod,
+        timezone: alarmDetails.data.configuration?.timezone || 'Europe/Warsaw',
+        isActive: alarmDetails.data.active,
+        readOnly: alarmDetails.data.readOnly,
+        shared: alarmDetails.data.shared,
+        sharedLocations:
+          alarmDetails.data.sharedLocalisations?.map(
+            (location) => location.uuid
+          ) || [],
+        sharedTenants:
+          alarmDetails.data.sharedTenants?.map((tenant) => tenant.uuid) || [],
+        recipientEmails: alarmDetails.data.recipientDetails?.emails || [],
+        phoneNumber: alarmDetails.data.recipientDetails?.phoneNumbers || [],
+        measurementUuids:
+          alarmDetails.data.measurements?.map(
+            (measurement) => measurement.uuid
+          ) || [],
+        sendOnlyWhenExceeded:
+          alarmDetails.data.configuration?.sendOnlyWhenExceeded ?? true,
+        generationDay: alarmDetails.data.configuration?.generationDay,
+        generationTime: alarmDetails.data.configuration?.generationTime,
+        delayInDays: alarmDetails.data.configuration?.delayInDays,
+        thresholdType: alarmDetails.data.configuration?.thresholdType,
+        thresholdValue:
+          alarmDetails.data.configuration?.thresholdValue ?? undefined,
+        thresholdStartValue:
+          alarmDetails.data.configuration?.thresholdStartValue ?? undefined,
+        thresholdEndValue:
+          alarmDetails.data.configuration?.thresholdEndValue ?? undefined,
+        meteringPointTypeId: alarmDetails.data.meteringPointTypeDto?.id,
+      });
+
+      setIsFormInitialized(true);
+    }, 100);
   }, [alarmDetails?.data, reset, setClient]);
 
   const resetThresholdValues = useCallback(() => {
@@ -224,6 +230,8 @@ const UpdatePeriodicAlarm = () => {
     });
   };
 
+  const shouldShowForm = !isLoading && isFormInitialized && alarmDetails?.data;
+
   return (
     <AccessAuthorizer
       viewPermissionType={ViewPermissionsType.ViewRoleBased}
@@ -240,7 +248,7 @@ const UpdatePeriodicAlarm = () => {
           disableGroup: true,
         }}
       >
-        {isLoading ? (
+        {!shouldShowForm ? (
           <div className="flex justify-center items-center h-64">
             <Loader color="var(--color-rhino-indigo-blue)" size={24} />
           </div>
