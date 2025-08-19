@@ -39,52 +39,75 @@ export const SelectMeasurement = ({
   isReadOnly = false,
 }: SelectMeasurementProps) => {
   const [modalOpened, setModalOpened] = useState(false);
-  const [selectedMeasurements, setSelectedMeasurements] =
-    useState<MeasurementWithConfig[]>(initialMeasurements);
+  const [selectedMeasurements, setSelectedMeasurements] = useState<
+    MeasurementWithConfig[]
+  >([]);
 
   const { client } = useUserFilter();
   const prevClientRef = useRef(client);
   const prevCustomFilterRef = useRef(customFilter);
   const hasInitialMeasurementsBeenSet = useRef(false);
+  const isInitializingRef = useRef(false);
+
+  const prevInitialMeasurementsRef = useRef(initialMeasurements);
 
   const { t } = useTranslation('components');
   const baseRoute = 'measurement.selectMeasurement.';
 
   const handleClearAll = useCallback(() => {
+    if (isInitializingRef.current) return;
+
     setSelectedMeasurements([]);
     onMeasurementsChange?.([]);
   }, [onMeasurementsChange]);
 
   useEffect(() => {
+    const clientChanged = prevClientRef.current !== client;
+    const filterChanged =
+      prevCustomFilterRef.current?.mediumType !== customFilter?.mediumType;
+
     if (
-      prevClientRef.current !== client ||
-      prevCustomFilterRef.current?.mediumType !== customFilter?.mediumType ||
-      disabled
+      (clientChanged || filterChanged || disabled) &&
+      !isInitializingRef.current
     ) {
       handleClearAll();
+      hasInitialMeasurementsBeenSet.current = false;
     }
+
     prevClientRef.current = client;
     prevCustomFilterRef.current = customFilter;
-  }, [
-    client,
-    customFilter?.mediumType,
-    disabled,
-    handleClearAll,
-    customFilter,
-  ]);
+  }, [client, customFilter, disabled, handleClearAll]);
 
   useEffect(() => {
+    const measurementsChanged =
+      prevInitialMeasurementsRef.current !== initialMeasurements ||
+      prevInitialMeasurementsRef.current.length !==
+        initialMeasurements.length ||
+      prevInitialMeasurementsRef.current.some(
+        (prev, index) =>
+          prev.measurement.uuid !== initialMeasurements[index]?.measurement.uuid
+      );
+
     if (
       initialMeasurements.length > 0 &&
-      !hasInitialMeasurementsBeenSet.current
+      (!hasInitialMeasurementsBeenSet.current || measurementsChanged) &&
+      !isInitializingRef.current
     ) {
-      setSelectedMeasurements(initialMeasurements);
-      onMeasurementsChange?.(initialMeasurements);
-      hasInitialMeasurementsBeenSet.current = true;
+      isInitializingRef.current = true;
+
+      requestAnimationFrame(() => {
+        setSelectedMeasurements(initialMeasurements);
+        onMeasurementsChange?.(initialMeasurements);
+        hasInitialMeasurementsBeenSet.current = true;
+        prevInitialMeasurementsRef.current = initialMeasurements;
+        isInitializingRef.current = false;
+      });
     }
   }, [initialMeasurements, onMeasurementsChange]);
 
   const handleMeasurementSelect = (measurements: MeasurementWithConfig[]) => {
+    if (isInitializingRef.current) return;
+
     if (allowSameMeasurementMultipleTimes) {
       const newMeasurements = [...selectedMeasurements, ...measurements];
       setSelectedMeasurements(newMeasurements);
@@ -102,6 +125,7 @@ export const SelectMeasurement = ({
       },
       {} as Record<string, MeasurementWithConfig>
     );
+
     const modifiedMeasurements = selectedMeasurements.map((measurement) => {
       const existingMeasurement =
         currentSelectedMeasurementsMap[measurement.measurement.uuid];
@@ -111,18 +135,23 @@ export const SelectMeasurement = ({
       }
       return measurement;
     });
+
     const newMeasurements = [
       ...modifiedMeasurements,
       ...Object.values(currentSelectedMeasurementsMap),
     ];
+
     setSelectedMeasurements(newMeasurements);
     onMeasurementsChange?.(newMeasurements);
   };
 
   const handleRemoveMeasurement = (measurement: MeasurementWithConfig) => {
+    if (isInitializingRef.current) return;
+
     const updatedMeasurements = selectedMeasurements.filter(
       (m) => m.config.selectionId !== measurement.config.selectionId
     );
+
     setSelectedMeasurements(updatedMeasurements);
     onMeasurementsChange?.(updatedMeasurements);
   };

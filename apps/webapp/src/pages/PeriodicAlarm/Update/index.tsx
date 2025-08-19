@@ -1,11 +1,12 @@
 import {
+  PeriodicAlarmDetail,
   PeriodicAlarmUpdateReq,
   UserViewPermission,
   ViewPermissionsType,
   useGetAlarmDetails,
   useUpdatePeriodicAlarm,
 } from '@rhino/apis';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -41,6 +42,9 @@ const UpdatePeriodicAlarm = () => {
   const { client, location, group, setClient } = useUserFilter();
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [isFormInitialized, setIsFormInitialized] = useState(false);
+
+  const initializationInProgress = useRef(false);
+  const alarmDataRef = useRef<PeriodicAlarmDetail | null>(null);
 
   const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
     uuid as string
@@ -79,8 +83,26 @@ const UpdatePeriodicAlarm = () => {
 
   const { handleSubmit, reset, setValue } = methods;
 
+  const initialMeasurements = useMemo(() => {
+    if (!alarmDetails?.data?.measurements) return [];
+
+    return alarmDetails.data.measurements.map((measurement) => ({
+      measurement: measurement,
+      config: {
+        startDate: null,
+        endDate: null,
+        selectionId: new Date().getTime() + '-' + measurement.uuid,
+      },
+    })) as MeasurementWithConfig[];
+  }, [alarmDetails?.data?.measurements]);
+
   useEffect(() => {
-    if (!alarmDetails?.data) return;
+    if (!alarmDetails?.data || initializationInProgress.current) return;
+
+    if (alarmDataRef.current === alarmDetails.data) return;
+
+    initializationInProgress.current = true;
+    alarmDataRef.current = alarmDetails.data;
 
     setClient({
       name: alarmDetails.data.client.name,
@@ -94,8 +116,8 @@ const UpdatePeriodicAlarm = () => {
 
     setIsReadOnly(!alarmDetails?.data?.isManageable);
 
-    setTimeout(() => {
-      reset({
+    requestAnimationFrame(() => {
+      const formData = {
         name: alarmDetails.data.name,
         clientUuid: alarmDetails.data.client.uuid,
         frequency: alarmDetails.data.frequency,
@@ -133,10 +155,12 @@ const UpdatePeriodicAlarm = () => {
         thresholdEndValue:
           alarmDetails.data.configuration?.thresholdEndValue ?? undefined,
         meteringPointTypeId: alarmDetails.data.meteringPointTypeDto?.id,
-      });
+      };
 
+      reset(formData);
       setIsFormInitialized(true);
-    }, 100);
+      initializationInProgress.current = false;
+    });
   }, [alarmDetails?.data, reset, setClient]);
 
   useEffect(() => {
@@ -225,7 +249,11 @@ const UpdatePeriodicAlarm = () => {
     });
   };
 
-  const shouldShowForm = !isLoading && isFormInitialized && alarmDetails?.data;
+  const shouldShowForm =
+    !isLoading &&
+    isFormInitialized &&
+    alarmDetails?.data &&
+    !initializationInProgress.current;
 
   return (
     <AccessAuthorizer
@@ -290,17 +318,7 @@ const UpdatePeriodicAlarm = () => {
               <FormFooter
                 selectedMediumType={selectedMediumType?.name || null}
                 isPending={isPending}
-                initialMeasurements={
-                  alarmDetails.data.measurements?.map((measurement) => ({
-                    measurement: measurement,
-                    config: {
-                      startDate: null,
-                      endDate: null,
-                      selectionId:
-                        new Date().getTime() + '-' + measurement.uuid,
-                    },
-                  })) as MeasurementWithConfig[]
-                }
+                initialMeasurements={initialMeasurements}
                 isReadOnly={isReadOnly}
               />
             </form>
