@@ -8,7 +8,7 @@ import {
 
 import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
 import { useTranslation } from 'react-i18next';
-import { PeriodicAlarmPeriod } from '../../../types';
+import { PeriodicAlarmCompareWith, PeriodicAlarmPeriod } from '../../../types';
 import { applyLabelTranslations } from '../../helper';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
@@ -79,6 +79,10 @@ const TimeConfiguration = ({
               )}
               onSelect={(period) => {
                 field.onChange(period);
+                setValue(
+                  'compareWithPeriod',
+                  PeriodicAlarmCompareWith.CONSTANT
+                );
                 resetThresholdValues();
               }}
               error={fieldState.error?.message}

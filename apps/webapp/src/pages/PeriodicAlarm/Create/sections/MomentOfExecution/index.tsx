@@ -12,7 +12,10 @@ import QuestionCircle from 'apps/webapp/src/components/common/indicators/Questio
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PeriodicAlarmFrequency } from '../../../types';
+import {
+  PeriodicAlarmCompareWith,
+  PeriodicAlarmFrequency,
+} from '../../../types';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
@@ -25,8 +28,7 @@ const MomentOfExecution = ({
   resetThresholdValues,
   isReadOnly = false,
 }: MomentOfExecutionProps) => {
-  const { control, watch, setValue, resetField } =
-    useFormContext<PeriodicAlarmSchema>();
+  const { control, watch, setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
   const selectedFrequency =
     (watch('frequency') as PeriodicAlarmFrequency) ||
@@ -53,7 +55,10 @@ const MomentOfExecution = ({
               data={applyLabelTranslations(FREQUENCY_OPTIONS)}
               onSelect={(frequency: string) => {
                 field.onChange(frequency);
-                resetField('compareWithPeriod');
+                setValue(
+                  'compareWithPeriod',
+                  PeriodicAlarmCompareWith.CONSTANT
+                );
                 setValue('generationDay', 1);
                 resetThresholdValues();
               }}

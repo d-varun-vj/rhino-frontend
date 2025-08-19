@@ -86,7 +86,8 @@ const PeriodicAlarm = () => {
   const navigate = useNavigate();
 
   const routeLocation = useLocation();
-  const { isCreated, isUpdated } = (routeLocation.state as never) || {};
+  const { isCreated, isUpdated, isError } =
+    (routeLocation.state as never) || {};
 
   useEffect(() => {
     if (isCreated) {
@@ -95,7 +96,10 @@ const PeriodicAlarm = () => {
     if (isUpdated) {
       message.success(t('update.success'));
     }
-  }, [isCreated, isUpdated, t]);
+    if (isError) {
+      message.error(t('toast.somethingWentWrong', { ns: 'common' }));
+    }
+  }, [isCreated, isUpdated, isError, t]);
 
   const { data: periodicAlarmRes, isLoading: isLoadingData } =
     useGetPeriodicAlarmList({

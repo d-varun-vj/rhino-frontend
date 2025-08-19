@@ -45,7 +45,11 @@ const UpdatePeriodicAlarm = () => {
   const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
     uuid as string
   );
-  const { data: alarmDetails, isLoading } = useGetAlarmDetails(uuid as string);
+  const {
+    data: alarmDetails,
+    isLoading,
+    isError,
+  } = useGetAlarmDetails(uuid as string);
 
   const [selectedMediumType, setSelectedMediumType] = useState<{
     name: string | null;
@@ -75,7 +79,7 @@ const UpdatePeriodicAlarm = () => {
     resolver: zodResolver(schema),
   });
 
-  const { handleSubmit, resetField, reset } = methods;
+  const { handleSubmit, reset, setValue } = methods;
 
   useEffect(() => {
     if (!alarmDetails?.data) return;
@@ -150,12 +154,18 @@ const UpdatePeriodicAlarm = () => {
     }, 100);
   }, [alarmDetails?.data, reset, setClient]);
 
+  useEffect(() => {
+    if (isError) {
+      navigate(locations.alarm.periodic.base, { state: { isError: true } });
+    }
+  }, [isError, navigate]);
+
   const resetThresholdValues = useCallback(() => {
-    resetField('thresholdType');
-    resetField('thresholdValue');
-    resetField('thresholdStartValue');
-    resetField('thresholdEndValue');
-  }, [resetField]);
+    setValue('thresholdType', '');
+    setValue('thresholdValue', undefined);
+    setValue('thresholdStartValue', undefined);
+    setValue('thresholdEndValue', undefined);
+  }, [setValue]);
 
   const buildUpdateRequestForm = (
     values: PeriodicAlarmSchema

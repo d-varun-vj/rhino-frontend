@@ -268,6 +268,14 @@ export const VALID_THRESHOLD_OPTIONS: Record<
   ],
   OTHERS: [
     {
+      label: TRANSLATION_KEY_FOR_THRESHOLD.ABOVE,
+      value: PeriodicAlarmThresholdType.ABOVE,
+    },
+    {
+      label: TRANSLATION_KEY_FOR_THRESHOLD.BELOW,
+      value: PeriodicAlarmThresholdType.BELOW,
+    },
+    {
       label: TRANSLATION_KEY_FOR_THRESHOLD.ABOVE_PERCENT,
       value: PeriodicAlarmThresholdType.ABOVE_PERCENT,
     },
