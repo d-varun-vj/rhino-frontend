@@ -48,7 +48,7 @@ export const SelectMeasurement = ({
   const prevCustomFilterRef = useRef(customFilter);
   const hasInitialMeasurementsBeenSet = useRef(false);
   const isInitializingRef = useRef(false);
-
+  const filterJustChangedRef = useRef(false);
   const prevInitialMeasurementsRef = useRef(initialMeasurements);
 
   const { t } = useTranslation('components');
@@ -62,21 +62,33 @@ export const SelectMeasurement = ({
   }, [onMeasurementsChange]);
 
   useEffect(() => {
-    const clientChanged = prevClientRef.current !== client;
     const filterChanged =
       prevCustomFilterRef.current?.mediumType !== customFilter?.mediumType;
 
-    if (
-      (clientChanged || filterChanged || disabled) &&
-      !isInitializingRef.current
-    ) {
+    if (filterChanged && prevCustomFilterRef.current !== undefined) {
+      setSelectedMeasurements([]);
+      onMeasurementsChange?.([]);
+      hasInitialMeasurementsBeenSet.current = false;
+      filterJustChangedRef.current = true;
+
+      setTimeout(() => {
+        filterJustChangedRef.current = false;
+      }, 0);
+    }
+
+    prevCustomFilterRef.current = customFilter;
+  }, [customFilter, onMeasurementsChange]);
+
+  useEffect(() => {
+    const clientChanged = prevClientRef.current !== client;
+
+    if ((clientChanged || disabled) && !isInitializingRef.current) {
       handleClearAll();
       hasInitialMeasurementsBeenSet.current = false;
     }
 
     prevClientRef.current = client;
-    prevCustomFilterRef.current = customFilter;
-  }, [client, customFilter, disabled, handleClearAll]);
+  }, [client, disabled, handleClearAll]);
 
   useEffect(() => {
     const measurementsChanged =
@@ -91,7 +103,8 @@ export const SelectMeasurement = ({
     if (
       initialMeasurements.length > 0 &&
       (!hasInitialMeasurementsBeenSet.current || measurementsChanged) &&
-      !isInitializingRef.current
+      !isInitializingRef.current &&
+      !filterJustChangedRef.current
     ) {
       isInitializingRef.current = true;
 
