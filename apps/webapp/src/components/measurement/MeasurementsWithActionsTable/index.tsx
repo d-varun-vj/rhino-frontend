@@ -32,14 +32,16 @@ const MeasurementsWithActionsTable = ({
     (row: Row<MeasurementWithConfig>) => {
       return (
         <ActionCell>
-          <GoToConsumptionIcon
-            measurementUuid={row.original.measurement.uuid}
-            incremental={row.original.measurement.incremental}
-            type={row.original.measurement.type}
-            shouldCompareMeasurements={false}
-            openInNewTab={true}
-            iconSize="sm"
-          />
+          {row.original.measurement.hasAccessToMeasurement && (
+            <GoToConsumptionIcon
+              measurementUuid={row.original.measurement.uuid}
+              incremental={row.original.measurement.incremental}
+              type={row.original.measurement.type}
+              shouldCompareMeasurements={false}
+              openInNewTab={true}
+              iconSize="sm"
+            />
+          )}
           {!isReadOnly && (
             <IconButton
               type="secondary"
