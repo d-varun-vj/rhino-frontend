@@ -10,3 +10,7 @@ export type MeasurementWithConfig = {
   measurement: MeasurementType;
   config: MeasurementConfig;
 };
+
+export type CustomFilter = {
+  mediumMappId?: number | null;
+};

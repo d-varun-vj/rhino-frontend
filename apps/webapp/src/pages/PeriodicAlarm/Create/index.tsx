@@ -20,6 +20,7 @@ import {
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
   PeriodicAlarmPeriod,
+  SelectedMediumType,
 } from '../types';
 import { COMPARISON_MEASURE_TYPE_OPTIONS } from './config';
 import { buildCreateRequestForm, onError } from './helper';
@@ -38,10 +39,8 @@ const CreatePeriodicAlarm = () => {
 
   const { mutate: createAlarm, isPending } = usePostPeriodicAlarm();
 
-  const [selectedMediumType, setSelectedMediumType] = useState<{
-    name: string | null;
-    unit: string | null;
-  } | null>(null);
+  const [selectedMediumType, setSelectedMediumType] =
+    useState<SelectedMediumType | null>(null);
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -146,7 +145,7 @@ const CreatePeriodicAlarm = () => {
               </div>
             </div>
             <FormFooter
-              selectedMediumType={selectedMediumType?.name || null}
+              selectedMediumTypeMappId={selectedMediumType?.mappId || null}
               isPending={isPending}
             />
           </form>

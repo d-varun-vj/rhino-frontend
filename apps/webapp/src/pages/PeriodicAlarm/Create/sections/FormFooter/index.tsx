@@ -13,14 +13,14 @@ import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 
 interface FormFooterProps {
-  selectedMediumType: string | null;
+  selectedMediumTypeMappId: number | null;
   isPending: boolean;
   initialMeasurements?: MeasurementWithConfig[];
   isReadOnly?: boolean;
 }
 
 const FormFooter = ({
-  selectedMediumType,
+  selectedMediumTypeMappId,
   isPending,
   initialMeasurements,
   isReadOnly = false,
@@ -46,11 +46,13 @@ const FormFooter = ({
           minSelections={1}
           selectionMode="multiple"
           allowSameMeasurementMultipleTimes={false}
-          disabled={!selectedMediumType}
+          disabled={!selectedMediumTypeMappId}
           disabledTitle={
-            !selectedMediumType ? t(tFormBase + 'emptyMediumType') : null
+            !selectedMediumTypeMappId ? t(tFormBase + 'emptyMediumType') : null
           }
-          customFilter={{ mediumType: selectedMediumType ?? '' }}
+          customFilter={{
+            mediumMappId: selectedMediumTypeMappId,
+          }}
           initialMeasurements={initialMeasurements}
           isReadOnly={isReadOnly}
         />

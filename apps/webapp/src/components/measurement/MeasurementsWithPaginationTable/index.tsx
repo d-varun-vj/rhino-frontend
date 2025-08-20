@@ -13,19 +13,18 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../context/user';
+import CheckBox from '../../common/input/Checkbox';
 import Table from '../../common/Table';
 import { FilterVariant } from '../../common/Table/types';
-import CheckBox from '../../common/input/Checkbox';
 import { getTranslationOptions } from '../helper';
+import { CustomFilter } from '../SelectMeasurement/types';
 
 interface MeasurementsWithPaginationTableProps {
   selectionMode?: 'none' | 'single' | 'multiple';
   selectedIds?: string[];
   onSelectionChange?: (selectedMeasurements: MeasurementType[]) => void;
   readonly?: boolean;
-  customFilter?: {
-    mediumType?: string;
-  };
+  customFilter?: CustomFilter;
 }
 
 const MeasurementsWithPaginationTable = ({
@@ -80,7 +79,8 @@ const MeasurementsWithPaginationTable = ({
     groupUuid: group ? group.uuid : null,
     measurementName: filters.name,
     serialNumber: filters.serialNumber,
-    medium: customFilter?.mediumType ?? filters.medium,
+    medium: filters.medium,
+    mediumMappId: customFilter?.mediumMappId,
     measurementType: filters.type ? filters.type.name : undefined,
     levelType: filters.levelType ? filters.levelType.name : undefined,
     loadType: filters.loadType ? filters.loadType.name : undefined,
@@ -226,7 +226,7 @@ const MeasurementsWithPaginationTable = ({
         meta: {
           filterVariant: null,
           filterKey: '',
-          sortKey: customFilter?.mediumType ? null : 'meteringPointType',
+          sortKey: 'meteringPointType',
           sortDirection: sort.direction,
         },
       },
@@ -338,7 +338,6 @@ const MeasurementsWithPaginationTable = ({
     isAllPageSelected,
     isSelected,
     translationKey,
-    customFilter?.mediumType,
   ]);
 
   const onSortClick = useCallback((field: string, direction: string) => {

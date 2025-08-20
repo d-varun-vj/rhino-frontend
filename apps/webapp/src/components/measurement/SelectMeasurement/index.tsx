@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { FaPlusCircle } from 'react-icons/fa';
 import MeasurementsWithActionsTable from '../MeasurementsWithActionsTable';
 import SelectMeasurementModal from '../SelectMeasurementModal';
-import { MeasurementWithConfig } from './types';
+import { CustomFilter, MeasurementWithConfig } from './types';
 
 interface SelectMeasurementProps {
   onMeasurementsChange?: (measurements: MeasurementWithConfig[]) => void;
@@ -18,9 +18,7 @@ interface SelectMeasurementProps {
   allowSameMeasurementMultipleTimes?: boolean;
   disabled?: boolean;
   disabledTitle?: string | null;
-  customFilter?: {
-    mediumType?: string;
-  };
+  customFilter?: CustomFilter;
   initialMeasurements?: MeasurementWithConfig[];
   isReadOnly?: boolean;
 }
@@ -63,7 +61,7 @@ export const SelectMeasurement = ({
 
   useEffect(() => {
     const filterChanged =
-      prevCustomFilterRef.current?.mediumType !== customFilter?.mediumType;
+      prevCustomFilterRef.current?.mediumMappId !== customFilter?.mediumMappId;
 
     if (filterChanged && prevCustomFilterRef.current !== undefined) {
       setSelectedMeasurements([]);

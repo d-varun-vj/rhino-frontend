@@ -33,7 +33,7 @@ import FormFooter from '../Create/sections/FormFooter';
 import MomentOfExecution from '../Create/sections/MomentOfExecution';
 import RecipientDetails from '../Create/sections/RecipientDetails';
 import TimeConfiguration from '../Create/sections/TimeConfiguration';
-import { PeriodicAlarmPeriod } from '../types';
+import { PeriodicAlarmPeriod, SelectedMediumType } from '../types';
 
 const UpdatePeriodicAlarm = () => {
   const navigate = useNavigate();
@@ -57,10 +57,9 @@ const UpdatePeriodicAlarm = () => {
     error,
   } = useGetAlarmDetails(uuid as string);
 
-  const [selectedMediumType, setSelectedMediumType] = useState<{
-    name: string | null;
-    unit: string | null;
-  } | null>(null);
+  const [selectedMediumType, setSelectedMediumType] =
+    useState<SelectedMediumType | null>(null);
+  console.log(selectedMediumType);
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -111,6 +110,7 @@ const UpdatePeriodicAlarm = () => {
     });
 
     setSelectedMediumType({
+      mappId: alarmDetails.data.meteringPointTypeDto.mappId,
       name: alarmDetails.data.meteringPointTypeDto.name,
       unit: alarmDetails.data.meteringPointTypeDto.unit,
     });
@@ -319,7 +319,7 @@ const UpdatePeriodicAlarm = () => {
                 </div>
               </div>
               <FormFooter
-                selectedMediumType={selectedMediumType?.name || null}
+                selectedMediumTypeMappId={selectedMediumType?.mappId || null}
                 isPending={isPending}
                 initialMeasurements={initialMeasurements}
                 isReadOnly={isReadOnly}

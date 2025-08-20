@@ -9,18 +9,13 @@ import SharingSection from 'apps/webapp/src/components/shared/SharingSection';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import moment from 'moment-timezone';
 import { useTranslation } from 'react-i18next';
+import { SelectedMediumType } from '../../../types';
 import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
 interface BasicInformationProps {
-  setSelectedMediumType: ({
-    name,
-    unit,
-  }: {
-    name: string | null;
-    unit: string | null;
-  }) => void;
+  setSelectedMediumType: ({ mappId, name, unit }: SelectedMediumType) => void;
   isReadOnly?: boolean;
   hasCreatorAccess?: boolean;
   isUpdate?: boolean;
@@ -114,7 +109,9 @@ const BasicInformation = ({
                 const selectedVal = meteringPointTypesRes?.data.find(
                   (type) => type.id === (val ? +val : '')
                 );
+
                 setSelectedMediumType({
+                  mappId: selectedVal?.mappId ?? null,
                   name: selectedVal?.name ?? null,
                   unit: selectedVal?.unit ?? null,
                 });

@@ -1,4 +1,5 @@
 import {
+  CustomFilter,
   MeasurementConfig,
   MeasurementWithConfig,
 } from '../SelectMeasurement/types';
@@ -15,9 +16,7 @@ interface SelectMeasurementModalProps {
   minSelections?: number;
   selectionMode?: 'single' | 'multiple';
   showGlobalSettings?: boolean;
-  customFilter?: {
-    mediumType?: string;
-  };
+  customFilter?: CustomFilter;
 }
 
 const SelectMeasurementModal = ({

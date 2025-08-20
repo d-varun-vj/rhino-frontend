@@ -4,6 +4,12 @@ export type ExecutionStateProps = {
   selectedAlarmName: string;
 };
 
+export type SelectedMediumType = {
+  mappId: number | null;
+  name: string | null;
+  unit: string | null;
+};
+
 export type ExecutionActionProps =
   | { type: 'SET_OPEN_EXECUTION' }
   | { type: 'SET_ALARM_UUID'; payload: string }
