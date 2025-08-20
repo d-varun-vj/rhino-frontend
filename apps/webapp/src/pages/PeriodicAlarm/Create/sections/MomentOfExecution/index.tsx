@@ -2,6 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import {
   FREQUENCY_OPTIONS,
   VALID_GENERATION_DAY_CONFIG,
+  WEEK_DAY_OPTIONS,
   tFormBase,
 } from '../../config';
 import { applyLabelTranslations, shouldShowGenerationDay } from '../../helper';
@@ -73,26 +74,51 @@ const MomentOfExecution = ({
 
         {shouldShowGenerationDay(selectedFrequency) && (
           <div className="grid grid-cols-2 items-center gap-4">
-            <Controller
-              name={'generationDay'}
-              control={control}
-              rules={{ required: true }}
-              render={({ field, fieldState }) => (
-                <NumberField
-                  label={t(tFormBase + 'momentOfExecution.generationDay.title')}
-                  required
-                  value={field.value ?? 1}
-                  min={generationDayConfigByFrequency.min}
-                  max={generationDayConfigByFrequency.max}
-                  placeholder={t(generationDayConfigByFrequency.placeholder)}
-                  allowDecimal={false}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  error={fieldState.error ? fieldState.error.message : ''}
-                  disabled={isReadOnly}
-                />
-              )}
-            />
+            {selectedFrequency === PeriodicAlarmFrequency.WEEKLY ? (
+              <Controller
+                name={'generationDay'}
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => (
+                  <FloatingSelector
+                    label={t(
+                      tFormBase + 'momentOfExecution.generationDay.title'
+                    )}
+                    required
+                    data={applyLabelTranslations(WEEK_DAY_OPTIONS)}
+                    onSelect={field.onChange}
+                    selectedValue={WEEK_DAY_OPTIONS.find(
+                      (val) => val.id === field.value
+                    )}
+                    error={fieldState.error ? fieldState.error.message : ''}
+                    isReadOnly={isReadOnly}
+                  />
+                )}
+              />
+            ) : (
+              <Controller
+                name={'generationDay'}
+                control={control}
+                rules={{ required: true }}
+                render={({ field, fieldState }) => (
+                  <NumberField
+                    label={t(
+                      tFormBase + 'momentOfExecution.generationDay.title'
+                    )}
+                    required
+                    value={field.value ?? 1}
+                    min={generationDayConfigByFrequency.min}
+                    max={generationDayConfigByFrequency.max}
+                    placeholder={t(generationDayConfigByFrequency.placeholder)}
+                    allowDecimal={false}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={fieldState.error ? fieldState.error.message : ''}
+                    disabled={isReadOnly}
+                  />
+                )}
+              />
+            )}
             <QuestionCircle
               content={t(tFormBase + 'momentOfExecution.generationDay.guide')}
               className="mt-6"

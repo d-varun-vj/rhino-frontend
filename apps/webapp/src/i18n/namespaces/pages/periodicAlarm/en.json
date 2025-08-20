@@ -161,6 +161,15 @@
       "lastQuarter": "Last quarter",
       "lastYear": "Last year"
     },
+    "weekDay": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
     "compareWith": {
       "const": "Constant",
       "prevDay": "Previous Day",

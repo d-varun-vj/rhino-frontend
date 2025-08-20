@@ -7,7 +7,7 @@ import classes from './floatingSelector.module.css';
 
 export type Item = {
   label: string;
-  id: string; // Should be unique
+  id: string | number; // Should be unique
   disabled?: boolean;
 };
 
@@ -43,7 +43,7 @@ const FloatingSelector = <T extends boolean = false>({
     Record<string, HTMLButtonElement | null>
   >({});
   const [active, setActive] = useState(0);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<(string | number)[]>([]);
 
   const setControlRef = (index: number) => (node: HTMLButtonElement) => {
     controlsRefs[index] = node;
@@ -87,12 +87,12 @@ const FloatingSelector = <T extends boolean = false>({
         : [...selectedItems, item.id];
 
       setSelectedItems(newSelectedItems);
-      (onSelect as (val: string[]) => void)(newSelectedItems);
+      (onSelect as (val: (string | number)[]) => void)(newSelectedItems);
       return;
     }
 
     setActive(index);
-    (onSelect as (val: string) => void)(item.id);
+    (onSelect as (val: string | number) => void)(item.id);
   };
 
   const isItemSelected = (item: Item, index: number) => {
@@ -104,7 +104,7 @@ const FloatingSelector = <T extends boolean = false>({
 
   const controls = data.map((item, index) => (
     <UnstyledButton
-      key={item.id + index}
+      key={`${item.id} + ${index}`}
       className={classes.control}
       ref={setControlRef(index)}
       onClick={() => handleItemClick(item, index)}

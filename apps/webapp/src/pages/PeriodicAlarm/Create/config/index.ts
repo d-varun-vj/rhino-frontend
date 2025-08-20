@@ -96,6 +96,40 @@ export const FREQUENCY_OPTIONS: {
   },
 ];
 
+export const WEEK_DAY_OPTIONS: {
+  label: string;
+  id: number;
+}[] = [
+  {
+    label: tConfigBase + 'weekDay.mon',
+    id: 1,
+  },
+  {
+    label: tConfigBase + 'weekDay.tue',
+    id: 2,
+  },
+  {
+    label: tConfigBase + 'weekDay.wed',
+    id: 3,
+  },
+  {
+    label: tConfigBase + 'weekDay.thu',
+    id: 4,
+  },
+  {
+    label: tConfigBase + 'weekDay.fri',
+    id: 5,
+  },
+  {
+    label: tConfigBase + 'weekDay.sat',
+    id: 6,
+  },
+  {
+    label: tConfigBase + 'weekDay.sun',
+    id: 7,
+  },
+];
+
 export const ANALYSE_PERIOD_OPTIONS: {
   label: string;
   id: PeriodicAlarmPeriod;
