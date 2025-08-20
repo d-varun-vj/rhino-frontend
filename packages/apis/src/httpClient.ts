@@ -11,6 +11,7 @@ import axios, {
 } from 'axios';
 
 import { getCookie } from '@rhino/utils';
+import { API_RESPONSES } from './constants';
 import { VITE_WICKET_BASE_URL } from './endpoints';
 
 interface ErrorNotificationService {
@@ -95,7 +96,11 @@ const fetchAdapter: AxiosAdapter = async (
       document.cookie =
         'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
       window.location.href = VITE_WICKET_BASE_URL + 'dashboard?-2.-logout';
-      throw new Error('Unauthorized');
+      throw new Error(API_RESPONSES.unauthorized);
+    }
+
+    if (response.status === 403) {
+      throw new Error(API_RESPONSES.forbidden);
     }
 
     if (response.status === 500) {
@@ -103,7 +108,7 @@ const fetchAdapter: AxiosAdapter = async (
         'Server encountered an error. Please try again later.',
         'server'
       );
-      throw new Error('Internal Server Error');
+      throw new Error(API_RESPONSES.internalServerError);
     }
 
     if (
@@ -111,7 +116,7 @@ const fetchAdapter: AxiosAdapter = async (
       response.status === 503 ||
       response.status === 504
     ) {
-      throw new Error('Service Unavailable');
+      throw new Error(API_RESPONSES.serviceUnavailable);
     }
 
     let responseData: unknown;

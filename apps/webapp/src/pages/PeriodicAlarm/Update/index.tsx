@@ -54,6 +54,7 @@ const UpdatePeriodicAlarm = () => {
     data: alarmDetails,
     isLoading,
     isError,
+    error,
   } = useGetAlarmDetails(uuid as string);
 
   const [selectedMediumType, setSelectedMediumType] = useState<{
@@ -165,9 +166,11 @@ const UpdatePeriodicAlarm = () => {
 
   useEffect(() => {
     if (isError) {
-      navigate(locations.alarm.periodic.base, { state: { isError: true } });
+      navigate(locations.alarm.periodic.base, {
+        state: { isError: true, errMessage: error.message },
+      });
     }
-  }, [isError, navigate]);
+  }, [isError, navigate, error]);
 
   const resetThresholdValues = useCallback(() => {
     setValue('thresholdType', '');

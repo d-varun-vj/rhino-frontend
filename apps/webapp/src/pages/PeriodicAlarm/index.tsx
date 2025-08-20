@@ -1,4 +1,5 @@
 import {
+  API_RESPONSES,
   PeriodicAlarmFilter,
   PeriodicAlarmType,
   UserViewPermission,
@@ -86,7 +87,7 @@ const PeriodicAlarm = () => {
   const navigate = useNavigate();
 
   const routeLocation = useLocation();
-  const { isCreated, isUpdated, isError } =
+  const { isCreated, isUpdated, isError, errMessage } =
     (routeLocation.state as never) || {};
 
   useEffect(() => {
@@ -97,9 +98,18 @@ const PeriodicAlarm = () => {
       message.success(t('update.success'));
     }
     if (isError) {
-      message.error(t('toast.somethingWentWrong', { ns: 'common' }));
+      message.error(
+        t(
+          errMessage === API_RESPONSES.forbidden
+            ? 'toast.forbidden'
+            : 'toast.somethingWentWrong',
+          {
+            ns: 'common',
+          }
+        )
+      );
     }
-  }, [isCreated, isUpdated, isError, t]);
+  }, [isCreated, isUpdated, isError, errMessage, t]);
 
   const { data: periodicAlarmRes, isLoading: isLoadingData } =
     useGetPeriodicAlarmList({
