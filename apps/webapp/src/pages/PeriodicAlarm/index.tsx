@@ -231,8 +231,7 @@ const PeriodicAlarm = () => {
         meta: {
           filterVariant: FilterVariant.TEXT,
           filterKey: 'location',
-          sortKey: 'sharedLocalisations',
-          sortDirection: sort.direction,
+          sortKey: null,
           renderCell: (value) => <span>{formatListSummary(value)}</span>,
         },
       },
