@@ -62,6 +62,6 @@ export const useGetAllFavoriteMeters = ({
       );
       return response.data;
     },
-    enabled: userId ? true : false,
+    enabled: !!userId,
   });
 };

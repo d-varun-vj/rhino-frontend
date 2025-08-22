@@ -9,7 +9,7 @@ interface TextFieldProps extends TextInputProps {
 const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   ({ label, required, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1.5 w-full">
         {label && (
           <Label
             content={label}

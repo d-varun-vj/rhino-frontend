@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { FaArrowRight } from 'react-icons/fa';
 import { RiCloseCircleFill } from 'react-icons/ri';
 import IconButton from '../../../common/buttons/IconButton';
+import CustomModal from '../../../common/modals/CustomModal';
 import Table from '../../../common/Table';
 import ActionCell from '../../../common/Table/ActionCell';
 import { FilterVariant } from '../../../common/Table/types';
@@ -45,7 +46,7 @@ const FavoriteMeter = ({
     authorEmail: '',
     shared: '',
   });
-  const [isModelOpen, setModelOpen] = useState(false);
+  const [modelOpen, setModelOpen] = useState(false);
 
   const translationBaseRoute = 'favoriteMeterModel.table.';
   const columns = React.useMemo<ColumnDef<FavoriteMeterType, unknown>[]>(
@@ -175,6 +176,20 @@ const FavoriteMeter = ({
     }
   };
 
+  const resetModal = () => {
+    setFilters({
+      name: '',
+      authorEmail: '',
+      shared: '',
+    });
+    setSort({
+      direction: '',
+      field: '',
+    });
+    setPage(0);
+    setPageSize(5);
+  };
+
   return (
     <div>
       <div
@@ -184,9 +199,9 @@ const FavoriteMeter = ({
             setModelOpen(false);
             setFavoriteMeter(null);
             removeSelectedFavoriteMeter();
-          } else {
-            setModelOpen(true);
+            return;
           }
+          setModelOpen(true);
         }}
         data-testid="ribbon-favorite-meter-model-button"
       >
@@ -200,46 +215,38 @@ const FavoriteMeter = ({
         )}
       </div>
 
-      {isModelOpen && (
-        <div className=" w-full h-full absolute top-0 left-0 z-30 transition-opacity bg-black/15  ">
-          <div className="mx-16 my-20 max-lg:mx-5  flex items-center relative z-30  ">
-            <div className="border-t-[.5rem] border-t-rhino-energy-green shadow-xl relative flex flex-col w-full bg-[#fff] border-transparent border-[1px] rounded h-[800px]">
-              <div className="flex items-start justify-between p-[1.25rem] ">
-                <h4
-                  className="text-[2rem] font-bold text-rhino-indigo-blue my-0 leading-[1.47] "
-                  data-testid="ribbon-favorite-meter-header"
-                >
-                  {t('favoriteMeterModel.mainHeader')}
-                </h4>
-                <button
-                  className="p-[1.25rem] my-[-1.25rem] ml-auto mr-[-1.25rem]  text-[#000] leading-[1] opacity-50 font-bold text-[1.21875rem] "
-                  onClick={() => setModelOpen(false)}
-                >
-                  ×
-                </button>
-              </div>
-              <div className="relative flex-grow flex-shrink basis-auto p-[1.25rem] overflow-auto [&>div]:justify-between">
-                <Table
-                  columns={columns}
-                  data={tableData ? tableData.content : []}
-                  footer={{
-                    currentPage: page,
-                    totalCount: tableData ? tableData.totalElements : 0,
-                    setCurrentPage: setPage,
-                    setPageSize: setPageSize,
-                    pageSize: pageSize,
-                  }}
-                  extraStyles="max-h-[600px]"
-                  emptyText="No results"
-                  onSortSelect={onSortClick}
-                  onFilterChange={onFilterChange}
-                  isLoading={isLoading}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <CustomModal
+        title={
+          <span
+            className="text-[2rem] font-bold text-rhino-indigo-blue my-0 leading-[1.47]"
+            data-testid="ribbon-favorite-meter-header"
+          >
+            {t('favoriteMeterModel.mainHeader')}
+          </span>
+        }
+        opened={modelOpen}
+        onClose={() => {
+          setModelOpen(!modelOpen);
+          resetModal();
+        }}
+        size={'75%'}
+      >
+        <Table
+          columns={columns}
+          data={tableData ? tableData.content : []}
+          footer={{
+            currentPage: page,
+            totalCount: tableData ? tableData.totalElements : 0,
+            setCurrentPage: setPage,
+            setPageSize: setPageSize,
+            pageSize: pageSize,
+          }}
+          emptyText="No results"
+          onSortSelect={onSortClick}
+          onFilterChange={onFilterChange}
+          isLoading={isLoading}
+        />
+      </CustomModal>
     </div>
   );
 };

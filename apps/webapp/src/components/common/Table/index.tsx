@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Loader } from '@mantine/core';
 import { SortDirection } from '@rhino/utils';
@@ -128,23 +128,6 @@ const Table = <T,>({
     []
   );
   const [selectedSortKey, setSelectedSortKey] = useState<string | null>(null);
-  const [textFullViewId, setTextFullViewId] = useState('');
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleMouseEnter = (columnId: string, el: HTMLElement) => {
-    if (el.scrollWidth > el.clientWidth)
-      hoverTimeoutRef.current = setTimeout(() => {
-        setTextFullViewId(columnId);
-      }, 300);
-  };
-
-  const handleMouseLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-    setTextFullViewId('');
-  };
 
   const table = useReactTable({
     data,
@@ -165,10 +148,8 @@ const Table = <T,>({
   });
 
   return (
-    <div className=" overflow-hidden relative w-full">
-      <div
-        className={clsx(`p-2 overflow-auto overflow-y-hidden ${extraStyles}`)}
-      >
+    <div className="overflow-hidden relative w-full">
+      <div className={clsx(`p-2 overflow-auto ${extraStyles}`)}>
         <table className={clsx('relative w-full ')}>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -178,19 +159,22 @@ const Table = <T,>({
                     <th
                       key={header.id}
                       colSpan={header.colSpan}
-                      className={clsx('font-thin align-baseline pr-1.5 w-32 ', {
-                        'sticky bg-rhino-white -right-5 pl-2':
-                          header.id === CONSTANTS.action,
-                        '!w-16': header.id === 'select', // Narrower width for select column
-                        'text-nowrap w-auto': textNowarp,
-                      })}
+                      className={clsx(
+                        'font-thin align-baseline pr-1.5 min-w-32 w-fit',
+                        {
+                          'sticky bg-rhino-white -right-5 pl-2 z-10':
+                            header.id === CONSTANTS.action,
+                          '!w-16 !min-w-0': header.id === 'select',
+                          'text-nowrap w-auto': textNowarp,
+                        }
+                      )}
                     >
                       {header.isPlaceholder ? null : (
                         <div className="flex flex-col justify-end w-full ">
                           <div
                             {...{
                               className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap  gap-2 min-h-[50px] justify-start w-38 '
+                                ? 'cursor-pointer select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap  gap-2 min-h-[50px] justify-start '
                                 : '',
                               onClick: () => {
                                 setSelectedSortKey(
@@ -220,9 +204,11 @@ const Table = <T,>({
                               )}
                             </div>
                           </div>
-                          <div className="flex justify-start ">
+                          <div className="flex justify-start w-full">
                             {header.column.getCanFilter() ? (
-                              <div className={`text-rhino-indigo-blue flex`}>
+                              <div
+                                className={`text-rhino-indigo-blue flex w-full`}
+                              >
                                 <Filter
                                   column={header.column}
                                   onFilterChange={onFilterChange}
@@ -260,27 +246,19 @@ const Table = <T,>({
                           >
                             <div
                               className={clsx(
-                                'text-[13px] overflow-hidden overflow-ellipsis w-32 ',
+                                'text-[13px] min-w-32 w-fit mr-5',
                                 {
                                   'text-nowrap':
                                     cell.column.id === 'value' ||
                                     cell.column.id === 'read-time',
-                                  'overflow-visible w-fit':
-                                    cell.column.id === CONSTANTS.action ||
-                                    textFullViewId === cell.column.id,
-                                  '!w-16': cell.column.id === 'select', // Narrower width for select column
+                                  'overflow-visible':
+                                    cell.column.id === CONSTANTS.action,
+                                  '!w-16 !min-w-0': cell.column.id === 'select',
                                   'text-nowrap h-fit': size == 'sm',
                                   'text-nowrap w-auto overflow-y-auto':
                                     textNowarp,
                                 }
                               )}
-                              onMouseEnter={(e) =>
-                                handleMouseEnter(
-                                  cell.column.id,
-                                  e.currentTarget
-                                )
-                              }
-                              onMouseLeave={handleMouseLeave}
                             >
                               {cell.column.columnDef.meta?.renderCell
                                 ? cell.column.columnDef.meta.renderCell(
@@ -302,7 +280,7 @@ const Table = <T,>({
             )}
 
             {!isLoading && data.length === 0 && (
-              <div className="flex items-center h-96">
+              <div className="flex items-center h-52">
                 <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute w-full mt-10">
                   {emptyText || t('table.notFound', { ns: 'common' })}
                 </div>
@@ -310,7 +288,7 @@ const Table = <T,>({
             )}
 
             {isLoading && (
-              <div className="flex items-center h-96">
+              <div className="flex items-center h-52">
                 <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute w-full mt-10">
                   <Loader color="var(--color-rhino-indigo-blue)" size={'sm'} />
                 </div>

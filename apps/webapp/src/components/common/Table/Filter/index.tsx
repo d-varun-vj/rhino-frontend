@@ -86,7 +86,7 @@ const Filter = <T,>({
     const { selectAllChecked, onSelectAll } = column.columnDef.meta ?? {};
 
     return (
-      <div className="mt-10  ml-3">
+      <div className="mt-10 ml-3 w-fit">
         <CheckBox
           checked={selectAllChecked || false}
           onChange={(e) => onSelectAll?.(e.target.checked)}
@@ -97,7 +97,7 @@ const Filter = <T,>({
 
   if (filterVariant === FilterVariant.SELECT) {
     return (
-      <div className="mb-4">
+      <div className="mb-4 w-full">
         <CustomComboBox
           optionsList={optionsList.map((option) => ({
             name: option.label,
