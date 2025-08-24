@@ -1,7 +1,15 @@
-import { ModalProps } from '@mantine/core';
 import { useDownloadPeriodicReportUrl, useGetExecutions } from '@rhino/apis';
-import { formatLocalDateTime, Sort } from '@rhino/utils';
+import { Sort, formatDateTime, formatLocalDateTime } from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
+import React, { useCallback, useRef, useState } from 'react';
+import {
+  ExecutionFilter,
+  ExecutionStatus,
+  PeriodicAlarmExecution,
+} from '../types';
+import { EXECUTION_STATUS_COLOUR, STATUS_COLOUR } from './config';
+
+import { ModalProps } from '@mantine/core';
 import IconButton from 'apps/webapp/src/components/common/buttons/IconButton';
 import CustomModal from 'apps/webapp/src/components/common/modals/CustomModal';
 import Table from 'apps/webapp/src/components/common/Table';
@@ -10,16 +18,9 @@ import { FilterVariant } from 'apps/webapp/src/components/common/Table/types';
 import message from 'apps/webapp/src/components/notifier';
 import { CONSTANTS } from 'apps/webapp/src/constant';
 import clsx from 'clsx';
-import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RiDownload2Line } from 'react-icons/ri';
 import { getTranslationOptions } from '../helper';
-import {
-  ExecutionFilter,
-  ExecutionStatus,
-  PeriodicAlarmExecution,
-} from '../types';
-import { EXECUTION_STATUS_COLOUR, STATUS_COLOUR } from './config';
 
 interface ExecutionProps {
   modalProps: ModalProps;
@@ -211,9 +212,9 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         cell: (info) => {
           if (info.row.original.startRange && info.row.original.endRange) {
             return (
-              formatLocalDateTime(info.row.original.startRange) +
+              formatDateTime(info.row.original.startRange) +
               ' - ' +
-              formatLocalDateTime(info.row.original.endRange)
+              formatDateTime(info.row.original.endRange)
             );
           }
           return '-';

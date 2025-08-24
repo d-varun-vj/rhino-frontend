@@ -1,6 +1,7 @@
 import {
   Languages,
   PeriodicAlarmDetail,
+  PeriodicAlarmReq,
   UserViewPermission,
   ViewPermissionsType,
   useGetAlarmDetails,
@@ -13,6 +14,7 @@ import {
   PeriodicAlarmSchema,
   buildPeriodicAlarmSchema,
 } from '../Create/validation';
+import { PeriodicAlarmPeriod, SelectedMediumType } from '../types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from '@mantine/core';
@@ -32,8 +34,7 @@ import FormFooter from '../Create/sections/FormFooter';
 import MomentOfExecution from '../Create/sections/MomentOfExecution';
 import RecipientDetails from '../Create/sections/RecipientDetails';
 import TimeConfiguration from '../Create/sections/TimeConfiguration';
-import { buildPeriodicAlarmReqForm, onError } from '../helper';
-import { PeriodicAlarmPeriod, SelectedMediumType } from '../types';
+import { onError } from '../helper';
 
 const UpdatePeriodicAlarm = () => {
   const navigate = useNavigate();
@@ -180,7 +181,7 @@ const UpdatePeriodicAlarm = () => {
   }, [setValue]);
 
   const onSubmit = (values: PeriodicAlarmSchema) => {
-    updateAlarm(buildPeriodicAlarmReqForm(values), {
+    updateAlarm(buildPeriodicAlarmUpdateForm(values), {
       onSuccess: () => {
         navigate(
           locations.alarm.periodic.base +
@@ -205,6 +206,65 @@ const UpdatePeriodicAlarm = () => {
       },
     });
   };
+
+  const buildPeriodicAlarmUpdateForm = useCallback(
+    (values: PeriodicAlarmSchema): PeriodicAlarmReq => {
+      const formData = {
+        name: values.name,
+        clientUuid: values.clientUuid,
+        meteringPointTypeId: values.meteringPointTypeId,
+        measurementUuids: values.measurementUuids,
+        configuration: {
+          generationDay: values.generationDay ?? 1,
+          generationTime: values.generationTime,
+          delayInDays: values.delayInDays,
+          comparisonMeasure: values.comparisonMeasure,
+          thresholdType: values.thresholdType,
+          ...(!!values.thresholdValue && {
+            thresholdValue: values.thresholdValue,
+          }),
+          ...(!!values.thresholdStartValue && {
+            thresholdStartValue: values.thresholdStartValue,
+          }),
+          ...(!!values.thresholdEndValue && {
+            thresholdEndValue: values.thresholdEndValue,
+          }),
+          sendOnlyWhenExceeded: values.sendOnlyWhenExceeded,
+          language: values.language,
+        },
+        ...((!!values.recipientEmails?.length ||
+          !!values.phoneNumber?.length) && {
+          recipients: {
+            ...(!!values.recipientEmails && { emails: values.recipientEmails }),
+            ...(!!values.phoneNumber && { phoneNumbers: values.phoneNumber }),
+          },
+        }),
+        frequency: values.frequency,
+        shared: values.shared,
+        readOnly: values.readOnly,
+        active: values.isActive,
+        timezone: values.timezone,
+        ...(!!values.sharedLocations && {
+          sharedLocalisationUuids: values.sharedLocations,
+        }),
+        ...(!!values.sharedTenants && {
+          sharedTenantUuids: values.sharedTenants,
+        }),
+        compareWithPeriod: values.compareWithPeriod,
+        analysePeriod: values.analysePeriod,
+      };
+
+      if (!alarmDetails?.data.hasCreatorAccess) {
+        formData.shared = false;
+        formData.readOnly = false;
+        formData.sharedLocalisationUuids = [];
+        formData.sharedTenantUuids = [];
+      }
+
+      return formData;
+    },
+    [alarmDetails?.data.hasCreatorAccess]
+  );
 
   const shouldShowForm =
     !isLoading &&
