@@ -58,33 +58,31 @@ const FormFooter = ({
         />
       </div>
 
-      {!isReadOnly && (
-        <div className="flex gap-2 justify-end mt-10">
-          <CustomButton
-            text={t(tFormBase + 'action.cancel')}
-            type="default"
-            icon={<RxCross2 />}
-            disabled={isReadOnly}
-            onClick={() =>
-              navigate(
-                locations.alarm.periodic.base +
-                  getRibbonParams({
-                    client: client,
-                    location: location,
-                    group: group,
-                  }),
-                { replace: false }
-              )
-            }
-          />
-          <CustomButton
-            text={t(tFormBase + 'action.save')}
-            btnType="submit"
-            icon={<FaPlus />}
-            loading={isPending}
-          />
-        </div>
-      )}
+      <div className="flex gap-2 justify-end mt-10">
+        <CustomButton
+          text={t(tFormBase + 'action.cancel')}
+          type="default"
+          icon={<RxCross2 />}
+          onClick={() =>
+            navigate(
+              locations.alarm.periodic.base +
+                getRibbonParams({
+                  client: client,
+                  location: location,
+                  group: group,
+                }),
+              { replace: false }
+            )
+          }
+        />
+        <CustomButton
+          text={t(tFormBase + 'action.save')}
+          btnType="submit"
+          icon={<FaPlus />}
+          disabled={isReadOnly}
+          loading={isPending}
+        />
+      </div>
     </>
   );
 };

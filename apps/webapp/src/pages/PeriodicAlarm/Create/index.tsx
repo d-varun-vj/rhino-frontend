@@ -120,7 +120,11 @@ const CreatePeriodicAlarm = () => {
     >
       <MainLayout
         title={t('create.mainHeader')}
-        topRibbon={{ hideFavoriteMeter: true }}
+        topRibbon={{
+          hideFavoriteMeter: true,
+          hideLocations: true,
+          hideGroup: true,
+        }}
       >
         <FormProvider {...methods}>
           <form onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}>

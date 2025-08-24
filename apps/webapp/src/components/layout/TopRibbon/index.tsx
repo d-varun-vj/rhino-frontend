@@ -19,6 +19,8 @@ export type TopRibbonProps = {
   disableClient?: boolean;
   disableLocation?: boolean;
   disableGroup?: boolean;
+  hideLocations?: boolean;
+  hideGroup?: boolean;
 };
 
 const TopRibbon = ({
@@ -26,6 +28,8 @@ const TopRibbon = ({
   disableClient,
   disableLocation,
   disableGroup,
+  hideGroup,
+  hideLocations,
 }: TopRibbonProps) => {
   const { t } = useTranslation('layout');
   const { user } = useUser();
@@ -187,31 +191,39 @@ const TopRibbon = ({
       ),
       dataTestId: 'ribbon-client-label',
     },
-    {
-      labelKey: 'topRibbon.location',
-      component: (
-        <LocationCombobox
-          onSelect={onFilterChange}
-          locations={locations}
-          disabled={isComboboxDisabled || disableLocation}
-          selectedLocation={activeLocation}
-        />
-      ),
-      dataTestId: 'ribbon-location-label',
-    },
-    {
-      labelKey: 'topRibbon.group',
-      component: (
-        <GroupCombobox
-          onSelect={onFilterChange}
-          locations={locations}
-          disabled={isComboboxDisabled || disableGroup}
-          selectedGroup={activeGroup}
-          selectedLocation={selectedLocation}
-        />
-      ),
-      dataTestId: 'ribbon-group-label',
-    },
+    ...(!hideLocations
+      ? [
+          {
+            labelKey: 'topRibbon.location',
+            component: (
+              <LocationCombobox
+                onSelect={onFilterChange}
+                locations={locations}
+                disabled={isComboboxDisabled || disableLocation}
+                selectedLocation={activeLocation}
+              />
+            ),
+            dataTestId: 'ribbon-location-label',
+          },
+        ]
+      : []),
+    ...(!hideGroup
+      ? [
+          {
+            labelKey: 'topRibbon.group',
+            component: (
+              <GroupCombobox
+                onSelect={onFilterChange}
+                locations={locations}
+                disabled={isComboboxDisabled || disableGroup}
+                selectedGroup={activeGroup}
+                selectedLocation={selectedLocation}
+              />
+            ),
+            dataTestId: 'ribbon-group-label',
+          },
+        ]
+      : []),
     ...(!hideFavoriteMeter
       ? [
           {

@@ -223,6 +223,8 @@ const UpdatePeriodicAlarm = () => {
         }
         topRibbon={{
           hideFavoriteMeter: true,
+          hideGroup: true,
+          hideLocations: true,
           disableClient: true,
           disableLocation: true,
           disableGroup: true,
