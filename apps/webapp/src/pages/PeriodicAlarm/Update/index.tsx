@@ -13,7 +13,12 @@ import {
   PeriodicAlarmSchema,
   buildPeriodicAlarmSchema,
 } from '../Create/validation';
-import { PeriodicAlarmPeriod, SelectedMediumType } from '../types';
+import {
+  PeriodicAlarmCompareWith,
+  PeriodicAlarmPeriod,
+  PeriodicAlarmThresholdType,
+  SelectedMediumType,
+} from '../types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from '@mantine/core';
@@ -27,6 +32,10 @@ import MainLayout from 'apps/webapp/src/layouts/MainLayout';
 import { locations } from 'apps/webapp/src/routes/locations';
 import AccessAuthorizer from 'apps/webapp/src/wrappers/AccessAuthorizer';
 import { useTranslation } from 'react-i18next';
+import {
+  shouldShowStartAndEndThresholdValue,
+  shouldShowThresholdValue,
+} from '../Create/helper';
 import AlarmCriteria from '../Create/sections/AlarmCriteria';
 import BasicInformation from '../Create/sections/BasicInformation';
 import FormFooter from '../Create/sections/FormFooter';
@@ -198,8 +207,8 @@ const UpdatePeriodicAlarm = () => {
   };
 
   const buildPeriodicAlarmUpdateForm = useCallback(
-    (values: PeriodicAlarmSchema): PeriodicAlarmReq => {
-      const formData = {
+    (values: PeriodicAlarmSchema) => {
+      const formData: PeriodicAlarmReq = {
         name: values.name,
         clientUuid: values.clientUuid,
         meteringPointTypeId: values.meteringPointTypeId,
@@ -249,6 +258,24 @@ const UpdatePeriodicAlarm = () => {
         formData.readOnly = false;
         formData.sharedLocalisationUuids = [];
         formData.sharedTenantUuids = [];
+      }
+
+      if (
+        !shouldShowThresholdValue(
+          values.compareWithPeriod as PeriodicAlarmCompareWith,
+          values.thresholdType as PeriodicAlarmThresholdType
+        )
+      ) {
+        formData.configuration.thresholdValue = null;
+      }
+
+      if (
+        !shouldShowStartAndEndThresholdValue(
+          values.thresholdType as PeriodicAlarmThresholdType
+        )
+      ) {
+        formData.configuration.thresholdStartValue = null;
+        formData.configuration.thresholdEndValue = null;
       }
 
       return formData;

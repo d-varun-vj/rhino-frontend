@@ -40,9 +40,9 @@ export type PeriodicAlarmReq = {
     delayInDays: number;
     comparisonMeasure: string;
     thresholdType: string;
-    thresholdValue?: number;
-    thresholdStartValue?: number;
-    thresholdEndValue?: number;
+    thresholdValue?: number | null;
+    thresholdStartValue?: number | null;
+    thresholdEndValue?: number | null;
     sendOnlyWhenExceeded: boolean;
     language: string;
   };
@@ -98,8 +98,8 @@ export interface PeriodicAlarmDetail {
     generationDay?: number;
     comparisonMeasure: string;
     thresholdType: string;
-    thresholdStartValue?: number;
-    thresholdEndValue?: number;
+    thresholdStartValue?: number | null;
+    thresholdEndValue?: number | null;
     thresholdValue?: number | null;
     sendOnlyWhenExceeded: boolean;
     language: string;

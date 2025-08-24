@@ -45,7 +45,8 @@ const AlarmCriteria = ({
   const selectedAnalysisPeriod = watch('analysePeriod');
   const selectedCompareWith =
     (watch('compareWithPeriod') as PeriodicAlarmCompareWith) || '';
-  const selectedThresholdType = watch('thresholdType') || '';
+  const selectedThresholdType =
+    (watch('thresholdType') as PeriodicAlarmThresholdType) || '';
 
   const filteredAnalysisCompareWithOptions = useMemo(() => {
     return VALID_ANALYSE_COMPARE_COMBINATIONS[
@@ -160,7 +161,7 @@ const AlarmCriteria = ({
 
         {shouldShowThresholdValue(
           selectedCompareWith,
-          selectedThresholdType as PeriodicAlarmThresholdType
+          selectedThresholdType
         ) && (
           <div className="flex gap-4">
             <div className="block w-full">
@@ -195,9 +196,7 @@ const AlarmCriteria = ({
         )}
       </div>
 
-      {shouldShowStartAndEndThresholdValue(
-        selectedThresholdType as PeriodicAlarmThresholdType
-      ) && (
+      {shouldShowStartAndEndThresholdValue(selectedThresholdType) && (
         <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
           <div className="flex  gap-4">
             <div className="block w-full">
