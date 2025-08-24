@@ -26,3 +26,8 @@ export enum Languages {
   EN = 'EN',
   PL = 'PL',
 }
+
+export const LanguageMap: Record<'en' | 'pl', Languages> = {
+  en: Languages.EN,
+  pl: Languages.PL,
+};

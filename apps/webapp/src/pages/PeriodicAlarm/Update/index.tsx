@@ -1,13 +1,12 @@
 import {
   Languages,
-  PeriodicAlarmDetail,
   PeriodicAlarmReq,
   UserViewPermission,
   ViewPermissionsType,
   useGetAlarmDetails,
   useUpdatePeriodicAlarm,
 } from '@rhino/apis';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -43,9 +42,6 @@ const UpdatePeriodicAlarm = () => {
   const { client, location, group, setClient } = useUserFilter();
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [isFormInitialized, setIsFormInitialized] = useState(false);
-
-  const initializationInProgress = useRef(false);
-  const alarmDataRef = useRef<PeriodicAlarmDetail | null>(null);
 
   const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
     uuid as string
@@ -97,12 +93,7 @@ const UpdatePeriodicAlarm = () => {
   }, [alarmDetails?.data?.measurements]);
 
   useEffect(() => {
-    if (!alarmDetails?.data || initializationInProgress.current) return;
-
-    if (alarmDataRef.current === alarmDetails.data) return;
-
-    initializationInProgress.current = true;
-    alarmDataRef.current = alarmDetails.data;
+    if (!alarmDetails?.data) return;
 
     setClient({
       name: alarmDetails.data.client.name,
@@ -161,7 +152,6 @@ const UpdatePeriodicAlarm = () => {
 
       reset(formData);
       setIsFormInitialized(true);
-      initializationInProgress.current = false;
     });
   }, [alarmDetails?.data, reset, setClient]);
 
@@ -266,11 +256,7 @@ const UpdatePeriodicAlarm = () => {
     [alarmDetails?.data.hasCreatorAccess]
   );
 
-  const shouldShowForm =
-    !isLoading &&
-    isFormInitialized &&
-    alarmDetails?.data &&
-    !initializationInProgress.current;
+  const shouldShowForm = !isLoading && isFormInitialized && alarmDetails?.data;
 
   return (
     <AccessAuthorizer

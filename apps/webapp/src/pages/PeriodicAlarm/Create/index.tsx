@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Languages,
+  LanguageMap,
   usePostPeriodicAlarm,
   UserViewPermission,
   ViewPermissionsType,
@@ -77,7 +77,7 @@ const CreatePeriodicAlarm = () => {
   }, [client, setValue]);
 
   useEffect(() => {
-    setValue('language', user?.language || Languages.EN);
+    setValue('language', LanguageMap[(user?.language as 'pl' | 'en') || 'en']);
   }, [setValue, user?.language]);
 
   const resetThresholdValues = useCallback(() => {
