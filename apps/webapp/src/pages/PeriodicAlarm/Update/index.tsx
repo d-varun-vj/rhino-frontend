@@ -1,6 +1,6 @@
 import {
+  Languages,
   PeriodicAlarmDetail,
-  PeriodicAlarmUpdateReq,
   UserViewPermission,
   ViewPermissionsType,
   useGetAlarmDetails,
@@ -26,13 +26,13 @@ import MainLayout from 'apps/webapp/src/layouts/MainLayout';
 import { locations } from 'apps/webapp/src/routes/locations';
 import AccessAuthorizer from 'apps/webapp/src/wrappers/AccessAuthorizer';
 import { useTranslation } from 'react-i18next';
-import { onError } from '../Create/helper';
 import AlarmCriteria from '../Create/sections/AlarmCriteria';
 import BasicInformation from '../Create/sections/BasicInformation';
 import FormFooter from '../Create/sections/FormFooter';
 import MomentOfExecution from '../Create/sections/MomentOfExecution';
 import RecipientDetails from '../Create/sections/RecipientDetails';
 import TimeConfiguration from '../Create/sections/TimeConfiguration';
+import { buildPeriodicAlarmReqForm, onError } from '../helper';
 import { PeriodicAlarmPeriod, SelectedMediumType } from '../types';
 
 const UpdatePeriodicAlarm = () => {
@@ -59,7 +59,6 @@ const UpdatePeriodicAlarm = () => {
 
   const [selectedMediumType, setSelectedMediumType] =
     useState<SelectedMediumType | null>(null);
-  console.log(selectedMediumType);
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -118,7 +117,7 @@ const UpdatePeriodicAlarm = () => {
     setIsReadOnly(!alarmDetails?.data?.isManageable);
 
     requestAnimationFrame(() => {
-      const formData = {
+      const formData: PeriodicAlarmSchema = {
         name: alarmDetails.data.name,
         clientUuid: alarmDetails.data.client.uuid,
         frequency: alarmDetails.data.frequency,
@@ -127,7 +126,8 @@ const UpdatePeriodicAlarm = () => {
           PeriodicAlarmPeriod.LAST_DAY,
         comparisonMeasure: alarmDetails.data.configuration?.comparisonMeasure,
         compareWithPeriod: alarmDetails.data.compareWithPeriod,
-        timezone: alarmDetails.data.configuration?.timezone || 'Europe/Warsaw',
+        timezone: alarmDetails.data.timezone || 'Europe/Warsaw',
+        language: alarmDetails.data.configuration.language || Languages.PL,
         isActive: alarmDetails.data.active,
         readOnly: alarmDetails.data.readOnly,
         shared: alarmDetails.data.shared,
@@ -145,7 +145,7 @@ const UpdatePeriodicAlarm = () => {
           ) || [],
         sendOnlyWhenExceeded:
           alarmDetails.data.configuration?.sendOnlyWhenExceeded ?? true,
-        generationDay: alarmDetails.data.configuration?.generationDay,
+        generationDay: alarmDetails.data.configuration?.generationDay ?? null,
         generationTime: alarmDetails.data.configuration?.generationTime,
         delayInDays: alarmDetails.data.configuration?.delayInDays,
         thresholdType: alarmDetails.data.configuration?.thresholdType,
@@ -179,54 +179,8 @@ const UpdatePeriodicAlarm = () => {
     setValue('thresholdEndValue', undefined);
   }, [setValue]);
 
-  const buildUpdateRequestForm = (
-    values: PeriodicAlarmSchema
-  ): PeriodicAlarmUpdateReq => {
-    return {
-      name: values.name,
-      clientUuid: values.clientUuid,
-      meteringPointTypeId: values.meteringPointTypeId,
-      measurementUuids: values.measurementUuids,
-      configuration: {
-        generationDay: values.generationDay ?? 1,
-        generationTime: values.generationTime,
-        delayInDays: values.delayInDays,
-        comparisonMeasure: values.comparisonMeasure,
-        thresholdType: values.thresholdType,
-        ...(!!values.thresholdValue && {
-          thresholdValue: values.thresholdValue,
-        }),
-        ...(!!values.thresholdStartValue && {
-          thresholdStartValue: values.thresholdStartValue,
-        }),
-        ...(!!values.thresholdEndValue && {
-          thresholdEndValue: values.thresholdEndValue,
-        }),
-        sendOnlyWhenExceeded: values.sendOnlyWhenExceeded,
-        timezone: values.timezone,
-      },
-      recipients: {
-        ...(!!values.recipientEmails && { emails: values.recipientEmails }),
-        ...(!!values.phoneNumber && { phoneNumbers: values.phoneNumber }),
-      },
-      frequency: values.frequency,
-      shared: values.shared,
-      readOnly: values.readOnly,
-      active: values.isActive,
-      timezone: values.timezone,
-      ...(!!values.sharedLocations && {
-        sharedLocalisationUuids: values.sharedLocations,
-      }),
-      ...(!!values.sharedTenants && {
-        sharedTenantUuids: values.sharedTenants,
-      }),
-      compareWithPeriod: values.compareWithPeriod,
-      analysePeriod: values.analysePeriod,
-    };
-  };
-
   const onSubmit = (values: PeriodicAlarmSchema) => {
-    updateAlarm(buildUpdateRequestForm(values), {
+    updateAlarm(buildPeriodicAlarmReqForm(values), {
       onSuccess: () => {
         navigate(
           locations.alarm.periodic.base +

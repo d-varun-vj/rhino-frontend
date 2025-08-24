@@ -29,7 +29,8 @@
         "active": "Active",
         "shared": "Shared Alarm",
         "mediumType": "Medium type",
-        "timezone": "Time zone"
+        "timezone": "Time zone",
+        "language": "Language"
       },
       "momentOfExecution": {
         "title": "Moment of execution",
@@ -121,6 +122,7 @@
         "thresholdEndValue": "Invalid value",
         "thresholdValueOutOfRange": "Threshold end value should be greater than threshold start value",
         "measurementUuids": "Select measurements",
+        "language": "Select language",
         "inValid": "Invalid value"
       }
     },

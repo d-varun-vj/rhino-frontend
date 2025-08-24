@@ -29,7 +29,8 @@
         "active": "Aktywność",
         "shared": "Alarm udostępniony",
         "mediumType": "Typ medium",
-        "timezone": "Strefa czasowa"
+        "timezone": "Strefa czasowa",
+        "language": "Język"
       },
       "momentOfExecution": {
         "title": "Moment wykonania",
@@ -121,6 +122,7 @@
         "thresholdEndValue": "Nieprawidłowa wartość",
         "thresholdValueOutOfRange": "Wartość końcowa progu powinna być większa niż wartość początkowa progu",
         "measurementUuids": "Wybierz liczniki",
+        "language": "Wybierz język",
         "inValid": "Nieprawidłowa wartość"
       }
     },

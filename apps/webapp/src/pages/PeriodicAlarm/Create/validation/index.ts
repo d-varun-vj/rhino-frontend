@@ -43,6 +43,9 @@ export const buildPeriodicAlarmSchema = (
       timezone: z
         .string(t(i18nBase + 'timezone'))
         .min(1, t(i18nBase + 'timezone')),
+      language: z
+        .string(t(i18nBase + 'language'))
+        .min(1, t(i18nBase + 'language')),
       frequency: z.string().min(1, t(i18nBase + 'frequency')),
       generationDay: z
         .number(t(i18nBase + 'generationDay'))

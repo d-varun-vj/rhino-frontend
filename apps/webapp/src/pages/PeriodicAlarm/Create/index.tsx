@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Languages,
   usePostPeriodicAlarm,
   UserViewPermission,
   ViewPermissionsType,
@@ -7,6 +8,7 @@ import {
 import message from 'apps/webapp/src/components/notifier';
 import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
 import { GUIDE_LINKS } from 'apps/webapp/src/constant/guide-links';
+import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import MainLayout from 'apps/webapp/src/layouts/MainLayout';
@@ -16,6 +18,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { buildPeriodicAlarmReqForm, onError } from '../helper';
 import {
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
@@ -23,7 +26,6 @@ import {
   SelectedMediumType,
 } from '../types';
 import { COMPARISON_MEASURE_TYPE_OPTIONS } from './config';
-import { buildCreateRequestForm, onError } from './helper';
 import AlarmCriteria from './sections/AlarmCriteria';
 import BasicInformation from './sections/BasicInformation';
 import FormFooter from './sections/FormFooter';
@@ -36,6 +38,7 @@ const CreatePeriodicAlarm = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('periodicAlarm');
   const { client, location, group } = useUserFilter();
+  const { user } = useUser();
 
   const { mutate: createAlarm, isPending } = usePostPeriodicAlarm();
 
@@ -73,6 +76,10 @@ const CreatePeriodicAlarm = () => {
     setValue('clientUuid', client ? client?.uuid : '');
   }, [client, setValue]);
 
+  useEffect(() => {
+    setValue('language', user?.language || Languages.EN);
+  }, [setValue, user?.language]);
+
   const resetThresholdValues = useCallback(() => {
     resetField('thresholdType');
     resetField('thresholdValue');
@@ -81,7 +88,7 @@ const CreatePeriodicAlarm = () => {
   }, [resetField]);
 
   const onSubmit = (values: PeriodicAlarmSchema) => {
-    createAlarm(buildCreateRequestForm(values), {
+    createAlarm(buildPeriodicAlarmReqForm(values), {
       onSuccess: () => {
         navigate(
           locations.alarm.periodic.base +

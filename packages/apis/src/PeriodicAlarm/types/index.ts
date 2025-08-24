@@ -29,7 +29,7 @@ export interface PeriodicAlarmFilter {
   shared: boolean | null;
 }
 
-export type PeriodicAlarmCreateReq = {
+export type PeriodicAlarmReq = {
   name: string;
   clientUuid: string;
   meteringPointTypeId: number;
@@ -44,6 +44,7 @@ export type PeriodicAlarmCreateReq = {
     thresholdStartValue?: number;
     thresholdEndValue?: number;
     sendOnlyWhenExceeded: boolean;
+    language: string;
   };
   recipients?: {
     emails?: string[];
@@ -84,38 +85,6 @@ export type PeriodicAlarmExecution = {
   action?: string;
 };
 
-export type PeriodicAlarmUpdateReq = {
-  name: string;
-  clientUuid: string;
-  meteringPointTypeId: number;
-  measurementUuids: string[];
-  configuration: {
-    generationDay?: number;
-    generationTime: string;
-    delayInDays: number;
-    comparisonMeasure: string;
-    thresholdType: string;
-    thresholdValue?: number;
-    thresholdStartValue?: number;
-    thresholdEndValue?: number;
-    sendOnlyWhenExceeded: boolean;
-    timezone: string;
-  };
-  recipients: {
-    emails?: string[];
-    phoneNumbers?: string[];
-  };
-  frequency: string;
-  shared: boolean;
-  readOnly: boolean;
-  active: boolean;
-  timezone: string;
-  sharedLocalisationUuids?: string[];
-  sharedTenantUuids?: string[];
-  compareWithPeriod: string;
-  analysePeriod: string;
-};
-
 export interface PeriodicAlarmDetail {
   id: number;
   uuid: string;
@@ -133,7 +102,7 @@ export interface PeriodicAlarmDetail {
     thresholdEndValue?: number;
     thresholdValue?: number | null;
     sendOnlyWhenExceeded: boolean;
-    timezone: string;
+    language: string;
   };
   recipientDetails: {
     emails?: string[];
@@ -159,4 +128,5 @@ export interface PeriodicAlarmDetail {
   nextExecutionTime: string;
   isManageable: boolean;
   hasCreatorAccess: boolean;
+  timezone: string;
 }

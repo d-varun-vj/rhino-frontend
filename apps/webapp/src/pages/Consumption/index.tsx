@@ -12,7 +12,6 @@ const Consumption = () => {
   const handleMeasurementsChange = (measurements: MeasurementWithConfig[]) => {
     setSelectedMeasurements(measurements);
     // Future: Update charts, perform calculations, etc.
-    console.log('Selected measurements updated:', measurements);
   };
 
   return (

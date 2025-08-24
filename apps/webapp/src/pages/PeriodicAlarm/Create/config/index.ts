@@ -1,10 +1,10 @@
+import { Languages } from '@rhino/apis';
 import {
   ComparisonMeasureType,
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
   PeriodicAlarmPeriod,
   PeriodicAlarmThresholdType,
-  TimeZone,
 } from '../../types';
 
 export const tConfigBase = 'config.';
@@ -34,10 +34,6 @@ const TRANSLATION_KEY_FOR_THRESHOLD = {
   BETWEEN_PERCENT: tConfigBase + 'threshold.betweenPercent',
   BEYOND_PERCENT: tConfigBase + 'threshold.beyondPercent',
 };
-
-export const SUPPORTED_TIMEZONES: { label: string; value: TimeZone }[] = [
-  { label: 'Europe/Warsaw', value: TimeZone.EUROPE_WARSAW },
-];
 
 export const COMPARISON_MEASURE_TYPE_OPTIONS: {
   label: string;
@@ -127,6 +123,17 @@ export const WEEK_DAY_OPTIONS: {
   {
     label: tConfigBase + 'weekDay.sun',
     id: 7,
+  },
+];
+
+export const LANGUAGES: { label: string; id: Languages }[] = [
+  {
+    id: Languages.EN,
+    label: 'EN',
+  },
+  {
+    id: Languages.PL,
+    label: 'PL',
   },
 ];
 

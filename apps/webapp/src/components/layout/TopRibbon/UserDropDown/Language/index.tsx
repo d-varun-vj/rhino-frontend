@@ -1,4 +1,5 @@
-import { useChangeUserLanguage } from '@rhino/apis';
+import { DataQueryKeys, useChangeUserLanguage } from '@rhino/apis';
+import { useQueryClient } from '@tanstack/react-query';
 import message from 'apps/webapp/src/components/notifier';
 import { useTranslation } from 'react-i18next';
 
@@ -26,6 +27,7 @@ const Language = () => {
   const { t, i18n } = useTranslation('layout');
   const { t: tCommon } = useTranslation('common');
   const changeLanguage = i18n.changeLanguage.bind(i18n);
+  const queryClient = useQueryClient();
 
   const { mutate } = useChangeUserLanguage();
 
@@ -37,6 +39,9 @@ const Language = () => {
           changeLanguage(languageName.toLowerCase())
             .then(() => {
               message.success(tCommon('toast.languageChanged.success'));
+              void queryClient.invalidateQueries({
+                queryKey: [DataQueryKeys.USER],
+              });
             })
             .catch(() => {
               message.error(tCommon('toast.somethingWentWrong'));

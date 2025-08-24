@@ -109,6 +109,7 @@ const PeriodicAlarm = () => {
         )
       );
     }
+    window.scrollTo({ top: 0 });
   }, [isCreated, isUpdated, isError, errMessage, t]);
 
   const { data: periodicAlarmRes, isLoading: isLoadingData } =

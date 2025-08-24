@@ -1,8 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { useGetMeteringPointTypes } from '@rhino/apis';
+import { Languages, useGetMeteringPointTypes } from '@rhino/apis';
 import CustomSelect from 'apps/webapp/src/components/common/comboboxes/CustomSelect';
+import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
 import TextField from 'apps/webapp/src/components/common/input/TextField';
 import Toggle from 'apps/webapp/src/components/common/input/Toggle';
 import SharingSection from 'apps/webapp/src/components/shared/SharingSection';
@@ -10,7 +11,7 @@ import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import moment from 'moment-timezone';
 import { useTranslation } from 'react-i18next';
 import { SelectedMediumType } from '../../../types';
-import { tFormBase } from '../../config';
+import { LANGUAGES, tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
@@ -141,6 +142,26 @@ const BasicInformation = ({
               error={fieldState.error?.message}
               clearable
               disabled={isReadOnly}
+            />
+          )}
+        />
+      </div>
+      <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
+        <Controller
+          name={'language'}
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState }) => (
+            <FloatingSelector
+              label={t(tFormBase + 'basic.language')}
+              required
+              data={LANGUAGES}
+              onSelect={field.onChange}
+              selectedValue={LANGUAGES.find(
+                (val) => val.id === (field.value as Languages)
+              )}
+              error={fieldState.error ? fieldState.error.message : ''}
+              isReadOnly={isReadOnly}
             />
           )}
         />

@@ -21,3 +21,8 @@ export type MeteringPointTypes = {
 export type MeteringPointTypesRes = {
   data: MeteringPointTypes[];
 };
+
+export enum Languages {
+  EN = 'EN',
+  PL = 'PL',
+}
