@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.12.0...webapp-v1.12.1) (2025-08-25)
+
+
+### Bug Fixes
+
+* Trigger deployment [PRD-0000] ([#131](https://github.com/Rhino-Energy/rhino-frontend/issues/131)) ([68c6f65](https://github.com/Rhino-Energy/rhino-frontend/commit/68c6f655b2dfb17a918a68789c8cb7cf798e6ba5))
+
 ## [1.12.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.11.0...webapp-v1.12.0) (2025-08-25)
 
 
