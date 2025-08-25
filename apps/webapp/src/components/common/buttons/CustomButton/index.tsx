@@ -3,7 +3,7 @@ import { Button, ButtonProps } from '@mantine/core';
 import clsx from 'clsx';
 import React from 'react';
 
-type CustomButtonProps = {
+export type CustomButtonProps = {
   text?: string;
   type?: 'primary' | 'secondary' | 'default';
   btnType?: 'submit' | 'button' | 'reset';

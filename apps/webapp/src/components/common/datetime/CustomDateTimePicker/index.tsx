@@ -1,11 +1,14 @@
 import {
   DatePicker,
+  DatePickerBaseProps,
   DatePickerProps,
   DatePickerType,
   TimePicker,
   TimePickerProps,
 } from '@mantine/dates';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
+import CustomButton, { CustomButtonProps } from '../../buttons/CustomButton';
 import styles from './custom-date-time-picker.module.css';
 
 type TimeProps<T extends DatePickerType> = T extends 'range'
@@ -24,8 +27,10 @@ export type CustomDateTimePickerProps<
   S extends boolean,
   T extends DatePickerType,
 > = {
-  dateProps: DatePickerProps<T>;
+  dateProps: DatePickerProps<T> & DatePickerBaseProps<T>;
   withTimeRange?: S;
+  btnProps: CustomButtonProps & { onCancel: () => void };
+  onSelectedRange: string;
 } & (S extends true
   ? TimeProps<T>
   : {
@@ -40,7 +45,10 @@ const CustomDateTimePicker = <S extends boolean, T extends DatePickerType>({
   singleTimeProps,
   startTimeProps,
   endTimeProps,
+  btnProps,
+  onSelectedRange,
 }: CustomDateTimePickerProps<S, T>) => {
+  const { t } = useTranslation('components');
   const isRangePicker = dateProps?.type === 'range';
 
   return (
@@ -49,7 +57,7 @@ const CustomDateTimePicker = <S extends boolean, T extends DatePickerType>({
 
       {withTimeRange && (
         <div
-          className={clsx('grid  mt-2 gap-4', {
+          className={clsx('grid ml-[20%] mt-5 gap-4', {
             'grid-cols-2': isRangePicker,
           })}
         >
@@ -63,6 +71,23 @@ const CustomDateTimePicker = <S extends boolean, T extends DatePickerType>({
           )}
         </div>
       )}
+      <hr className="mt-5 text-rhino-grey/30" />
+      <div className="w-full flex justify-end mt-5 gap-2 items-center">
+        <span className="text-sm text-black">{onSelectedRange}</span>
+        <CustomButton
+          size="xs"
+          variant="outline"
+          type="default"
+          text={t('datePicker.cancel')}
+          onClick={btnProps.onCancel}
+        />
+        <CustomButton
+          text={t('datePicker.apply')}
+          size="xs"
+          type="secondary"
+          {...btnProps}
+        />
+      </div>
     </div>
   );
 };

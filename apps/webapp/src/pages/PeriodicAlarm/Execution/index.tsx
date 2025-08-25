@@ -11,6 +11,7 @@ import { EXECUTION_STATUS_COLOUR, STATUS_COLOUR } from './config';
 
 import { ModalProps } from '@mantine/core';
 import IconButton from 'apps/webapp/src/components/common/buttons/IconButton';
+import DateRangeWithTimePickerField from 'apps/webapp/src/components/common/datetime/DateRangeWithTimePickerField';
 import CustomModal from 'apps/webapp/src/components/common/modals/CustomModal';
 import Table from 'apps/webapp/src/components/common/Table';
 import ActionCell from 'apps/webapp/src/components/common/Table/ActionCell';
@@ -136,19 +137,20 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
           sortKey: 'occurence',
           sortDirection: sort.direction,
           filterVariant: FilterVariant.CUSTOM,
-          // customFilter: (
-          //   <DateRangeWithTimePickerField
-          //     onChange={(val) => {
-          //       setFilters((prev: ExecutionFilter) => ({
-          //         ...prev,
-          //         startDate: val.startDate
-          //           ? val.startDate + ' ' + val.startTime
-          //           : null,
-          //         endDate: val.endDate ? val.endDate + ' ' + val.endTime : null,
-          //       }));
-          //     }}
-          //   />
-          // ),
+          customFilter: (
+            <DateRangeWithTimePickerField
+              onChange={(val) => {
+                setFilters((prev: ExecutionFilter) => ({
+                  ...prev,
+                  startDate: val.startDate
+                    ? val.startDate + ' ' + val.startTime
+                    : null,
+                  endDate: val.endDate ? val.endDate + ' ' + val.endTime : null,
+                }));
+              }}
+              size="xs"
+            />
+          ),
         },
       },
       {

@@ -23,7 +23,7 @@
 }
 
 .timeField :global(.mantine-TimePicker-field) {
-  width: 50px;
+  width: 58px;
   border-radius: var(--border-redius);
 }
 

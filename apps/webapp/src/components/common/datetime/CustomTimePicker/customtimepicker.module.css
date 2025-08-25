@@ -1,6 +1,7 @@
 .timePicker :global(.mantine-TimePicker-input) {
   border: transparent;
   width: fit-content;
+  padding: 0;
 }
 
 .timePicker {
@@ -16,10 +17,6 @@
 
 .timePicker :global(.mantine-TimePicker-fieldsRoot) {
   overflow: visible;
-}
-
-.timePicker :global(.mantine-TimePicker-input) {
-  padding: 0;
 }
 
 .timePicker :global(.mantine-TimePicker-field) {
