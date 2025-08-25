@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.12.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.11.0...webapp-v1.12.0) (2025-08-25)
+
+
+### Features
+
+* Add above and below options  and fix update  'analysis period' and 'compare with' combination issue  in periodic alarm [PRD-3238] ([#114](https://github.com/Rhino-Energy/rhino-frontend/issues/114)) ([1fa3377](https://github.com/Rhino-Energy/rhino-frontend/commit/1fa33779ba465c372af7d1e20a7b3f491364cf58))
+* Add language field for periodic alarm and fix timezone issue on update periodic alarm [PRD-3245] ([#123](https://github.com/Rhino-Energy/rhino-frontend/issues/123)) ([632c33d](https://github.com/Rhino-Energy/rhino-frontend/commit/632c33d6709b70b73dcf7858f88e90bce5826579))
+* Change periodic alarm select measurement list filtering by medium type mappId from name ([#122](https://github.com/Rhino-Energy/rhino-frontend/issues/122)) ([d8ed0e3](https://github.com/Rhino-Energy/rhino-frontend/commit/d8ed0e34bf9cbdee458b3394b491053e594a9c57))
+* Make consient behavior of too long elements in React tables and use mantain modal for favorite meter [PRD-3232] ([#124](https://github.com/Rhino-Energy/rhino-frontend/issues/124)) ([57e01a9](https://github.com/Rhino-Energy/rhino-frontend/commit/57e01a9f043ceb2d60f1d3efabc6689149f976fc))
+* Remove sorting from shared locations in periodic alarm list [PRD-3237] ([#121](https://github.com/Rhino-Energy/rhino-frontend/issues/121)) ([20d5792](https://github.com/Rhino-Energy/rhino-frontend/commit/20d5792acf40ab555113110d5b37d3ecb19e0c5f))
+* Show permission errors properly when viewing / editing periodic alarms [PRD-3248] ([#119](https://github.com/Rhino-Energy/rhino-frontend/issues/119)) ([e0eb495](https://github.com/Rhino-Energy/rhino-frontend/commit/e0eb4952e5b87bb62fd69703cfe2fdd959ddfaf3))
+* Use weekday selection for generation day if frequency is weekly [PRD-3252] ([#120](https://github.com/Rhino-Energy/rhino-frontend/issues/120)) ([8099495](https://github.com/Rhino-Energy/rhino-frontend/commit/8099495cd08a926d7018cfcbbc884a034a3bb83f))
+
+
+### Bug Fixes
+
+* adjust consumption chart display ([#115](https://github.com/Rhino-Energy/rhino-frontend/issues/115)) ([2e155ec](https://github.com/Rhino-Energy/rhino-frontend/commit/2e155ec8d39b86148d6d0cbcfc3c4e05ab00a9db))
+* Clear threshold values when switching to condition that doesn't require it during alarm edit ([#129](https://github.com/Rhino-Energy/rhino-frontend/issues/129)) ([9ffdb3d](https://github.com/Rhino-Energy/rhino-frontend/commit/9ffdb3d93f409440abb2ca16f10a8bf6877b3124))
+* Fix alarm edit UI inconsistencies, and filter conflicts ([#127](https://github.com/Rhino-Energy/rhino-frontend/issues/127)) ([ae158b6](https://github.com/Rhino-Energy/rhino-frontend/commit/ae158b681c61c1298431f68578d08594eaa51fd1))
+* Fix execution modal table height issue [PRD-3117] ([#108](https://github.com/Rhino-Energy/rhino-frontend/issues/108)) ([5057cfd](https://github.com/Rhino-Energy/rhino-frontend/commit/5057cfdca37753fb94d7da2a98a09b7b6c11500a))
+* Fix filtering, sorting , translation and design issues in Periodic Alarm  [PRD-3237] ([#110](https://github.com/Rhino-Energy/rhino-frontend/issues/110)) ([b898f18](https://github.com/Rhino-Energy/rhino-frontend/commit/b898f188afb3882d8dc48be0158ddeb4b4fb462b))
+* Fix issue the measurement dont clear when the medium type in update periodic alarm ([#118](https://github.com/Rhino-Energy/rhino-frontend/issues/118)) ([ec67400](https://github.com/Rhino-Energy/rhino-frontend/commit/ec67400c862880d7ea688128bac92149fdc7ad29))
+* Fix issues while updating periodic alarm ([#113](https://github.com/Rhino-Energy/rhino-frontend/issues/113)) ([0d05c31](https://github.com/Rhino-Energy/rhino-frontend/commit/0d05c31b800664a6acc92879db4c214b845ba43c))
+* fix measurement disappear in alarm  update page issue ([#117](https://github.com/Rhino-Energy/rhino-frontend/issues/117)) ([017d174](https://github.com/Rhino-Energy/rhino-frontend/commit/017d174f2bcb117ec609cdb7dd7d7b66aefff765))
+* Fix measurement disappear in update alarm page ([#116](https://github.com/Rhino-Energy/rhino-frontend/issues/116)) ([53b2781](https://github.com/Rhino-Energy/rhino-frontend/commit/53b2781f08aaeaad5ce35d7d017982bb3e853b8d))
+* Fix sharing component issues in periodic alarm ([#111](https://github.com/Rhino-Energy/rhino-frontend/issues/111)) ([16c3a7d](https://github.com/Rhino-Energy/rhino-frontend/commit/16c3a7dee3918cf16266280bae5199ae9b0d47a9))
+* Fix sharing entity permission issues and time formatting [PRD-3273] ([#126](https://github.com/Rhino-Energy/rhino-frontend/issues/126)) ([ded3bfc](https://github.com/Rhino-Energy/rhino-frontend/commit/ded3bfcced0a32261d5525bb71039a0d173f45ea))
+* fix sharing field issue in update periodic alarm ([#112](https://github.com/Rhino-Energy/rhino-frontend/issues/112)) ([0ceff26](https://github.com/Rhino-Energy/rhino-frontend/commit/0ceff26fcaddabac70d7a4529ac9d9ce2ba80773))
+* Fix table pagination and filtering issues on non-first pages [PRD-3204] ([#130](https://github.com/Rhino-Energy/rhino-frontend/issues/130)) ([4baa4fe](https://github.com/Rhino-Energy/rhino-frontend/commit/4baa4fe8a2d0c6e6cfe243da37a825eb795f73dc))
+* Resolve the issue where sharing fields display UUIDs first in the periodic alarm update ([#125](https://github.com/Rhino-Energy/rhino-frontend/issues/125)) ([2fe2545](https://github.com/Rhino-Energy/rhino-frontend/commit/2fe2545c3eeb226b613bceeac1a4719fc694089d))
+* Set user's language as default on alarm creation; prevent client reset on repeated alarm updates ([#128](https://github.com/Rhino-Energy/rhino-frontend/issues/128)) ([e997a1c](https://github.com/Rhino-Energy/rhino-frontend/commit/e997a1cdbe494c9c5e42b14f04a9207d99a2ea01))
+
 ## [1.11.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.10.0...webapp-v1.11.0) (2025-08-14)
 
 
