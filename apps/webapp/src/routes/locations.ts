@@ -4,7 +4,7 @@ export const locations = {
   notAllowed: '/not-allowed',
   notFound: '*',
 
-  // Pages
+  // Pages.
   dashboard: '/dashboard',
   consumption: '/consumption',
   alarm: {
