@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Loader } from '@mantine/core';
 import { SortDirection } from '@rhino/utils';
@@ -147,6 +147,17 @@ const Table = <T,>({
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  const handleFilterChange = useCallback(
+    (val: string | null, field: string, variant: FilterVariant | null) => {
+      if (footer) {
+        footer.setCurrentPage(0);
+      }
+
+      onFilterChange(val, field, variant);
+    },
+    [onFilterChange, footer]
+  );
+
   return (
     <div className="overflow-hidden relative w-full">
       <div className={clsx(`p-2 overflow-auto ${extraStyles}`)}>
@@ -211,7 +222,7 @@ const Table = <T,>({
                               >
                                 <Filter
                                   column={header.column}
-                                  onFilterChange={onFilterChange}
+                                  onFilterChange={handleFilterChange}
                                 />
                               </div>
                             ) : null}

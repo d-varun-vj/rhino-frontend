@@ -282,8 +282,7 @@ const PeriodicAlarm = () => {
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'frequency',
-          sortKey: 'frequency',
-          sortDirection: sort.direction,
+          sortKey: null,
           selectionOptions: getTranslationOptions({ t })
             .PERIODIC_ALARM_FREQUENCY_OPTIONS,
         },
