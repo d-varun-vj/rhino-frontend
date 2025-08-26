@@ -31,6 +31,10 @@ interface CustomColumnMeta {
   renderCell?: (value: unknown, row: unknown) => React.ReactNode;
   selectAllChecked?: boolean;
   onSelectAll?: (checked: boolean) => void;
+  styles?: {
+    maxWidth?: string;
+    minWidth?: string;
+  };
 }
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -172,7 +176,7 @@ const Table = <T,>({
                         key={header.id}
                         colSpan={header.colSpan}
                         className={clsx(
-                          'font-thin align-baseline pr-1.5 min-w-32 w-fit',
+                          `font-thin align-baseline pr-1.5 w-fit ${header.column.columnDef.meta?.styles?.maxWidth} ${header.column.columnDef.meta?.styles?.minWidth ?? 'min-w-32'}`,
                           {
                             'sticky bg-rhino-white -right-5 pl-2 z-10':
                               header.id === CONSTANTS.action,
@@ -259,7 +263,7 @@ const Table = <T,>({
                             >
                               <div
                                 className={clsx(
-                                  'text-[13px] min-w-32 w-fit mr-5',
+                                  `text-[13px] w-fit mr-5 ${cell.column.columnDef.meta?.styles?.maxWidth} ${cell.column.columnDef.meta?.styles?.minWidth ?? 'min-w-32'}`,
                                   {
                                     'text-nowrap':
                                       cell.column.id === 'value' ||

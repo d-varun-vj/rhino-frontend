@@ -1,4 +1,5 @@
 import {
+  DataQueryKeys,
   Languages,
   PeriodicAlarmReq,
   UserViewPermission,
@@ -22,6 +23,7 @@ import {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from '@mantine/core';
+import { useQueryClient } from '@tanstack/react-query';
 import { MeasurementWithConfig } from 'apps/webapp/src/components/measurement/SelectMeasurement/types';
 import message from 'apps/webapp/src/components/notifier';
 import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
@@ -51,6 +53,7 @@ const UpdatePeriodicAlarm = () => {
   const { client, location, group, setClient } = useUserFilter();
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [isFormInitialized, setIsFormInitialized] = useState(false);
+  const queryClient = useQueryClient();
 
   const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
     uuid as string
@@ -197,6 +200,9 @@ const UpdatePeriodicAlarm = () => {
             state: { isUpdated: true },
           }
         );
+        void queryClient.invalidateQueries({
+          queryKey: [DataQueryKeys.PERIODIC_ALARM_DETAILS],
+        });
       },
       onError: (error: Error | { error: string; message: string }) => {
         const errMessage =

@@ -151,6 +151,10 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
               size="xs"
             />
           ),
+          styles: {
+            maxWidth: 'max-w-36',
+            minWidth: 'min-w-36',
+          },
         },
       },
       {
@@ -175,6 +179,9 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
                 }
               </span>
             );
+          },
+          styles: {
+            maxWidth: 'max-w-32',
           },
         },
       },
@@ -206,6 +213,9 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
               </span>
             );
           },
+          styles: {
+            maxWidth: 'max-w-32',
+          },
         },
       },
       {
@@ -223,6 +233,10 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         },
         meta: {
           sortKey: null,
+          styles: {
+            maxWidth: 'max-w-62',
+            minWidth: 'min-w-62',
+          },
         },
       },
       {
@@ -242,7 +256,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
   return (
     <CustomModal
       {...modalProps}
-      size={'75%'}
+      size={'65%'}
       title={
         <h1
           className="pl-0  text-left font-bold text-[32px] tracking-[0]

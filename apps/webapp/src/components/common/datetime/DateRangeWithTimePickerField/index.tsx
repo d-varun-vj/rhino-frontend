@@ -1,7 +1,7 @@
 import { MantineSize } from '@mantine/core';
 import { DatesRangeValue, DateValue } from '@mantine/dates';
 import { getDateRangePresets } from 'apps/webapp/src/helpers/date';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TextField from '../../input/TextField';
 import CustomDateTimePicker from '../CustomDateTimePicker';
@@ -32,6 +32,8 @@ const DateRangeWithTimePickerField = ({
   const [endTime, setEndTime] = useState('00:00:00');
   const [selectedRange, setSelectedRange] = useState('');
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const getDateRangeString = () => {
     return dateRange
       ? (dateRange?.[0] ?? ' ') +
@@ -46,8 +48,19 @@ const DateRangeWithTimePickerField = ({
 
   const disableApplyBtn = !dateRange?.[0] || !dateRange?.[1];
 
+  const handleBlur = () => {
+    setTimeout(() => {
+      const focusedElement = document.activeElement;
+      const isWithinComponent = containerRef.current?.contains(focusedElement);
+
+      if (!isWithinComponent && open) {
+        setOpen(false);
+      }
+    }, 0);
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full" ref={containerRef}>
       <TextField
         onClick={() => setOpen(!open)}
         placeholder={t('comboBox.select')}
@@ -68,6 +81,7 @@ const DateRangeWithTimePickerField = ({
             endTime: null,
           });
         }}
+        onBlur={handleBlur}
       />
       {open && (
         <div className="fixed bg-white z-40 pb-2">

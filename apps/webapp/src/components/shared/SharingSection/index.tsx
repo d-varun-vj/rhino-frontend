@@ -2,7 +2,6 @@ import { useGetLocations, useGetTenants } from '@rhino/apis';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { Skeleton } from '@mantine/core';
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { shouldSharingFieldBeVisible } from 'apps/webapp/src/helpers/sharing';
@@ -226,48 +225,42 @@ const SharingSection = ({
       </div>
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-        {isLocationSharingVisible &&
-          (!locationsLoading ? (
-            <Controller
-              name={'sharedLocations'}
-              control={control}
-              render={({ field, fieldState }) => (
-                <SharingLocationPanel
-                  value={getValidatedLocations()}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    clearErrors('sharedTenants');
-                  }}
-                  clearable
-                  disabled={!shared || shouldFieldBeDisabled || isReadOnly}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-          ) : (
-            <Skeleton height={30} />
-          ))}
-        {isTenantSharingVisible &&
-          (!tenantsLoading ? (
-            <Controller
-              name={'sharedTenants'}
-              control={control}
-              render={({ field, fieldState }) => (
-                <SharingTenantPanel
-                  value={getValidatedTenants()}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    clearErrors('sharedLocations');
-                  }}
-                  clearable
-                  disabled={!shared || shouldFieldBeDisabled || isReadOnly}
-                  error={fieldState.error?.message}
-                />
-              )}
-            />
-          ) : (
-            <Skeleton height={30} />
-          ))}
+        {isLocationSharingVisible && !locationsLoading && (
+          <Controller
+            name={'sharedLocations'}
+            control={control}
+            render={({ field, fieldState }) => (
+              <SharingLocationPanel
+                value={getValidatedLocations()}
+                onChange={(e) => {
+                  field.onChange(e);
+                  clearErrors('sharedTenants');
+                }}
+                clearable
+                disabled={!shared || shouldFieldBeDisabled || isReadOnly}
+                error={fieldState.error?.message}
+              />
+            )}
+          />
+        )}
+        {isTenantSharingVisible && !tenantsLoading && (
+          <Controller
+            name={'sharedTenants'}
+            control={control}
+            render={({ field, fieldState }) => (
+              <SharingTenantPanel
+                value={getValidatedTenants()}
+                onChange={(e) => {
+                  field.onChange(e);
+                  clearErrors('sharedLocations');
+                }}
+                clearable
+                disabled={!shared || shouldFieldBeDisabled || isReadOnly}
+                error={fieldState.error?.message}
+              />
+            )}
+          />
+        )}
       </div>
     </div>
   );

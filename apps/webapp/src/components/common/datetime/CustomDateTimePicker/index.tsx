@@ -7,6 +7,7 @@ import {
   TimePickerProps,
 } from '@mantine/dates';
 import clsx from 'clsx';
+import 'dayjs/locale/pl';
 import { useTranslation } from 'react-i18next';
 import CustomButton, { CustomButtonProps } from '../../buttons/CustomButton';
 import styles from './custom-date-time-picker.module.css';
@@ -48,12 +49,15 @@ const CustomDateTimePicker = <S extends boolean, T extends DatePickerType>({
   btnProps,
   onSelectedRange,
 }: CustomDateTimePickerProps<S, T>) => {
-  const { t } = useTranslation('components');
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation('components');
   const isRangePicker = dateProps?.type === 'range';
 
   return (
     <div className="w-fit border-rhino-indigo-blue border-[1px] rounded p-1 pb-3 mt-1">
-      <DatePicker {...dateProps} />
+      <DatePicker locale={language} {...dateProps} />
 
       {withTimeRange && (
         <div
