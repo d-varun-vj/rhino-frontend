@@ -159,157 +159,164 @@ const Table = <T,>({
   );
 
   return (
-    <div className="overflow-hidden relative w-full">
-      <div className={clsx(`p-2 overflow-auto ${extraStyles}`)}>
-        <table className={clsx('relative w-full ')}>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      className={clsx(
-                        'font-thin align-baseline pr-1.5 min-w-32 w-fit',
-                        {
-                          'sticky bg-rhino-white -right-5 pl-2 z-10':
-                            header.id === CONSTANTS.action,
-                          '!w-16 !min-w-0': header.id === 'select',
-                          'text-nowrap w-auto': textNowarp,
-                        }
-                      )}
-                    >
-                      {header.isPlaceholder ? null : (
-                        <div className="flex flex-col justify-end w-full ">
-                          <div
-                            {...{
-                              className: header.column.getCanSort()
-                                ? 'cursor-pointer select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap  gap-2 min-h-[50px] justify-start '
-                                : '',
-                              onClick: () => {
-                                setSelectedSortKey(
-                                  header.column.columnDef.meta?.sortKey ?? null
-                                );
-                                handleSortClick(header, onSortSelect);
-                              },
-                            }}
-                            data-testid={`test-${header.id}`}
-                          >
+    <div className="overflow-hidden relative w-full flex flex-col">
+      <div className={clsx(`p-2 overflow-auto flex-1 ${extraStyles}`)}>
+        <div className="min-h-[400px] relative">
+          <table className={clsx('relative w-full h-full')}>
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <th
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        className={clsx(
+                          'font-thin align-baseline pr-1.5 min-w-32 w-fit',
+                          {
+                            'sticky bg-rhino-white -right-5 pl-2 z-10':
+                              header.id === CONSTANTS.action,
+                            '!w-16 !min-w-0': header.id === 'select',
+                            'text-nowrap w-auto': textNowarp,
+                          }
+                        )}
+                      >
+                        {header.isPlaceholder ? null : (
+                          <div className="flex flex-col justify-end w-full ">
                             <div
-                              className="text-start line-clamp-none max-h-[calc(2_*_1.5rem)]  break-words leading-snug"
-                              data-testid="label"
+                              {...{
+                                className: header.column.getCanSort()
+                                  ? 'cursor-pointer select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap  gap-2 min-h-[50px] justify-start '
+                                  : '',
+                                onClick: () => {
+                                  setSelectedSortKey(
+                                    header.column.columnDef.meta?.sortKey ??
+                                      null
+                                  );
+                                  handleSortClick(header, onSortSelect);
+                                },
+                              }}
+                              data-testid={`test-${header.id}`}
                             >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}{' '}
-                            </div>
-                            <div
-                              className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'}`}
-                              data-testid="sort-indicator"
-                            >
-                              {getSortIndicator(
-                                header.column.columnDef.meta,
-                                selectedSortKey
-                              )}
-                            </div>
-                          </div>
-                          <div className="flex justify-start w-full">
-                            {header.column.getCanFilter() ? (
                               <div
-                                className={`text-rhino-indigo-blue flex w-full`}
+                                className="text-start line-clamp-none max-h-[calc(2_*_1.5rem)]  break-words leading-snug"
+                                data-testid="label"
                               >
-                                <Filter
-                                  column={header.column}
-                                  onFilterChange={handleFilterChange}
-                                />
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}{' '}
                               </div>
-                            ) : null}
+                              <div
+                                className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'}`}
+                                data-testid="sort-indicator"
+                              >
+                                {getSortIndicator(
+                                  header.column.columnDef.meta,
+                                  selectedSortKey
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex justify-start w-full">
+                              {header.column.getCanFilter() ? (
+                                <div
+                                  className={`text-rhino-indigo-blue flex w-full`}
+                                >
+                                  <Filter
+                                    column={header.column}
+                                    onFilterChange={handleFilterChange}
+                                  />
+                                </div>
+                              ) : null}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            ))}
-          </thead>
-          {/* Table Data Body */}
+                        )}
+                      </th>
+                    );
+                  })}
+                </tr>
+              ))}
+            </thead>
 
-          <tbody>
-            {!isLoading && table.getCoreRowModel().rows.length !== 0 && (
-              <>
-                {table.getCoreRowModel().rows.map((row) => {
-                  return (
-                    <tr key={row.id} className={`odd:bg-[#03030405]`}>
-                      {row.getVisibleCells().map((cell) => {
-                        return (
-                          <td
-                            key={cell.id}
-                            className={clsx(
-                              'p-[.75rem] align-top first:pl-[.75rem] relative pl-0',
-                              {
-                                'sticky -right-5 bg-white':
-                                  cell.column.id === CONSTANTS.action,
-                              }
-                            )}
-                          >
-                            <div
+            {/* Table Data Body */}
+            <tbody className="relative">
+              {!isLoading && table.getCoreRowModel().rows.length !== 0 && (
+                <>
+                  {table.getCoreRowModel().rows.map((row) => {
+                    return (
+                      <tr key={row.id} className={`odd:bg-[#03030405]`}>
+                        {row.getVisibleCells().map((cell) => {
+                          return (
+                            <td
+                              key={cell.id}
                               className={clsx(
-                                'text-[13px] min-w-32 w-fit mr-5',
+                                'p-[.75rem] align-top first:pl-[.75rem] relative pl-0',
                                 {
-                                  'text-nowrap':
-                                    cell.column.id === 'value' ||
-                                    cell.column.id === 'read-time',
-                                  'overflow-visible':
+                                  'sticky -right-5 bg-white !align-middle':
                                     cell.column.id === CONSTANTS.action,
-                                  '!w-16 !min-w-0': cell.column.id === 'select',
-                                  'text-nowrap h-fit': size == 'sm',
-                                  'text-nowrap w-auto overflow-y-auto':
-                                    textNowarp,
                                 }
                               )}
                             >
-                              {cell.column.columnDef.meta?.renderCell
-                                ? cell.column.columnDef.meta.renderCell(
-                                    cell.getValue(),
-                                    cell.row.original
-                                  )
-                                : flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext()
-                                  )}
-                            </div>
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </>
-            )}
+                              <div
+                                className={clsx(
+                                  'text-[13px] min-w-32 w-fit mr-5',
+                                  {
+                                    'text-nowrap':
+                                      cell.column.id === 'value' ||
+                                      cell.column.id === 'read-time',
+                                    'overflow-visible':
+                                      cell.column.id === CONSTANTS.action,
+                                    '!w-16 !min-w-0':
+                                      cell.column.id === 'select',
+                                    'text-nowrap h-fit': size == 'sm',
+                                    'text-nowrap w-auto overflow-y-auto':
+                                      textNowarp,
+                                  }
+                                )}
+                              >
+                                {cell.column.columnDef.meta?.renderCell
+                                  ? cell.column.columnDef.meta.renderCell(
+                                      cell.getValue(),
+                                      cell.row.original
+                                    )
+                                  : flexRender(
+                                      cell.column.columnDef.cell,
+                                      cell.getContext()
+                                    )}
+                              </div>
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </>
+              )}
 
-            {!isLoading && data.length === 0 && (
-              <div className="flex items-center h-52">
-                <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute w-full mt-10">
-                  {emptyText || t('table.notFound', { ns: 'common' })}
+              {!isLoading && data.length === 0 && (
+                <div className="absolute inset-0 flex items-center justify-center min-h-[300px]">
+                  <div className="text-[13px] text-rhino-indigo-blue ">
+                    {emptyText || t('table.notFound', { ns: 'common' })}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {isLoading && (
-              <div className="flex items-center h-52">
-                <div className="text-[13px] py-5 text-rhino-indigo-blue flex justify-center items-center  bg-gray-50 absolute w-full mt-10">
-                  <Loader color="var(--color-rhino-indigo-blue)" size={'sm'} />
+              {isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center min-h-[300px]">
+                  <div className="text-[13px] text-rhino-indigo-blue">
+                    <Loader
+                      color="var(--color-rhino-indigo-blue)"
+                      size={'sm'}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
-          </tbody>
-        </table>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-      {/* Footer */}
 
+      {/* Footer */}
       {footer && <TableFooter pagination={footer} />}
     </div>
   );

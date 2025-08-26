@@ -252,23 +252,21 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         </h1>
       }
     >
-      <div>
-        <Table
-          columns={columns}
-          data={executionRes ? executionRes.data : []}
-          textNowarp
-          onFilterChange={onFilterChange}
-          footer={{
-            currentPage: page,
-            pageSize: pageSize,
-            totalCount: executionRes ? executionRes.meta.totalItems : 0,
-            setCurrentPage: setPage,
-            setPageSize: setPageSize,
-          }}
-          onSortSelect={onSortClick}
-          isLoading={isLoading}
-        />
-      </div>
+      <Table
+        columns={columns}
+        data={executionRes ? executionRes.data : []}
+        textNowarp
+        onFilterChange={onFilterChange}
+        footer={{
+          currentPage: page,
+          pageSize: pageSize,
+          totalCount: executionRes ? executionRes.meta.totalItems : 0,
+          setCurrentPage: setPage,
+          setPageSize: setPageSize,
+        }}
+        onSortSelect={onSortClick}
+        isLoading={isLoading}
+      />
     </CustomModal>
   );
 };

@@ -219,15 +219,18 @@ const UpdatePeriodicAlarm = () => {
           delayInDays: values.delayInDays,
           comparisonMeasure: values.comparisonMeasure,
           thresholdType: values.thresholdType,
-          ...(!!values.thresholdValue && {
-            thresholdValue: values.thresholdValue,
-          }),
-          ...(!!values.thresholdStartValue && {
-            thresholdStartValue: values.thresholdStartValue,
-          }),
-          ...(!!values.thresholdEndValue && {
-            thresholdEndValue: values.thresholdEndValue,
-          }),
+          ...(values.thresholdValue !== null &&
+            values.thresholdValue !== undefined && {
+              thresholdValue: values.thresholdValue,
+            }),
+          ...(values.thresholdStartValue !== null &&
+            values.thresholdStartValue !== undefined && {
+              thresholdStartValue: values.thresholdStartValue,
+            }),
+          ...(values.thresholdEndValue !== null &&
+            values.thresholdEndValue !== undefined && {
+              thresholdEndValue: values.thresholdEndValue,
+            }),
           sendOnlyWhenExceeded: values.sendOnlyWhenExceeded,
           language: values.language,
         },

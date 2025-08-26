@@ -165,7 +165,6 @@ const MeasurementsWithActionsTable = ({
             data={selectedMeasurements}
             onFilterChange={() => {}}
             emptyText={t(translationBaseRoute + 'emptyMessage')}
-            size="sm"
           />
         </div>
       ) : (

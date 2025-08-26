@@ -47,7 +47,7 @@ const DateRangeWithTimePickerField = ({
   const disableApplyBtn = !dateRange?.[0] || !dateRange?.[1];
 
   return (
-    <div>
+    <div className="w-full">
       <TextField
         onClick={() => setOpen(!open)}
         placeholder={t('comboBox.select')}
