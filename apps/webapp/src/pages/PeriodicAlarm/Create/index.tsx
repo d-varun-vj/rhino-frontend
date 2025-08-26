@@ -122,8 +122,6 @@ const CreatePeriodicAlarm = () => {
         title={t('create.mainHeader')}
         topRibbon={{
           hideFavoriteMeter: true,
-          hideLocations: true,
-          hideGroup: true,
         }}
       >
         <FormProvider {...methods}>

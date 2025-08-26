@@ -8,7 +8,7 @@ import {
 } from '@rhino/apis';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   PeriodicAlarmSchema,
   buildPeriodicAlarmSchema,
@@ -65,6 +65,7 @@ const UpdatePeriodicAlarm = () => {
 
   const [selectedMediumType, setSelectedMediumType] =
     useState<SelectedMediumType | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -108,6 +109,9 @@ const UpdatePeriodicAlarm = () => {
       name: alarmDetails.data.client.name,
       uuid: alarmDetails.data.client.uuid,
     });
+
+    searchParams.set('client', alarmDetails.data.client.uuid);
+    setSearchParams(searchParams);
 
     setSelectedMediumType({
       mappId: alarmDetails.data.meteringPointTypeDto.mappId,
@@ -162,7 +166,7 @@ const UpdatePeriodicAlarm = () => {
       reset(formData);
       setIsFormInitialized(true);
     });
-  }, [alarmDetails?.data, reset, setClient]);
+  }, [alarmDetails?.data, reset, setClient, searchParams, setSearchParams]);
 
   useEffect(() => {
     if (isError) {
@@ -299,11 +303,7 @@ const UpdatePeriodicAlarm = () => {
         }
         topRibbon={{
           hideFavoriteMeter: true,
-          hideGroup: true,
-          hideLocations: true,
           disableClient: true,
-          disableLocation: true,
-          disableGroup: true,
         }}
       >
         {!shouldShowForm ? (

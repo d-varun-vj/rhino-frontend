@@ -363,7 +363,6 @@ const PeriodicAlarm = () => {
         title={t('sideMenu.periodicAlarm', { ns: 'layout' })}
         topRibbon={{
           hideFavoriteMeter: true,
-          hideLocations: true,
           hideGroup: true,
         }}
       >
