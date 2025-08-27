@@ -182,6 +182,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
           },
           styles: {
             maxWidth: 'max-w-28',
+            minWidth: 'min-w-28',
           },
         },
       },
@@ -215,6 +216,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
           },
           styles: {
             maxWidth: 'max-w-28',
+            minWidth: 'min-w-28',
           },
         },
       },
@@ -229,7 +231,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
               formatDateTime(info.row.original.endRange)
             );
           }
-          return ' - ';
+          return '-';
         },
         meta: {
           sortKey: null,
@@ -245,6 +247,10 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         header: t('execution.table.action'),
         meta: {
           sortKey: null,
+          styles: {
+            maxWidth: 'max-w-44',
+            minWidth: 'min-w-44',
+          },
         },
         cell: ({ row }: { row: Row<PeriodicAlarmExecution> }) =>
           ActionCellFn(row),
