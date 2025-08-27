@@ -152,8 +152,8 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
             />
           ),
           styles: {
-            maxWidth: 'max-w-36',
-            minWidth: 'min-w-36',
+            maxWidth: 'max-w-62',
+            minWidth: 'min-w-62',
           },
         },
       },
@@ -181,7 +181,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
             );
           },
           styles: {
-            maxWidth: 'max-w-32',
+            maxWidth: 'max-w-28',
           },
         },
       },
@@ -214,7 +214,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
             );
           },
           styles: {
-            maxWidth: 'max-w-32',
+            maxWidth: 'max-w-28',
           },
         },
       },
@@ -229,7 +229,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
               formatDateTime(info.row.original.endRange)
             );
           }
-          return '-';
+          return ' - ';
         },
         meta: {
           sortKey: null,
