@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.13.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.12.1...webapp-v1.13.0) (2025-08-27)
+
+
+### Features
+
+* Implement moment of execution filter for execution model [PRD-3275] ([#133](https://github.com/Rhino-Energy/rhino-frontend/issues/133)) ([ffc1422](https://github.com/Rhino-Energy/rhino-frontend/commit/ffc1422ad3b61287072a189320802b04b4a3e6ed))
+
+
+### Bug Fixes
+
+* Fix Ribbon panel behaviour in periodic alarm ([#136](https://github.com/Rhino-Energy/rhino-frontend/issues/136)) ([1a991b1](https://github.com/Rhino-Energy/rhino-frontend/commit/1a991b1b8b4be6cf6fee732e31ad7f3ba2f546c6))
+* Fix styling in executions modal and add polish translations in date picker - [PRD-3280] ([#137](https://github.com/Rhino-Energy/rhino-frontend/issues/137)) ([0631d08](https://github.com/Rhino-Energy/rhino-frontend/commit/0631d08d24ef562eeffe43c741935e2a8ab01e99))
+* Resolve alarm save bug with zero threshold values, improve measurement table layout, and stabilize executions modal sizing ([#135](https://github.com/Rhino-Energy/rhino-frontend/issues/135)) ([82b0961](https://github.com/Rhino-Energy/rhino-frontend/commit/82b096154f99c4b38edf98b23a1e9987cceb191d))
+* Resolve execution modal scrolling issue ([#139](https://github.com/Rhino-Energy/rhino-frontend/issues/139)) ([13763c2](https://github.com/Rhino-Energy/rhino-frontend/commit/13763c260b4437e40d1c419ab3e52fc23c75696c))
+* Resolve moment of occurrence filter visibility issue in periodic alarm execution [PRD-3275] ([#138](https://github.com/Rhino-Energy/rhino-frontend/issues/138)) ([b8787ac](https://github.com/Rhino-Energy/rhino-frontend/commit/b8787ac3bbfb33280e005766c78058fce804e05f))
+
 ## [1.12.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.12.0...webapp-v1.12.1) (2025-08-25)
 
 
