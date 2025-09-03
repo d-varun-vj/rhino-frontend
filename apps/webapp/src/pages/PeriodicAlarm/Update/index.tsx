@@ -23,7 +23,9 @@ import {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from '@mantine/core';
+import { formatLocalDateTime } from '@rhino/utils';
 import { useQueryClient } from '@tanstack/react-query';
+import AuditInfoCard from 'apps/webapp/src/components/common/cards/AuditInfoCard';
 import { MeasurementWithConfig } from 'apps/webapp/src/components/measurement/SelectMeasurement/types';
 import message from 'apps/webapp/src/components/notifier';
 import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
@@ -296,6 +298,23 @@ const UpdatePeriodicAlarm = () => {
     [alarmDetails?.data.hasCreatorAccess]
   );
 
+  const auditInfo = {
+    author: alarmDetails?.data.auditInfo.authorEmail || '',
+    createdAt: alarmDetails?.data.auditInfo.createdAt
+      ? formatLocalDateTime(
+          alarmDetails?.data.auditInfo.createdAt,
+          'yyyy-MM-dd HH:mm'
+        )
+      : '',
+    updatedBy: alarmDetails?.data.auditInfo.editorEmail,
+    lastUpdatedAt:
+      alarmDetails?.data.auditInfo.updatedAt &&
+      formatLocalDateTime(
+        alarmDetails?.data.auditInfo.updatedAt,
+        'yyyy-MM-dd HH:mm'
+      ),
+  };
+
   const shouldShowForm = !isLoading && isFormInitialized && alarmDetails?.data;
 
   return (
@@ -352,6 +371,9 @@ const UpdatePeriodicAlarm = () => {
                         selectedMediumType={selectedMediumType}
                       />
                       <RecipientDetails isReadOnly={isReadOnly} />
+                    </div>
+                    <div>
+                      <AuditInfoCard {...auditInfo} />
                     </div>
                   </div>
                 </div>

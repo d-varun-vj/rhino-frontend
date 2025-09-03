@@ -31,3 +31,10 @@ export const LanguageMap: Record<'en' | 'pl', Languages> = {
   en: Languages.EN,
   pl: Languages.PL,
 };
+
+export type AuditInfo = {
+  authorEmail: string;
+  createdAt: string;
+  editorEmail: string;
+  updatedAt: string;
+};

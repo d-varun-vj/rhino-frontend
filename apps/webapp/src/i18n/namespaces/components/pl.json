@@ -106,5 +106,11 @@
       "thisMonth": "Ten miesiąc",
       "lastMonth": "Poprzedni miesiąc"
     }
+  },
+  "auditInfo": {
+    "author": "Autor",
+    "createdAt": "Utworzony o",
+    "updatedBy": "Modyfikowany przez",
+    "lastUpdatedAt": "Ostatnio modyfikowany o"
   }
 }

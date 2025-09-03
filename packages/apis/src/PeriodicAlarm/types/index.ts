@@ -1,6 +1,6 @@
 import { Sort } from '@rhino/utils';
 import { ClientInfo } from '../../Clients';
-import { MeteringPointTypes } from '../../Common/types';
+import { AuditInfo, MeteringPointTypes } from '../../Common/types';
 import { Location } from '../../Locations';
 import { MeasurementType } from '../../Measurement/types';
 
@@ -129,4 +129,5 @@ export interface PeriodicAlarmDetail {
   isManageable: boolean;
   hasCreatorAccess: boolean;
   timezone: string;
+  auditInfo: AuditInfo;
 }
