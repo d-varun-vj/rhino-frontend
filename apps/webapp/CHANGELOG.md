@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.13.0...webapp-v1.14.0) (2025-09-09)
+
+
+### Features
+
+* Panel for author and editor [PRD-3277] ([#140](https://github.com/Rhino-Energy/rhino-frontend/issues/140)) ([4a5e31c](https://github.com/Rhino-Energy/rhino-frontend/commit/4a5e31c9e841a59650e8f33d18e8e02c083f9c3f))
+* Trigger lint and test for 1.14.0 [PRD-3324] ([#145](https://github.com/Rhino-Energy/rhino-frontend/issues/145)) ([66ea5f7](https://github.com/Rhino-Energy/rhino-frontend/commit/66ea5f7d48b71cb1794dbd607c2db653711f3296))
+
 ## [1.13.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.12.1...webapp-v1.13.0) (2025-08-27)
 
 
