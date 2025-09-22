@@ -109,8 +109,8 @@
   },
   "auditInfo": {
     "author": "Autor",
-    "createdAt": "Utworzony o",
-    "updatedBy": "Modyfikowany przez",
-    "lastUpdatedAt": "Ostatnio modyfikowany o"
+    "createdAt": "Data utworzenia",
+    "updatedBy": "Edytowany przez",
+    "lastUpdatedAt": "Data edycji"
   }
 }
