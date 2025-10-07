@@ -2,6 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { PeriodicAlarmSchema, i18nBase } from '../../validation';
 
 import MultiTextField from 'apps/webapp/src/components/common/input/MultiTextField';
+import { feature } from 'apps/webapp/src/featureFlag';
 import { useTranslation } from 'react-i18next';
 import { tFormBase } from '../../config';
 import SectionWrapper from '../SectionWrapper';
@@ -49,29 +50,31 @@ const RecipientDetails = ({ isReadOnly = false }: RecipientDetailsProps) => {
           }}
         />
 
-        <Controller
-          name="phoneNumber"
-          control={control}
-          render={({ field, fieldState }) => {
-            let errMessage = fieldState.error?.message;
-            if (
-              Array.isArray(errors.phoneNumber) &&
-              errors.phoneNumber?.some(Boolean)
-            ) {
-              errMessage = t(i18nBase + 'phoneNumber');
-            }
-            return (
-              <MultiTextField
-                {...field}
-                label={t(tFormBase + 'recipient.sms.title')}
-                placeholder={t(tFormBase + 'recipient.sms.placeholder')}
-                onChange={(val) => field.onChange(val ?? '')}
-                error={errMessage}
-                disabled={isReadOnly}
-              />
-            );
-          }}
-        />
+        {feature.ENABLE_PERIODIC_ALARM_SMS_PANEL && (
+          <Controller
+            name="phoneNumber"
+            control={control}
+            render={({ field, fieldState }) => {
+              let errMessage = fieldState.error?.message;
+              if (
+                Array.isArray(errors.phoneNumber) &&
+                errors.phoneNumber?.some(Boolean)
+              ) {
+                errMessage = t(i18nBase + 'phoneNumber');
+              }
+              return (
+                <MultiTextField
+                  {...field}
+                  label={t(tFormBase + 'recipient.sms.title')}
+                  placeholder={t(tFormBase + 'recipient.sms.placeholder')}
+                  onChange={(val) => field.onChange(val ?? '')}
+                  error={errMessage}
+                  disabled={isReadOnly}
+                />
+              );
+            }}
+          />
+        )}
       </div>
     </SectionWrapper>
   );
