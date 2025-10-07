@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
+    types: [opened, synchronize, reopened, edited]
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
