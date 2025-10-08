@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.15.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.14.0...webapp-v1.15.0) (2025-10-07)
+
+
+### Features
+
+* Hide SMS panel in periodic alarm [PRD-3381] ([#148](https://github.com/Rhino-Energy/rhino-frontend/issues/148)) ([e041d92](https://github.com/Rhino-Energy/rhino-frontend/commit/e041d928e824c48b5ce8ae4efd31f567966fb0c4))
+
+
+### Bug Fixes
+
+* Make consistent translations of author-editor panel [PRD-3309] ([#146](https://github.com/Rhino-Energy/rhino-frontend/issues/146)) ([1400b1b](https://github.com/Rhino-Energy/rhino-frontend/commit/1400b1b750745b0319fd10dfca6ee8bca2b09fa4))
+
 ## [1.14.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.13.0...webapp-v1.14.0) (2025-09-09)
 
 
