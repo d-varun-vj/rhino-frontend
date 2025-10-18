@@ -14,7 +14,7 @@ run-name: "Build for production & Push Image"
 jobs:
   create-release-tag:
     name: Create/Update Release PR
-    runs-on: self-hosted
+    runs-on: arc-sm
     outputs:
       webapp-release-tag-name: ${{ steps.release.outputs['apps/webapp--tag_name'] }}
       webapp-release-version: ${{ steps.release.outputs['apps/webapp--major'] }}.${{ steps.release.outputs['apps/webapp--minor'] }}.${{ steps.release.outputs['apps/webapp--patch'] }}
@@ -26,7 +26,7 @@ jobs:
           target-branch: ${{ contains(github.ref_name, 'hotfix-') && github.ref_name ||  github.event.repository.default_branch }}
   publish-image-webapp:
     name: Publish Production Image webapp
-    runs-on: self-hosted
+    runs-on: arc-md
     needs: create-release-tag
     if: ${{ needs.create-release-tag.outputs.webapp-release-created == 'true' }}
     outputs:

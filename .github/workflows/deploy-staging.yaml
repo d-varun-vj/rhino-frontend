@@ -17,7 +17,7 @@ concurrency:
 jobs:
   create-release-tag-webapp:
     name: Create Release Tag Webapp
-    runs-on: self-hosted
+    runs-on: arc-sm
     outputs:
       tag: ${{ steps.create-tag.outputs.next_tag }}
       version: ${{ steps.create-tag.outputs.next_version }}
@@ -100,7 +100,7 @@ jobs:
 
   publish-image-webapp:
     name: Publish Image Webapp Staging
-    runs-on: self-hosted
+    runs-on: arc-md
     needs: create-release-tag-webapp
     outputs:
       tag: ${{ needs.create-release-tag-webapp.outputs.tag }}
