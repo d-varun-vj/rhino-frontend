@@ -2,6 +2,10 @@ import { DatePickerPreset } from '@mantine/dates';
 import dayjs from 'dayjs';
 import { TFunction } from 'i18next';
 
+export const getCurrentDateAsString = (format: string): string => {
+  return dayjs().format(format);
+};
+
 export const getDateRangePresets = ({
   t,
 }: {

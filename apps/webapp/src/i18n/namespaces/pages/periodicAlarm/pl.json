@@ -22,6 +22,7 @@
   "create": {
     "success": "Alarm okresowy został pomyślnie utworzony",
     "mainHeader": "Utwórz alarm okresowy",
+    "defaultName": "Alarm okresowy - {{date}}",
     "form": {
       "basic": {
         "title": "Podstawowe informacje",

@@ -22,6 +22,7 @@
   "create": {
     "success": "Periodic alarm created successfully",
     "mainHeader": "Create periodic alarm",
+    "defaultName": "Periodic Alarm - {{date}}",
     "form": {
       "basic": {
         "title": "Basic Information",

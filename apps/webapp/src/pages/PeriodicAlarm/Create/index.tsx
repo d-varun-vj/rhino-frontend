@@ -10,6 +10,7 @@ import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
 import { GUIDE_LINKS } from 'apps/webapp/src/constant/guide-links';
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
+import { getCurrentDateAsString } from 'apps/webapp/src/helpers/date';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import MainLayout from 'apps/webapp/src/layouts/MainLayout';
 import { locations } from 'apps/webapp/src/routes/locations';
@@ -59,6 +60,9 @@ const CreatePeriodicAlarm = () => {
       isActive: true,
       readOnly: true,
       shared: false,
+      name: t('create.defaultName', {
+        date: getCurrentDateAsString('DD-MM-YYYY HH:mm'),
+      }),
       generationTime: '07:00',
       delayInDays: 0,
       sharedLocations: [],
