@@ -59,6 +59,7 @@ const CreatePeriodicAlarm = () => {
       isActive: true,
       readOnly: true,
       shared: false,
+      generationTime: '07:00',
       delayInDays: 0,
       sharedLocations: [],
       sharedTenants: [],
