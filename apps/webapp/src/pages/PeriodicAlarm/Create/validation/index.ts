@@ -149,24 +149,6 @@ export const buildPeriodicAlarmSchema = (
     )
     .refine(
       (data) => {
-        const _shouldShowThresholdValue = shouldShowThresholdValue(
-          data.compareWithPeriod as PeriodicAlarmCompareWith,
-          data.thresholdType as PeriodicAlarmThresholdType
-        );
-        if (_shouldShowThresholdValue) {
-          return (
-            data.thresholdValue !== undefined && data.thresholdValue !== null
-          );
-        }
-        return true;
-      },
-      {
-        message: t(i18nBase + 'thresholdValue'),
-        path: ['thresholdValue'],
-      }
-    )
-    .refine(
-      (data) => {
         const shouldShowStartEndFields = shouldShowStartAndEndThresholdValue(
           data.thresholdType as PeriodicAlarmThresholdType
         );
@@ -199,6 +181,34 @@ export const buildPeriodicAlarmSchema = (
       {
         message: t(i18nBase + 'thresholdEndValue'),
         path: ['thresholdEndValue'],
+      }
+    )
+    .refine(
+      (data) => {
+        const thresholdType = data.thresholdType as PeriodicAlarmThresholdType;
+        const shouldShow = shouldShowThresholdValue(
+          data.compareWithPeriod as PeriodicAlarmCompareWith,
+          thresholdType
+        );
+
+        if (!shouldShow) return true;
+
+        const value = data.thresholdValue;
+
+        if (value === null || value === undefined) return false;
+
+        const isPercentType = [
+          PeriodicAlarmThresholdType.ABOVE_PERCENT,
+          PeriodicAlarmThresholdType.BELOW_PERCENT,
+        ].includes(thresholdType);
+
+        if (isPercentType && value < 0) return false;
+
+        return true;
+      },
+      {
+        message: t(i18nBase + 'thresholdValue'),
+        path: ['thresholdValue'],
       }
     )
     .superRefine((data, ctx) => {
