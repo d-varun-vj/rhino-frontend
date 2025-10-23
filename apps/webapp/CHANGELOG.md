@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.16.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.15.0...webapp-v1.16.0) (2025-10-20)
+
+
+### Features
+
+* Implement auto-population for the Name field in Create Alarm Flow [PRD-3408] ([#152](https://github.com/Rhino-Energy/rhino-frontend/issues/152)) ([c46361c](https://github.com/Rhino-Energy/rhino-frontend/commit/c46361c4396173d9a214bb67a587a7856c4603ab))
+* Populate planned generation time automatically [PRD-3421] ([#151](https://github.com/Rhino-Energy/rhino-frontend/issues/151)) ([6aeb047](https://github.com/Rhino-Energy/rhino-frontend/commit/6aeb0473c6f06df5cf4db6d5b3fdf4ced866ebca))
+
 ## [1.15.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.14.0...webapp-v1.15.0) (2025-10-07)
 
 
