@@ -194,12 +194,16 @@ export const buildPeriodicAlarmSchema = (
 
         if (value === null || value === undefined) return false;
 
-        const isPercentType = [
-          PeriodicAlarmThresholdType.ABOVE_PERCENT,
-          PeriodicAlarmThresholdType.BELOW_PERCENT,
-        ].includes(thresholdType);
-
-        if (isPercentType && value < 0) return false;
+        if (
+          PeriodicAlarmThresholdType.ABOVE_PERCENT === thresholdType &&
+          value < 0
+        )
+          return false;
+        if (
+          PeriodicAlarmThresholdType.BELOW_PERCENT === thresholdType &&
+          (value < 0 || value > 100)
+        )
+          return false;
 
         return true;
       },
