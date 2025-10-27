@@ -15,7 +15,7 @@ import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import MainLayout from 'apps/webapp/src/layouts/MainLayout';
 import { locations } from 'apps/webapp/src/routes/locations';
 import AccessAuthorizer from 'apps/webapp/src/wrappers/AccessAuthorizer';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,6 @@ import {
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
   PeriodicAlarmPeriod,
-  SelectedMediumType,
 } from '../types';
 import { COMPARISON_MEASURE_TYPE_OPTIONS } from './config';
 import AlarmCriteria from './sections/AlarmCriteria';
@@ -42,9 +41,6 @@ const CreatePeriodicAlarm = () => {
   const { user } = useUser();
 
   const { mutate: createAlarm, isPending } = usePostPeriodicAlarm();
-
-  const [selectedMediumType, setSelectedMediumType] =
-    useState<SelectedMediumType | null>(null);
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -140,9 +136,7 @@ const CreatePeriodicAlarm = () => {
                 />
                 <div className="grid min-lg:grid-cols-5 gap-14 w-full">
                   <div className="flex gap-8 py-2 flex-col col-span-3">
-                    <BasicInformation
-                      setSelectedMediumType={setSelectedMediumType}
-                    />
+                    <BasicInformation />
                     <MomentOfExecution
                       resetThresholdValues={resetThresholdValues}
                     />
@@ -151,17 +145,13 @@ const CreatePeriodicAlarm = () => {
                     />
                     <AlarmCriteria
                       resetThresholdValues={resetThresholdValues}
-                      selectedMediumType={selectedMediumType}
                     />
                     <RecipientDetails />
                   </div>
                 </div>
               </div>
             </div>
-            <FormFooter
-              selectedMediumTypeMappId={selectedMediumType?.mappId || null}
-              isPending={isPending}
-            />
+            <FormFooter isPending={isPending} />
           </form>
         </FormProvider>
       </MainLayout>

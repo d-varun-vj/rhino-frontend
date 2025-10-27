@@ -100,7 +100,6 @@ export const buildPeriodicAlarmReqForm = (
   return {
     name: values.name,
     clientUuid: values.clientUuid,
-    meteringPointTypeId: values.meteringPointTypeId,
     measurementUuids: values.measurementUuids,
     configuration: {
       generationDay: values.generationDay ?? 1,

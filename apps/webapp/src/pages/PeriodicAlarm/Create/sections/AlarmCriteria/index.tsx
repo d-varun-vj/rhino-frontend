@@ -26,15 +26,10 @@ import SectionWrapper from '../SectionWrapper';
 interface AlarmCriteriaProps {
   isReadOnly?: boolean;
   resetThresholdValues: () => void;
-  selectedMediumType?: {
-    name: string | null;
-    unit: string | null;
-  } | null;
 }
 
 const AlarmCriteria = ({
   resetThresholdValues,
-  selectedMediumType,
   isReadOnly = false,
 }: AlarmCriteriaProps) => {
   const { control, watch, resetField, clearErrors } =
@@ -146,8 +141,7 @@ const AlarmCriteria = ({
                     onBlur={field.onBlur}
                     searchable={false}
                     error={fieldState.error?.message}
-                    disabled={!selectedMediumType || isReadOnly}
-                    title={t(tFormBase + 'emptyMediumType')}
+                    disabled={isReadOnly}
                   />
                 )}
               />
@@ -173,7 +167,7 @@ const AlarmCriteria = ({
                   <NumberField
                     key={`${selectedAnalysisPeriod}-${selectedCompareWith}`}
                     label={t(tFormBase + 'alarmCriteria.thresholdValue.title', {
-                      unit: `(${shouldUnitPercent ? '%' : selectedMediumType?.unit || '-'})`,
+                      unit: `${shouldUnitPercent ? '(%)' : ' '}`,
                     })}
                     required
                     decimalScale={2}
@@ -210,7 +204,7 @@ const AlarmCriteria = ({
                     label={t(
                       tFormBase + 'alarmCriteria.thresholdStartValue.title',
                       {
-                        unit: `(${shouldUnitPercent ? '%' : selectedMediumType?.unit || '-'})`,
+                        unit: `${shouldUnitPercent ? '(%)' : ' '}`,
                       }
                     )}
                     required
@@ -246,7 +240,7 @@ const AlarmCriteria = ({
                     label={t(
                       tFormBase + 'alarmCriteria.thresholdEndValue.title',
                       {
-                        unit: `(${shouldUnitPercent ? '%' : selectedMediumType?.unit || '-'})`,
+                        unit: `${shouldUnitPercent ? '(%)' : ' '}`,
                       }
                     )}
                     required

@@ -1,29 +1,25 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { Languages, useGetMeteringPointTypes } from '@rhino/apis';
+import { Languages } from '@rhino/apis';
 import CustomSelect from 'apps/webapp/src/components/common/comboboxes/CustomSelect';
 import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
 import TextField from 'apps/webapp/src/components/common/input/TextField';
 import Toggle from 'apps/webapp/src/components/common/input/Toggle';
 import SharingSection from 'apps/webapp/src/components/shared/SharingSection';
-import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import moment from 'moment-timezone';
 import { useTranslation } from 'react-i18next';
-import { SelectedMediumType } from '../../../types';
 import { LANGUAGES, tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
 interface BasicInformationProps {
-  setSelectedMediumType: ({ mappId, name, unit }: SelectedMediumType) => void;
   isReadOnly?: boolean;
   hasCreatorAccess?: boolean;
   isUpdate?: boolean;
 }
 
 const BasicInformation = ({
-  setSelectedMediumType,
   isReadOnly = false,
   hasCreatorAccess = true,
   isUpdate = false,
@@ -31,15 +27,9 @@ const BasicInformation = ({
   const {
     control,
     register,
-    resetField,
     formState: { errors },
   } = useFormContext<PeriodicAlarmSchema>();
-  const { t, i18n } = useTranslation('periodicAlarm');
-  const { client } = useUserFilter();
-  const { data: meteringPointTypesRes } = useGetMeteringPointTypes({
-    clientUuid: client ? client?.uuid : null,
-    queryKey: [i18n.language],
-  });
+  const { t } = useTranslation('periodicAlarm');
 
   const TIMEZONES = useMemo(() => {
     return moment.tz
@@ -50,10 +40,6 @@ const BasicInformation = ({
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
   }, []);
-
-  useEffect(() => {
-    resetField('meteringPointTypeId');
-  }, [client, resetField]);
 
   return (
     <SectionWrapper title={t(tFormBase + 'basic.title')} id="basic-information">
@@ -91,40 +77,6 @@ const BasicInformation = ({
       )}
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-        <Controller
-          name="meteringPointTypeId"
-          control={control}
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <CustomSelect
-              key={i18n.language}
-              label={t(tFormBase + 'basic.mediumType')}
-              required
-              data={meteringPointTypesRes?.data.map((mediumTypeData) => ({
-                label: mediumTypeData.name,
-                value: mediumTypeData.id.toString(),
-              }))}
-              value={field.value?.toString() || null}
-              onChange={(val) => {
-                field.onChange(val ? +val : -1);
-                const selectedVal = meteringPointTypesRes?.data.find(
-                  (type) => type.id === (val ? +val : '')
-                );
-
-                setSelectedMediumType({
-                  mappId: selectedVal?.mappId ?? null,
-                  name: selectedVal?.name ?? null,
-                  unit: selectedVal?.unit ?? null,
-                });
-              }}
-              onBlur={field.onBlur}
-              disabled={!client || isReadOnly}
-              title={t('Select client')}
-              error={fieldState.error?.message}
-              clearable
-            />
-          )}
-        />
         <Controller
           name="timezone"
           control={control}

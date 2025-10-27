@@ -1,6 +1,6 @@
 import { Sort } from '@rhino/utils';
 import { ClientInfo } from '../../Clients';
-import { AuditInfo, MeteringPointTypes } from '../../Common/types';
+import { AuditInfo } from '../../Common/types';
 import { Location } from '../../Locations';
 import { MeasurementType } from '../../Measurement/types';
 
@@ -32,7 +32,6 @@ export interface PeriodicAlarmFilter {
 export type PeriodicAlarmReq = {
   name: string;
   clientUuid: string;
-  meteringPointTypeId: number;
   measurementUuids: string[];
   configuration: {
     generationDay?: number;
@@ -90,7 +89,6 @@ export interface PeriodicAlarmDetail {
   uuid: string;
   name: string;
   client: ClientInfo;
-  meteringPointTypeDto: MeteringPointTypes;
   measurements: MeasurementType[];
   configuration: {
     generationTime: string;

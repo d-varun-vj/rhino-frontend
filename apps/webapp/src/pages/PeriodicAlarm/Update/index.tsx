@@ -18,7 +18,6 @@ import {
   PeriodicAlarmCompareWith,
   PeriodicAlarmPeriod,
   PeriodicAlarmThresholdType,
-  SelectedMediumType,
 } from '../types';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -68,8 +67,6 @@ const UpdatePeriodicAlarm = () => {
     error,
   } = useGetAlarmDetails(uuid as string);
 
-  const [selectedMediumType, setSelectedMediumType] =
-    useState<SelectedMediumType | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
@@ -118,12 +115,6 @@ const UpdatePeriodicAlarm = () => {
     searchParams.set('client', alarmDetails.data.client.uuid);
     setSearchParams(searchParams);
 
-    setSelectedMediumType({
-      mappId: alarmDetails.data.meteringPointTypeDto.mappId,
-      name: alarmDetails.data.meteringPointTypeDto.name,
-      unit: alarmDetails.data.meteringPointTypeDto.unit,
-    });
-
     setIsReadOnly(!alarmDetails?.data?.isManageable);
 
     requestAnimationFrame(() => {
@@ -165,7 +156,6 @@ const UpdatePeriodicAlarm = () => {
           alarmDetails.data.configuration?.thresholdStartValue ?? undefined,
         thresholdEndValue:
           alarmDetails.data.configuration?.thresholdEndValue ?? undefined,
-        meteringPointTypeId: alarmDetails.data.meteringPointTypeDto?.id,
       };
 
       reset(formData);
@@ -223,7 +213,6 @@ const UpdatePeriodicAlarm = () => {
       const formData: PeriodicAlarmReq = {
         name: values.name,
         clientUuid: values.clientUuid,
-        meteringPointTypeId: values.meteringPointTypeId,
         measurementUuids: values.measurementUuids,
         configuration: {
           generationDay: values.generationDay ?? 1,
@@ -353,7 +342,6 @@ const UpdatePeriodicAlarm = () => {
                     <div className="flex gap-8 py-2 flex-col col-span-3">
                       <BasicInformation
                         isReadOnly={isReadOnly}
-                        setSelectedMediumType={setSelectedMediumType}
                         hasCreatorAccess={alarmDetails?.data.hasCreatorAccess}
                         isUpdate
                       />
@@ -368,7 +356,6 @@ const UpdatePeriodicAlarm = () => {
                       <AlarmCriteria
                         isReadOnly={isReadOnly}
                         resetThresholdValues={resetThresholdValues}
-                        selectedMediumType={selectedMediumType}
                       />
                       <RecipientDetails isReadOnly={isReadOnly} />
                     </div>
@@ -379,7 +366,6 @@ const UpdatePeriodicAlarm = () => {
                 </div>
               </div>
               <FormFooter
-                selectedMediumTypeMappId={selectedMediumType?.mappId || null}
                 isPending={isPending}
                 initialMeasurements={initialMeasurements}
                 isReadOnly={isReadOnly}

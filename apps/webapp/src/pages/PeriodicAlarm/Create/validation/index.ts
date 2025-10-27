@@ -37,9 +37,6 @@ export const buildPeriodicAlarmSchema = (
     .object({
       name: z.string().min(1, t(i18nBase + 'name')),
       clientUuid: z.string().min(1, t(i18nBase + 'clientUuid')),
-      meteringPointTypeId: z
-        .number(t(i18nBase + 'meteringPointTypeId'))
-        .nonnegative(t(i18nBase + 'meteringPointTypeId')),
       timezone: z
         .string(t(i18nBase + 'timezone'))
         .min(1, t(i18nBase + 'timezone')),
