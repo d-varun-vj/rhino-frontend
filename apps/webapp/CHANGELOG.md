@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.17.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.16.0...webapp-v1.17.0) (2025-10-27)
+
+
+### Features
+
+* Delete medium type field from periodic alarm [PRD-3456] ([#156](https://github.com/Rhino-Energy/rhino-frontend/issues/156)) ([f6df042](https://github.com/Rhino-Energy/rhino-frontend/commit/f6df042ef2b16d05210e62b8a54baa890bf2454c))
+* Update Logic for Threshold Notification Behavior [PRD-3404] ([#154](https://github.com/Rhino-Energy/rhino-frontend/issues/154)) ([fee99e3](https://github.com/Rhino-Energy/rhino-frontend/commit/fee99e3c6a07052f3c58be308995550bc59ea427))
+* Update Logic for Threshold Notification Behavior [PRD-3404] ([#157](https://github.com/Rhino-Energy/rhino-frontend/issues/157)) ([3c7ec78](https://github.com/Rhino-Energy/rhino-frontend/commit/3c7ec78a17818f613cf011515c99c47b97e91f64))
+
 ## [1.16.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.15.0...webapp-v1.16.0) (2025-10-20)
 
 
