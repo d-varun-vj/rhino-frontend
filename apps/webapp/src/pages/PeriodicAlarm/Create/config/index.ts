@@ -1,6 +1,6 @@
 import { Languages } from '@rhino/apis';
 import {
-  ComparisonMeasureType,
+  ComparisonMethod,
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
   PeriodicAlarmPeriod,
@@ -35,13 +35,13 @@ const TRANSLATION_KEY_FOR_THRESHOLD = {
   BEYOND_PERCENT: tConfigBase + 'threshold.beyondPercent',
 };
 
-export const COMPARISON_MEASURE_TYPE_OPTIONS: {
+export const COMPARISON_METHOD_OPTIONS: {
   label: string;
-  value: ComparisonMeasureType;
+  value: ComparisonMethod;
 }[] = [
   {
-    label: tConfigBase + 'measureType.totalConsumption',
-    value: ComparisonMeasureType.TOTAL_CONSUMPTION,
+    label: tConfigBase + 'comparisonMethod.totalConsumption',
+    value: ComparisonMethod.TOTAL_CONSUMPTION,
   },
 ];
 

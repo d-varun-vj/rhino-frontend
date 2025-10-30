@@ -43,7 +43,7 @@ const BasicInformation = ({
 
   return (
     <SectionWrapper title={t(tFormBase + 'basic.title')} id="basic-information">
-      <div className="grid min-lg:grid-cols-2 grid-cols-1 min-lg:gap-0 gap-5">
+      <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
         <TextField
           label={t(tFormBase + 'basic.alarmName')}
           required
@@ -51,29 +51,37 @@ const BasicInformation = ({
           error={errors.name?.message}
           disabled={isReadOnly}
         />
-        <div className="flex min-lg:justify-end ">
-          <Controller
-            name="isActive"
-            control={control}
-            render={({ field }) => (
-              <Toggle
-                label={t(tFormBase + 'basic.active')}
-                checked={field.value}
-                onChange={(e) => field.onChange(e.currentTarget.checked)}
-                onBlur={field.onBlur}
-                activeColor="var(--color-rhino-indigo-blue-highlight)"
-                disabled={isReadOnly}
-              />
-            )}
-          />
-        </div>
+        <TextField
+          label={t(tFormBase + 'basic.alarmShortName')}
+          required
+          {...(register && { ...register('shortName') })}
+          error={errors.shortName?.message}
+          disabled={isReadOnly}
+        />
       </div>
       {hasCreatorAccess && (
         <SharingSection
           label={t(tFormBase + 'basic.shared')}
           isReadOnly={isReadOnly}
           mode={isUpdate ? 'update' : 'create'}
-        />
+        >
+          <div className="flex min-lg:justify-end ">
+            <Controller
+              name="isActive"
+              control={control}
+              render={({ field }) => (
+                <Toggle
+                  label={t(tFormBase + 'basic.active')}
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.currentTarget.checked)}
+                  onBlur={field.onBlur}
+                  activeColor="var(--color-rhino-indigo-blue-highlight)"
+                  disabled={isReadOnly}
+                />
+              )}
+            />
+          </div>
+        </SharingSection>
       )}
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">

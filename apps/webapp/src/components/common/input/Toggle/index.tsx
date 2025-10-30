@@ -5,15 +5,21 @@ import Label from '../../../typography/Label';
 interface ToggleProps extends SwitchProps {
   label?: string;
   activeColor?: string;
+  flex?: 'row' | 'col';
 }
 
 const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(
   (
-    { label, activeColor = 'var(--color-rhino-energy-green)', ...props },
+    {
+      label,
+      activeColor = 'var(--color-rhino-energy-green)',
+      flex = 'row',
+      ...props
+    },
     ref
   ) => {
     return (
-      <div className="flex flex-col gap-1.5 w-fit">
+      <div className={`flex flex-${flex} gap-1.5 w-fit`}>
         {label && <Label content={label} />}
         <Switch ref={ref} color={activeColor} {...props} />
       </div>

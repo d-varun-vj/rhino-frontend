@@ -99,13 +99,14 @@ export const buildPeriodicAlarmReqForm = (
 ): PeriodicAlarmReq => {
   return {
     name: values.name,
+    shortName: values.shortName,
     clientUuid: values.clientUuid,
     measurementUuids: values.measurementUuids,
     configuration: {
       generationDay: values.generationDay ?? 1,
       generationTime: values.generationTime,
       delayInDays: values.delayInDays,
-      comparisonMeasure: values.comparisonMeasure,
+      comparisonMethod: values.comparisonMethod,
       thresholdType: values.thresholdType,
       ...(values.thresholdValue !== null &&
         values.thresholdValue !== undefined && {

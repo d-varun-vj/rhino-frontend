@@ -14,7 +14,7 @@
     "utilityCosts": "Utility costs",
     "alarmsAndNotifications": "Alarms and notifications",
     "immediateAlarm": "Immediate alarm",
-    "periodicAlarm": "Periodic Alarm",
+    "periodicAlarm": "Periodic Consumption Alarm",
     "configuration": "Configuration",
     "measurements": "Measurements",
     "externalServiceConfiguration": "External UPCs configuration",

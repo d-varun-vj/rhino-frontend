@@ -90,7 +90,7 @@ export enum PeriodicAlarmThresholdType {
   BEYOND_PERCENT = 'BEYOND_PERCENT',
 }
 
-export enum ComparisonMeasureType {
+export enum ComparisonMethod {
   TOTAL_CONSUMPTION = 'TOTAL_CONSUMPTION',
 }
 

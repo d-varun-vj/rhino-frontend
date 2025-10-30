@@ -31,13 +31,14 @@ export interface PeriodicAlarmFilter {
 
 export type PeriodicAlarmReq = {
   name: string;
+  shortName: string;
   clientUuid: string;
   measurementUuids: string[];
   configuration: {
     generationDay?: number;
     generationTime: string;
     delayInDays: number;
-    comparisonMeasure: string;
+    comparisonMethod: string;
     thresholdType: string;
     thresholdValue?: number | null;
     thresholdStartValue?: number | null;
@@ -88,13 +89,14 @@ export interface PeriodicAlarmDetail {
   id: number;
   uuid: string;
   name: string;
+  shortName: string;
   client: ClientInfo;
   measurements: MeasurementType[];
   configuration: {
     generationTime: string;
     delayInDays: number;
     generationDay?: number;
-    comparisonMeasure: string;
+    comparisonMethod: string;
     thresholdType: string;
     thresholdStartValue?: number | null;
     thresholdEndValue?: number | null;

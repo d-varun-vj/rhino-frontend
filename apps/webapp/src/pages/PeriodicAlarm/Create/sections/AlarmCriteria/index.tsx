@@ -4,7 +4,7 @@ import {
   PeriodicAlarmThresholdType,
 } from '../../../types';
 import {
-  COMPARISON_MEASURE_TYPE_OPTIONS,
+  COMPARISON_METHOD_OPTIONS,
   VALID_ANALYSE_COMPARE_COMBINATIONS,
   VALID_THRESHOLD_OPTIONS,
   tFormBase,
@@ -98,14 +98,14 @@ const AlarmCriteria = ({
           /> */}
         </div>
         <Controller
-          name="comparisonMeasure"
+          name="comparisonMethod"
           control={control}
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <CustomSelect
-              label={t(tFormBase + 'alarmCriteria.measureType')}
+              label={t(tFormBase + 'alarmCriteria.comparisonMethod')}
               required
-              data={applyLabelTranslations(COMPARISON_MEASURE_TYPE_OPTIONS)}
+              data={applyLabelTranslations(COMPARISON_METHOD_OPTIONS)}
               onChange={(val) => field.onChange(val ?? '')}
               value={field.value || null}
               onBlur={field.onBlur}

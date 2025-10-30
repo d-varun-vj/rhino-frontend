@@ -1,5 +1,5 @@
 {
-  "mainHeader": "Alarmy okresowe",
+  "mainHeader": "Alarmy okresowego zużycia",
   "table": {
     "header": {
       "alarmName": "Nazwa",
@@ -12,21 +12,22 @@
       "actions": "Akcje"
     }
   },
-  "createBtn": "Utwórz alarm okresowy",
+  "createBtn": "Utwórz alarm okresowy zużycia",
   "update": {
-    "mainHeaderReadOnly": "Wyświetl alarm okresowy",
-    "mainHeader": "Edycja alarmu okresowego",
-    "success": "Alarm okresowy został pomyślnie zaktualizowany",
-    "error": "Nie udało się zaktualizować alarmu okresowego"
+    "mainHeaderReadOnly": "Wyświetl alarm okresowy zużycia",
+    "mainHeader": "Zaktualizuj alarm okresowy zużycia",
+    "success": "Alarm okresowy zużycia został pomyślnie zaktualizowany",
+    "error": "Nie udało się zaktualizować alarmu okresowego zużycia"
   },
   "create": {
-    "success": "Alarm okresowy został pomyślnie utworzony",
-    "mainHeader": "Utwórz alarm okresowy",
-    "defaultName": "Alarm okresowy - {{date}}",
+    "success": "Alarm okresowy zużycia został pomyślnie utworzony",
+    "mainHeader": "Utwórz alarm okresowy zużycia",
+    "defaultName": "Alarm okresowy zużycia - {{date}}",
     "form": {
       "basic": {
         "title": "Podstawowe informacje",
         "alarmName": "Nazwa",
+        "alarmShortName": "Krótka nazwa",
         "active": "Aktywność",
         "shared": "Alarm udostępniony",
         "mediumType": "Typ medium",
@@ -62,7 +63,7 @@
           "title": "Porównaj z",
           "guide": ""
         },
-        "measureType": "Sposób pomiaru",
+        "comparisonMethod": "Metoda porównania",
         "threshold": {
           "title": "Próg",
           "guide": ""
@@ -103,6 +104,10 @@
       },
       "validation": {
         "name": "Nazwa jest wymagana",
+        "shortName": {
+          "required": "Krótka nazwa jest wymagana",
+          "maxLength": "Krótka nazwa może mieć maksymalnie 20 znaków"
+        },
         "clientUuid": "Klient jest wymagany",
         "meteringPointTypeId": "Typ medium jest wymagany",
         "timezone": "Strefa czasowa jest wymagana",
@@ -113,7 +118,7 @@
         "delayInDays": "Opóźnienie w odbiorze danych powinno być mniejsze niż 366",
         "analysePeriod": "Okres analizy jest wymagany",
         "compareWithPeriod": "Okres porównania jest wymagany",
-        "comparisonMeasure": "Sposób pomiaru jest wymagany",
+        "comparisonMethod": "Metoda porównania jest wymagana",
         "recipients": "Nieprawidłowy adres e-mail. Podaj prawidłowy adres e-mail.",
         "phoneNumber": "Nieprawidłowy numer telefonu. Proszę podać prawidłowy numer telefonu.",
         "shared": "Musi zostać wybrana co najmniej jedna lokalizacja lub najemca, gdy udostępnianie jest włączone",
@@ -127,7 +132,7 @@
         "inValid": "Nieprawidłowa wartość"
       }
     },
-    "error": "Nie udało się utworzyć alarmu okresowego"
+    "error": "Nie udało się utworzyć alarmu okresowego zużycia"
   },
   "execution": {
     "btnPopup": "Wykonanie",
@@ -185,7 +190,7 @@
       "prevYearSameMonth": "Ten sam miesiąc w poprzednim roku",
       "prevYearSameQuarter": "Ten sam kwartał w poprzednim roku"
     },
-    "measureType": {
+    "comparisonMethod": {
       "totalConsumption": "Całkowite zużycie"
     },
     "threshold": {

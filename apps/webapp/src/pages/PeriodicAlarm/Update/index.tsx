@@ -120,12 +120,13 @@ const UpdatePeriodicAlarm = () => {
     requestAnimationFrame(() => {
       const formData: PeriodicAlarmSchema = {
         name: alarmDetails.data.name,
+        shortName: alarmDetails.data.shortName,
         clientUuid: alarmDetails.data.client.uuid,
         frequency: alarmDetails.data.frequency,
         analysePeriod:
           (alarmDetails.data.analysePeriod as PeriodicAlarmPeriod) ||
           PeriodicAlarmPeriod.LAST_DAY,
-        comparisonMeasure: alarmDetails.data.configuration?.comparisonMeasure,
+        comparisonMethod: alarmDetails.data.configuration?.comparisonMethod,
         compareWithPeriod: alarmDetails.data.compareWithPeriod,
         timezone: alarmDetails.data.timezone || 'Europe/Warsaw',
         language: alarmDetails.data.configuration.language || Languages.PL,
@@ -212,13 +213,14 @@ const UpdatePeriodicAlarm = () => {
     (values: PeriodicAlarmSchema) => {
       const formData: PeriodicAlarmReq = {
         name: values.name,
+        shortName: values.shortName,
         clientUuid: values.clientUuid,
         measurementUuids: values.measurementUuids,
         configuration: {
           generationDay: values.generationDay ?? 1,
           generationTime: values.generationTime,
           delayInDays: values.delayInDays,
-          comparisonMeasure: values.comparisonMeasure,
+          comparisonMethod: values.comparisonMethod,
           thresholdType: values.thresholdType,
           ...(values.thresholdValue !== null &&
             values.thresholdValue !== undefined && {

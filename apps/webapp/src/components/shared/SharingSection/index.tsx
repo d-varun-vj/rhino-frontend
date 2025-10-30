@@ -17,6 +17,7 @@ const SharingSection = ({
   label,
   mode = 'create',
   authorUuid,
+  children,
 }: SharingSectionProps) => {
   const { control, setValue, resetField, watch, clearErrors } =
     useFormContext();
@@ -222,6 +223,7 @@ const SharingSection = ({
             />
           )}
         />
+        {children}
       </div>
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">

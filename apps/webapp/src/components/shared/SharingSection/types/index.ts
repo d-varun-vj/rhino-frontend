@@ -18,4 +18,5 @@ export type SharingSectionProps = {
   mode?: 'create' | 'update';
   authorUuid?: string;
   isReadOnly?: boolean;
+  children?: React.ReactElement;
 };

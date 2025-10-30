@@ -1,5 +1,5 @@
 {
-  "mainHeader": "Periodic alarms",
+  "mainHeader": "Periodic consumption alarms",
   "table": {
     "header": {
       "alarmName": "Name",
@@ -12,21 +12,22 @@
       "actions": "Actions"
     }
   },
-  "createBtn": "Create periodic alarm",
+  "createBtn": "Create periodic consumption alarm",
   "update": {
-    "mainHeader": "Update periodic alarm",
-    "mainHeaderReadOnly": "View periodic alarm",
-    "success": "Periodic alarm updated successfully",
-    "error": "Failed to update periodic alarm"
+    "mainHeader": "Update periodic consumption alarm",
+    "mainHeaderReadOnly": "View periodic consumption alarm",
+    "success": "Periodic consumption alarm updated successfully",
+    "error": "Failed to update periodic consumption alarm"
   },
   "create": {
-    "success": "Periodic alarm created successfully",
-    "mainHeader": "Create periodic alarm",
-    "defaultName": "Periodic Alarm - {{date}}",
+    "success": "Periodic consumption alarm created successfully",
+    "mainHeader": "Create periodic consumption alarm",
+    "defaultName": "Periodic Consumption Alarm - {{date}}",
     "form": {
       "basic": {
         "title": "Basic Information",
         "alarmName": "Name",
+        "alarmShortName": "Short name",
         "active": "Active",
         "shared": "Shared Alarm",
         "mediumType": "Medium type",
@@ -62,7 +63,7 @@
           "title": "Compare with",
           "guide": ""
         },
-        "measureType": "Measure type",
+        "comparisonMethod": "Comparison method",
         "threshold": {
           "title": "Threshold Type",
           "guide": ""
@@ -103,6 +104,10 @@
       },
       "validation": {
         "name": "Name is required",
+        "shortName": {
+          "required": "Short name is required",
+          "maxLength": "Short name must be 20 characters or fewer"
+        },
         "clientUuid": "Client is required",
         "meteringPointTypeId": "Medium type is required",
         "timezone": "Time zone is required",
@@ -113,7 +118,7 @@
         "delayInDays": "Delay in data reception should be less than 366",
         "analysePeriod": "Analysis period is required",
         "compareWithPeriod": "Comparison period is required",
-        "comparisonMeasure": "Comparison measure is required",
+        "comparisonMethod": "Comparison method is required",
         "recipients": "Invalid email address. Please enter a valid email",
         "phoneNumber": "Invalid phone number. Please enter a valid phone number",
         "shared": "At least one location or tenant must be selected when sharing is enabled",
@@ -127,7 +132,7 @@
         "inValid": "Invalid value"
       }
     },
-    "error": "Failed to create periodic alarm"
+    "error": "Failed to create periodic consumption alarm"
   },
   "execution": {
     "btnPopup": "Execution",
@@ -185,7 +190,7 @@
       "prevYearSameMonth": "Previous Year Same Month",
       "prevYearSameQuarter": "Previous Year Same Quarter"
     },
-    "measureType": {
+    "comparisonMethod": {
       "totalConsumption": "Total consumption"
     },
     "threshold": {

@@ -25,7 +25,7 @@ import {
   PeriodicAlarmFrequency,
   PeriodicAlarmPeriod,
 } from '../types';
-import { COMPARISON_MEASURE_TYPE_OPTIONS } from './config';
+import { COMPARISON_METHOD_OPTIONS } from './config';
 import AlarmCriteria from './sections/AlarmCriteria';
 import BasicInformation from './sections/BasicInformation';
 import FormFooter from './sections/FormFooter';
@@ -49,7 +49,7 @@ const CreatePeriodicAlarm = () => {
     defaultValues: {
       frequency: PeriodicAlarmFrequency.DAILY,
       analysePeriod: PeriodicAlarmPeriod.LAST_DAY,
-      comparisonMeasure: COMPARISON_MEASURE_TYPE_OPTIONS[0].value,
+      comparisonMethod: COMPARISON_METHOD_OPTIONS[0].value,
       compareWithPeriod: PeriodicAlarmCompareWith.CONSTANT,
       generationDay: 1,
       timezone: 'Europe/Warsaw',
