@@ -21,9 +21,9 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { buildPeriodicAlarmReqForm, onError } from '../helper';
 import {
+  DataRange,
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
-  PeriodicAlarmPeriod,
 } from '../types';
 import { COMPARISON_METHOD_OPTIONS } from './config';
 import AlarmCriteria from './sections/AlarmCriteria';
@@ -31,7 +31,6 @@ import BasicInformation from './sections/BasicInformation';
 import FormFooter from './sections/FormFooter';
 import MomentOfExecution from './sections/MomentOfExecution';
 import RecipientDetails from './sections/RecipientDetails';
-import TimeConfiguration from './sections/TimeConfiguration';
 import { buildPeriodicAlarmSchema, PeriodicAlarmSchema } from './validation';
 
 const CreatePeriodicAlarm = () => {
@@ -48,9 +47,9 @@ const CreatePeriodicAlarm = () => {
     mode: 'onChange',
     defaultValues: {
       frequency: PeriodicAlarmFrequency.DAILY,
-      analysePeriod: PeriodicAlarmPeriod.LAST_DAY,
       comparisonMethod: COMPARISON_METHOD_OPTIONS[0].value,
-      compareWithPeriod: PeriodicAlarmCompareWith.CONSTANT,
+      dataRange: DataRange.YESTERDAY,
+      compareWithPeriod: PeriodicAlarmCompareWith.FIXED_VALUE,
       generationDay: 1,
       timezone: 'Europe/Warsaw',
       isActive: true,
@@ -137,15 +136,10 @@ const CreatePeriodicAlarm = () => {
                 <div className="grid min-lg:grid-cols-5 gap-14 w-full">
                   <div className="flex gap-8 py-2 flex-col col-span-3">
                     <BasicInformation />
-                    <MomentOfExecution
-                      resetThresholdValues={resetThresholdValues}
-                    />
-                    <TimeConfiguration
-                      resetThresholdValues={resetThresholdValues}
-                    />
                     <AlarmCriteria
                       resetThresholdValues={resetThresholdValues}
                     />
+                    <MomentOfExecution />
                     <RecipientDetails />
                   </div>
                 </div>

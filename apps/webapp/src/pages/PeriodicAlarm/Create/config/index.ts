@@ -1,26 +1,28 @@
 import { Languages } from '@rhino/apis';
 import {
   ComparisonMethod,
+  DataRange,
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
-  PeriodicAlarmPeriod,
   PeriodicAlarmThresholdType,
 } from '../../types';
 
 export const tConfigBase = 'config.';
 export const tFormBase = 'create.form.';
 
-const T_COMPARE_WITH = {
-  CONST: tConfigBase + 'compareWith.const',
-  PREV_DAY: tConfigBase + 'compareWith.prevDay',
-  PREV_WEEK: tConfigBase + 'compareWith.prevWeek',
-  PREV_MONTH: tConfigBase + 'compareWith.prevMonth',
-  PREV_QUARTER: tConfigBase + 'compareWith.prevQuarter',
-  PREV_YEAR: tConfigBase + 'compareWith.prevYear',
-  PREV_YEAR_SAME_DAY: tConfigBase + 'compareWith.prevYearSameDay',
-  PREV_YEAR_SAME_WEEK: tConfigBase + 'compareWith.prevYearSameWeek',
-  PREV_YEAR_SAME_MONTH: tConfigBase + 'compareWith.prevYearSameMonth',
-  PREV_YEAR_SAME_QUARTER: tConfigBase + 'compareWith.prevYearSameQuarter',
+const T_COMPARE_WITH: Record<PeriodicAlarmCompareWith, string> = {
+  FIXED_VALUE: tConfigBase + 'compareWith.fixedValue',
+  DAY_BEFORE: tConfigBase + 'compareWith.dayBefore',
+  WEEK_BEFORE: tConfigBase + 'compareWith.weekBefore',
+  MONTH_BEFORE: tConfigBase + 'compareWith.monthBefore',
+  QUARTER_BEFORE: tConfigBase + 'compareWith.quarterBefore',
+  YEAR_BEFORE: tConfigBase + 'compareWith.yearBefore',
+  SAME_DAY_YEAR_BEFORE: tConfigBase + 'compareWith.sameDayYearBefore',
+  SAME_WEEK_YEAR_BEFORE: tConfigBase + 'compareWith.sameWeekYearBefore',
+  SAME_MONTH_YEAR_BEFORE: tConfigBase + 'compareWith.sameMonthYearBefore',
+  SAME_QUARTER_YEAR_BEFORE: tConfigBase + 'compareWith.sameQuarterYearBefore',
+  SAME_DAY_MONTH_BEFORE: tConfigBase + 'compareWith.sameDayMonthBefore',
+  SAME_DAY_LAST_WEEK: tConfigBase + 'compareWith.sameDayLastWeek',
 };
 
 const TRANSLATION_KEY_FOR_THRESHOLD = {
@@ -137,155 +139,141 @@ export const LANGUAGES: { label: string; id: Languages }[] = [
   },
 ];
 
-export const ANALYSE_PERIOD_OPTIONS: {
+export const DATA_RANGE_OPTIONS: {
   label: string;
-  id: PeriodicAlarmPeriod;
+  value: DataRange;
 }[] = [
   {
-    label: tConfigBase + 'analysisPeriod.lastDay',
-    id: PeriodicAlarmPeriod.LAST_DAY,
+    label: tConfigBase + 'dataRange.yesterday',
+    value: DataRange.YESTERDAY,
   },
   {
-    label: tConfigBase + 'analysisPeriod.lastWeek',
-    id: PeriodicAlarmPeriod.LAST_WEEK,
+    label: tConfigBase + 'dataRange.lastWeek',
+    value: DataRange.LAST_WEEK,
   },
   {
-    label: tConfigBase + 'analysisPeriod.lastMonth',
-    id: PeriodicAlarmPeriod.LAST_MONTH,
+    label: tConfigBase + 'dataRange.lastMonth',
+    value: DataRange.LAST_MONTH,
   },
   {
-    label: tConfigBase + 'analysisPeriod.lastQuarter',
-    id: PeriodicAlarmPeriod.LAST_QUARTER,
+    label: tConfigBase + 'dataRange.lastQuarter',
+    value: DataRange.LAST_QUARTER,
   },
   {
-    label: tConfigBase + 'analysisPeriod.lastYear',
-    id: PeriodicAlarmPeriod.LAST_YEAR,
+    label: tConfigBase + 'dataRange.lastYear',
+    value: DataRange.LAST_YEAR,
   },
 ];
 
-export const VALID_FREQUENCY_ANALYSIS_PERIOD_COMBINATIONS: Record<
-  PeriodicAlarmFrequency,
-  { default: PeriodicAlarmPeriod; allowed: PeriodicAlarmPeriod[] }
-> = {
-  DAILY: {
-    default: PeriodicAlarmPeriod.LAST_DAY,
-    allowed: [PeriodicAlarmPeriod.LAST_DAY],
-  },
-  WEEKLY: {
-    default: PeriodicAlarmPeriod.LAST_WEEK,
-    allowed: [PeriodicAlarmPeriod.LAST_DAY, PeriodicAlarmPeriod.LAST_WEEK],
-  },
-  MONTHLY: {
-    default: PeriodicAlarmPeriod.LAST_MONTH,
-    allowed: [
-      PeriodicAlarmPeriod.LAST_DAY,
-      PeriodicAlarmPeriod.LAST_WEEK,
-      PeriodicAlarmPeriod.LAST_MONTH,
-    ],
-  },
-  QUARTERLY: {
-    default: PeriodicAlarmPeriod.LAST_QUARTER,
-    allowed: [
-      PeriodicAlarmPeriod.LAST_DAY,
-      PeriodicAlarmPeriod.LAST_WEEK,
-      PeriodicAlarmPeriod.LAST_MONTH,
-      PeriodicAlarmPeriod.LAST_QUARTER,
-    ],
-  },
-  YEARLY: {
-    default: PeriodicAlarmPeriod.LAST_YEAR,
-    allowed: [
-      PeriodicAlarmPeriod.LAST_DAY,
-      PeriodicAlarmPeriod.LAST_WEEK,
-      PeriodicAlarmPeriod.LAST_MONTH,
-      PeriodicAlarmPeriod.LAST_QUARTER,
-      PeriodicAlarmPeriod.LAST_YEAR,
-    ],
-  },
-};
-
 export const VALID_ANALYSE_COMPARE_COMBINATIONS: Record<
-  PeriodicAlarmPeriod,
+  DataRange,
   {
-    default: PeriodicAlarmPeriod;
+    default: PeriodicAlarmCompareWith;
     allowed: {
       label: string;
       value: PeriodicAlarmCompareWith;
     }[];
   }
 > = {
-  LAST_DAY: {
-    default: PeriodicAlarmPeriod.LAST_DAY,
+  YESTERDAY: {
+    default: PeriodicAlarmCompareWith.FIXED_VALUE,
     allowed: [
-      { label: T_COMPARE_WITH.CONST, value: PeriodicAlarmCompareWith.CONSTANT },
       {
-        label: T_COMPARE_WITH.PREV_DAY,
-        value: PeriodicAlarmCompareWith.PREV_DAY,
+        label: T_COMPARE_WITH.FIXED_VALUE,
+        value: PeriodicAlarmCompareWith.FIXED_VALUE,
+      },
+      {
+        label: T_COMPARE_WITH.DAY_BEFORE,
+        value: PeriodicAlarmCompareWith.DAY_BEFORE,
+      },
+      {
+        label: T_COMPARE_WITH.SAME_DAY_LAST_WEEK,
+        value: PeriodicAlarmCompareWith.SAME_DAY_LAST_WEEK,
+      },
+      {
+        label: T_COMPARE_WITH.SAME_DAY_MONTH_BEFORE,
+        value: PeriodicAlarmCompareWith.SAME_DAY_MONTH_BEFORE,
+      },
+      {
+        label: T_COMPARE_WITH.SAME_DAY_YEAR_BEFORE,
+        value: PeriodicAlarmCompareWith.SAME_DAY_YEAR_BEFORE,
       },
     ],
   },
   LAST_WEEK: {
-    default: PeriodicAlarmPeriod.LAST_WEEK,
+    default: PeriodicAlarmCompareWith.FIXED_VALUE,
     allowed: [
-      { label: T_COMPARE_WITH.CONST, value: PeriodicAlarmCompareWith.CONSTANT },
       {
-        label: T_COMPARE_WITH.PREV_WEEK,
-        value: PeriodicAlarmCompareWith.PREV_WEEK,
+        label: T_COMPARE_WITH.FIXED_VALUE,
+        value: PeriodicAlarmCompareWith.FIXED_VALUE,
       },
       {
-        label: T_COMPARE_WITH.PREV_YEAR_SAME_WEEK,
-        value: PeriodicAlarmCompareWith.PREV_YEAR_SAME_WEEK,
+        label: T_COMPARE_WITH.WEEK_BEFORE,
+        value: PeriodicAlarmCompareWith.WEEK_BEFORE,
+      },
+      {
+        label: T_COMPARE_WITH.SAME_WEEK_YEAR_BEFORE,
+        value: PeriodicAlarmCompareWith.SAME_WEEK_YEAR_BEFORE,
       },
     ],
   },
   LAST_MONTH: {
-    default: PeriodicAlarmPeriod.LAST_MONTH,
+    default: PeriodicAlarmCompareWith.FIXED_VALUE,
     allowed: [
-      { label: T_COMPARE_WITH.CONST, value: PeriodicAlarmCompareWith.CONSTANT },
       {
-        label: T_COMPARE_WITH.PREV_MONTH,
-        value: PeriodicAlarmCompareWith.PREV_MONTH,
+        label: T_COMPARE_WITH.FIXED_VALUE,
+        value: PeriodicAlarmCompareWith.FIXED_VALUE,
       },
       {
-        label: T_COMPARE_WITH.PREV_YEAR_SAME_MONTH,
-        value: PeriodicAlarmCompareWith.PREV_YEAR_SAME_MONTH,
+        label: T_COMPARE_WITH.MONTH_BEFORE,
+        value: PeriodicAlarmCompareWith.MONTH_BEFORE,
+      },
+      {
+        label: T_COMPARE_WITH.SAME_MONTH_YEAR_BEFORE,
+        value: PeriodicAlarmCompareWith.SAME_MONTH_YEAR_BEFORE,
       },
     ],
   },
   LAST_QUARTER: {
-    default: PeriodicAlarmPeriod.LAST_QUARTER,
+    default: PeriodicAlarmCompareWith.FIXED_VALUE,
     allowed: [
-      { label: T_COMPARE_WITH.CONST, value: PeriodicAlarmCompareWith.CONSTANT },
       {
-        label: T_COMPARE_WITH.PREV_QUARTER,
-        value: PeriodicAlarmCompareWith.PREV_MONTH,
+        label: T_COMPARE_WITH.FIXED_VALUE,
+        value: PeriodicAlarmCompareWith.FIXED_VALUE,
       },
       {
-        label: T_COMPARE_WITH.PREV_YEAR_SAME_QUARTER,
-        value: PeriodicAlarmCompareWith.PREV_YEAR_SAME_QUARTER,
+        label: T_COMPARE_WITH.QUARTER_BEFORE,
+        value: PeriodicAlarmCompareWith.QUARTER_BEFORE,
+      },
+      {
+        label: T_COMPARE_WITH.SAME_QUARTER_YEAR_BEFORE,
+        value: PeriodicAlarmCompareWith.SAME_QUARTER_YEAR_BEFORE,
       },
     ],
   },
   LAST_YEAR: {
-    default: PeriodicAlarmPeriod.LAST_YEAR,
+    default: PeriodicAlarmCompareWith.FIXED_VALUE,
     allowed: [
-      { label: T_COMPARE_WITH.CONST, value: PeriodicAlarmCompareWith.CONSTANT },
       {
-        label: T_COMPARE_WITH.PREV_YEAR,
-        value: PeriodicAlarmCompareWith.PREV_YEAR,
+        label: T_COMPARE_WITH.FIXED_VALUE,
+        value: PeriodicAlarmCompareWith.FIXED_VALUE,
+      },
+      {
+        label: T_COMPARE_WITH.YEAR_BEFORE,
+        value: PeriodicAlarmCompareWith.YEAR_BEFORE,
       },
     ],
   },
 };
 
 export const VALID_THRESHOLD_OPTIONS: Record<
-  PeriodicAlarmCompareWith.CONSTANT | 'OTHERS',
+  PeriodicAlarmCompareWith.FIXED_VALUE | 'OTHERS',
   {
     label: string;
     value: PeriodicAlarmThresholdType;
   }[]
 > = {
-  CONSTANT: [
+  FIXED_VALUE: [
     {
       label: TRANSLATION_KEY_FOR_THRESHOLD.ABOVE,
       value: PeriodicAlarmThresholdType.ABOVE,

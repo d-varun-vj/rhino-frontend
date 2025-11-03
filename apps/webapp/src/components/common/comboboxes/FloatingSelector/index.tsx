@@ -18,6 +18,7 @@ type FloatingSelectorProps<TMultiple extends boolean = false> = {
   multipleSelect?: TMultiple;
   required?: boolean;
   isReadOnly?: boolean;
+  disabledTitle?: string;
 } & (TMultiple extends true
   ? {
       onSelect: (val: string[]) => void;
@@ -37,6 +38,7 @@ const FloatingSelector = <T extends boolean = false>({
   required,
   multipleSelect,
   isReadOnly = false,
+  disabledTitle,
 }: FloatingSelectorProps<T>) => {
   const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
   const [controlsRefs, setControlsRefs] = useState<
@@ -110,6 +112,7 @@ const FloatingSelector = <T extends boolean = false>({
       onClick={() => handleItemClick(item, index)}
       mod={{ active: isItemSelected(item, index) }}
       disabled={(item.disabled ?? false) || isReadOnly}
+      title={disabledTitle}
     >
       <span className={classes.controlLabel}>{item.label}</span>
     </UnstyledButton>

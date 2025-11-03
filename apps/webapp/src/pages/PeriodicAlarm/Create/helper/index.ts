@@ -19,7 +19,7 @@ export const shouldShowThresholdValue = (
   );
   if (!compareWith || !thresholdType || !isValidComparison) return false;
 
-  if (compareWith === PeriodicAlarmCompareWith.CONSTANT) {
+  if (compareWith === PeriodicAlarmCompareWith.FIXED_VALUE) {
     return [
       PeriodicAlarmThresholdType.ABOVE,
       PeriodicAlarmThresholdType.BELOW,

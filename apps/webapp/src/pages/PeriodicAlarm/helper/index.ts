@@ -5,7 +5,9 @@ import { FieldErrors } from 'react-hook-form';
 import { tConfigBase } from '../Create/config';
 import { PeriodicAlarmSchema } from '../Create/validation';
 import {
+  DataRange,
   ExecutionStatus,
+  PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
   PeriodicAlarmStatus,
 } from '../types';
@@ -141,7 +143,7 @@ export const buildPeriodicAlarmReqForm = (
       sharedTenantUuids: values.sharedTenants,
     }),
     compareWithPeriod: values.compareWithPeriod,
-    analysePeriod: values.analysePeriod,
+    dataRange: values.dataRange,
   };
 };
 
@@ -168,4 +170,34 @@ export const onError = (errors: FieldErrors<PeriodicAlarmSchema>) => {
       message.warn(val.message);
     }
   });
+};
+
+export const getValidFrequenciesForCombination = (
+  dataRange: DataRange,
+  compareWith: PeriodicAlarmCompareWith
+): { default: PeriodicAlarmFrequency; allowed: PeriodicAlarmFrequency[] } => {
+  if (
+    dataRange === DataRange.YESTERDAY ||
+    (dataRange === DataRange.LAST_WEEK &&
+      compareWith !== PeriodicAlarmCompareWith.SAME_WEEK_YEAR_BEFORE)
+  ) {
+    return {
+      default: PeriodicAlarmFrequency.DAILY,
+      allowed: [PeriodicAlarmFrequency.DAILY, PeriodicAlarmFrequency.WEEKLY],
+    };
+  }
+
+  const frequencyMap: Record<DataRange, PeriodicAlarmFrequency> = {
+    YESTERDAY: PeriodicAlarmFrequency.DAILY,
+    LAST_WEEK: PeriodicAlarmFrequency.WEEKLY,
+    LAST_MONTH: PeriodicAlarmFrequency.MONTHLY,
+    LAST_QUARTER: PeriodicAlarmFrequency.QUARTERLY,
+    LAST_YEAR: PeriodicAlarmFrequency.YEARLY,
+  };
+
+  const frequency = frequencyMap[dataRange];
+  return {
+    default: frequency,
+    allowed: [frequency],
+  };
 };

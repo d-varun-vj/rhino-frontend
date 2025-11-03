@@ -1,10 +1,12 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import {
+  DataRange,
   PeriodicAlarmCompareWith,
   PeriodicAlarmThresholdType,
 } from '../../../types';
 import {
   COMPARISON_METHOD_OPTIONS,
+  DATA_RANGE_OPTIONS,
   VALID_ANALYSE_COMPARE_COMBINATIONS,
   VALID_THRESHOLD_OPTIONS,
   tFormBase,
@@ -20,6 +22,7 @@ import CheckBox from 'apps/webapp/src/components/common/input/Checkbox';
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getValidFrequenciesForCombination } from '../../../helper';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
@@ -32,32 +35,49 @@ const AlarmCriteria = ({
   resetThresholdValues,
   isReadOnly = false,
 }: AlarmCriteriaProps) => {
-  const { control, watch, resetField, clearErrors } =
+  const { control, watch, resetField, clearErrors, setValue } =
     useFormContext<PeriodicAlarmSchema>();
 
   const { t } = useTranslation('periodicAlarm');
 
-  const selectedAnalysisPeriod = watch('analysePeriod');
-  const selectedCompareWith =
-    (watch('compareWithPeriod') as PeriodicAlarmCompareWith) || '';
-  const selectedThresholdType =
-    (watch('thresholdType') as PeriodicAlarmThresholdType) || '';
+  const selectedDataRange = watch('dataRange') as DataRange;
+  const selectedCompareWith = watch(
+    'compareWithPeriod'
+  ) as PeriodicAlarmCompareWith;
+  const selectedThresholdType = watch(
+    'thresholdType'
+  ) as PeriodicAlarmThresholdType;
 
   const filteredAnalysisCompareWithOptions = useMemo(() => {
-    return VALID_ANALYSE_COMPARE_COMBINATIONS[
-      selectedAnalysisPeriod as keyof typeof VALID_ANALYSE_COMPARE_COMBINATIONS
-    ].allowed;
-  }, [selectedAnalysisPeriod]);
+    if (selectedDataRange)
+      return VALID_ANALYSE_COMPARE_COMBINATIONS[selectedDataRange].allowed;
+    return [];
+  }, [selectedDataRange]);
 
   const filteredThresholdOptions = useMemo(() => {
-    if (selectedCompareWith === PeriodicAlarmCompareWith.CONSTANT) {
-      return VALID_THRESHOLD_OPTIONS[PeriodicAlarmCompareWith.CONSTANT];
+    if (selectedCompareWith === PeriodicAlarmCompareWith.FIXED_VALUE) {
+      return VALID_THRESHOLD_OPTIONS[PeriodicAlarmCompareWith.FIXED_VALUE];
     }
     return VALID_THRESHOLD_OPTIONS.OTHERS;
   }, [selectedCompareWith]);
 
   const shouldUnitPercent =
-    selectedCompareWith !== PeriodicAlarmCompareWith.CONSTANT;
+    selectedCompareWith !== PeriodicAlarmCompareWith.FIXED_VALUE;
+
+  const setFrequency = ({
+    dataRange,
+    compareWith,
+  }: {
+    dataRange: DataRange;
+    compareWith: PeriodicAlarmCompareWith;
+  }) => {
+    const defaultFrequcy = getValidFrequenciesForCombination(
+      dataRange,
+      compareWith
+    );
+
+    setValue('frequency', defaultFrequcy.default);
+  };
 
   return (
     <SectionWrapper
@@ -65,38 +85,6 @@ const AlarmCriteria = ({
       id="alarm-criteria"
     >
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-        <div className="flex items-center gap-4 h-fit">
-          <div className="block w-full">
-            <Controller
-              name="compareWithPeriod"
-              control={control}
-              rules={{ required: true }}
-              render={({ field, fieldState }) => (
-                <CustomSelect
-                  key={selectedAnalysisPeriod}
-                  label={t(tFormBase + 'alarmCriteria.compareWith.title')}
-                  required
-                  data={applyLabelTranslations(
-                    filteredAnalysisCompareWithOptions
-                  )}
-                  onChange={(val) => {
-                    field.onChange(val ?? '');
-                    resetThresholdValues();
-                  }}
-                  value={field.value || null}
-                  onBlur={field.onBlur}
-                  searchable={false}
-                  error={fieldState.error?.message}
-                  disabled={isReadOnly}
-                />
-              )}
-            />
-          </div>
-          {/* <QuestionCircle
-            content={t(tFormBase + 'alarmCriteria.compareWith.guide')}
-            className="mt-6"
-          /> */}
-        </div>
         <Controller
           name="comparisonMethod"
           control={control}
@@ -118,7 +106,83 @@ const AlarmCriteria = ({
       </div>
 
       <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-        {selectedCompareWith && (
+        <div className="flex items-center gap-4 h-fit">
+          <div className="block w-full">
+            <Controller
+              name="dataRange"
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <CustomSelect
+                  label={t(tFormBase + 'alarmCriteria.dataRange')}
+                  required
+                  data={applyLabelTranslations(DATA_RANGE_OPTIONS)}
+                  onChange={(val) => {
+                    field.onChange(val ?? '');
+                    resetField('compareWithPeriod');
+                    setFrequency({
+                      dataRange: val as DataRange,
+                      compareWith: selectedCompareWith,
+                    });
+                    resetThresholdValues();
+                  }}
+                  value={field.value || null}
+                  onBlur={field.onBlur}
+                  searchable={false}
+                  error={fieldState.error?.message}
+                  disabled={isReadOnly}
+                />
+              )}
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-4 h-fit">
+          <div className="block w-full">
+            <Controller
+              name="compareWithPeriod"
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <CustomSelect
+                  key={selectedDataRange}
+                  label={t(tFormBase + 'alarmCriteria.compareWith.title')}
+                  required
+                  data={applyLabelTranslations(
+                    filteredAnalysisCompareWithOptions
+                  )}
+                  onChange={(val) => {
+                    field.onChange(val ?? '');
+                    setFrequency({
+                      dataRange: selectedDataRange,
+                      compareWith: val as PeriodicAlarmCompareWith,
+                    });
+                    resetThresholdValues();
+                  }}
+                  value={field.value || null}
+                  onBlur={field.onBlur}
+                  searchable={false}
+                  error={fieldState.error?.message}
+                  disabled={!selectedDataRange || isReadOnly}
+                  title={
+                    !selectedDataRange
+                      ? t(
+                          tFormBase + 'alarmCriteria.compareWith.emptyDataRange'
+                        )
+                      : ''
+                  }
+                />
+              )}
+            />
+          </div>
+          {/* <QuestionCircle
+            content={t(tFormBase + 'alarmCriteria.compareWith.guide')}
+            className="mt-6"
+          /> */}
+        </div>
+      </div>
+
+      <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
+        {selectedCompareWith && selectedDataRange && (
           <div className="flex  gap-4">
             <div className="block w-full">
               <Controller
@@ -127,7 +191,7 @@ const AlarmCriteria = ({
                 rules={{ required: true }}
                 render={({ field, fieldState }) => (
                   <CustomSelect
-                    key={`${selectedAnalysisPeriod}-${selectedCompareWith}`}
+                    key={`${selectedDataRange}-${selectedCompareWith}`}
                     label={t(tFormBase + 'alarmCriteria.threshold.title')}
                     required
                     data={applyLabelTranslations(filteredThresholdOptions)}
@@ -141,7 +205,7 @@ const AlarmCriteria = ({
                     onBlur={field.onBlur}
                     searchable={false}
                     error={fieldState.error?.message}
-                    disabled={isReadOnly}
+                    disabled={!selectedDataRange || isReadOnly}
                   />
                 )}
               />
@@ -165,7 +229,7 @@ const AlarmCriteria = ({
                 rules={{ required: true }}
                 render={({ field, fieldState }) => (
                   <NumberField
-                    key={`${selectedAnalysisPeriod}-${selectedCompareWith}`}
+                    key={`${selectedDataRange}-${selectedCompareWith}`}
                     label={t(tFormBase + 'alarmCriteria.thresholdValue.title', {
                       unit: `${shouldUnitPercent ? '(%)' : ' '}`,
                     })}
@@ -200,7 +264,7 @@ const AlarmCriteria = ({
                 rules={{ required: true }}
                 render={({ field, fieldState }) => (
                   <NumberField
-                    key={`${selectedAnalysisPeriod}-${selectedCompareWith}-${selectedThresholdType}`}
+                    key={`${selectedDataRange}-${selectedCompareWith}-${selectedThresholdType}`}
                     label={t(
                       tFormBase + 'alarmCriteria.thresholdStartValue.title',
                       {
@@ -236,7 +300,7 @@ const AlarmCriteria = ({
                 rules={{ required: true }}
                 render={({ field, fieldState }) => (
                   <NumberField
-                    key={`${selectedAnalysisPeriod}-${selectedCompareWith}-${selectedThresholdType}`}
+                    key={`${selectedDataRange}-${selectedCompareWith}-${selectedThresholdType}`}
                     label={t(
                       tFormBase + 'alarmCriteria.thresholdEndValue.title',
                       {

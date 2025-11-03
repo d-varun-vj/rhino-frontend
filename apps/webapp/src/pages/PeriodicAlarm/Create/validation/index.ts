@@ -35,19 +35,23 @@ export const buildPeriodicAlarmSchema = (
 ) => {
   return z
     .object({
-      name: z.string().min(1, t(i18nBase + 'name')),
+      name: z.string(t(i18nBase + 'name')).min(1, t(i18nBase + 'name')),
       shortName: z
         .string(t(i18nBase + 'shortName.required'))
         .min(1, t(i18nBase + 'shortName.required'))
         .max(20, t(i18nBase + 'shortName.maxLength')),
-      clientUuid: z.string().min(1, t(i18nBase + 'clientUuid')),
+      clientUuid: z
+        .string(t(i18nBase + 'clientUuid'))
+        .min(1, t(i18nBase + 'clientUuid')),
       timezone: z
         .string(t(i18nBase + 'timezone'))
         .min(1, t(i18nBase + 'timezone')),
       language: z
         .string(t(i18nBase + 'language'))
         .min(1, t(i18nBase + 'language')),
-      frequency: z.string().min(1, t(i18nBase + 'frequency')),
+      frequency: z
+        .string(t(i18nBase + 'frequency'))
+        .min(1, t(i18nBase + 'frequency')),
       generationDay: z
         .number(t(i18nBase + 'generationDay'))
         .min(0, t(i18nBase + 'generationDay'))
@@ -58,11 +62,15 @@ export const buildPeriodicAlarmSchema = (
       delayInDays: z
         .number(t(i18nBase + 'inValid'))
         .max(366, t(i18nBase + 'delayInDays')),
-      analysePeriod: z.string().min(1, t(i18nBase + 'analysePeriod')),
-      compareWithPeriod: z.string().min(1, t(i18nBase + 'compareWithPeriod')),
       comparisonMethod: z
         .string(t(i18nBase + 'comparisonMethod'))
         .min(1, t(i18nBase + 'comparisonMethod')),
+      dataRange: z
+        .string(t(i18nBase + 'dataRange'))
+        .min(1, t(i18nBase + 'dataRange')),
+      compareWithPeriod: z
+        .string(t(i18nBase + 'compareWithPeriod'))
+        .min(1, t(i18nBase + 'compareWithPeriod')),
       thresholdType: z
         .string(t(i18nBase + 'thresholdType'))
         .min(1, t(i18nBase + 'thresholdType')),

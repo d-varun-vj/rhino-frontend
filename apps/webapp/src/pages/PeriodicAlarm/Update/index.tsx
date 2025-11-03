@@ -15,8 +15,8 @@ import {
   buildPeriodicAlarmSchema,
 } from '../Create/validation';
 import {
+  DataRange,
   PeriodicAlarmCompareWith,
-  PeriodicAlarmPeriod,
   PeriodicAlarmThresholdType,
 } from '../types';
 
@@ -44,7 +44,6 @@ import BasicInformation from '../Create/sections/BasicInformation';
 import FormFooter from '../Create/sections/FormFooter';
 import MomentOfExecution from '../Create/sections/MomentOfExecution';
 import RecipientDetails from '../Create/sections/RecipientDetails';
-import TimeConfiguration from '../Create/sections/TimeConfiguration';
 import { onError } from '../helper';
 
 const UpdatePeriodicAlarm = () => {
@@ -74,7 +73,7 @@ const UpdatePeriodicAlarm = () => {
   const methods = useForm<PeriodicAlarmSchema>({
     mode: 'onChange',
     defaultValues: {
-      analysePeriod: PeriodicAlarmPeriod.LAST_DAY,
+      dataRange: DataRange.YESTERDAY,
       timezone: 'Europe/Warsaw',
       isActive: true,
       readOnly: true,
@@ -123,10 +122,9 @@ const UpdatePeriodicAlarm = () => {
         shortName: alarmDetails.data.shortName,
         clientUuid: alarmDetails.data.client.uuid,
         frequency: alarmDetails.data.frequency,
-        analysePeriod:
-          (alarmDetails.data.analysePeriod as PeriodicAlarmPeriod) ||
-          PeriodicAlarmPeriod.LAST_DAY,
         comparisonMethod: alarmDetails.data.configuration?.comparisonMethod,
+        dataRange:
+          (alarmDetails.data.dataRange as DataRange) || DataRange.YESTERDAY,
         compareWithPeriod: alarmDetails.data.compareWithPeriod,
         timezone: alarmDetails.data.timezone || 'Europe/Warsaw',
         language: alarmDetails.data.configuration.language || Languages.PL,
@@ -256,7 +254,7 @@ const UpdatePeriodicAlarm = () => {
           sharedTenantUuids: values.sharedTenants,
         }),
         compareWithPeriod: values.compareWithPeriod,
-        analysePeriod: values.analysePeriod,
+        dataRange: values.dataRange,
       };
 
       if (!alarmDetails?.data.hasCreatorAccess) {
@@ -347,18 +345,11 @@ const UpdatePeriodicAlarm = () => {
                         hasCreatorAccess={alarmDetails?.data.hasCreatorAccess}
                         isUpdate
                       />
-                      <MomentOfExecution
-                        isReadOnly={isReadOnly}
-                        resetThresholdValues={resetThresholdValues}
-                      />
-                      <TimeConfiguration
-                        isReadOnly={isReadOnly}
-                        resetThresholdValues={resetThresholdValues}
-                      />
                       <AlarmCriteria
                         isReadOnly={isReadOnly}
                         resetThresholdValues={resetThresholdValues}
                       />
+                      <MomentOfExecution isReadOnly={isReadOnly} />
                       <RecipientDetails isReadOnly={isReadOnly} />
                     </div>
                     <div>

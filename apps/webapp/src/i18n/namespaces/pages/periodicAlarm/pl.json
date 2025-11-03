@@ -61,9 +61,11 @@
         "title": "Kryteria",
         "compareWith": {
           "title": "Porównaj z",
-          "guide": ""
+          "guide": "",
+          "emptyDataRange": "Wybierz zakres danych"
         },
         "comparisonMethod": "Metoda porównania",
+        "dataRange": "Zakres danych",
         "threshold": {
           "title": "Próg",
           "guide": ""
@@ -116,7 +118,7 @@
         "generationDay": "Dzień generowania jest wymagany",
         "generationTime": "Czas generowania jest wymagany",
         "delayInDays": "Opóźnienie w odbiorze danych powinno być mniejsze niż 366",
-        "analysePeriod": "Okres analizy jest wymagany",
+        "dataRange": "Zakres danych jest wymagany",
         "compareWithPeriod": "Okres porównania jest wymagany",
         "comparisonMethod": "Metoda porównania jest wymagana",
         "recipients": "Nieprawidłowy adres e-mail. Podaj prawidłowy adres e-mail.",
@@ -162,8 +164,8 @@
       "quarterly": "Kwartalny",
       "yearly": "Roczny"
     },
-    "analysisPeriod": {
-      "lastDay": "Zeszły dzień",
+    "dataRange": {
+      "yesterday": "Wczoraj",
       "lastWeek": "Zeszły tydzień",
       "lastMonth": "Zeszły miesiąc",
       "lastQuarter": "Zeszły kwartał",
@@ -179,16 +181,18 @@
       "sun": "Nie"
     },
     "compareWith": {
-      "const": "Stała wartość",
-      "prevDay": "Poprzedni dzień",
-      "prevWeek": "Poprzedni tydzień",
-      "prevMonth": "Poprzedni miesiąc",
-      "prevQuarter": "Poprzedni kwartał",
-      "prevYear": "Poprzedni rok",
-      "prevYearSameDay": "Ten sam dzień w poprzednim roku",
-      "prevYearSameWeek": "Ten sam tydzień w poprzednim roku",
-      "prevYearSameMonth": "Ten sam miesiąc w poprzednim roku",
-      "prevYearSameQuarter": "Ten sam kwartał w poprzednim roku"
+      "fixedValue": "Stała wartość",
+      "dayBefore": "Przedwczoraj",
+      "weekBefore": "Poprzedni tydzień",
+      "monthBefore": "Poprzedni miesiąc",
+      "quarterBefore": "Poprzedni kwartał",
+      "yearBefore": "Poprzedni rok",
+      "sameDayYearBefore": "Ten sam dzień w poprzednim roku",
+      "sameWeekYearBefore": "Ten sam tydzień w poprzednim roku",
+      "sameMonthYearBefore": "Ten sam miesiąc w poprzednim roku",
+      "sameQuarterYearBefore": "Ten sam kwartał w poprzednim roku",
+      "sameDayMonthBefore": "Ten sam dzień miesiąc wcześniej",
+      "sameDayLastWeek": "Ten sam dzień tydzień wcześniej"
     },
     "comparisonMethod": {
       "totalConsumption": "Całkowite zużycie"

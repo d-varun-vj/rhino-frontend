@@ -59,7 +59,7 @@ export type PeriodicAlarmReq = {
   sharedLocalisationUuids?: string[];
   sharedTenantUuids?: string[];
   compareWithPeriod: string;
-  analysePeriod: string;
+  dataRange: string;
 };
 
 export type PeriodicAlarmExecutionParam = {
@@ -124,7 +124,7 @@ export interface PeriodicAlarmDetail {
     localizationName: string;
   }[];
   compareWithPeriod: string;
-  analysePeriod: string;
+  dataRange: string;
   nextExecutionTime: string;
   isManageable: boolean;
   hasCreatorAccess: boolean;

@@ -61,9 +61,11 @@
         "title": "Criteria",
         "compareWith": {
           "title": "Compare with",
-          "guide": ""
+          "guide": "",
+          "emptyDataRange": "Select data range"
         },
         "comparisonMethod": "Comparison method",
+        "dataRange": "Data range",
         "threshold": {
           "title": "Threshold Type",
           "guide": ""
@@ -116,7 +118,7 @@
         "generationDay": "Generation day is required",
         "generationTime": "Generation time is required",
         "delayInDays": "Delay in data reception should be less than 366",
-        "analysePeriod": "Analysis period is required",
+        "dataRange": "Data range is required",
         "compareWithPeriod": "Comparison period is required",
         "comparisonMethod": "Comparison method is required",
         "recipients": "Invalid email address. Please enter a valid email",
@@ -162,8 +164,8 @@
       "quarterly": "Quarterly",
       "yearly": "Yearly"
     },
-    "analysisPeriod": {
-      "lastDay": "Last day",
+    "dataRange": {
+      "yesterday": "Yesterday",
       "lastWeek": "Last week",
       "lastMonth": "Last month",
       "lastQuarter": "Last quarter",
@@ -179,16 +181,18 @@
       "sun": "Sun"
     },
     "compareWith": {
-      "const": "Constant",
-      "prevDay": "Previous Day",
-      "prevWeek": "Previous Week",
-      "prevMonth": "Previous Month",
-      "prevQuarter": "Previous Quarter",
-      "prevYear": "Previous Year",
-      "prevYearSameDay": "Same Day Last Year",
-      "prevYearSameWeek": "Previous Year Same Week",
-      "prevYearSameMonth": "Previous Year Same Month",
-      "prevYearSameQuarter": "Previous Year Same Quarter"
+      "fixedValue": "Fixed Value",
+      "dayBefore": "Day before",
+      "weekBefore": "Week before",
+      "monthBefore": "Month before",
+      "quarterBefore": "Quarter before",
+      "yearBefore": "Year before",
+      "sameDayYearBefore": "Same day year before",
+      "sameWeekYearBefore": "Same week year before",
+      "sameMonthYearBefore": "Same month year before",
+      "sameQuarterYearBefore": "Same quarter year before",
+      "sameDayMonthBefore": "Same day month before",
+      "sameDayLastWeek": "Same day last week"
     },
     "comparisonMethod": {
       "totalConsumption": "Total consumption"

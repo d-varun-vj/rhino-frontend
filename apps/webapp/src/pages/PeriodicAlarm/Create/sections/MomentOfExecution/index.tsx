@@ -13,7 +13,9 @@ import QuestionCircle from 'apps/webapp/src/components/common/indicators/Questio
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { getValidFrequenciesForCombination } from '../../../helper';
 import {
+  DataRange,
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
 } from '../../../types';
@@ -21,23 +23,43 @@ import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
 interface MomentOfExecutionProps {
-  resetThresholdValues: () => void;
   isReadOnly?: boolean;
 }
 
-const MomentOfExecution = ({
-  resetThresholdValues,
-  isReadOnly = false,
-}: MomentOfExecutionProps) => {
+const MomentOfExecution = ({ isReadOnly = false }: MomentOfExecutionProps) => {
   const { control, watch, setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
-  const selectedFrequency =
-    (watch('frequency') as PeriodicAlarmFrequency) ||
-    PeriodicAlarmFrequency.DAILY;
+  const selectedFrequency = watch('frequency') as PeriodicAlarmFrequency;
+
+  const selectedDataRange = watch('dataRange') as DataRange;
+  const selectedCompareWith = watch(
+    'compareWithPeriod'
+  ) as PeriodicAlarmCompareWith;
 
   const generationDayConfigByFrequency = useMemo(() => {
-    return VALID_GENERATION_DAY_CONFIG[selectedFrequency];
+    if (selectedFrequency)
+      return VALID_GENERATION_DAY_CONFIG[selectedFrequency];
   }, [selectedFrequency]);
+
+  const validFrequencyOptionMap = getValidFrequenciesForCombination(
+    selectedDataRange,
+    selectedCompareWith
+  );
+
+  const filteredfrequencyOptions = useMemo(() => {
+    if (validFrequencyOptionMap) {
+      const validOption = FREQUENCY_OPTIONS.map((option) => ({
+        ...option,
+        disabled: !validFrequencyOptionMap.allowed.includes(option.id),
+      }));
+      return validOption;
+    }
+
+    return FREQUENCY_OPTIONS.map((option) => ({
+      ...option,
+      disabled: true,
+    }));
+  }, [validFrequencyOptionMap]);
 
   return (
     <SectionWrapper
@@ -51,28 +73,29 @@ const MomentOfExecution = ({
           rules={{ required: true }}
           render={({ field, fieldState }) => (
             <FloatingSelector
+              key={`${selectedDataRange}-${selectedCompareWith}`}
               label={t(tFormBase + 'momentOfExecution.frequency')}
               required
-              data={applyLabelTranslations(FREQUENCY_OPTIONS)}
+              data={applyLabelTranslations(filteredfrequencyOptions)}
               onSelect={(frequency: string) => {
                 field.onChange(frequency);
-                setValue(
-                  'compareWithPeriod',
-                  PeriodicAlarmCompareWith.CONSTANT
-                );
                 setValue('generationDay', 1);
-                resetThresholdValues();
               }}
-              selectedValue={FREQUENCY_OPTIONS.find(
+              selectedValue={filteredfrequencyOptions.find(
                 (val) => val.id === (field.value as PeriodicAlarmFrequency)
               )}
               error={fieldState.error ? fieldState.error.message : ''}
               isReadOnly={isReadOnly}
+              disabledTitle={
+                !selectedDataRange
+                  ? t(tFormBase + 'alarmCriteria.compareWith.emptyDataRange')
+                  : ''
+              }
             />
           )}
         />
 
-        {shouldShowGenerationDay(selectedFrequency) && (
+        {selectedFrequency && shouldShowGenerationDay(selectedFrequency) && (
           <div className="grid grid-cols-2 items-center gap-4">
             {selectedFrequency === PeriodicAlarmFrequency.WEEKLY ? (
               <Controller
@@ -107,9 +130,21 @@ const MomentOfExecution = ({
                     )}
                     required
                     value={field.value ?? 1}
-                    min={generationDayConfigByFrequency.min}
-                    max={generationDayConfigByFrequency.max}
-                    placeholder={t(generationDayConfigByFrequency.placeholder)}
+                    min={
+                      generationDayConfigByFrequency
+                        ? generationDayConfigByFrequency.min
+                        : 1
+                    }
+                    max={
+                      generationDayConfigByFrequency
+                        ? generationDayConfigByFrequency.max
+                        : 1
+                    }
+                    placeholder={t(
+                      generationDayConfigByFrequency
+                        ? generationDayConfigByFrequency.placeholder
+                        : ''
+                    )}
                     allowDecimal={false}
                     onChange={field.onChange}
                     onBlur={field.onBlur}
