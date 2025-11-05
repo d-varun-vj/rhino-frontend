@@ -39,6 +39,7 @@ import {
   shouldShowStartAndEndThresholdValue,
   shouldShowThresholdValue,
 } from '../Create/helper';
+import AdvancedSettings from '../Create/sections/AdvancedSettings';
 import AlarmCriteria from '../Create/sections/AlarmCriteria';
 import BasicInformation from '../Create/sections/BasicInformation';
 import FormFooter from '../Create/sections/FormFooter';
@@ -351,6 +352,7 @@ const UpdatePeriodicAlarm = () => {
                       />
                       <MomentOfExecution isReadOnly={isReadOnly} />
                       <RecipientDetails isReadOnly={isReadOnly} />
+                      <AdvancedSettings isReadOnly={isReadOnly} />
                     </div>
                     <div>
                       <AuditInfoCard {...auditInfo} />

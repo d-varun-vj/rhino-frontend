@@ -30,24 +30,14 @@
         "alarmShortName": "Krótka nazwa",
         "active": "Aktywność",
         "shared": "Alarm udostępniony",
-        "mediumType": "Typ medium",
-        "timezone": "Strefa czasowa",
-        "language": "Język"
+        "mediumType": "Typ medium"
       },
       "momentOfExecution": {
         "title": "Moment wykonania",
         "frequency": "Częstotliwość",
-        "generationTime": {
-          "title": "Czas generowania",
-          "guide": "Czas po którym zostanie wygenerowany alarm"
-        },
         "generationDay": {
           "title": "Planowany dzień wygenerowania",
           "guide": "Dzień tygodnia / miesiąca / kwartału / roku, w którym zostanie wygenerowany alarm"
-        },
-        "gapAnalysis": {
-          "title": "Opóźnienie w odbiorze danych",
-          "guide": "Liczba dni opóźnienia w odbiorze danych. Liczba ta jest odejmowana od daty generowania alarmu w momencie jego przetwarzania"
         }
       },
       "timeConfiguration": {
@@ -81,10 +71,6 @@
         "thresholdEndValue": {
           "title": "Wartość końcowa progu {{unit}}",
           "guide": ""
-        },
-        "sendOnlyWhenExceeded": {
-          "title": "Wyślij alarm tylko kiedy przekracza próg",
-          "guide": ""
         }
       },
       "recipient": {
@@ -96,6 +82,23 @@
         "sms": {
           "title": "Odbiorca SMS",
           "placeholder": "np. +48100100100"
+        }
+      },
+      "advancedSettings": {
+        "title": "Ustawienia zaawansowane",
+        "timezone": "Strefa czasowa",
+        "language": "Język",
+        "generationTime": {
+          "title": "Czas generowania",
+          "guide": "Czas po którym zostanie wygenerowany alarm"
+        },
+        "gapAnalysis": {
+          "title": "Opóźnienie w odbiorze danych",
+          "guide": "Liczba dni opóźnienia w odbiorze danych. Liczba ta jest odejmowana od daty generowania alarmu w momencie jego przetwarzania"
+        },
+        "sendOnlyWhenExceeded": {
+          "title": "Wyślij alarm tylko kiedy przekracza próg",
+          "guide": ""
         }
       },
       "selectMeasurement": "Wybierz licznik",

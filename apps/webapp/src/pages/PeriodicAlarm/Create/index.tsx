@@ -26,6 +26,7 @@ import {
   PeriodicAlarmFrequency,
 } from '../types';
 import { COMPARISON_METHOD_OPTIONS } from './config';
+import AdvancedSettings from './sections/AdvancedSettings';
 import AlarmCriteria from './sections/AlarmCriteria';
 import BasicInformation from './sections/BasicInformation';
 import FormFooter from './sections/FormFooter';
@@ -141,6 +142,7 @@ const CreatePeriodicAlarm = () => {
                     />
                     <MomentOfExecution />
                     <RecipientDetails />
+                    <AdvancedSettings />
                   </div>
                 </div>
               </div>

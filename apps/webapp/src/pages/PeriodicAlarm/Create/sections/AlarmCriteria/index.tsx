@@ -18,7 +18,6 @@ import {
 } from '../../helper';
 
 import CustomSelect from 'apps/webapp/src/components/common/comboboxes/CustomSelect';
-import CheckBox from 'apps/webapp/src/components/common/input/Checkbox';
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -333,25 +332,6 @@ const AlarmCriteria = ({
           </div>
         </div>
       )}
-
-      <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-        <Controller
-          name="sendOnlyWhenExceeded"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <CheckBox
-              label={t(tFormBase + 'alarmCriteria.sendOnlyWhenExceeded.title')}
-              checked={field.value}
-              onChange={(e) => {
-                const isChecked = e.currentTarget.checked;
-                field.onChange(isChecked);
-              }}
-              disabled={isReadOnly}
-            />
-          )}
-        />
-      </div>
     </SectionWrapper>
   );
 };

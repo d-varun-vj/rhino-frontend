@@ -8,7 +8,6 @@ import {
 import { applyLabelTranslations, shouldShowGenerationDay } from '../../helper';
 
 import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
-import CustomTimePicker from 'apps/webapp/src/components/common/datetime/CustomTimePicker';
 import QuestionCircle from 'apps/webapp/src/components/common/indicators/QuestionCircle';
 import NumberField from 'apps/webapp/src/components/common/input/NumberField';
 import { useMemo } from 'react';
@@ -160,57 +159,6 @@ const MomentOfExecution = ({ isReadOnly = false }: MomentOfExecutionProps) => {
             />
           </div>
         )}
-
-        <div className="flex gap-4 items-center">
-          <Controller
-            name={'generationTime'}
-            control={control}
-            rules={{ required: true }}
-            render={({ field, fieldState }) => (
-              <CustomTimePicker
-                label={t(tFormBase + 'momentOfExecution.generationTime.title')}
-                required
-                minutesStep={5}
-                value={field.value}
-                onChange={(time: string) => {
-                  field.onChange(time);
-                }}
-                onBlur={field.onBlur}
-                error={fieldState.error ? fieldState.error.message : ''}
-                disabled={isReadOnly}
-              />
-            )}
-          />
-          <QuestionCircle
-            content={t(tFormBase + 'momentOfExecution.generationTime.guide')}
-            className="mt-6"
-          />
-        </div>
-
-        <div className="grid grid-cols-2 items-center gap-4">
-          <Controller
-            name={'delayInDays'}
-            control={control}
-            rules={{ required: true }}
-            render={({ field, fieldState }) => (
-              <NumberField
-                label={t(tFormBase + 'momentOfExecution.gapAnalysis.title')}
-                required
-                allowNegative={false}
-                value={field.value ?? ''}
-                onChange={field.onChange}
-                allowDecimal={false}
-                onBlur={field.onBlur}
-                error={fieldState.error ? fieldState.error.message : ''}
-                disabled={isReadOnly}
-              />
-            )}
-          />
-          <QuestionCircle
-            content={t(tFormBase + 'momentOfExecution.gapAnalysis.guide')}
-            className="mt-6"
-          />
-        </div>
       </div>
     </SectionWrapper>
   );

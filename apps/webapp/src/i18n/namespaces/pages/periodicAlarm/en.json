@@ -30,24 +30,14 @@
         "alarmShortName": "Short name",
         "active": "Active",
         "shared": "Shared Alarm",
-        "mediumType": "Medium type",
-        "timezone": "Time zone",
-        "language": "Language"
+        "mediumType": "Medium type"
       },
       "momentOfExecution": {
         "title": "Moment of execution",
         "frequency": "Frequency",
-        "generationTime": {
-          "title": "Planned generation time",
-          "guide": "Time after which the alarm will be generated"
-        },
         "generationDay": {
           "title": "Generation day",
           "guide": "Day of the week / month / quarter / year on which the alarm will be generated"
-        },
-        "gapAnalysis": {
-          "title": "Data reception delay",
-          "guide": "No of days indicating the delay in data reception on the moment of generation. These many number of days will be reduced from the generation day to calculate the analysis period"
         }
       },
       "timeConfiguration": {
@@ -81,10 +71,6 @@
         "thresholdEndValue": {
           "title": "Threshold end value {{unit}}",
           "guide": ""
-        },
-        "sendOnlyWhenExceeded": {
-          "title": "Send alarm only when exceeded",
-          "guide": ""
         }
       },
       "recipient": {
@@ -96,6 +82,23 @@
         "sms": {
           "title": "Sms recipient",
           "placeholder": "e.g. +48100100100"
+        }
+      },
+      "advancedSettings": {
+        "title": "Advanced settings",
+        "timezone": "Time zone",
+        "language": "Language",
+        "generationTime": {
+          "title": "Planned generation time",
+          "guide": "Time after which the alarm will be generated"
+        },
+        "gapAnalysis": {
+          "title": "Data reception delay",
+          "guide": "No of days indicating the delay in data reception on the moment of generation. These many number of days will be reduced from the generation day to calculate the analysis period"
+        },
+        "sendOnlyWhenExceeded": {
+          "title": "Send alarm only when exceeded",
+          "guide": ""
         }
       },
       "selectMeasurement": "Select measurement",

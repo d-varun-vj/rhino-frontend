@@ -14,7 +14,7 @@ const CheckBox = ({ label, ...props }: CheckBoxProps) => {
         'flex-row-reverse': props.labelPosition == 'left',
       })}
     >
-      <Checkbox color="var(--color-rhino-indigo-blue-highlight)" {...props} />
+      <Checkbox color="var(--color-rhino-indigo-blue)" {...props} />
       {label && <Label content={label} />}
     </div>
   );

@@ -1,15 +1,10 @@
-import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { Languages } from '@rhino/apis';
-import CustomSelect from 'apps/webapp/src/components/common/comboboxes/CustomSelect';
-import FloatingSelector from 'apps/webapp/src/components/common/comboboxes/FloatingSelector';
 import TextField from 'apps/webapp/src/components/common/input/TextField';
 import Toggle from 'apps/webapp/src/components/common/input/Toggle';
 import SharingSection from 'apps/webapp/src/components/shared/SharingSection';
-import moment from 'moment-timezone';
 import { useTranslation } from 'react-i18next';
-import { LANGUAGES, tFormBase } from '../../config';
+import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 import SectionWrapper from '../SectionWrapper';
 
@@ -31,15 +26,24 @@ const BasicInformation = ({
   } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
 
-  const TIMEZONES = useMemo(() => {
-    return moment.tz
-      .names()
-      .map((tz) => ({
-        value: tz,
-        label: `${tz} (${moment.tz(tz).format('Z')})`,
-      }))
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }, []);
+  const ActiveToggle = () => (
+    <div className="flex">
+      <Controller
+        name="isActive"
+        control={control}
+        render={({ field }) => (
+          <Toggle
+            label={t(tFormBase + 'basic.active')}
+            checked={field.value}
+            onChange={(e) => field.onChange(e.currentTarget.checked)}
+            onBlur={field.onBlur}
+            activeColor="var(--color-rhino-indigo-blue)"
+            disabled={isReadOnly}
+          />
+        )}
+      />
+    </div>
+  );
 
   return (
     <SectionWrapper title={t(tFormBase + 'basic.title')} id="basic-information">
@@ -59,73 +63,17 @@ const BasicInformation = ({
           disabled={isReadOnly}
         />
       </div>
-      {hasCreatorAccess && (
+      {hasCreatorAccess ? (
         <SharingSection
           label={t(tFormBase + 'basic.shared')}
           isReadOnly={isReadOnly}
           mode={isUpdate ? 'update' : 'create'}
         >
-          <div className="flex min-lg:justify-end ">
-            <Controller
-              name="isActive"
-              control={control}
-              render={({ field }) => (
-                <Toggle
-                  label={t(tFormBase + 'basic.active')}
-                  checked={field.value}
-                  onChange={(e) => field.onChange(e.currentTarget.checked)}
-                  onBlur={field.onBlur}
-                  activeColor="var(--color-rhino-indigo-blue-highlight)"
-                  disabled={isReadOnly}
-                />
-              )}
-            />
-          </div>
+          <ActiveToggle />
         </SharingSection>
+      ) : (
+        <ActiveToggle />
       )}
-
-      <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-        <Controller
-          name="timezone"
-          control={control}
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <CustomSelect
-              label={t(tFormBase + 'basic.timezone')}
-              required
-              data={TIMEZONES}
-              value={field.value || null}
-              onChange={(val) => {
-                field.onChange(val || '');
-              }}
-              onBlur={field.onBlur}
-              error={fieldState.error?.message}
-              clearable
-              disabled={isReadOnly}
-            />
-          )}
-        />
-      </div>
-      <div className="grid min-lg:grid-cols-2 grid-cols-1 gap-8">
-        <Controller
-          name={'language'}
-          control={control}
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <FloatingSelector
-              label={t(tFormBase + 'basic.language')}
-              required
-              data={LANGUAGES}
-              onSelect={field.onChange}
-              selectedValue={LANGUAGES.find(
-                (val) => val.id === (field.value as Languages)
-              )}
-              error={fieldState.error ? fieldState.error.message : ''}
-              isReadOnly={isReadOnly}
-            />
-          )}
-        />
-      </div>
     </SectionWrapper>
   );
 };
