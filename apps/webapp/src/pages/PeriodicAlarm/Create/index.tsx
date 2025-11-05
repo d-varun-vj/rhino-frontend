@@ -49,7 +49,7 @@ const CreatePeriodicAlarm = () => {
       frequency: PeriodicAlarmFrequency.DAILY,
       comparisonMethod: COMPARISON_METHOD_OPTIONS[0].value,
       dataRange: DataRange.YESTERDAY,
-      compareWithPeriod: PeriodicAlarmCompareWith.FIXED_VALUE,
+      compareWithPeriod: PeriodicAlarmCompareWith.DAY_BEFORE,
       generationDay: 1,
       timezone: 'Europe/Warsaw',
       isActive: true,

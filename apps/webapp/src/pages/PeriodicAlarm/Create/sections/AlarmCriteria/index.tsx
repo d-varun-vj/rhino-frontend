@@ -119,7 +119,10 @@ const AlarmCriteria = ({
                   data={applyLabelTranslations(DATA_RANGE_OPTIONS)}
                   onChange={(val) => {
                     field.onChange(val ?? '');
-                    resetField('compareWithPeriod');
+                    setValue(
+                      'compareWithPeriod',
+                      PeriodicAlarmCompareWith.FIXED_VALUE
+                    );
                     setFrequency({
                       dataRange: val as DataRange,
                       compareWith: selectedCompareWith,

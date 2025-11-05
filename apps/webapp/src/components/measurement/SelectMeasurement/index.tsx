@@ -5,6 +5,7 @@ import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { FaPlusCircle } from 'react-icons/fa';
+import message from '../../notifier';
 import MeasurementsWithActionsTable from '../MeasurementsWithActionsTable';
 import SelectMeasurementModal from '../SelectMeasurementModal';
 import { CustomFilter, MeasurementWithConfig } from './types';
@@ -213,17 +214,20 @@ export const SelectMeasurement = ({
           className={clsx(
             'w-full h-10 !bg-rhino-energy-green text-white !rounded-tl-none !rounded-tr-none rounded-br-md rounded-bl-none transition-all',
             {
-              '!bg-rhino-grey/30 !text-white/80': disabled || !client,
+              '!bg-rhino-grey/30 !text-white/80': disabled,
             }
           )}
-          onClick={() => setModalOpened(true)}
+          onClick={() => {
+            if (!client) {
+              message.warn(t(baseRoute + 'selectClient'));
+              return;
+            }
+
+            setModalOpened(true);
+          }}
           leftSection={<FaPlusCircle className="mr-1" />}
-          disabled={!client || disabled}
-          title={
-            !client
-              ? t(baseRoute + 'selectClient')
-              : disabledTitle || t(baseRoute + 'title')
-          }
+          disabled={disabled}
+          title={disabledTitle || t(baseRoute + 'title')}
         >
           {getButtonText()}
         </Button>

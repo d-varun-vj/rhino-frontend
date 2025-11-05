@@ -29,6 +29,11 @@ const CustomSelect = React.forwardRef<HTMLInputElement, CustomSelectProps>(
           placeholder={t('comboBox.select')}
           checkIconPosition="right"
           nothingFoundMessage={t('comboBox.empty')}
+          comboboxProps={{
+            position: 'bottom',
+            middlewares: { flip: true, shift: false },
+            offset: -1,
+          }}
         />
         {error && <ErrorText content={error} />}
       </div>
