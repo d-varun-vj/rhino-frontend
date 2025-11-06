@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.18.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.17.0...webapp-v1.18.0) (2025-11-05)
+
+
+### Features
+
+* Fields renaming and add a new field “Short name“ [PRD-3458] ([#158](https://github.com/Rhino-Energy/rhino-frontend/issues/158)) ([4ba7a22](https://github.com/Rhino-Energy/rhino-frontend/commit/4ba7a2223f1789885ee7e766583be4518ad6a1c5))
+* Introduce two dropdowns facilitating criteria [PRD-3457] ([#161](https://github.com/Rhino-Energy/rhino-frontend/issues/161)) ([f97496d](https://github.com/Rhino-Energy/rhino-frontend/commit/f97496d1fbb5df6899fd854e9a8d631892d068ef))
+* Rearrange periodic alarm edit/create page according to the design [PRD-3428] ([#163](https://github.com/Rhino-Energy/rhino-frontend/issues/163)) ([de04111](https://github.com/Rhino-Energy/rhino-frontend/commit/de0411161ec68597c0ffcf661ca32fd5d87a2e74))
+
+
+### Bug Fixes
+
+* Enable 'add Measurement' button with client validation, set default date range, fix spacing [PRD-3457] ([#162](https://github.com/Rhino-Energy/rhino-frontend/issues/162)) ([a168895](https://github.com/Rhino-Energy/rhino-frontend/commit/a1688957854a7702c29002853bfa89eaff05b2ce))
+* Short name validation [PRD-3458] ([#160](https://github.com/Rhino-Energy/rhino-frontend/issues/160)) ([0977dfc](https://github.com/Rhino-Energy/rhino-frontend/commit/0977dfc8ea76b0d5e1fc61afe84e130c985c636d))
+
 ## [1.17.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.16.0...webapp-v1.17.0) (2025-10-27)
 
 
