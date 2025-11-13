@@ -25,7 +25,6 @@ export type MeasurementRequestFilter = {
   measurementType?: string | null;
   endUseAreaType?: string | null;
   onlyIncremental?: boolean | null;
-  onlyPower?: boolean | null;
 };
 
 export const useGetMeasurementList = (params: MeasurementRequestFilter) => {
@@ -49,7 +48,6 @@ export const useGetMeasurementList = (params: MeasurementRequestFilter) => {
     measurementType,
     endUseAreaType,
     onlyIncremental,
-    onlyPower,
   } = params;
 
   const queryParams = {
@@ -78,7 +76,6 @@ export const useGetMeasurementList = (params: MeasurementRequestFilter) => {
     ...(!!endUseAreaType && { endUseAreaType }),
     ...(onlyIncremental !== undefined &&
       onlyIncremental !== null && { onlyIncremental }),
-    ...(onlyPower !== undefined && onlyPower !== null && { onlyPower }),
   };
 
   return useQuery({
