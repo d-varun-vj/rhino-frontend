@@ -2,7 +2,7 @@
   "plugins": [],
   "release-type": "simple",
   "packages": {
-    "apps/webapp": {
+    ".": {
       "release-type": "simple",
       "package-name": "webapp"
     }
