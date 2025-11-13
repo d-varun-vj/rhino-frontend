@@ -2,9 +2,9 @@ name: Lint and Test
 
 on:
   push:
-    branches: [main]
+    branches: [main, staging]
   pull_request:
-    branches: [main]
+    branches: [main, staging]
     types: [opened, synchronize, reopened, edited]
 jobs:
   lint-and-test:
