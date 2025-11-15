@@ -23,12 +23,12 @@ const IconButton = ({
   return (
     <Button
       className={clsx(
-        'font-bold px-4 py-2 rounded text-white cursor-pointer ',
+        '!font-bold !px-4 !py-2 rounded !text-white !cursor-pointer ',
         {
           '!bg-rhino-energy-green hover:!bg-rhino-green-accent !transition-all':
             type == 'primary' && !props.disabled,
           '!bg-rhino-indigo-blue': type == 'secondary' && !props.disabled,
-          '!h-6.5': size == 'sm',
+          '!h-8': size == 'sm',
         }
       )}
       onClick={action}

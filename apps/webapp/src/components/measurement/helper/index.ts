@@ -1,3 +1,4 @@
+import { Sign } from '@rhino/apis';
 import { Namespace, TFunction } from 'i18next';
 
 export const getTranslationOptions = <T extends Namespace>({
@@ -21,4 +22,8 @@ export const getTranslationOptions = <T extends Namespace>({
       },
     ],
   };
+};
+
+export const getSign = (val: string) => {
+  return val === 'PLUS' ? Sign.PLUS : Sign.MINUS;
 };

@@ -27,7 +27,26 @@
         "actions": "Akcje"
       },
       "actions": {
-        "remove": "Usuń licznik"
+        "remove": "Usuń licznik",
+        "info": {
+          "btnTitle": "Pokaż informacje o liczniku",
+          "modal": {
+            "title": "Informacje o liczniku",
+            "measurementName": "Nazwa licznika",
+            "uuid": "UUID",
+            "comment": "Komentarz",
+            "table": {
+              "name": "Nazwa",
+              "location": "Lokalizacja",
+              "group": "Grupa",
+              "medium": "Medium",
+              "serialNumber": "Numer seryjny",
+              "sign": "Znak",
+              "factor": "Mnożnik",
+              "client": "Klient"
+            }
+          }
+        }
       }
     },
     "selectMeasurement": {

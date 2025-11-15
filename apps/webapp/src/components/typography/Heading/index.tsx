@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 type Heading = {
   content: string;
-  variant?: 'sm' | 'lg';
+  variant?: 'sm' | 'lg' | 'xl';
   font?:
     | 'thin'
     | 'extralight'
@@ -14,6 +14,7 @@ type Heading = {
     | 'extrabold'
     | 'black';
   color?: string;
+  className?: string;
 };
 
 const Heading = ({
@@ -21,14 +22,16 @@ const Heading = ({
   variant = 'lg',
   font = 'bold',
   color = 'rhino-indigo-blue',
+  className,
 }: Heading) => {
   return (
     <p
       className={clsx(
-        `text-${color} font-${font} !leading-5 tracking-normal py-4 `,
+        `text-${color} font-${font} !leading-5 tracking-normal py-4 ${className}`,
         {
           'text-lg': variant == 'lg',
           'text-sm': variant == 'sm',
+          'text-xl': variant == 'xl',
         }
       )}
     >

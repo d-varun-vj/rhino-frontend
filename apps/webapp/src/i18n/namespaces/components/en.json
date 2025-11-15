@@ -27,7 +27,26 @@
         "actions": "Actions"
       },
       "actions": {
-        "remove": "Remove measurement"
+        "remove": "Remove measurement",
+        "info": {
+          "btnTitle": "Show measurement information",
+          "modal": {
+            "title": "Measurement info",
+            "measurementName": "Measurement name",
+            "uuid": "UUID",
+            "comment": "Comment",
+            "table": {
+              "name": "Name",
+              "location": "Location",
+              "group": "Group",
+              "medium": "Medium",
+              "serialNumber": "Serial number",
+              "sign": "Sign",
+              "factor": "Factor",
+              "client": "Client"
+            }
+          }
+        }
       }
     },
     "selectMeasurement": {

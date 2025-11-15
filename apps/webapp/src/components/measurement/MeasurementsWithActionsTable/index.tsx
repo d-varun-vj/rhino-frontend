@@ -1,9 +1,9 @@
 import { ColumnDef, Row } from '@tanstack/react-table';
-import React, { useCallback } from 'react';
+import React, { useCallback, useReducer } from 'react';
 
 import { CONSTANTS } from 'apps/webapp/src/constant';
 import { useTranslation } from 'react-i18next';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaInfoCircle } from 'react-icons/fa';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
 import IconButton from '../../common/buttons/IconButton';
 import Table from '../../common/Table';
@@ -11,6 +11,8 @@ import ActionCell from '../../common/Table/ActionCell';
 import GoToConsumptionIcon from '../../consumption/GoToConsumptionIcon';
 import { getTranslationOptions } from '../helper';
 import { MeasurementWithConfig } from '../SelectMeasurement/types';
+import MeasurementInfoModal from './MeasurementInfoModal';
+import { MeasurementInfoActionProps, MeasurementInfoStateProps } from './types';
 
 interface MeasurementsWithActionsTableProps {
   selectedMeasurements: MeasurementWithConfig[];
@@ -18,6 +20,27 @@ interface MeasurementsWithActionsTableProps {
   onClearAll?: () => void;
   isReadOnly?: boolean;
 }
+
+const initialMeasurementInfoState = {
+  openInfo: false,
+  selectedMeasurementUuid: '',
+};
+
+const measurementInfoReducer = (
+  state: MeasurementInfoStateProps,
+  action: MeasurementInfoActionProps
+) => {
+  switch (action.type) {
+    case 'SET_OPEN_INFO':
+      return { ...state, openInfo: !state.openInfo };
+    case 'SET_MEAUREMENT_UUID':
+      return { ...state, selectedMeasurementUuid: action.payload };
+    case 'RESET':
+      return initialMeasurementInfoState;
+    default:
+      return state;
+  }
+};
 
 const MeasurementsWithActionsTable = ({
   selectedMeasurements,
@@ -27,11 +50,28 @@ const MeasurementsWithActionsTable = ({
 }: MeasurementsWithActionsTableProps) => {
   const { t } = useTranslation('components');
   const translationBaseRoute = 'measurement.measurementsWithActionsTable.';
+  const [measurementInfoState, dispatch] = useReducer(
+    measurementInfoReducer,
+    initialMeasurementInfoState
+  );
 
   const ActionCellFn = useCallback(
     (row: Row<MeasurementWithConfig>) => {
       return (
         <ActionCell>
+          <IconButton
+            action={() => {
+              dispatch({
+                type: 'SET_MEAUREMENT_UUID',
+                payload: row.original.measurement.uuid,
+              });
+              dispatch({ type: 'SET_OPEN_INFO' });
+            }}
+            popupContent={t(translationBaseRoute + 'actions.info.btnTitle')}
+            size="sm"
+          >
+            <FaInfoCircle />
+          </IconButton>
           {row.original.measurement.hasAccessToMeasurement && (
             <GoToConsumptionIcon
               measurementUuid={row.original.measurement.uuid}
@@ -55,7 +95,7 @@ const MeasurementsWithActionsTable = ({
         </ActionCell>
       );
     },
-    [onRemoveMeasurement, t, translationBaseRoute]
+    [onRemoveMeasurement, t, translationBaseRoute, isReadOnly]
   );
 
   const columns = React.useMemo<ColumnDef<MeasurementWithConfig, unknown>[]>(
@@ -64,33 +104,21 @@ const MeasurementsWithActionsTable = ({
         accessorFn: (row) => row.measurement.displayName,
         header: t(translationBaseRoute + 'header.name'),
         cell: (info) => info.getValue(),
-        meta: {
-          sortKey: null,
-        },
       },
       {
         accessorFn: (row) => row.measurement.serialNumber,
         header: t(translationBaseRoute + 'header.serialNumber'),
         cell: (info) => info.getValue(),
-        meta: {
-          sortKey: null,
-        },
       },
       {
         accessorFn: (row) => row.measurement.timezone,
         header: t(translationBaseRoute + 'header.timezone'),
         cell: (info) => info.getValue(),
-        meta: {
-          sortKey: null,
-        },
       },
       {
         accessorFn: (row) => row.measurement.translatedMedium,
         header: t(translationBaseRoute + 'header.medium'),
         cell: (info) => info.getValue(),
-        meta: {
-          sortKey: null,
-        },
       },
       {
         accessorFn: (row) => row.measurement.type,
@@ -99,41 +127,26 @@ const MeasurementsWithActionsTable = ({
           getTranslationOptions({ t }).MEASUREMENT_TYPE.find(
             (option) => option.value === info.getValue()
           )?.label,
-        meta: {
-          sortKey: null,
-        },
       },
       {
         accessorFn: (row) => row.measurement.locationName,
         header: t(translationBaseRoute + 'header.location'),
         cell: (info) => info.getValue(),
-        meta: {
-          sortKey: null,
-        },
       },
       {
         accessorFn: (row) => row.measurement.groupName,
         header: t(translationBaseRoute + 'header.group'),
         cell: (info) => info.getValue(),
-        meta: {
-          sortKey: null,
-        },
       },
       {
         accessorFn: (row) => row.measurement.tenants,
         header: t(translationBaseRoute + 'header.tenants'),
         cell: (info) => info.getValue(),
-        meta: {
-          sortKey: null,
-        },
       },
       {
         id: CONSTANTS.action,
         accessorFn: () => {},
-        header: t(translationBaseRoute + 'header.actions'),
-        meta: {
-          sortKey: null,
-        },
+        header: '',
         cell: ({ row }) => ActionCellFn(row),
       },
     ],
@@ -163,7 +176,7 @@ const MeasurementsWithActionsTable = ({
           <Table
             columns={columns}
             data={selectedMeasurements}
-            onFilterChange={() => {}}
+            variant="compact"
             emptyText={t(translationBaseRoute + 'emptyMessage')}
           />
         </div>
@@ -180,6 +193,16 @@ const MeasurementsWithActionsTable = ({
           </p>
         </div>
       )}
+      <MeasurementInfoModal
+        modalProps={{
+          opened: measurementInfoState.openInfo,
+          onClose() {
+            dispatch({ type: 'RESET' });
+          },
+        }}
+        measurementUuid={measurementInfoState.selectedMeasurementUuid}
+        dispatch={dispatch}
+      />
     </div>
   );
 };

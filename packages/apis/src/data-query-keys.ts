@@ -5,6 +5,7 @@ export const enum DataQueryKeys {
   GROUPS = 'groups',
   LOCATIONS = 'locations',
   MEASUREMENTS = 'measurements',
+  MEASUREMENT_INFO = 'measurementInfo',
   METERING_POINT_TYPES = 'meteringPointTypes',
   OPTIONS = 'options',
   PERIODIC_ALARM_LIST = 'periodicAlarmList',

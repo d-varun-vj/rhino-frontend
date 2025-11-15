@@ -12,12 +12,12 @@ import {
 } from '@tanstack/react-table';
 import React, { useCallback, useState } from 'react';
 
-import { Loader } from '@mantine/core';
 import { SortDirection } from '@rhino/utils';
 import { ColumnMeta } from '@tanstack/table-core';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { CONSTANTS } from '../../../constant';
+import CustomLoader from '../Loader';
 import Filter from './Filter';
 import TableFooter from './Footer';
 import { FilterVariant } from './types';
@@ -56,13 +56,14 @@ type TableProps<T> = {
   columns: ColumnDef<T, unknown>[];
   data: T[];
   footer?: FooterType;
+  variant?: 'default' | 'compact' | 'minimal';
   isLoading?: boolean;
   extraStyles?: string;
   emptyText?: string;
   size?: 'sm';
   textNowarp?: boolean;
   onSortSelect?: (field: string, direction: string) => void;
-  onFilterChange: (
+  onFilterChange?: (
     val: string | null,
     field: string,
     variant: FilterVariant | null
@@ -119,6 +120,7 @@ const Table = <T,>({
   columns,
   data,
   footer,
+  variant = 'default',
   isLoading,
   extraStyles,
   emptyText,
@@ -157,7 +159,9 @@ const Table = <T,>({
         footer.setCurrentPage(0);
       }
 
-      onFilterChange(val, field, variant);
+      if (onFilterChange) {
+        onFilterChange(val, field, variant);
+      }
     },
     [onFilterChange, footer]
   );
@@ -165,7 +169,11 @@ const Table = <T,>({
   return (
     <div className="overflow-hidden relative w-full flex flex-col">
       <div className={clsx(`p-2 overflow-auto flex-1 ${extraStyles}`)}>
-        <div className="min-h-[400px] relative">
+        <div
+          className={`${clsx('relative', {
+            'min-h-[400px]': variant === 'default',
+          })}`}
+        >
           <table className={clsx('relative w-full h-full')}>
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -182,6 +190,9 @@ const Table = <T,>({
                               header.id === CONSTANTS.action,
                             '!w-16 !min-w-0': header.id === 'select',
                             'text-nowrap w-auto': textNowarp,
+                            'first:pl-[.7rem]': variant === 'compact',
+                            'min-w-min text-nowrap':
+                              variant === 'compact' || variant === 'minimal',
                           }
                         )}
                       >
@@ -189,9 +200,16 @@ const Table = <T,>({
                           <div className="flex flex-col justify-end w-full ">
                             <div
                               {...{
-                                className: header.column.getCanSort()
-                                  ? 'cursor-pointer select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap  gap-2 min-h-[50px] justify-start '
-                                  : '',
+                                className: `${clsx(
+                                  'select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap gap-2 justify-start',
+                                  {
+                                    'min-h-[50px] cursor-pointer':
+                                      variant === 'default',
+                                    'min-h-[20px] font-bold':
+                                      variant === 'minimal' ||
+                                      variant === 'compact',
+                                  }
+                                )}`,
                                 onClick: () => {
                                   setSelectedSortKey(
                                     header.column.columnDef.meta?.sortKey ??
@@ -212,7 +230,12 @@ const Table = <T,>({
                                 )}{' '}
                               </div>
                               <div
-                                className={`${header.column.columnDef.meta?.sortKey !== null ? 'text-[#808080]' : 'hidden'}`}
+                                className={`${clsx('text-[#808080]', {
+                                  hidden:
+                                    !header.column.columnDef.meta ||
+                                    header.column.columnDef.meta?.sortKey ===
+                                      null,
+                                })}`}
                                 data-testid="sort-indicator"
                               >
                                 {getSortIndicator(
@@ -253,13 +276,17 @@ const Table = <T,>({
                           return (
                             <td
                               key={cell.id}
-                              className={clsx(
-                                'p-[.75rem] align-top first:pl-[.75rem] relative pl-0',
-                                {
-                                  'sticky -right-5 bg-white !align-middle':
-                                    cell.column.id === CONSTANTS.action,
-                                }
-                              )}
+                              className={clsx('align-top relative pl-0', {
+                                'sticky -right-5 bg-white !align-middle':
+                                  cell.column.id === CONSTANTS.action,
+                                'p-[.75rem]': variant === 'default',
+                                'first:pl-[.7rem]':
+                                  variant === 'compact' ||
+                                  variant === 'default',
+                                'text-rhino-grey p-[.2rem] !align-middle':
+                                  variant === 'compact' ||
+                                  variant === 'minimal',
+                              })}
                             >
                               <div
                                 className={clsx(
@@ -275,6 +302,9 @@ const Table = <T,>({
                                     'text-nowrap h-fit': size == 'sm',
                                     'text-nowrap w-auto overflow-y-auto':
                                       textNowarp,
+                                    '!min-w-min':
+                                      variant === 'compact' ||
+                                      variant === 'minimal',
                                   }
                                 )}
                               >
@@ -307,12 +337,7 @@ const Table = <T,>({
 
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center min-h-[300px]">
-                  <div className="text-[13px] text-rhino-indigo-blue">
-                    <Loader
-                      color="var(--color-rhino-indigo-blue)"
-                      size={'sm'}
-                    />
-                  </div>
+                  <CustomLoader />
                 </div>
               )}
             </tbody>

@@ -50,3 +50,27 @@ export type MeasurementListResponse = {
   data: MeasurementType[];
   meta: TableMeta;
 };
+
+export enum Sign {
+  PLUS = '+',
+  MINUS = '-',
+}
+
+export type SelectInput = {
+  uuid: string;
+  name: string;
+  locationName: string;
+  groupName: string;
+  translatedMedium: string;
+  serialNumber: string;
+  sign: Sign;
+  factor: string;
+  client: string;
+};
+
+export type MeasurementInfo = {
+  uuid: string;
+  name: string;
+  comment: string | null;
+  inputs: SelectInput[];
+};

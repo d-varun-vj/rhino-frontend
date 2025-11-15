@@ -26,6 +26,8 @@ const API_URLS = {
 
   // Measurement
   getMeasurements: () => `measurements`,
+  getMeasurementInfo: ({ measurementUuid }: { measurementUuid: string }) =>
+    `measurement/info/${measurementUuid}`,
 
   //Periodic Alarm
   getPeriodicAlarmList: () => `periodic-alarm`,
