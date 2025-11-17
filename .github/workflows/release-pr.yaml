@@ -24,6 +24,16 @@ jobs:
         id: release
         with:
           target-branch: ${{ contains(github.ref_name, 'hotfix-') && github.ref_name ||  github.event.repository.default_branch }}
+
+      - name: Print Release Please outputs
+        run: |
+          echo "tag_name: ${{ steps.release.outputs['apps/webapp--tag_name'] }}"
+          echo "major: ${{ steps.release.outputs['apps/webapp--major'] }}"
+          echo "minor: ${{ steps.release.outputs['apps/webapp--minor'] }}"
+          echo "patch: ${{ steps.release.outputs['apps/webapp--patch'] }}"
+          echo "version: ${{ steps.release.outputs['apps/webapp--major'] }}.${{ steps.release.outputs['apps/webapp--minor'] }}.${{ steps.release.outputs['apps/webapp--patch'] }}"
+          echo "release_created: ${{ steps.release.outputs['apps/webapp--release_created'] }}"
+          echo "all outputs: ${{ toJson(steps.release.outputs) }}"
   publish-image-webapp:
     name: Publish Production Image webapp
     runs-on: arc-md
