@@ -5,7 +5,7 @@ import {
 } from '../SelectMeasurement/types';
 
 import { MeasurementType } from '@rhino/apis';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import IconButton from '../../common/buttons/IconButton';
 import MeasurementsWithPaginationTable from '../MeasurementsWithPaginationTable';
@@ -17,6 +17,7 @@ interface SelectMeasurementModalProps {
   selectionMode?: 'single' | 'multiple';
   showGlobalSettings?: boolean;
   customFilter?: CustomFilter;
+  initialSelectedMeasurements?: MeasurementType[];
 }
 
 const SelectMeasurementModal = ({
@@ -26,13 +27,19 @@ const SelectMeasurementModal = ({
   selectionMode = 'multiple',
   showGlobalSettings = true,
   customFilter,
+  initialSelectedMeasurements = [],
 }: SelectMeasurementModalProps) => {
   const [selectedMeasurements, setSelectedMeasurements] = useState<
     MeasurementType[]
-  >([]);
+  >(initialSelectedMeasurements);
   const [selectionError, setSelectionError] = useState<string>('');
   const { t } = useTranslation('components');
   const translationBaseRoute = 'measurement.selectMeasurementModal.';
+
+  useEffect(() => {
+    setSelectedMeasurements(initialSelectedMeasurements);
+    setSelectionError('');
+  }, [initialSelectedMeasurements]);
 
   const handleSelectionChange = (measurements: MeasurementType[]) => {
     setSelectedMeasurements(measurements);
@@ -76,6 +83,7 @@ const SelectMeasurementModal = ({
             selectionMode={selectionMode}
             onSelectionChange={handleSelectionChange}
             customFilter={customFilter}
+            selectedMeasurements={selectedMeasurements}
           />
         </div>
 

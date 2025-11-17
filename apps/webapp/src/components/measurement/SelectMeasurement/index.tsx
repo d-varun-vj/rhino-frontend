@@ -42,6 +42,10 @@ export const SelectMeasurement = ({
     MeasurementWithConfig[]
   >([]);
 
+  const currentSelectedMeasurements = selectedMeasurements.map(
+    (m) => m.measurement
+  );
+
   const { client } = useUserFilter();
   const prevClientRef = useRef(client);
   const prevCustomFilterRef = useRef(customFilter);
@@ -127,34 +131,16 @@ export const SelectMeasurement = ({
       return;
     }
 
-    // if not allow same measurement multiple times, we need to check if the measurement is already selected
-    // if it is, we need to remove it from the selected measurements and add the new measurement
-    // if it is not, we need to add the new measurement to the selected measurements
-    const currentSelectedMeasurementsMap = measurements.reduce(
-      (acc, measurement) => {
-        acc[measurement.measurement.uuid] = measurement;
-        return acc;
-      },
-      {} as Record<string, MeasurementWithConfig>
+    const existingMeasurements = new Map(
+      selectedMeasurements.map((m) => [m.measurement.uuid, m] as const)
     );
 
-    const modifiedMeasurements = selectedMeasurements.map((measurement) => {
-      const existingMeasurement =
-        currentSelectedMeasurementsMap[measurement.measurement.uuid];
-      if (existingMeasurement) {
-        delete currentSelectedMeasurementsMap[measurement.measurement.uuid];
-        return existingMeasurement;
-      }
-      return measurement;
-    });
+    const updatedMeasurements = measurements.map(
+      (m) => existingMeasurements.get(m.measurement.uuid) ?? m
+    );
 
-    const newMeasurements = [
-      ...modifiedMeasurements,
-      ...Object.values(currentSelectedMeasurementsMap),
-    ];
-
-    setSelectedMeasurements(newMeasurements);
-    onMeasurementsChange?.(newMeasurements);
+    setSelectedMeasurements(updatedMeasurements);
+    onMeasurementsChange?.(updatedMeasurements);
   };
 
   const handleRemoveMeasurement = (measurement: MeasurementWithConfig) => {
@@ -250,6 +236,7 @@ export const SelectMeasurement = ({
           selectionMode={selectionMode}
           showGlobalSettings={showGlobalSettings}
           customFilter={customFilter}
+          initialSelectedMeasurements={currentSelectedMeasurements}
         />
       </Modal>
     </div>

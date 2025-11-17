@@ -21,7 +21,7 @@ import { CustomFilter } from '../SelectMeasurement/types';
 
 interface MeasurementsWithPaginationTableProps {
   selectionMode?: 'none' | 'single' | 'multiple';
-  selectedIds?: string[];
+  selectedMeasurements?: MeasurementType[];
   onSelectionChange?: (selectedMeasurements: MeasurementType[]) => void;
   readonly?: boolean;
   customFilter?: CustomFilter;
@@ -29,7 +29,7 @@ interface MeasurementsWithPaginationTableProps {
 
 const MeasurementsWithPaginationTable = ({
   selectionMode = 'none',
-  selectedIds = [],
+  selectedMeasurements = [],
   onSelectionChange,
   readonly = false,
   customFilter,
@@ -40,9 +40,6 @@ const MeasurementsWithPaginationTable = ({
 
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(5);
-  const [selectedMeasurements, setSelectedMeasurements] = useState<
-    MeasurementType[]
-  >([]);
 
   const [sort, setSort] = useState<Sort>({
     field: '',
@@ -94,47 +91,74 @@ const MeasurementsWithPaginationTable = ({
 
   const handleRowSelect = useCallback(
     (measurement: MeasurementType, checked: boolean) => {
-      let updatedSelections: MeasurementType[];
+      if (!onSelectionChange) return;
 
       if (selectionMode === 'single') {
-        updatedSelections = checked ? [measurement] : [];
-      } else if (selectionMode === 'multiple') {
-        if (checked) {
-          updatedSelections = [...selectedMeasurements, measurement];
-        } else {
-          updatedSelections = selectedMeasurements.filter(
-            (m) => m.uuid !== measurement.uuid
-          );
-        }
-      } else {
-        updatedSelections = [];
+        const updatedSelections = checked ? [measurement] : [];
+        onSelectionChange(updatedSelections);
+        return;
       }
 
-      setSelectedMeasurements(updatedSelections);
-      onSelectionChange?.(updatedSelections);
+      let updatedSelections: MeasurementType[];
+
+      if (checked) {
+        const map = new Map(
+          selectedMeasurements.map((m) => [m.uuid, m] as const)
+        );
+        map.set(measurement.uuid, measurement);
+        updatedSelections = Array.from(map.values());
+      } else {
+        updatedSelections = selectedMeasurements.filter(
+          (m) => m.uuid !== measurement.uuid
+        );
+      }
+
+      onSelectionChange(updatedSelections);
     },
-    [selectionMode, selectedMeasurements, onSelectionChange]
+    [onSelectionChange, selectionMode, selectedMeasurements]
   );
 
   const handleSelectAll = useCallback(
     (checked: boolean) => {
-      if (selectionMode === 'multiple' && measurementData?.data) {
-        const updatedSelections = checked ? measurementData.data : [];
-        setSelectedMeasurements(updatedSelections);
-        onSelectionChange?.(updatedSelections);
+      if (
+        selectionMode !== 'multiple' ||
+        !measurementData?.data ||
+        !onSelectionChange
+      ) {
+        return;
       }
+
+      const currentPageMeasurements = measurementData.data;
+      let updatedSelections: MeasurementType[];
+
+      if (checked) {
+        const map = new Map(
+          selectedMeasurements.map((m) => [m.uuid, m] as const)
+        );
+        currentPageMeasurements.forEach((m) => map.set(m.uuid, m));
+        updatedSelections = Array.from(map.values());
+      } else {
+        const pageIds = new Set(currentPageMeasurements.map((m) => m.uuid));
+        updatedSelections = selectedMeasurements.filter(
+          (m) => !pageIds.has(m.uuid)
+        );
+      }
+
+      onSelectionChange(updatedSelections);
     },
-    [selectionMode, measurementData?.data, onSelectionChange]
+    [
+      selectionMode,
+      measurementData?.data,
+      onSelectionChange,
+      selectedMeasurements,
+    ]
   );
 
   const isSelected = useCallback(
     (measurement: MeasurementType) => {
-      return (
-        selectedMeasurements.some((m) => m.uuid === measurement.uuid) ||
-        selectedIds.includes(measurement.uuid)
-      );
+      return selectedMeasurements.some((m) => m.uuid === measurement.uuid);
     },
-    [selectedMeasurements, selectedIds]
+    [selectedMeasurements]
   );
 
   const isAllPageSelected = useCallback(() => {
@@ -402,7 +426,7 @@ const MeasurementsWithPaginationTable = ({
         <div className="p-5">
           <span className="text-sm text-gray-600">
             {t(translationBaseRoute + 'selectedText')}:{' '}
-            {selectedMeasurements.length + selectedIds.length}
+            {selectedMeasurements.length}
           </span>
         </div>
       )}
