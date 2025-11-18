@@ -23,6 +23,7 @@ jobs:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
+          dry-run: true
           target-branch: ${{ contains(github.ref_name, 'hotfix-') && github.ref_name ||  github.event.repository.default_branch }}
 
       - name: Print Release Please outputs
@@ -46,6 +47,12 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Print Create release tags outputs
+        run: |
+          echo "Incoming tag name: ${{ needs.create-release-tag.outputs.webapp-release-tag-name }}"
+          echo "Incoming tag name: ${{ needs.create-release-tag.outputs.webapp-release-version }}"
+          echo "Incoming tag name: ${{ needs.create-release-tag.outputs.webapp-release-created }}"
+
       - name: Build and publish image
         uses: Rhino-Energy/github-actions/.github/actions/javascript-monorepo@main
         with:
