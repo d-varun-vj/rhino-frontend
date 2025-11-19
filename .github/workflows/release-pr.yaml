@@ -48,7 +48,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Print Create release tags outputs
+      - name: Print Create release tag outputs
         run: |
           echo "Incoming tag name: ${{ needs.create-release-tag.outputs.webapp-release-tag-name }}"
           echo "Incoming tag name: ${{ needs.create-release-tag.outputs.webapp-release-version }}"
