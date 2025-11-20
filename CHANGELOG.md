@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.19.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.19.0...webapp-v1.19.1) (2025-11-20)
+
+
+### Bug Fixes
+
+* Configure Release PR ([#179](https://github.com/Rhino-Energy/rhino-frontend/issues/179)) ([03a873e](https://github.com/Rhino-Energy/rhino-frontend/commit/03a873e0be07f0c606df03a07ecfc1022b4d8718))
+* release please workflow ([#181](https://github.com/Rhino-Energy/rhino-frontend/issues/181)) ([cc4062f](https://github.com/Rhino-Energy/rhino-frontend/commit/cc4062f99c8f61ea059659be8bfa5f284a3efd26))
+
 ## [1.19.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.18.0...webapp-v1.19.0) (2025-11-17)
 
 
