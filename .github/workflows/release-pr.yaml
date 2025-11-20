@@ -33,7 +33,6 @@ jobs:
           echo "patch: ${{ steps.release.outputs['webapp--patch'] }}"
           echo "version: ${{ steps.release.outputs['webapp--major'] }}.${{ steps.release.outputs['webapp--minor'] }}.${{ steps.release.outputs['webapp--patch'] }}"
           echo "release_created: ${{ steps.release.outputs['webapp--release_created'] }}"
-          echo "all outputs: ${{ toJson(steps.release.outputs) }}"
   publish-image-webapp:
     name: Publish Production Image webapp
     runs-on: arc-md
