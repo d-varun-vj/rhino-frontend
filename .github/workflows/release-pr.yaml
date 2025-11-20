@@ -16,9 +16,9 @@ jobs:
     name: Create/Update Release PR
     runs-on: arc-sm
     outputs:
-      webapp-release-tag-name: ${{ steps.release.outputs.webapp--tag_name }}
-      webapp-release-version: ${{ steps.release.outputs.webapp--major }}.${{ steps.release.outputs.webapp--minor }}.${{ steps.release.outputs.webapp--patch }}
-      webapp-release-created: ${{ steps.release.outputs.webapp--release_created }}
+      webapp-release-tag-name: ${{ steps.release.outputs.tag_name }}
+      webapp-release-version: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}
+      webapp-release-created: ${{ steps.release.outputs.release_created }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
@@ -26,13 +26,14 @@ jobs:
           target-branch: ${{ contains(github.ref_name, 'hotfix-') && github.ref_name ||  github.event.repository.default_branch }}
 
       - name: Print Release Please outputs
+        continue-on-error: true
         run: |
-          echo "tag_name: ${{ steps.release.outputs.webapp--tag_name }}"
-          echo "major: ${{ steps.release.outputs.webapp--major }}"
-          echo "minor: ${{ steps.release.outputs.webapp--minor }}"
-          echo "patch: ${{ steps.release.outputs.webapp--patch }}"
-          echo "version: ${{ steps.release.outputs.webapp--major }}.${{ steps.release.outputs.webapp--minor }}.${{ steps.release.outputs.webapp--patch }}"
-          echo "release_created: ${{ steps.release.outputs.webapp--releases_created }}"
+          echo "tag_name: ${{ steps.release.outputs.tag_name }}"
+          echo "major: ${{ steps.release.outputs.major }}"
+          echo "minor: ${{ steps.release.outputs.minor }}"
+          echo "patch: ${{ steps.release.outputs.patch }}"
+          echo "version: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}"
+          echo "release_created: ${{ steps.release.outputs.releases_created }}"
   publish-image-webapp:
     name: Publish Production Image webapp
     runs-on: arc-md
