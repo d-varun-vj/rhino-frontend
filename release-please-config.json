@@ -1,9 +1,8 @@
 {
   "plugins": [],
-  "release-type": "simple",
   "packages": {
     ".": {
-      "release-type": "simple",
+      "release-type": "node",
       "package-name": "webapp"
     }
   }
