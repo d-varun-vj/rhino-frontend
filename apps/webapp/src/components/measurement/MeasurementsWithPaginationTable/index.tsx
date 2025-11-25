@@ -248,8 +248,8 @@ const MeasurementsWithPaginationTable = ({
         header: t(translationBaseRoute + 'header.medium'),
         cell: (info) => info.getValue(),
         meta: {
-          filterVariant: null,
-          filterKey: '',
+          filterVariant: FilterVariant.TEXT,
+          filterKey: 'medium',
           sortKey: 'meteringPointType',
           sortDirection: sort.direction,
         },
