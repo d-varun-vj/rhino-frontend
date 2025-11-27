@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.20.0...webapp-v1.20.1) (2025-11-25)
+
+
+### Bug Fixes
+
+* Filter option for medium in add measurements in periodic alarms [PRD-3536] ([#195](https://github.com/Rhino-Energy/rhino-frontend/issues/195)) ([#196](https://github.com/Rhino-Energy/rhino-frontend/issues/196)) ([0dc29fa](https://github.com/Rhino-Energy/rhino-frontend/commit/0dc29faf96c2215763fba0f58206236c11d70e80))
+
 ## [1.20.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.19.2...webapp-v1.20.0) (2025-11-20)
 
 
