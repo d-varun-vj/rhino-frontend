@@ -184,11 +184,12 @@ const Table = <T,>({
                         key={header.id}
                         colSpan={header.colSpan}
                         className={clsx(
-                          `font-thin align-baseline pr-1.5 w-fit ${header.column.columnDef.meta?.styles?.maxWidth} ${header.column.columnDef.meta?.styles?.minWidth ?? 'min-w-32'}`,
+                          `font-thin align-top pr-1.5 w-fit ${header.column.columnDef.meta?.styles?.maxWidth} ${header.column.columnDef.meta?.styles?.minWidth ?? 'min-w-32'}`,
                           {
                             'sticky bg-rhino-white -right-5 pl-2 z-10':
                               header.id === CONSTANTS.action,
-                            '!w-16 !min-w-0': header.id === 'select',
+                            '!w-8 !min-w-0':
+                              header.id === (FilterVariant.SELECT as string),
                             'text-nowrap w-auto': textNowarp,
                             'first:pl-[.7rem]': variant === 'compact',
                             'min-w-min text-nowrap':
@@ -297,8 +298,9 @@ const Table = <T,>({
                                       cell.column.id === 'read-time',
                                     'overflow-visible':
                                       cell.column.id === CONSTANTS.action,
-                                    '!w-16 !min-w-0':
-                                      cell.column.id === 'select',
+                                    '!w-8 !min-w-0':
+                                      cell.column.id ===
+                                      (FilterVariant.SELECT as string),
                                     'text-nowrap h-fit': size == 'sm',
                                     'text-nowrap w-auto overflow-y-auto':
                                       textNowarp,

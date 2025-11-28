@@ -105,14 +105,7 @@ const MeasurementInfoModal = ({
     <CustomModal
       {...modalProps}
       size={'75%'}
-      title={
-        <h1
-          className="!pl-0  text-left font-bold text-[32px] tracking-[0]
-              text-rhino-indigo-blue"
-        >
-          {t(translationBaseRoute + 'title')}
-        </h1>
-      }
+      title={t(translationBaseRoute + 'title')}
     >
       {isLoading ? (
         <CustomLoader />

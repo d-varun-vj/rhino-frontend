@@ -174,7 +174,7 @@ const MeasurementsWithPaginationTable = ({
 
     if (!readonly && selectionMode !== 'none') {
       baseColumns.push({
-        id: 'select',
+        id: FilterVariant.SELECT,
         accessorFn: () => 'select', // Dummy accessor so React Table allows filtering
         header: () => {
           return null;
@@ -430,7 +430,7 @@ const MeasurementsWithPaginationTable = ({
           </span>
         </div>
       )}
-      <div className="relative flex-grow flex-shrink basis-auto p-[1.25rem] overflow-auto [&>div]:justify-between">
+      <div className="relative px-[1.25rem]">
         <Table
           columns={columns}
           data={measurementData?.data || []}

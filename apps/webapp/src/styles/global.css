@@ -122,7 +122,6 @@ tbody tr:nth-child(odd) td:last-child {
 /* Thumb */
 ::-webkit-scrollbar-thumb {
   background-color: #888;
-  border-radius: 100%;
   border: 3px solid #f1f1f1;
 }
 

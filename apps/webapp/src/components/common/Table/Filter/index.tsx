@@ -86,7 +86,7 @@ const Filter = <T,>({
     const { selectAllChecked, onSelectAll } = column.columnDef.meta ?? {};
 
     return (
-      <div className="mt-10 ml-3 w-fit">
+      <div className="flex items-center ml-3 mt-2 w-fit min-w-8">
         <CheckBox
           checked={selectAllChecked || false}
           onChange={(e) => onSelectAll?.(e.target.checked)}

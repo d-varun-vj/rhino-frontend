@@ -1,10 +1,11 @@
-import { Accordion, Button, Modal } from '@mantine/core';
+import { Accordion, Button } from '@mantine/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { FaPlusCircle } from 'react-icons/fa';
+import CustomModal from '../../common/modals/CustomModal';
 import message from '../../notifier';
 import MeasurementsWithActionsTable from '../MeasurementsWithActionsTable';
 import SelectMeasurementModal from '../SelectMeasurementModal';
@@ -219,15 +220,11 @@ export const SelectMeasurement = ({
         </Button>
       )}
 
-      <Modal
+      <CustomModal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
         title={t(baseRoute + 'title')}
         size="80vw"
-        classNames={{
-          title: 'modal-title-custom',
-          header: 'modal-header-custom',
-        }}
       >
         <SelectMeasurementModal
           onClose={() => setModalOpened(false)}
@@ -238,7 +235,7 @@ export const SelectMeasurement = ({
           customFilter={customFilter}
           initialSelectedMeasurements={currentSelectedMeasurements}
         />
-      </Modal>
+      </CustomModal>
     </div>
   );
 };
