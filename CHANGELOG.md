@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.20.2](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.20.1...webapp-v1.20.2) (2025-11-28)
+
+
+### Bug Fixes
+
+* Go to Consumption button should be hidden for non-incremental meters in dashboard [PRD-3469] ([#202](https://github.com/Rhino-Energy/rhino-frontend/issues/202)) ([25cf159](https://github.com/Rhino-Energy/rhino-frontend/commit/25cf159938c7ba26d8140202d9bff48191d4ff86))
+* Select Measurement table  showing overlapping rows [PRD-3539] ([#198](https://github.com/Rhino-Energy/rhino-frontend/issues/198)) ([#200](https://github.com/Rhino-Energy/rhino-frontend/issues/200)) ([67df858](https://github.com/Rhino-Energy/rhino-frontend/commit/67df8587b6e879ae23cdf690521c1ecb73ef935e))
+
 ## [1.20.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.20.0...webapp-v1.20.1) (2025-11-25)
 
 
