@@ -155,6 +155,7 @@ const PeriodicAlarm = () => {
             dispatch({ type: 'SET_ALARM_NAME', payload: row.original.name });
           }}
           popupContent={t('execution.btnPopup')}
+          data-testid="execution-btn"
         >
           <FaClock />
         </IconButton>
@@ -169,6 +170,7 @@ const PeriodicAlarm = () => {
               );
             }}
             popupContent="View Alarm"
+            data-testid="view-btn"
           >
             <FaEye />
           </IconButton>
@@ -183,6 +185,7 @@ const PeriodicAlarm = () => {
               );
             }}
             popupContent="Edit Alarm"
+            data-testid="edit-btn"
           >
             <FaEdit />
           </IconButton>
@@ -193,6 +196,7 @@ const PeriodicAlarm = () => {
             popupContent={t('delete.title')}
             action={() => handleDeleteAlarm(row.original)}
             disabled={isPending}
+            data-testid="delete-btn"
           >
             <RiDeleteBin6Fill />
           </IconButton>
@@ -393,6 +397,7 @@ const PeriodicAlarm = () => {
           onFilterChange={onFilterChange}
           onSortSelect={onSortClick}
           isLoading={isLoadingData}
+          dataTestIdPrefix="periodic-alarm"
         />
 
         <Execution

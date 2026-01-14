@@ -68,6 +68,7 @@ type TableProps<T> = {
     field: string,
     variant: FilterVariant | null
   ) => void;
+  dataTestIdPrefix?: string;
 };
 
 const getSortDirection = <T,>(
@@ -128,6 +129,7 @@ const Table = <T,>({
   textNowarp,
   onSortSelect,
   onFilterChange,
+  dataTestIdPrefix,
 }: TableProps<T>) => {
   const { t } = useTranslation();
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -174,11 +176,14 @@ const Table = <T,>({
             'min-h-[400px]': variant === 'default',
           })}`}
         >
-          <table className={clsx('relative w-full h-full')}>
+          <table
+            className={clsx('relative w-full h-full')}
+            data-testid={`${dataTestIdPrefix}-table`}
+          >
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
+                  {headerGroup.headers.map((header, index) => {
                     return (
                       <th
                         key={header.id}
@@ -219,7 +224,7 @@ const Table = <T,>({
                                   handleSortClick(header, onSortSelect);
                                 },
                               }}
-                              data-testid={`test-${header.id}`}
+                              data-testid={`test-col-${index}`}
                             >
                               <div
                                 className="text-start line-clamp-none max-h-[calc(2_*_1.5rem)]  break-words leading-snug"
@@ -249,6 +254,7 @@ const Table = <T,>({
                               {header.column.getCanFilter() ? (
                                 <div
                                   className={`text-rhino-indigo-blue flex w-full`}
+                                  data-testid={`test-col-filter-${index}`}
                                 >
                                   <Filter
                                     column={header.column}
@@ -267,7 +273,7 @@ const Table = <T,>({
             </thead>
 
             {/* Table Data Body */}
-            <tbody className="relative">
+            <tbody className="relative" data-testid="test-table-body">
               {!isLoading && table.getCoreRowModel().rows.length !== 0 && (
                 <>
                   {table.getCoreRowModel().rows.map((row) => {
@@ -309,6 +315,9 @@ const Table = <T,>({
                                       variant === 'minimal',
                                   }
                                 )}
+                                {...(cell.column.id === CONSTANTS.action
+                                  ? { 'data-testid': 'action-cell' }
+                                  : {})}
                               >
                                 {cell.column.columnDef.meta?.renderCell
                                   ? cell.column.columnDef.meta.renderCell(
@@ -331,7 +340,10 @@ const Table = <T,>({
 
               {!isLoading && data.length === 0 && (
                 <div className="absolute inset-0 flex items-center justify-center min-h-[300px]">
-                  <div className="text-[13px] text-rhino-indigo-blue ">
+                  <div
+                    className="text-[13px] text-rhino-indigo-blue "
+                    data-testid="not-found"
+                  >
                     {emptyText || t('table.notFound', { ns: 'common' })}
                   </div>
                 </div>
@@ -348,7 +360,9 @@ const Table = <T,>({
       </div>
 
       {/* Footer */}
-      {footer && <TableFooter pagination={footer} />}
+      {footer && (
+        <TableFooter pagination={footer} dataTestIdPrefix={dataTestIdPrefix} />
+      )}
     </div>
   );
 };

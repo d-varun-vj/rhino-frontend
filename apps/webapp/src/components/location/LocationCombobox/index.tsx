@@ -52,6 +52,7 @@ const LocationCombobox = ({
         }
       }}
       disabled={disenabled ?? false}
+      data-testid="ribbon-location-selector"
     />
   );
 };

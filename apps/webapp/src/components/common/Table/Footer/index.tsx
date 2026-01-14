@@ -6,9 +6,10 @@ import { useUserFilter } from '../../../../context/userFilter';
 
 type Footer = {
   pagination: FooterType;
+  dataTestIdPrefix?: string;
 };
 
-const TableFooter = ({ pagination }: Footer) => {
+const TableFooter = ({ pagination, dataTestIdPrefix }: Footer) => {
   const [pagePositions, setPagePositions] = useState<number[]>([]);
 
   const { client, location, group } = useUserFilter();
@@ -81,7 +82,10 @@ const TableFooter = ({ pagination }: Footer) => {
   const canGoNext = pagination.currentPage < getTotalPages() - 1;
 
   return (
-    <div className="flex justify-between my-5 flex-col gap-5 mt-10 lg:flex-row lg:items-center">
+    <div
+      className="flex justify-between my-5 flex-col gap-5 mt-10 lg:flex-row lg:items-center"
+      data-testid={`${dataTestIdPrefix}-table-footer`}
+    >
       {/* Page size selector */}
       <div>
         <span className="text-[#949494] text-[13px]">
@@ -90,6 +94,7 @@ const TableFooter = ({ pagination }: Footer) => {
             value={pagination.pageSize}
             onChange={(e) => handlePageSizeChange(Number(e.target.value))}
             className="!w-fit !py-[8px] text-rhino-indigo-blue"
+            data-testid="page-size-selector"
           >
             {pagePositions.map((pageSize) => (
               <option key={pageSize} value={pageSize}>
@@ -113,12 +118,16 @@ const TableFooter = ({ pagination }: Footer) => {
       </div>
 
       {/* Pagination controls */}
-      <div className="flex items-center text-rhino-indigo-blue-light text-[12px] font-thin">
+      <div
+        className="flex items-center text-rhino-indigo-blue-light text-[12px] font-thin"
+        data-testid="pagination-controls"
+      >
         {/* First page button */}
         <button
           className="border rounded-tl rounded-bl px-2.5 py-1 border-gray-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           onClick={handleFirstPage}
           disabled={!canGoPrevious}
+          data-testid="go-to-first"
         >
           {'<<'}
         </button>
@@ -128,6 +137,7 @@ const TableFooter = ({ pagination }: Footer) => {
           className="border px-2.5 py-1 border-gray-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           onClick={handlePreviousPage}
           disabled={!canGoPrevious}
+          data-testid="go-to-prev"
         >
           {t('table.footer.previous')}
         </button>
@@ -149,6 +159,7 @@ const TableFooter = ({ pagination }: Footer) => {
                   : 'text-rhino-indigo-blue hover:bg-gray-50'
               }`}
               onClick={() => handlePageClick(pageIndex)}
+              data-testid={`go-to-page-${pageIndex + 1}`}
             >
               {pageIndex + 1}
             </button>
@@ -159,6 +170,7 @@ const TableFooter = ({ pagination }: Footer) => {
           className="border px-2.5 py-1 border-gray-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           onClick={handleNextPage}
           disabled={!canGoNext}
+          data-testid="go-to-next"
         >
           {t('table.footer.next')}
         </button>
@@ -168,6 +180,7 @@ const TableFooter = ({ pagination }: Footer) => {
           className="border rounded-br rounded-tr px-2.5 py-1 border-gray-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           onClick={handleLastPage}
           disabled={!canGoNext}
+          data-testid="go-to-last"
         >
           {'>>'}
         </button>

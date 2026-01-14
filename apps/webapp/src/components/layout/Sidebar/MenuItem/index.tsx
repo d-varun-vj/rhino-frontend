@@ -85,7 +85,10 @@ const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
                         <i className={`${isActive ? 'nav-active' : ''}`}>
                           <subItem.icon className="text-[15px]" />
                         </i>
-                        <span className={`${isActive ? 'nav-active' : ''}`}>
+                        <span
+                          className={`${isActive ? 'nav-active' : ''}`}
+                          data-testid={`${subItem.key}-sub-menu-label`}
+                        >
                           {t(subItem.label)}
                         </span>
                       </p>

@@ -43,7 +43,7 @@ export default function GoToConsumptionIcon({
             }
           }}
           popupContent={t('consumption.goToConsumptionIcon.popup')}
-          dataTestId="consumption-chart-btn"
+          data-testid="consumption-chart-btn"
           size={iconSize}
         >
           <FaChartLine />

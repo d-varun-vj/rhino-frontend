@@ -20,6 +20,8 @@ const LanguageButton = ({
       type="button"
       className={`w-[35px] h-[35px] flex justify-center items-center rounded-[50%] bg-rhino-white mr-[10px] cursor-pointer hover:text-rhino-indigo-blue-light ${languageName.toLowerCase() === i18n.language ? 'text-rhino-indigo-blue border-[2px] border-rhino-indigo-blue' : 'text-black  border-black opacity-[0.2]'}`}
       onClick={() => handleClick(languageName)}
+      data-active={languageName.toLowerCase() === i18n.language}
+      data-testid={`${languageName.toLowerCase()}-language-btn`}
     >
       {isPending ? (
         <Loader size="sm" color="var(--color-rhino-indigo-blue)" />

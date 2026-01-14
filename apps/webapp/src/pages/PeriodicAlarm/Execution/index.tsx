@@ -80,6 +80,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
           disabled={
             row.original.executionStatus === (ExecutionStatus.ERROR as string)
           }
+          data-testid="execution-download-btn"
         >
           <div className={clsx('flex gap-2 items-center')}>
             <RiDownload2Line className="text-lg" />
@@ -267,10 +268,12 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         <h1
           className="pl-0  text-left font-bold text-[32px] tracking-[0]
               text-rhino-indigo-blue  "
+          data-testid="modal-title"
         >
           {alarmConfig.name}
         </h1>
       }
+      data-testid="periodic-alarm-execution-modal"
     >
       <Table
         columns={columns}
@@ -286,6 +289,7 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
         }}
         onSortSelect={onSortClick}
         isLoading={isLoading}
+        dataTestIdPrefix="periodic-alarm-execution"
       />
     </CustomModal>
   );

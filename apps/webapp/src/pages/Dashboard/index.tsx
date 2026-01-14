@@ -93,7 +93,7 @@ const Dashboard = () => {
               `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}&shouldCompareMeasurement=${false}`;
           }}
           popupContent={t(translationBaseRoute + 'popup.goToProfile')}
-          dataTestId="consumption-profile-chart-btn"
+          data-testid="consumption-profile-chart-btn"
         >
           <FaChartBar />
         </IconButton>
@@ -380,7 +380,6 @@ const Dashboard = () => {
         title={t('mainHeader')}
         guide={true}
         guideLink={GUIDE_LINKS.DASHBOARD}
-        dataTestId="dashboard-page-header"
       />
       <PageSubTitle title={t('subHeader')} />
       <Table

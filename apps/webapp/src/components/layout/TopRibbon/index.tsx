@@ -257,7 +257,10 @@ const TopRibbon = ({
     <header className="flex basis-auto h-auto  z-30 justify-between max-sm:flex-col">
       <div className="mt-[1rem]  px-[.75rem] ">
         <div className="flex flex-row ">
-          <div className="pl-[1rem] mt-[.25rem] items-baseline flex flex-row flex-wrap gap-10 ">
+          <div
+            className="pl-[1rem] mt-[.25rem] items-baseline flex flex-row flex-wrap gap-10 "
+            data-testid="top-ribbon"
+          >
             {Items.map((item) => (
               <div
                 className="flex items-center max-md:justify-between max-md:w-full"

@@ -8,7 +8,6 @@ type IconButtonProps = {
   size?: 'sm';
   action: () => void;
   popupContent?: string;
-  dataTestId?: string;
 } & ButtonProps;
 
 const IconButton = ({
@@ -16,7 +15,6 @@ const IconButton = ({
   type = 'primary',
   popupContent,
   action,
-  dataTestId,
   size,
   ...props
 }: IconButtonProps) => {
@@ -33,7 +31,6 @@ const IconButton = ({
       )}
       onClick={action}
       title={popupContent}
-      data-testid={dataTestId}
       {...props}
     >
       {children}

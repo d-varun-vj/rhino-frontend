@@ -83,6 +83,7 @@ const GroupCombobox = ({
         }
       }}
       disabled={disenabled ?? false}
+      data-testid="ribbon-group-selector"
     />
   );
 };

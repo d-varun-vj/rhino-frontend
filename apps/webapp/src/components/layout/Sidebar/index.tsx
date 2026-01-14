@@ -98,6 +98,7 @@ const SideBar = () => {
           item: '',
         })
       }
+      data-testid="side-bar"
     >
       {/* Minimize Button */}
       <ul className="p-0 m-0">

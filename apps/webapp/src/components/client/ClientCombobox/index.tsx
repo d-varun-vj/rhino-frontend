@@ -46,6 +46,7 @@ const ClientCombobox = ({
         }
       }}
       disabled={disableDropdown || false}
+      data-testid="ribbon-client-selector"
     />
   );
 };
