@@ -71,6 +71,12 @@ const CreatePeriodicAlarm = () => {
     resolver: zodResolver(schema),
   });
 
+  useEffect(() => {
+    if (user?.email) {
+      methods.reset({ ...methods.getValues(), recipientEmails: [user.email] });
+    }
+  }, [user, methods]);
+
   const { setValue, handleSubmit, resetField } = methods;
 
   useEffect(() => {
