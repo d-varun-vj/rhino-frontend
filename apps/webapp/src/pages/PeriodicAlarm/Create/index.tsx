@@ -126,7 +126,10 @@ const CreatePeriodicAlarm = () => {
         }}
       >
         <FormProvider {...methods}>
-          <form onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}>
+          <form
+            onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}
+            data-testid="periodic-alarm-create-form"
+          >
             <div className="flex flex-col gap-20 mb-20">
               <div>
                 <PageTitle

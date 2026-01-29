@@ -30,6 +30,7 @@ const CustomAccordion = ({
       variant="unstyled"
       radius="xs"
       chevronIconSize={chevronIconSize ?? 20}
+      data-testid={itemProps.value}
     >
       <Accordion.Item {...itemProps}>
         <Accordion.Control>{header}</Accordion.Control>

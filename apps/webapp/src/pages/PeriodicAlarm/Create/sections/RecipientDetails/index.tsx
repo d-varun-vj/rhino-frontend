@@ -45,6 +45,7 @@ const RecipientDetails = ({ isReadOnly = false }: RecipientDetailsProps) => {
                 onChange={(val) => field.onChange(val ?? '')}
                 error={errMessage}
                 disabled={isReadOnly}
+                dataTestIdPrefix="email-recipient"
               />
             );
           }}

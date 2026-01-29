@@ -182,7 +182,6 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
             );
           },
           styles: {
-            maxWidth: 'max-w-28',
             minWidth: 'min-w-28',
           },
         },
@@ -216,7 +215,6 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
             );
           },
           styles: {
-            maxWidth: 'max-w-28',
             minWidth: 'min-w-28',
           },
         },

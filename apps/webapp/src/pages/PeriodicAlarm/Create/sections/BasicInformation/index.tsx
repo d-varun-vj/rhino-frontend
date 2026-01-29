@@ -54,6 +54,7 @@ const BasicInformation = ({
           {...(register && { ...register('name') })}
           error={errors.name?.message}
           disabled={isReadOnly}
+          dataTestIdPrefix="name"
         />
         <TextField
           label={t(tFormBase + 'basic.alarmShortName')}
@@ -61,6 +62,7 @@ const BasicInformation = ({
           {...(register && { ...register('shortName') })}
           error={errors.shortName?.message}
           disabled={isReadOnly}
+          dataTestIdPrefix="short-name"
         />
       </div>
       {hasCreatorAccess ? (

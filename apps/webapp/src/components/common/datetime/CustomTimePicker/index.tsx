@@ -6,12 +6,14 @@ import styles from './customtimepicker.module.css';
 interface CustomTimePickerProps extends TimePickerProps {
   label?: string;
   error?: string;
+  dataTestIdPrefix?: string;
 }
 
 const CustomTimePicker = ({
   label,
   required,
   error,
+  dataTestIdPrefix,
   ...props
 }: CustomTimePickerProps) => {
   return (
@@ -21,12 +23,14 @@ const CustomTimePicker = ({
           content={label}
           htmlFor={label.toLowerCase()}
           required={required}
+          data-testid={`${dataTestIdPrefix}-label`}
         />
       )}
       <TimePicker
         withDropdown
         className={styles.timePicker}
         error={!!error}
+        data-testid={`${dataTestIdPrefix}-val`}
         {...props}
       />
       {error && <ErrorText content={error} />}

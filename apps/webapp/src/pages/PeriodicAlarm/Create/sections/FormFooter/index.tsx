@@ -65,6 +65,7 @@ const FormFooter = ({
               { replace: false }
             )
           }
+          data-testid="cancel-btn"
         />
         <CustomButton
           text={t(tFormBase + 'action.save')}
@@ -72,6 +73,7 @@ const FormFooter = ({
           icon={<FaPlus />}
           disabled={isReadOnly}
           loading={isPending}
+          data-testid="save-btn"
         />
       </div>
     </>

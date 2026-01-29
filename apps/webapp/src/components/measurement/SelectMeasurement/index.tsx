@@ -215,6 +215,7 @@ export const SelectMeasurement = ({
           leftSection={<FaPlusCircle className="mr-1" />}
           disabled={disabled}
           title={disabledTitle || t(baseRoute + 'title')}
+          data-testid="add-measurement-btn"
         >
           {getButtonText()}
         </Button>
@@ -234,6 +235,7 @@ export const SelectMeasurement = ({
           showGlobalSettings={showGlobalSettings}
           customFilter={customFilter}
           initialSelectedMeasurements={currentSelectedMeasurements}
+          dataTestid="select-measurement-modal"
         />
       </CustomModal>
     </div>

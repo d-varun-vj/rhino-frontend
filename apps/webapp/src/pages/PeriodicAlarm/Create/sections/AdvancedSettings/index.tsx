@@ -55,6 +55,7 @@ const AdvancedSettings = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
                     onBlur={field.onBlur}
                     error={fieldState.error ? fieldState.error.message : ''}
                     disabled={isReadOnly}
+                    dataTestIdPrefix="delay-in-days"
                   />
                 )}
               />
@@ -79,6 +80,7 @@ const AdvancedSettings = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
                   field.onChange(isChecked);
                 }}
                 disabled={isReadOnly}
+                dataTestIdPrefix="send-only-when-exceeded"
               />
             )}
           />
@@ -101,6 +103,7 @@ const AdvancedSettings = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
                 error={fieldState.error?.message}
                 clearable
                 disabled={isReadOnly}
+                dataTestIdPrefix="time-zone"
               />
             )}
           />
@@ -119,6 +122,7 @@ const AdvancedSettings = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
                 )}
                 error={fieldState.error ? fieldState.error.message : ''}
                 isReadOnly={isReadOnly}
+                dataTestIdPrefix="language"
               />
             )}
           />
@@ -140,6 +144,7 @@ const AdvancedSettings = ({ isReadOnly = false }: { isReadOnly?: boolean }) => {
                 onBlur={field.onBlur}
                 error={fieldState.error ? fieldState.error.message : ''}
                 disabled={isReadOnly}
+                dataTestIdPrefix="generation-time"
               />
             )}
           />

@@ -19,6 +19,7 @@ type FloatingSelectorProps<TMultiple extends boolean = false> = {
   required?: boolean;
   isReadOnly?: boolean;
   disabledTitle?: string;
+  dataTestIdPrefix?: string;
 } & (TMultiple extends true
   ? {
       onSelect: (val: string[]) => void;
@@ -39,6 +40,7 @@ const FloatingSelector = <T extends boolean = false>({
   multipleSelect,
   isReadOnly = false,
   disabledTitle,
+  dataTestIdPrefix,
 }: FloatingSelectorProps<T>) => {
   const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
   const [controlsRefs, setControlsRefs] = useState<
@@ -113,6 +115,7 @@ const FloatingSelector = <T extends boolean = false>({
       mod={{ active: isItemSelected(item, index) }}
       disabled={(item.disabled ?? false) || isReadOnly}
       title={disabledTitle}
+      data-testid={`${item.label.toLowerCase()}-btn`}
     >
       <span className={classes.controlLabel}>{item.label}</span>
     </UnstyledButton>
@@ -125,10 +128,11 @@ const FloatingSelector = <T extends boolean = false>({
           content={label}
           htmlFor={label.toLowerCase()}
           required={required ?? false}
+          data-testid={`${dataTestIdPrefix}-label`}
         />
       )}
       <div className={classes.root} ref={setRootRef}>
-        <div>{controls}</div>
+        <div data-testid={`${dataTestIdPrefix}-val`}>{controls}</div>
 
         {!multipleSelect && (
           <FloatingIndicator

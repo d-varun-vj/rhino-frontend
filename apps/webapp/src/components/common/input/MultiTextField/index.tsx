@@ -6,10 +6,11 @@ import Label from '../../../typography/Label';
 interface MultiTextFieldProps extends TagsInputProps {
   label?: string;
   error?: string;
+  dataTestIdPrefix?: string;
 }
 
 const MultiTextField = forwardRef<HTMLInputElement, MultiTextFieldProps>(
-  ({ label, required, error, ...props }, ref) => {
+  ({ label, required, error, dataTestIdPrefix, ...props }, ref) => {
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
@@ -17,9 +18,11 @@ const MultiTextField = forwardRef<HTMLInputElement, MultiTextFieldProps>(
             content={label}
             htmlFor={label.toLowerCase()}
             required={required}
+            data-testid={`${dataTestIdPrefix}-label`}
           />
         )}
         <TagsInput
+          data-testid={`${dataTestIdPrefix}-val`}
           {...props}
           id={label ? label.toLowerCase() : ''}
           error={!!error}

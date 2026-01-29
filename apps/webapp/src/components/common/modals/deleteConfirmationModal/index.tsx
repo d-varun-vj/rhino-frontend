@@ -1,4 +1,4 @@
-import { Group, Text, rem } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 
 import { modals } from '@mantine/modals';
 import { CgDanger } from 'react-icons/cg';
@@ -25,6 +25,7 @@ const openDeleteConfirmationModal = ({
     withCloseButton: false,
     centered: true,
     size: 'lg',
+
     title: (
       <Group gap="xs" align="center">
         <CgDanger size={28} color="#e03131" style={{ flexShrink: 0 }} />
@@ -33,14 +34,32 @@ const openDeleteConfirmationModal = ({
         </Text>
       </Group>
     ),
-    children: <Text size="md">{message}</Text>,
+
+    children: (
+      <Text size="md" data-testid="delete-confirmation-modal">
+        {message}
+      </Text>
+    ),
+
     labels: {
       confirm: confirmLabel || 'Delete',
       cancel: cancelLabel || 'Cancel',
     },
-    confirmProps: { color: 'red.9', size: 'sm', radius: 'md' },
-    cancelProps: { variant: 'outline', size: 'sm', radius: 'md' },
-    groupProps: { justify: 'right', mt: 'lg', gap: rem(12) },
+
+    confirmProps: {
+      color: 'red.9',
+      size: 'sm',
+      radius: 'md',
+      'data-testid': 'delete-confirm-btn',
+    },
+
+    cancelProps: {
+      variant: 'outline',
+      size: 'sm',
+      radius: 'md',
+      'data-testid': 'delete-cancel-btn',
+    },
+
     onConfirm,
     onCancel,
   });

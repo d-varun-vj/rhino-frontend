@@ -381,6 +381,7 @@ const PeriodicAlarm = () => {
             type="primary"
             icon={<FaPlusCircle />}
             onClick={handleCreateAlarm}
+            data-testid="create-btn"
           />
         </div>
 

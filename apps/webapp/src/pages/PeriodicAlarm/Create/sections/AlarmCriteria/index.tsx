@@ -99,6 +99,7 @@ const AlarmCriteria = ({
               searchable={false}
               error={fieldState.error?.message}
               disabled
+              dataTestIdPrefix="comparison-method"
             />
           )}
         />
@@ -133,6 +134,7 @@ const AlarmCriteria = ({
                   searchable={false}
                   error={fieldState.error?.message}
                   disabled={isReadOnly}
+                  dataTestIdPrefix="data-range"
                 />
               )}
             />
@@ -165,6 +167,7 @@ const AlarmCriteria = ({
                   searchable={false}
                   error={fieldState.error?.message}
                   disabled={!selectedDataRange || isReadOnly}
+                  dataTestIdPrefix="compare-with"
                   title={
                     !selectedDataRange
                       ? t(
@@ -208,6 +211,7 @@ const AlarmCriteria = ({
                     searchable={false}
                     error={fieldState.error?.message}
                     disabled={!selectedDataRange || isReadOnly}
+                    dataTestIdPrefix="threshold-type"
                   />
                 )}
               />
@@ -244,6 +248,7 @@ const AlarmCriteria = ({
                     error={fieldState.error?.message}
                     trimLeadingZeroesOnBlur={true}
                     disabled={isReadOnly}
+                    dataTestIdPrefix="threshold-value"
                   />
                 )}
               />
@@ -285,6 +290,7 @@ const AlarmCriteria = ({
                     onBlur={field.onBlur}
                     error={fieldState.error?.message}
                     disabled={isReadOnly}
+                    dataTestIdPrefix="threshold-start"
                   />
                 )}
               />
@@ -321,6 +327,7 @@ const AlarmCriteria = ({
                     }}
                     error={fieldState.error?.message}
                     disabled={isReadOnly}
+                    dataTestIdPrefix="threshold-end"
                   />
                 )}
               />

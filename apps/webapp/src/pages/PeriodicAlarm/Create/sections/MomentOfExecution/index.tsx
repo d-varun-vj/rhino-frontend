@@ -90,6 +90,7 @@ const MomentOfExecution = ({ isReadOnly = false }: MomentOfExecutionProps) => {
                   ? t(tFormBase + 'alarmCriteria.compareWith.emptyDataRange')
                   : ''
               }
+              dataTestIdPrefix="frequency"
             />
           )}
         />
@@ -114,6 +115,7 @@ const MomentOfExecution = ({ isReadOnly = false }: MomentOfExecutionProps) => {
                     )}
                     error={fieldState.error ? fieldState.error.message : ''}
                     isReadOnly={isReadOnly}
+                    dataTestIdPrefix="generation-day"
                   />
                 )}
               />
@@ -149,6 +151,7 @@ const MomentOfExecution = ({ isReadOnly = false }: MomentOfExecutionProps) => {
                     onBlur={field.onBlur}
                     error={fieldState.error ? fieldState.error.message : ''}
                     disabled={isReadOnly}
+                    dataTestIdPrefix="generation-day"
                   />
                 )}
               />

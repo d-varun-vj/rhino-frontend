@@ -4,10 +4,11 @@ import Label from '../../../typography/Label';
 
 interface TextFieldProps extends TextInputProps {
   label?: string;
+  dataTestIdPrefix?: string;
 }
 
 const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ label, required, ...props }, ref) => {
+  ({ label, required, dataTestIdPrefix, ...props }, ref) => {
     return (
       <div className="flex flex-col gap-1.5 w-full">
         {label && (
@@ -15,9 +16,15 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             content={label}
             htmlFor={label.toLowerCase()}
             required={required}
+            data-testid={`${dataTestIdPrefix}-label`}
           />
         )}
-        <TextInput ref={ref} id={label ? label.toLowerCase() : ''} {...props} />
+        <TextInput
+          ref={ref}
+          id={label ? label.toLowerCase() : ''}
+          data-testid={`${dataTestIdPrefix}-val`}
+          {...props}
+        />
       </div>
     );
   }

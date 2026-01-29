@@ -7,10 +7,11 @@ import Label from '../../../typography/Label';
 interface CustomSelectProps extends SelectProps {
   label?: string;
   error?: string;
+  dataTestIdPrefix?: string;
 }
 
 const CustomSelect = React.forwardRef<HTMLInputElement, CustomSelectProps>(
-  ({ label, required, error, ...props }, ref) => {
+  ({ label, required, error, dataTestIdPrefix, ...props }, ref) => {
     const { t } = useTranslation('components');
     return (
       <div className="flex flex-col gap-1.5">
@@ -19,12 +20,14 @@ const CustomSelect = React.forwardRef<HTMLInputElement, CustomSelectProps>(
             content={label}
             htmlFor={label.toLowerCase()}
             required={required}
+            data-testid={`${dataTestIdPrefix}-label`}
           />
         )}
         <Select
           ref={ref}
           searchable
           error={!!error}
+          data-testid={`${dataTestIdPrefix}-val`}
           {...props}
           placeholder={t('comboBox.select')}
           checkIconPosition="right"

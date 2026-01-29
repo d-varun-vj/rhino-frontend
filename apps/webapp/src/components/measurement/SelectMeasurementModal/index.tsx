@@ -18,6 +18,7 @@ interface SelectMeasurementModalProps {
   showGlobalSettings?: boolean;
   customFilter?: CustomFilter;
   initialSelectedMeasurements?: MeasurementType[];
+  dataTestid?: string;
 }
 
 const SelectMeasurementModal = ({
@@ -28,6 +29,7 @@ const SelectMeasurementModal = ({
   showGlobalSettings = true,
   customFilter,
   initialSelectedMeasurements = [],
+  dataTestid,
 }: SelectMeasurementModalProps) => {
   const [selectedMeasurements, setSelectedMeasurements] = useState<
     MeasurementType[]
@@ -76,7 +78,7 @@ const SelectMeasurementModal = ({
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full" data-testid={dataTestid}>
       <div className="flex-1 flex flex-col min-h-0">
         <div className="flex-1 overflow-hidden">
           <MeasurementsWithPaginationTable
@@ -109,7 +111,11 @@ const SelectMeasurementModal = ({
 
       <div className="flex justify-end items-center p-5 border-t border-gray-200 bg-white flex-shrink-0">
         <div className="flex gap-3">
-          <IconButton action={onClose} type="secondary">
+          <IconButton
+            action={onClose}
+            type="secondary"
+            data-testid="cancel-btn"
+          >
             <p className="text-sm font-semibold">
               {t(translationBaseRoute + 'cancel')}
             </p>
@@ -118,6 +124,7 @@ const SelectMeasurementModal = ({
             action={handleChoose}
             disabled={Boolean(isChooseDisabled())}
             type="primary"
+            data-testid="choose-btn"
           >
             <p className="text-sm font-semibold">
               {t(translationBaseRoute + 'choose', {

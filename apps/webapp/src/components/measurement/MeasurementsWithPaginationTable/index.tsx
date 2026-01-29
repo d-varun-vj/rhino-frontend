@@ -445,6 +445,7 @@ const MeasurementsWithPaginationTable = ({
           onSortSelect={onSortClick}
           onFilterChange={onFilterChange}
           isLoading={isLoading}
+          dataTestIdPrefix="select-measurement"
         />
       </div>
     </div>

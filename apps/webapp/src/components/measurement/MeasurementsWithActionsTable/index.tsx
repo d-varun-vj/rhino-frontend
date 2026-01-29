@@ -181,7 +181,7 @@ const MeasurementsWithActionsTable = ({
           />
         </div>
       ) : (
-        <div className="p-8 text-center">
+        <div className="p-8 text-center" data-testid="measuremnt-empty">
           <div className="text-gray-400 mb-2">
             <FaEdit size={48} className="mx-auto mb-4" />
           </div>

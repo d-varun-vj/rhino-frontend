@@ -20,8 +20,13 @@ const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(
   ) => {
     return (
       <div className={`flex flex-${flex} gap-1.5 w-fit`}>
-        {label && <Label content={label} />}
-        <Switch ref={ref} color={activeColor} {...props} />
+        {label && <Label content={label} data-testid="active-label" />}
+        <Switch
+          ref={ref}
+          color={activeColor}
+          data-testid="active-val"
+          {...props}
+        />
       </div>
     );
   }
