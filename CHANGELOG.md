@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.21.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.20.2...webapp-v1.21.0) (2026-01-29)
+
+
+### Features
+
+* Add e2e tests ids for periodic alarm list and executions page [PRD-3630] ([#204](https://github.com/Rhino-Energy/rhino-frontend/issues/204)) ([#206](https://github.com/Rhino-Energy/rhino-frontend/issues/206)) ([ffa116f](https://github.com/Rhino-Energy/rhino-frontend/commit/ffa116f5eda92c89ef797cbe048094b661014fb0))
+* Create e2e tests for periodic alarm create, update, and delete functionalities and page [PRD-3631] ([#205](https://github.com/Rhino-Energy/rhino-frontend/issues/205)) ([#209](https://github.com/Rhino-Energy/rhino-frontend/issues/209)) ([3a28028](https://github.com/Rhino-Energy/rhino-frontend/commit/3a28028a4003be1179e5df4399481d66f488cca8))
+
+
+### Bug Fixes
+
+* Pre-fill the Email Recipient field with the email address of the user who creating the alarm [PRD-3754] ([#213](https://github.com/Rhino-Energy/rhino-frontend/issues/213)) ([dec746c](https://github.com/Rhino-Energy/rhino-frontend/commit/dec746c6e4c86a4bbde7903d6e2a8cbc124d7018))
+
 ## [1.20.2](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.20.1...webapp-v1.20.2) (2025-11-28)
 
 

@@ -96,5 +96,5 @@
     "vite-plugin-dts": "^4.1.0",
     "vitest": "^3.0.9"
   },
-  "version": "1.20.2"
+  "version": "1.21.0"
 }
