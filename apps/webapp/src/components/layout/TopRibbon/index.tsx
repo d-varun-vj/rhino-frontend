@@ -7,6 +7,7 @@ import { useFavoriteMeter } from 'apps/webapp/src/context/favoriteMeter';
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { shouldSetInitialClient } from 'apps/webapp/src/helpers/client';
+import { parseParamToArray } from 'apps/webapp/src/helpers/topribbon';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ClientCombobox from '../../client/ClientCombobox';
@@ -14,33 +15,35 @@ import GroupCombobox from '../../group/GroupCombobox';
 import LocationCombobox from '../../location/LocationCombobox';
 import FavoriteMeter from './FavoriteMeter';
 
+type Config = {
+  disabled?: boolean;
+  hidden?: boolean;
+  multiple?: boolean;
+};
+
 export type TopRibbonProps = {
-  hideFavoriteMeter?: boolean;
-  disableClient?: boolean;
-  disableLocation?: boolean;
-  disableGroup?: boolean;
-  hideLocations?: boolean;
-  hideGroup?: boolean;
+  client?: Omit<Config, 'hidden' | 'multiple'>;
+  location?: Config;
+  group?: Config;
+  favoriteMeter?: Omit<Config, 'disabled' | 'multiple'>;
 };
 
 const TopRibbon = ({
-  hideFavoriteMeter = false,
-  disableClient,
-  disableLocation,
-  disableGroup,
-  hideGroup,
-  hideLocations,
+  client,
+  location,
+  group,
+  favoriteMeter: favMeter,
 }: TopRibbonProps) => {
   const { t } = useTranslation('layout');
   const { user } = useUser();
   const [disableDropdown, setDisableDropdown] = useState<boolean>(false);
   const {
-    setClient: setSelectedClient,
-    setLocation: setSelectedLocation,
-    setGroup: setSelectedGroup,
-    client: selectedClient,
-    group: selectedGroup,
-    location: selectedLocation,
+    setClients: setSelectedClients,
+    setLocations: setSelectedLocations,
+    setGroups: setSelectedGroups,
+    clients: selectedClients,
+    groups: selectedGroups,
+    locations: selectedLocations,
   } = useUserFilter();
   const { favoriteMeter, setFavoriteMeter } = useFavoriteMeter();
   const [locations, setLocations] = useState<Location[]>([]);
@@ -49,12 +52,20 @@ const TopRibbon = ({
     undefined
   );
 
+  const paramsClientUuids = parseParamToArray(
+    searchParams?.['client'] as string
+  );
+  const paramsLocationUuids = parseParamToArray(
+    searchParams?.['location'] as string
+  );
+  const paramsGroupUuids = parseParamToArray(searchParams?.['group'] as string);
+
   const selectedClientId =
-    (searchParams?.['client'] as string) || selectedClient?.uuid || null;
+    paramsClientUuids?.[0] || selectedClients?.[0]?.uuid || null;
 
   const { data: locationsData } = useGetLocations({
     clientId: selectedClientId,
-    queryKey: [selectedClient],
+    queryKey: [selectedClients],
   });
   const [clients, setClients] = useState<Client[]>([]);
 
@@ -83,38 +94,59 @@ const TopRibbon = ({
     }
   }, [favoriteMeter]);
 
-  const activeClient = clients.find(
-    (client) => client.uuid === (searchParams?.['client'] as string)
-  );
-  const activeLocation = locations.find(
-    (location) => location.uuid === (searchParams?.['location'] as string)
-  );
-  const activeGroup = locations
-    .flatMap((location) => location.groups)
-    .find((group) => group.uuid === (searchParams?.['group'] as string));
+  const activeClients = paramsClientUuids
+    ? clients.filter((client) => paramsClientUuids.includes(client.uuid))
+    : [];
+  const activeLocations = paramsLocationUuids
+    ? locations.filter((location) =>
+        paramsLocationUuids.includes(location.uuid)
+      )
+    : [];
+  const activeGroups = paramsGroupUuids
+    ? locations
+        .flatMap((location) => location.groups || [])
+        .filter((group) => paramsGroupUuids.includes(group.uuid))
+    : [];
+
   const activeFavoriteMeter = {
     uuid: searchParams?.['favoriteMeterUuid'] as string,
     name: searchParams?.['favoriteMeterName'] as string,
   };
 
   useEffect(() => {
-    setSelectedClient(
-      activeClient
-        ? {
-            name: activeClient.name,
-            uuid: activeClient.uuid,
-            logo: activeClient.logo,
-          }
+    setSelectedClients(
+      activeClients.length > 0
+        ? activeClients.map((client) => ({
+            name: client.name,
+            uuid: client.uuid,
+            logo: client.logo,
+          }))
         : null
     );
-    setSelectedLocation(
-      activeLocation
-        ? { name: activeLocation.name, uuid: activeLocation.uuid }
+
+    setSelectedLocations(
+      activeLocations.length > 0
+        ? activeLocations.map((location) => ({
+            name: location.name,
+            uuid: location.uuid,
+          }))
         : null
     );
-    setSelectedGroup(activeGroup || null);
+    setSelectedGroups(
+      activeGroups.length > 0
+        ? activeGroups.map((group) => ({
+            name: group.name,
+            uuid: group.uuid,
+          }))
+        : null
+    );
+
     setFavoriteMeter(activeFavoriteMeter);
-  }, [activeClient, activeLocation, activeGroup]);
+  }, [
+    searchParams?.['client'],
+    searchParams?.['location'],
+    searchParams?.['group'],
+  ]);
 
   useEffect(() => {
     if (locationsData) {
@@ -127,52 +159,60 @@ const TopRibbon = ({
     if (user && shouldSetInitialClient(user)) {
       setDisableDropdown(true);
     }
-  }, [selectedClient, locationsData, user, selectedGroup, selectedLocation]);
+  }, [selectedClients, locationsData, user, selectedGroups, selectedLocations]);
 
   const onFilterChange = (
     type: FieldType,
-    value: {
+    values: Array<{
       name: string;
       uuid: string;
       logo?: string;
-    } | null
+    }> | null
   ) => {
+    const formatForUrl = (
+      items: Array<{ uuid: string }> | null
+    ): string | null => {
+      if (!items || items.length === 0) return null;
+      return items.map((item) => item.uuid).join(',');
+    };
+
     switch (type) {
       case FieldType.CLIENT:
-        setSelectedClient(value);
-        setSelectedLocation(null);
-        setSelectedGroup(null);
+        setSelectedClients(values);
+        setSelectedLocations(null);
+        setSelectedGroups(null);
         setFavoriteMeter(null);
         setSearchParams({
           ...searchParams,
           location: null,
           group: null,
-          client: value ? value.uuid : null,
+          client: formatForUrl(values),
           favoriteMeterUuid: null,
           favoriteMeterName: null,
         });
         break;
       case FieldType.LOCATION:
-        setSelectedLocation(value);
-        setSelectedGroup(null);
+        setSelectedLocations(values);
+        setSelectedGroups(null);
         setSearchParams({
           ...searchParams,
-          location: value ? value.uuid : null,
+          location: formatForUrl(values),
           group: null,
         });
         break;
       case FieldType.GROUP:
-        setSelectedGroup(value);
+        setSelectedGroups(values);
         setSearchParams({
           ...searchParams,
-          group: value ? value.uuid : null,
+          group: formatForUrl(values),
         });
         break;
     }
   };
 
   const isComboboxDisabled =
-    (searchParams?.['client'] as string) === null || selectedClient == null;
+    (!paramsClientUuids || paramsClientUuids.length === 0) &&
+    (selectedClients == null || selectedClients.length === 0);
 
   const Items: {
     labelKey: string;
@@ -180,18 +220,20 @@ const TopRibbon = ({
     dataTestId?: string;
   }[] = [
     {
-      labelKey: 'topRibbon.client', // from i18n
+      labelKey: 'topRibbon.client',
       component: (
         <ClientCombobox
           onSelect={onFilterChange}
-          disableDropdown={disableDropdown || disableClient}
+          disableDropdown={disableDropdown || client?.disabled}
           clients={clients}
-          selectedClient={activeClient ?? selectedClient}
+          selectedClients={
+            activeClients.length > 0 ? activeClients : selectedClients
+          }
         />
       ),
       dataTestId: 'ribbon-client-label',
     },
-    ...(!hideLocations
+    ...(!location?.hidden
       ? [
           {
             labelKey: 'topRibbon.location',
@@ -199,15 +241,16 @@ const TopRibbon = ({
               <LocationCombobox
                 onSelect={onFilterChange}
                 locations={locations}
-                disabled={isComboboxDisabled || disableLocation}
-                selectedLocation={activeLocation}
+                disabled={isComboboxDisabled || location?.disabled}
+                selectedLocations={activeLocations}
+                multiple={location?.multiple}
               />
             ),
             dataTestId: 'ribbon-location-label',
           },
         ]
       : []),
-    ...(!hideGroup
+    ...(!group?.hidden
       ? [
           {
             labelKey: 'topRibbon.group',
@@ -215,16 +258,17 @@ const TopRibbon = ({
               <GroupCombobox
                 onSelect={onFilterChange}
                 locations={locations}
-                disabled={isComboboxDisabled || disableGroup}
-                selectedGroup={activeGroup}
-                selectedLocation={selectedLocation}
+                disabled={isComboboxDisabled || group?.disabled}
+                selectedGroups={activeGroups}
+                selectedLocations={selectedLocations}
+                multiple={group?.multiple}
               />
             ),
             dataTestId: 'ribbon-group-label',
           },
         ]
       : []),
-    ...(!hideFavoriteMeter
+    ...(!favMeter?.hidden
       ? [
           {
             labelKey: 'topRibbon.favoriteMeters',
@@ -241,9 +285,7 @@ const TopRibbon = ({
                   });
                 }}
                 selectedClientUuid={
-                  (searchParams?.['client'] as string) ||
-                  selectedClient?.uuid ||
-                  null
+                  paramsClientUuids?.[0] || selectedClients?.[0]?.uuid || null
                 }
               />
             ),

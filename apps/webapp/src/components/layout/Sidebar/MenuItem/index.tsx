@@ -1,5 +1,6 @@
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
+import { useFeatureFlags } from 'apps/webapp/src/featureFlag/useFeatureFlag';
 import {
   canViewItem,
   getToNavLink,
@@ -28,8 +29,9 @@ export type MenuItemProps = {
 
 const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
   const { t } = useTranslation('layout');
+  const features = useFeatureFlags();
   const { user } = useUser();
-  const { client, location, group } = useUserFilter();
+  const { clients, locations, groups } = useUserFilter();
 
   return (
     <li
@@ -65,9 +67,14 @@ const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
       {!minimize.isMinimize && (
         <ul className="m-0 p-0 py-[10px] nav-sub-menu">
           {menuItem.subItems?.map((subItem) =>
-            user && canViewItem({ subItem, user }) ? (
+            user && canViewItem({ subItem, user, features }) ? (
               <NavLink
-                to={getToNavLink({ subItem, client, location, group })}
+                to={getToNavLink({
+                  subItem,
+                  clients,
+                  locations,
+                  groups,
+                })}
                 key={subItem.key}
               >
                 {({ isActive }) => {

@@ -4,7 +4,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import { Loader } from '@mantine/core';
 import message from '../components/notifier';
-import { locations } from './locations';
+import { paths } from './paths';
 import { ROUTES } from './routes';
 
 const MainRoute = () => {
@@ -29,7 +29,7 @@ const MainRoute = () => {
   }
 
   return (
-    <Router basename={locations.base}>
+    <Router basename={paths.base}>
       <Routes>
         {ROUTES.map(({ path, element }) => (
           <Route key={path} path={path} element={element} />

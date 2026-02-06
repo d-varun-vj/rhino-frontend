@@ -1,58 +1,98 @@
 import { Location } from '@rhino/apis';
 import { FieldType } from '@rhino/utils';
+import { ignoreMultipleValue } from 'apps/webapp/src/helpers/topribbon';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterData } from '../../../context/userFilter/user-filter-context';
+import CompactMultiSelector from '../../common/comboboxes/CompactMultiSelector';
 import CustomComboBox from '../../common/comboboxes/CustomComboBox';
 
 type LocationComboboxProps = {
   onSelect?: (
     type: FieldType,
-    value: {
+    values: Array<{
       name: string;
       uuid: string;
-    } | null
+    }> | null
   ) => void;
   locations?: Location[];
   disabled?: boolean;
-  selectedLocation?: FilterData | null;
+  selectedLocations?: FilterData[] | null;
+  multiple?: boolean;
 };
 
 const LocationCombobox = ({
   onSelect,
   locations,
-  disabled: disenabled,
-  selectedLocation,
+  disabled = false,
+  selectedLocations,
+  multiple,
 }: LocationComboboxProps) => {
   const { t } = useTranslation('components');
 
-  return (
+  const optionsList = useMemo(() => {
+    if (!locations?.length) return [];
+
+    return [
+      {
+        name: multiple ? 'Select All' : 'Select',
+        uuid: '',
+      },
+      ...locations.map((location) => ({
+        name: location.name,
+        uuid: location.uuid,
+      })),
+    ];
+  }, [locations, multiple]);
+
+  const selectedValues = useMemo(() => {
+    return (
+      selectedLocations?.map((loc) => ({
+        name: loc.name,
+        uuid: loc.uuid,
+      })) ?? []
+    );
+  }, [selectedLocations]);
+
+  const handleMultiSelectionChange = (
+    items: Array<{ name: string; uuid: string }>
+  ) => {
+    if (!onSelect) return;
+    onSelect(FieldType.LOCATION, items.length > 0 ? items : null);
+  };
+
+  const handleSingleSelection = (uuid: string | null) => {
+    if (!onSelect) return;
+
+    const selectedLocation = uuid
+      ? locations?.find((location) => location.uuid === uuid)
+      : null;
+
+    onSelect(FieldType.LOCATION, selectedLocation ? [selectedLocation] : null);
+  };
+
+  const commonProps = {
+    optionsList,
+    placeholder: t('comboBox.locationNull'),
+    disabled,
+    'data-testid': 'ribbon-location-selector',
+  };
+
+  return multiple ? (
+    <CompactMultiSelector
+      {...commonProps}
+      selectedValues={selectedValues}
+      setSelectedValues={handleMultiSelectionChange}
+    />
+  ) : (
     <CustomComboBox
-      optionsList={
-        locations?.length
-          ? [
-              {
-                name: 'Select',
-                uuid: '',
-              },
-              ...(locations?.map((location) => ({
-                name: location.name,
-                uuid: location.uuid,
-              })) || []),
-            ]
-          : []
+      {...commonProps}
+      selectedValue={
+        !ignoreMultipleValue(selectedLocations) && selectedLocations?.[0]
+          ? selectedLocations?.[0]
+          : null
       }
-      placeholder={t('comboBox.locationNull')}
-      selectedValue={selectedLocation ?? null}
-      setSelectedValue={(uuid) => {
-        if (onSelect) {
-          const selectedLocation = uuid
-            ? locations?.find((location) => location.uuid === uuid)
-            : null;
-          onSelect(FieldType.LOCATION, selectedLocation ?? null);
-        }
-      }}
-      disabled={disenabled ?? false}
-      data-testid="ribbon-location-selector"
+      setSelectedValue={handleSingleSelection}
     />
   );
 };

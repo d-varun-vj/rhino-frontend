@@ -2,6 +2,7 @@
   "sideMenu": {
     "dashboards": "Dashboards",
     "dashboard": "Dashboard",
+    "assetDashboard": "Asset dashboards",
     "energyDashboard": " Energy dashboard",
     "dashboardR": "Dashboard (R)",
     "analysisReports": "Analysis and reports",

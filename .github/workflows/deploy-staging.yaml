@@ -119,6 +119,8 @@ jobs:
           aws-region: ${{ vars.aws_region }}
           aws-iam-role: ${{ secrets.aws_iam_role }}
           aws-ecr-account-id: ${{ vars.aws_ecr_account_id }}
+          docker-build-args: |
+            VITE_UNLEASH_API_CLIENT_KEY_STG=${{ secrets.VITE_UNLEASH_API_CLIENT_KEY_STG }}
 
   deploy-tag-webapp:
     name: Deploy Webapp Staging

@@ -31,7 +31,7 @@ import { GUIDE_LINKS } from '../../constant/guide-links';
 import { useUserFilter } from '../../context/userFilter';
 import { getRibbonParams } from '../../helpers/topribbon';
 import MainLayout from '../../layouts/MainLayout';
-import { locations } from '../../routes/locations';
+import { paths } from '../../routes/paths';
 import AccessAuthorizer from '../../wrappers/AccessAuthorizer';
 import Execution from './Execution';
 import { getTranslationOptions } from './helper';
@@ -82,7 +82,7 @@ const PeriodicAlarm = () => {
     initialExecutionState
   );
 
-  const { client, location, group } = useUserFilter();
+  const { clients, locations, groups } = useUserFilter();
   const { t } = useTranslation('periodicAlarm');
   const navigate = useNavigate();
 
@@ -118,8 +118,8 @@ const PeriodicAlarm = () => {
       size: pageSize,
       sort: sort,
       ...filters,
-      clientUuid: client ? client.uuid : null,
-      locationUuid: location ? location.uuid : null,
+      clientUuid: clients ? clients[0].uuid : null,
+      locationUuid: locations ? locations[0].uuid : null,
     });
   const { mutate: deleteAlarm, isPending } = useDeletePeriodicAlarm();
 
@@ -164,7 +164,7 @@ const PeriodicAlarm = () => {
           <IconButton
             action={() => {
               navigate(
-                generatePath(locations.alarm.periodic.update, {
+                generatePath(paths.alarm.periodic.update, {
                   uuid: row.original.uuid,
                 })
               );
@@ -179,7 +179,7 @@ const PeriodicAlarm = () => {
           <IconButton
             action={() => {
               navigate(
-                generatePath(locations.alarm.periodic.update, {
+                generatePath(paths.alarm.periodic.update, {
                   uuid: row.original.uuid,
                 })
               );
@@ -324,11 +324,11 @@ const PeriodicAlarm = () => {
 
   const handleCreateAlarm = () => {
     navigate(
-      locations.alarm.periodic.create +
+      paths.alarm.periodic.create +
         getRibbonParams({
-          client,
-          location,
-          group,
+          clients,
+          locations,
+          groups,
         })
     );
   };
@@ -366,8 +366,12 @@ const PeriodicAlarm = () => {
       <MainLayout
         title={t('sideMenu.periodicAlarm', { ns: 'layout' })}
         topRibbon={{
-          hideFavoriteMeter: true,
-          hideGroup: true,
+          group: {
+            hidden: true,
+          },
+          favoriteMeter: {
+            hidden: true,
+          },
         }}
       >
         <div className="flex justify-between items-end py-4">

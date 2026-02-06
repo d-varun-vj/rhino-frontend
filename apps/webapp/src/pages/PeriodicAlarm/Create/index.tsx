@@ -13,7 +13,7 @@ import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getCurrentDateAsString } from 'apps/webapp/src/helpers/date';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import MainLayout from 'apps/webapp/src/layouts/MainLayout';
-import { locations } from 'apps/webapp/src/routes/locations';
+import { paths } from 'apps/webapp/src/routes/paths';
 import AccessAuthorizer from 'apps/webapp/src/wrappers/AccessAuthorizer';
 import { useCallback, useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -37,7 +37,7 @@ import { buildPeriodicAlarmSchema, PeriodicAlarmSchema } from './validation';
 const CreatePeriodicAlarm = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('periodicAlarm');
-  const { client, location, group } = useUserFilter();
+  const { clients, locations, groups } = useUserFilter();
   const { user } = useUser();
 
   const { mutate: createAlarm, isPending } = usePostPeriodicAlarm();
@@ -80,8 +80,8 @@ const CreatePeriodicAlarm = () => {
   const { setValue, handleSubmit, resetField } = methods;
 
   useEffect(() => {
-    setValue('clientUuid', client ? client?.uuid : '');
-  }, [client, setValue]);
+    setValue('clientUuid', clients ? clients[0].uuid : '');
+  }, [clients, setValue]);
 
   useEffect(() => {
     setValue('language', LanguageMap[(user?.language as 'pl' | 'en') || 'en']);
@@ -98,11 +98,11 @@ const CreatePeriodicAlarm = () => {
     createAlarm(buildPeriodicAlarmReqForm(values), {
       onSuccess: () => {
         navigate(
-          locations.alarm.periodic.base +
+          paths.alarm.periodic.base +
             getRibbonParams({
-              client: client,
-              location: location,
-              group: group,
+              clients,
+              locations,
+              groups,
             }),
           {
             state: { isCreated: true },
@@ -128,7 +128,9 @@ const CreatePeriodicAlarm = () => {
       <MainLayout
         title={t('create.mainHeader')}
         topRibbon={{
-          hideFavoriteMeter: true,
+          favoriteMeter: {
+            hidden: true,
+          },
         }}
       >
         <FormProvider {...methods}>
