@@ -6,25 +6,25 @@ export const UserFilterProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [clients, setClients] = useState<FilterData[] | null>(null);
-  const [locations, setLocations] = useState<FilterData[] | null>(null);
-  const [groups, setGroups] = useState<FilterData[] | null>(null);
+  const [client, setClient] = useState<FilterData | null>(null);
+  const [location, setLocation] = useState<FilterData | null>(null);
+  const [group, setGroup] = useState<FilterData | null>(null);
 
   const clearAll = () => {
-    setClients(null);
-    setLocations(null);
-    setGroups(null);
+    setClient(null);
+    setLocation(null);
+    setGroup(null);
   };
 
   return (
     <UserFilterContext.Provider
       value={{
-        clients,
-        locations,
-        groups,
-        setClients,
-        setLocations,
-        setGroups,
+        client,
+        location,
+        group,
+        setClient,
+        setLocation,
+        setGroup,
         clearAll,
       }}
     >

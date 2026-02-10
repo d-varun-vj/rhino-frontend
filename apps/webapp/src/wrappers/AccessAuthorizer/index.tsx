@@ -6,7 +6,7 @@ import {
 } from '@rhino/apis';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/user';
-import { paths } from '../../routes/paths';
+import { locations } from '../../routes/locations';
 
 type AuthorizeProps = {
   children: React.ReactNode;
@@ -79,7 +79,7 @@ const AccessAuthorizer = ({
       allowedUserTypes: allowedUserTypes,
     })
   ) {
-    navigate(paths.notAllowed, { replace: true });
+    navigate(locations.notAllowed, { replace: true });
   } else {
     return <>{children}</>;
   }

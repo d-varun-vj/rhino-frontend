@@ -7,7 +7,6 @@ import {
   ViewPermissionsType,
   VITE_WICKET_BASE_URL,
 } from '@rhino/apis';
-import { Flag } from 'apps/webapp/src/featureFlag/feature';
 import { AiFillTool } from 'react-icons/ai';
 import { BiSolidNetworkChart } from 'react-icons/bi';
 import {
@@ -39,7 +38,6 @@ export type SubItemType = {
   viewPermissions?: UserViewPermission[]; // This is used to check if the user has permission to access this item.
   allowedUserTypes?: UserType[]; // This is used to check if the user has permission to access this item.
   renderCondition?: () => boolean; // This is used to check extra conditions to user to access this item
-  featureFlag?: keyof typeof Flag;
 };
 
 export type MenuItemType = {
@@ -203,7 +201,9 @@ export const MenuItems: MenuItemType[] = [
         route: '/alarm/periodic',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
         viewPermissions: [UserViewPermission.PERIODIC_ALARM_ROLE],
-        featureFlag: 'ENABLE_PERIODIC_ALARM',
+        renderCondition: () => {
+          return true; // set false to hide
+        },
       },
     ],
     viewPermissionType: ViewPermissionsType.ViewRoleBased,

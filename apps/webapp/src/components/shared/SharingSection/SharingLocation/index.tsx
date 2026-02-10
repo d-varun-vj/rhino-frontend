@@ -10,11 +10,11 @@ const SharingLocationPanel = ({
   ...props
 }: MultiSelectComboBoxProps) => {
   const { t } = useTranslation('components');
-  const { clients } = useUserFilter();
+  const { client } = useUserFilter();
 
   const { data: locationsData } = useGetLocations({
-    clientId: clients ? clients[0].uuid : null,
-    queryKey: [clients ? clients[0].uuid : null],
+    clientId: client ? client?.uuid : null,
+    queryKey: [client?.uuid],
   });
 
   return (

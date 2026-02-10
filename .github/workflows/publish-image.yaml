@@ -1,4 +1,4 @@
-name: Publish Image
+name: Publish Production Image
 
 on:
   workflow_dispatch:
@@ -12,13 +12,6 @@ on:
       version:
         type: string
         required: true
-      environment:
-        type: choice
-        description: Select environment
-        required: true
-        options:
-          - Production
-          - Staging
     secrets: inherit
 
 permissions:
@@ -27,20 +20,17 @@ permissions:
 
 jobs:
   publish-image-webapp:
-    name: Publish Image webapp
+    name: Publish Production Image webapp
     runs-on: arc-md
 
     steps:
-      - name: Build and publish image
+      - name: Build and publish production image
         uses: Rhino-Energy/github-actions/.github/actions/javascript-monorepo@main
         with:
           aws-ecr-repo: "rhino-webapp"
-          docker-file-path: apps/webapp/docker${{ inputs.environment }}.Dockerfile
+          docker-file-path: "apps/webapp/dockerProduction.Dockerfile"
           tag: ${{ inputs.tag }}
           version: ${{ inputs.version }}
           aws-region: ${{ vars.aws_region }}
           aws-iam-role: ${{ secrets.aws_iam_role }}
           aws-ecr-account-id: ${{ vars.aws_ecr_account_id }}
-          docker-build-args: |
-            VITE_UNLEASH_API_CLIENT_KEY_STG=${{ secrets.VITE_UNLEASH_API_CLIENT_KEY_STG }}
-            VITE_UNLEASH_API_CLIENT_KEY_PROD=${{ secrets.VITE_UNLEASH_API_CLIENT_KEY_PROD }}

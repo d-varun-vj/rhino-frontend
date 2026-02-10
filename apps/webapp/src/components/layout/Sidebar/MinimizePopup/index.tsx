@@ -1,7 +1,6 @@
 import { UserType } from '@rhino/apis';
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
-import { useFeatureFlags } from 'apps/webapp/src/featureFlag/useFeatureFlag';
 import { canViewItem, getToNavLink } from 'apps/webapp/src/helpers/sidebar';
 import { useTranslation } from 'react-i18next';
 import { VscTriangleLeft } from 'react-icons/vsc';
@@ -10,9 +9,8 @@ import { MenuItemType } from '../config';
 
 const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
   const { t } = useTranslation('layout');
-  const features = useFeatureFlags();
   const { user } = useUser();
-  const { clients, locations, groups } = useUserFilter();
+  const { client, location, group } = useUserFilter();
 
   return (
     <div className="min-w-[300px] absolute left-[75px]  z-40 -mt-10 ">
@@ -32,14 +30,9 @@ const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
       </div>
       <div className="w-full bg-rhino-indigo-blue-light ml-[11px] rounded-lg rounded-tl-none overflow-hidden">
         {menuItem.subItems?.map((subItem) =>
-          user && canViewItem({ subItem, user, features }) ? (
+          user && canViewItem({ subItem, user }) ? (
             <NavLink
-              to={getToNavLink({
-                subItem,
-                clients,
-                locations,
-                groups,
-              })}
+              to={getToNavLink({ subItem, client, location, group })}
               key={subItem.key}
             >
               {({ isActive }) => (

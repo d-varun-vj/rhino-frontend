@@ -10,11 +10,11 @@ const SharingTenantPanel = ({
   ...props
 }: MultiSelectComboBoxProps) => {
   const { t } = useTranslation('components');
-  const { clients: clients } = useUserFilter();
+  const { client } = useUserFilter();
 
   const { data: tenantData } = useGetTenants({
-    clientUuid: clients ? clients[0].uuid : null,
-    queryKey: [clients ? clients[0].uuid : null],
+    clientUuid: client?.uuid ?? null,
+    queryKey: [client?.uuid],
   });
 
   return (

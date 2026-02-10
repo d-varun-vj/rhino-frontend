@@ -107,9 +107,7 @@
     "select": "Select",
     "locationNull": "All locations",
     "groupNull": "All groups",
-    "empty": "No result",
-    "selectAll": "Select All",
-    "deselectAll": "Deselect All"
+    "empty": "No result"
   },
   "consumption": {
     "goToConsumptionIcon": {

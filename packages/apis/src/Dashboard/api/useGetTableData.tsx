@@ -18,8 +18,8 @@ export type DashboardTableRequestBody = {
   page: number | null;
   size: number | null;
   clientUuid?: string | null;
-  locationUuids?: string[] | null;
-  groupUuids?: string[] | null;
+  locationUuid?: string | null;
+  groupUuid?: string | null;
   sort: Sort;
   locationName: string | null;
   groupName: string | null;
@@ -53,8 +53,8 @@ export const useGetTableData = ({
     endUseAreaType,
     favoriteMeterUuid,
     clientUuid,
-    locationUuids,
-    groupUuids,
+    locationUuid,
+    groupUuid,
   } = params;
 
   const queryParams = {
@@ -77,8 +77,8 @@ export const useGetTableData = ({
     ...(!!endUseAreaType && { endUseAreaType }),
     ...(!!favoriteMeterUuid && { favoriteMeterUuid }),
     ...(!!clientUuid && { clientUuid }),
-    ...(!!locationUuids && { locationUuids }),
-    ...(!!groupUuids && { groupUuids }),
+    ...(!!locationUuid && { locationUuid }),
+    ...(!!groupUuid && { groupUuid }),
   };
 
   return useQuery({

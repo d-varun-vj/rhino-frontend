@@ -23,9 +23,9 @@ const SharingSection = ({
     useFormContext();
   const { t } = useTranslation('common');
   const { user } = useUser();
-  const { clients } = useUserFilter();
+  const { client } = useUserFilter();
 
-  const prevClientRef = useRef(clients);
+  const prevClientRef = useRef(client);
   const initializedRef = useRef(false);
   const isUpdateMode = mode === 'update';
 
@@ -46,7 +46,7 @@ const SharingSection = ({
     authorUuid: authorUuid,
   });
 
-  const shouldFieldBeDisabled = clients === null;
+  const shouldFieldBeDisabled = client === null;
   const showSharingSection = isLocationSharingVisible || isTenantSharingVisible;
 
   const shared = watch('shared') as boolean;
@@ -55,13 +55,13 @@ const SharingSection = ({
   const sharedTenants = watch('sharedTenants') as string[];
 
   const { data: locationsData, isLoading: locationsLoading } = useGetLocations({
-    clientId: clients ? clients[0].uuid : null,
-    queryKey: [clients ? clients[0].uuid : null],
+    clientId: client ? client?.uuid : null,
+    queryKey: [client?.uuid],
   });
 
   const { data: tenantData, isLoading: tenantsLoading } = useGetTenants({
-    clientUuid: clients ? clients[0].uuid : null,
-    queryKey: [clients ? clients[0].uuid : null],
+    clientUuid: client?.uuid ?? null,
+    queryKey: [client?.uuid],
   });
 
   const resetSharingFields = useCallback(() => {
@@ -80,10 +80,10 @@ const SharingSection = ({
     if (!initializedRef.current) {
       if (isUpdateMode || (!locationsLoading && !tenantsLoading)) {
         initializedRef.current = true;
-        prevClientRef.current = clients;
+        prevClientRef.current = client;
       }
     }
-  }, [isUpdateMode, locationsLoading, tenantsLoading, clients]);
+  }, [isUpdateMode, locationsLoading, tenantsLoading, client]);
 
   useEffect(() => {
     if (
@@ -131,15 +131,15 @@ const SharingSection = ({
   }, [isUpdateMode]);
 
   useEffect(() => {
-    const hasClientChanged = prevClientRef.current !== clients;
+    const hasClientChanged = prevClientRef.current !== client;
 
     if (hasClientChanged && initializedRef.current) {
       if (!isUpdateMode) {
         resetSharingFields();
       }
-      prevClientRef.current = clients;
+      prevClientRef.current = client;
     }
-  }, [clients, resetSharingFields, isUpdateMode]);
+  }, [client, resetSharingFields, isUpdateMode]);
 
   useEffect(() => {
     if (!shared && setValue && initializedRef.current && allowReactiveEffects) {
@@ -202,7 +202,7 @@ const SharingSection = ({
               disabled={isReadOnly}
               onChange={(e) => {
                 const isChecked = e.currentTarget.checked;
-                if (clients === null) {
+                if (client === null) {
                   message.warn(t('toast.emptyClientWarning'));
                   return;
                 }

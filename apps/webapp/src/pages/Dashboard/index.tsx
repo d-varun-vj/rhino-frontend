@@ -24,7 +24,6 @@ import { GUIDE_LINKS } from '../../constant/guide-links';
 import { useFavoriteMeter } from '../../context/favoriteMeter';
 import { useUser } from '../../context/user';
 import { useUserFilter } from '../../context/userFilter';
-import { useFeatureFlags } from '../../featureFlag/useFeatureFlag';
 import { getRibbonParams } from '../../helpers/topribbon';
 import MainLayout from '../../layouts/MainLayout';
 
@@ -41,9 +40,6 @@ const PERCENTAGE_COLORS: ColorMap = {
 };
 
 const Dashboard = () => {
-  const features = useFeatureFlags();
-  const hasMultiselectorEnabled: boolean =
-    features.ENABLE_DASHBOARD_MULTISELECTOR;
   const [filters, setFilters] = useState<Filter>({
     locationName: null,
     groupName: null,
@@ -61,7 +57,7 @@ const Dashboard = () => {
   });
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  const { clients, locations, groups } = useUserFilter();
+  const { client, location, group } = useUserFilter();
   const { favoriteMeter } = useFavoriteMeter();
   const { user } = useUser();
   const { t } = useTranslation('dashboard');
@@ -72,11 +68,9 @@ const Dashboard = () => {
       params: {
         page: page,
         size: pageSize,
-        clientUuid: clients ? clients[0].uuid : null,
-        locationUuids: locations
-          ? locations.map((location) => location.uuid)
-          : null,
-        groupUuids: groups ? groups.map((group) => group.uuid) : null,
+        clientUuid: client ? client.uuid : null,
+        locationUuid: location ? location.uuid : null,
+        groupUuid: group ? group.uuid : null,
         sort: sort,
         ...filters,
         favoriteMeterUuid: favoriteMeter ? favoriteMeter.uuid : null,
@@ -95,11 +89,7 @@ const Dashboard = () => {
             window.location.href =
               VITE_WICKET_BASE_URL +
               'consumptionProfileChart' +
-              getRibbonParams({
-                clients,
-                locations,
-                groups,
-              }) +
+              getRibbonParams({ client, location, group }) +
               `&uuid=${row.original.id}&incremental=${row.original.incremental}&type=${row.original.type}&shouldCompareMeasurement=${false}`;
           }}
           popupContent={t(translationBaseRoute + 'popup.goToProfile')}
@@ -114,7 +104,7 @@ const Dashboard = () => {
         />
       </ActionCell>
     ),
-    [t, clients, locations, groups]
+    [t, client, location, group]
   );
 
   const onSortClick = (field: string, direction: string) => {
@@ -385,17 +375,7 @@ const Dashboard = () => {
   );
 
   return (
-    <MainLayout
-      title={t('sideMenu.dashboard', { ns: 'layout' })}
-      topRibbon={{
-        location: {
-          multiple: hasMultiselectorEnabled,
-        },
-        group: {
-          multiple: hasMultiselectorEnabled,
-        },
-      }}
-    >
+    <MainLayout title={t('sideMenu.dashboard', { ns: 'layout' })}>
       <PageTitle
         title={t('mainHeader')}
         guide={true}

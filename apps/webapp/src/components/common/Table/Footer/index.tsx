@@ -12,7 +12,7 @@ type Footer = {
 const TableFooter = ({ pagination, dataTestIdPrefix }: Footer) => {
   const [pagePositions, setPagePositions] = useState<number[]>([]);
 
-  const { clients, locations, groups } = useUserFilter();
+  const { client, location, group } = useUserFilter();
   const { t } = useTranslation('common');
   const paginationRef = useRef(pagination);
 
@@ -47,7 +47,7 @@ const TableFooter = ({ pagination, dataTestIdPrefix }: Footer) => {
   useEffect(() => {
     paginationRef.current.setCurrentPage(0);
     paginationRef.current.setPageSize(paginationRef.current.pageSize || 5);
-  }, [clients, locations, groups]);
+  }, [client, location, group]);
 
   const handlePageSizeChange = (newPageSize: number) => {
     pagination.setPageSize(newPageSize);

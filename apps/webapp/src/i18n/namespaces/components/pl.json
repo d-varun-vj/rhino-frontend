@@ -107,9 +107,7 @@
     "select": "Wybierz",
     "locationNull": "Wszystkie lokalizacje",
     "groupNull": "Wszystkie grupy",
-    "empty": "Brak wyniku",
-    "selectAll": "Zaznacz wszystkie",
-    "deselectAll": "Odznacz wszystkie"
+    "empty": "Brak wyniku"
   },
   "consumption": {
     "goToConsumptionIcon": {

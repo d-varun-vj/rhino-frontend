@@ -32,7 +32,7 @@ import { GUIDE_LINKS } from 'apps/webapp/src/constant/guide-links';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import MainLayout from 'apps/webapp/src/layouts/MainLayout';
-import { paths } from 'apps/webapp/src/routes/paths';
+import { locations } from 'apps/webapp/src/routes/locations';
 import AccessAuthorizer from 'apps/webapp/src/wrappers/AccessAuthorizer';
 import { useTranslation } from 'react-i18next';
 import {
@@ -51,9 +51,7 @@ const UpdatePeriodicAlarm = () => {
   const navigate = useNavigate();
   const { uuid } = useParams();
   const { t } = useTranslation('periodicAlarm');
-
-  const { clients, locations, groups, setClients } = useUserFilter();
-
+  const { client, location, group, setClient } = useUserFilter();
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [isFormInitialized, setIsFormInitialized] = useState(false);
   const queryClient = useQueryClient();
@@ -109,12 +107,10 @@ const UpdatePeriodicAlarm = () => {
   useEffect(() => {
     if (!alarmDetails?.data) return;
 
-    setClients([
-      {
-        name: alarmDetails.data.client.name,
-        uuid: alarmDetails.data.client.uuid,
-      },
-    ]);
+    setClient({
+      name: alarmDetails.data.client.name,
+      uuid: alarmDetails.data.client.uuid,
+    });
 
     searchParams.set('client', alarmDetails.data.client.uuid);
     setSearchParams(searchParams);
@@ -165,11 +161,11 @@ const UpdatePeriodicAlarm = () => {
       reset(formData);
       setIsFormInitialized(true);
     });
-  }, [alarmDetails?.data, reset, searchParams, setSearchParams, setClients]);
+  }, [alarmDetails?.data, reset, setClient, searchParams, setSearchParams]);
 
   useEffect(() => {
     if (isError) {
-      navigate(paths.alarm.periodic.base, {
+      navigate(locations.alarm.periodic.base, {
         state: { isError: true, errMessage: error.message },
       });
     }
@@ -186,11 +182,11 @@ const UpdatePeriodicAlarm = () => {
     updateAlarm(buildPeriodicAlarmUpdateForm(values), {
       onSuccess: () => {
         navigate(
-          paths.alarm.periodic.base +
+          locations.alarm.periodic.base +
             getRibbonParams({
-              clients,
-              locations,
-              groups,
+              client: client,
+              location: location,
+              group: group,
             }),
           {
             state: { isUpdated: true },
@@ -321,12 +317,8 @@ const UpdatePeriodicAlarm = () => {
           isReadOnly ? t('update.mainHeaderReadOnly') : t('update.mainHeader')
         }
         topRibbon={{
-          client: {
-            disabled: true,
-          },
-          favoriteMeter: {
-            hidden: true,
-          },
+          hideFavoriteMeter: true,
+          disableClient: true,
         }}
       >
         {!shouldShowForm ? (

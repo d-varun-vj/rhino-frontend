@@ -5,17 +5,17 @@ import NotFound from '../pages/NotFound';
 import PeriodicAlarm from '../pages/PeriodicAlarm';
 import CreatePeriodicAlarm from '../pages/PeriodicAlarm/Create';
 import UpdatePeriodicAlarm from '../pages/PeriodicAlarm/Update';
-import { paths } from './paths';
+import { locations } from './locations';
 
 export const ROUTES: { path: string; element: JSX.Element }[] = [
   // Common
-  { path: paths.notAllowed, element: <NotAllowed /> },
-  { path: paths.notFound, element: <NotFound /> },
+  { path: locations.notAllowed, element: <NotAllowed /> },
+  { path: locations.notFound, element: <NotFound /> },
 
   // Pages
-  { path: paths.dashboard, element: <Dashboard /> },
-  { path: paths.consumption, element: <Consumption /> },
-  { path: paths.alarm.periodic.base, element: <PeriodicAlarm /> },
-  { path: paths.alarm.periodic.create, element: <CreatePeriodicAlarm /> },
-  { path: paths.alarm.periodic.update, element: <UpdatePeriodicAlarm /> },
+  { path: locations.dashboard, element: <Dashboard /> },
+  { path: locations.consumption, element: <Consumption /> },
+  { path: locations.alarm.periodic.base, element: <PeriodicAlarm /> },
+  { path: locations.alarm.periodic.create, element: <CreatePeriodicAlarm /> },
+  { path: locations.alarm.periodic.update, element: <UpdatePeriodicAlarm /> },
 ];

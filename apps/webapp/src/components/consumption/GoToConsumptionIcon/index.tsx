@@ -22,7 +22,7 @@ export default function GoToConsumptionIcon({
   shouldCompareMeasurements = true,
   openInNewTab = false,
 }: GoToConsumptionIconProps) {
-  const { clients, locations, groups } = useUserFilter();
+  const { client, location, group } = useUserFilter();
   const { t } = useTranslation('components');
 
   return (
@@ -33,11 +33,7 @@ export default function GoToConsumptionIcon({
             const url =
               VITE_WICKET_BASE_URL +
               'consumptionChart' +
-              getRibbonParams({
-                clients,
-                locations,
-                groups,
-              }) +
+              getRibbonParams({ client, location, group }) +
               `&uuid=${uuid}&incremental=${incremental}&type=${type}&shouldCompareMeasurement=${shouldCompareMeasurements}`;
 
             if (openInNewTab) {

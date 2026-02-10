@@ -78,7 +78,7 @@ const SideBar = () => {
     [setMinimize]
   );
 
-  const { clients } = useUserFilter();
+  const { client } = useUserFilter();
 
   useEffect(() => {
     handleResize();
@@ -128,11 +128,7 @@ const SideBar = () => {
         className={`${minimize.isMinimize ? 'opacity-0' : 'opacity-100'} flex h-[38px] my-[1rem] justify-center flex-row `}
       >
         <img
-          src={
-            clients && clients[0].logo
-              ? VITE_STATIC_ASSET_URL + clients[0].logo
-              : rhinoLogo
-          }
+          src={client?.logo ? VITE_STATIC_ASSET_URL + client.logo : rhinoLogo}
           alt="Rhino Logo"
           className="object-contain max-w-full h-auto"
         />

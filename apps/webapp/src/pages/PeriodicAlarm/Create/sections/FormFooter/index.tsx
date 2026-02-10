@@ -3,7 +3,7 @@ import { SelectMeasurement } from 'apps/webapp/src/components/measurement/Select
 import { MeasurementWithConfig } from 'apps/webapp/src/components/measurement/SelectMeasurement/types';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
-import { paths } from 'apps/webapp/src/routes/paths';
+import { locations } from 'apps/webapp/src/routes/locations';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { FaPlus } from 'react-icons/fa';
@@ -26,7 +26,7 @@ const FormFooter = ({
   const { setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
   const navigate = useNavigate();
-  const { clients, locations, groups } = useUserFilter();
+  const { client, location, group } = useUserFilter();
 
   return (
     <>
@@ -56,11 +56,11 @@ const FormFooter = ({
           icon={<RxCross2 />}
           onClick={() =>
             navigate(
-              paths.alarm.periodic.base +
+              locations.alarm.periodic.base +
                 getRibbonParams({
-                  clients,
-                  locations,
-                  groups,
+                  client: client,
+                  location: location,
+                  group: group,
                 }),
               { replace: false }
             )

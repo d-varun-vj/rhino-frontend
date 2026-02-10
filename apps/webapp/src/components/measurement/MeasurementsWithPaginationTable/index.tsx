@@ -36,7 +36,7 @@ const MeasurementsWithPaginationTable = ({
 }: MeasurementsWithPaginationTableProps) => {
   const { t } = useTranslation('components');
   const { user } = useUser();
-  const { clients, locations, groups } = useUserFilter();
+  const { client, location, group } = useUserFilter();
 
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(5);
@@ -71,9 +71,9 @@ const MeasurementsWithPaginationTable = ({
     page: page,
     size: pageSize,
     sort,
-    clientUuid: clients ? clients[0].uuid : null,
-    locationUuid: locations ? locations[0].uuid : null,
-    groupUuid: groups ? groups[0].uuid : null,
+    clientUuid: client ? client.uuid : null,
+    locationUuid: location ? location.uuid : null,
+    groupUuid: group ? group.uuid : null,
     measurementName: filters.name,
     serialNumber: filters.serialNumber,
     medium: filters.medium,

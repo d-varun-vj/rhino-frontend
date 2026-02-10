@@ -5,17 +5,17 @@ import { FilterData } from '../../../context/userFilter/user-filter-context';
 import CustomComboBox from '../../common/comboboxes/CustomComboBox';
 
 type ClientComboboxProps = {
-  onSelect: (type: FieldType, values: Client[] | null) => void;
+  onSelect: (type: FieldType, value: Client | null) => void;
   clients: Client[] | null;
   disableDropdown?: boolean;
-  selectedClients?: FilterData[] | null;
+  selectedClient?: FilterData | null;
 };
 
 const ClientCombobox = ({
   onSelect: onFilterSelect,
   clients,
   disableDropdown,
-  selectedClients,
+  selectedClient,
 }: ClientComboboxProps) => {
   const { t } = useTranslation('components');
 
@@ -36,16 +36,13 @@ const ClientCombobox = ({
           : []
       }
       placeholder={t('comboBox.select')}
-      selectedValue={selectedClients ? selectedClients[0] : null}
+      selectedValue={selectedClient ?? null}
       setSelectedValue={(uuid) => {
         if (onFilterSelect) {
           const selectedClient = uuid
             ? clients?.find((client) => client.uuid === uuid)
             : null;
-          onFilterSelect(
-            FieldType.CLIENT,
-            selectedClient ? [selectedClient] : null
-          );
+          onFilterSelect(FieldType.CLIENT, selectedClient ?? null);
         }
       }}
       disabled={disableDropdown || false}

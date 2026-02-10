@@ -20,22 +20,16 @@ const MainLayout = ({
   topRibbon,
 }: MainLayoutProps) => {
   const { user } = useUser();
-  const { setClients, locations, groups } = useUserFilter();
+  const { setClient, location, group } = useUserFilter();
 
   useEffect(() => {
     if (user && shouldSetInitialClient(user)) {
-      setClients(
-        user.clients
-          ? [
-              {
-                name: user.clients[0].name,
-                uuid: user.clients[0].uuid,
-              },
-            ]
-          : []
-      );
+      setClient({
+        name: user.clients ? user.clients[0].name : '',
+        uuid: user.clients ? user.clients[0].uuid : '',
+      });
     }
-  }, [user, locations, groups, setClients]);
+  }, [user, location, group, setClient]);
 
   useEffect(() => {
     document.title = title;
