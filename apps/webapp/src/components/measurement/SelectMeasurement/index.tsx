@@ -47,8 +47,8 @@ export const SelectMeasurement = ({
     (m) => m.measurement
   );
 
-  const { client } = useUserFilter();
-  const prevClientRef = useRef(client);
+  const { clients } = useUserFilter();
+  const prevClientRef = useRef(clients);
   const prevCustomFilterRef = useRef(customFilter);
   const hasInitialMeasurementsBeenSet = useRef(false);
   const isInitializingRef = useRef(false);
@@ -84,15 +84,15 @@ export const SelectMeasurement = ({
   }, [customFilter, onMeasurementsChange]);
 
   useEffect(() => {
-    const clientChanged = prevClientRef.current !== client;
+    const clientChanged = prevClientRef.current !== clients;
 
     if ((clientChanged || disabled) && !isInitializingRef.current) {
       handleClearAll();
       hasInitialMeasurementsBeenSet.current = false;
     }
 
-    prevClientRef.current = client;
-  }, [client, disabled, handleClearAll]);
+    prevClientRef.current = clients;
+  }, [clients, disabled, handleClearAll]);
 
   useEffect(() => {
     const measurementsChanged =
@@ -205,7 +205,7 @@ export const SelectMeasurement = ({
             }
           )}
           onClick={() => {
-            if (!client) {
+            if (!clients) {
               message.warn(t(baseRoute + 'selectClient'));
               return;
             }

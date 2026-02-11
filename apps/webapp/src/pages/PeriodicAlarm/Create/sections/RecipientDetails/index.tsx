@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { PeriodicAlarmSchema, i18nBase } from '../../validation';
 
 import MultiTextField from 'apps/webapp/src/components/common/input/MultiTextField';
-import { feature } from 'apps/webapp/src/featureFlag';
+import { useFeatureFlags } from 'apps/webapp/src/context/featureFlag';
 import { useTranslation } from 'react-i18next';
 import { tFormBase } from '../../config';
 import SectionWrapper from '../SectionWrapper';
@@ -17,6 +17,7 @@ const RecipientDetails = ({ isReadOnly = false }: RecipientDetailsProps) => {
     formState: { errors },
   } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
+  const { features } = useFeatureFlags();
 
   return (
     <SectionWrapper
@@ -51,7 +52,7 @@ const RecipientDetails = ({ isReadOnly = false }: RecipientDetailsProps) => {
           }}
         />
 
-        {feature.ENABLE_PERIODIC_ALARM_SMS_PANEL && (
+        {features?.ENABLE_PERIODIC_ALARM_SMS_PANEL && (
           <Controller
             name="phoneNumber"
             control={control}

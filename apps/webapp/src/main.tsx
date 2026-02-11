@@ -11,6 +11,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { theme } from './config/mantain-config.ts';
 import { FavoriteMeterProvider } from './context/favoriteMeter/favorite-meter-provider.tsx';
+import { FeatureFlagProvider } from './context/featureFlag/feature-flag-provider.tsx';
 import { UserProvider } from './context/user/user-provider.tsx';
 import { UserFilterProvider } from './context/userFilter/user-filter-provider.tsx';
 import MainRoute from './routes/index.tsx';
@@ -23,11 +24,13 @@ createRoot(document.getElementById('root')!).render(
       <UserProvider>
         <UserFilterProvider>
           <FavoriteMeterProvider>
-            <MantineProvider theme={theme}>
-              <ModalsProvider>
-                <MainRoute />
-              </ModalsProvider>
-            </MantineProvider>
+            <FeatureFlagProvider>
+              <MantineProvider theme={theme}>
+                <ModalsProvider>
+                  <MainRoute />
+                </ModalsProvider>
+              </MantineProvider>
+            </FeatureFlagProvider>
           </FavoriteMeterProvider>
         </UserFilterProvider>
       </UserProvider>

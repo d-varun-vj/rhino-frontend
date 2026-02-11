@@ -2,6 +2,7 @@ export const enum DataQueryKeys {
   CLIENTS = 'clients',
   DASHBOARD = 'dashboard',
   FAVORITE_METERS = 'favoriteMeters',
+  FEATURE_FLAGS = 'featureFlags',
   GROUPS = 'groups',
   LOCATIONS = 'locations',
   MEASUREMENTS = 'measurements',

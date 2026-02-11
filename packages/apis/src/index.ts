@@ -5,6 +5,7 @@ export * from './Dashboard';
 export * from './data-query-keys';
 export * from './endpoints';
 export * from './FavoriteMeter';
+export * from './FeatureFlags';
 export * from './httpClient';
 export * from './Locations';
 export * from './Measurement';

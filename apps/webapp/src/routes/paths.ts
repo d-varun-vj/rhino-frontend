@@ -1,4 +1,4 @@
-export const locations = {
+export const paths = {
   // Common
   base: '/v1',
   notAllowed: '/not-allowed',

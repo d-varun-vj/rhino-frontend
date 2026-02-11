@@ -1,4 +1,5 @@
 import {
+  Flag,
   getAlarmViewPermissions,
   getAnalysisViewPermissions,
   getConfigurationViewPermissions,
@@ -38,6 +39,7 @@ export type SubItemType = {
   viewPermissions?: UserViewPermission[]; // This is used to check if the user has permission to access this item.
   allowedUserTypes?: UserType[]; // This is used to check if the user has permission to access this item.
   renderCondition?: () => boolean; // This is used to check extra conditions to user to access this item
+  featureFlag?: keyof typeof Flag;
 };
 
 export type MenuItemType = {
@@ -201,9 +203,7 @@ export const MenuItems: MenuItemType[] = [
         route: '/alarm/periodic',
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
         viewPermissions: [UserViewPermission.PERIODIC_ALARM_ROLE],
-        renderCondition: () => {
-          return true; // set false to hide
-        },
+        featureFlag: 'ENABLE_PERIODIC_ALARM',
       },
     ],
     viewPermissionType: ViewPermissionsType.ViewRoleBased,

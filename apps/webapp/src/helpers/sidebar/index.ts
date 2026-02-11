@@ -1,9 +1,10 @@
-import { User, UserType, ViewPermissionsType } from '@rhino/apis';
+import { Feature, User, UserType, ViewPermissionsType } from '@rhino/apis';
 import {
   MenuItemType,
   SubItemType,
 } from '../../components/layout/Sidebar/config';
 import { FilterData } from '../../context/userFilter/user-filter-context';
+import { getFeature } from '../featureFlag';
 import { getRibbonParams } from '../topribbon';
 
 const hasUserTypeAccess = ({
@@ -37,17 +38,27 @@ const hasRoleAccess = ({
 export const canViewItem = ({
   subItem,
   user,
+  features,
 }: {
   subItem: SubItemType;
   user: User;
+  features: Feature | null;
 }) => {
-  let extraConditions = true;
+  let renderCondition = true;
   if (subItem.renderCondition) {
-    extraConditions = subItem.renderCondition();
+    renderCondition = subItem.renderCondition();
+  }
+
+  let enabledFeatureFlag;
+  if (subItem.featureFlag) {
+    enabledFeatureFlag = getFeature(features, subItem.featureFlag);
+  } else {
+    enabledFeatureFlag = true;
   }
 
   return (
-    extraConditions &&
+    enabledFeatureFlag &&
+    renderCondition &&
     (user?.userType === UserType.SuperAdmin ||
       hasUserTypeAccess({ subItem, user }) ||
       hasRoleAccess({ subItem, user }))
@@ -56,20 +67,26 @@ export const canViewItem = ({
 
 export const getToNavLink = ({
   subItem,
-  client,
-  location,
-  group,
+  clients,
+  locations,
+  groups,
 }: {
   subItem: SubItemType;
-  client: FilterData | null;
-  location: FilterData | null;
-  group: FilterData | null;
+  clients: FilterData[] | null;
+  locations: FilterData[] | null;
+  groups: FilterData[] | null;
 }) => {
+  const ribbonParams = getRibbonParams({ clients, locations, groups });
+
+  if (ribbonParams === '?location=null&group=null&client=null') {
+    const currentParams =
+      window.location.search || '?location=null&group=null&client=null';
+    return (subItem.wicketLink || subItem.route || '#') + currentParams;
+  }
+
   return (
-    (subItem.wicketLink &&
-      subItem.wicketLink + getRibbonParams({ client, location, group })) ||
-    (subItem.route &&
-      subItem.route + getRibbonParams({ client, location, group })) ||
+    (subItem.wicketLink && subItem.wicketLink + ribbonParams) ||
+    (subItem.route && subItem.route + ribbonParams) ||
     '#'
   );
 };

@@ -9,6 +9,7 @@ const API_URLS = {
 
   // Common
   getMeteringPointTypes: () => 'metering-point-types',
+  getFeatureFlag: () => 'feature-flags',
 
   // Dashboard
   getDashboardTableData: () => `dashboard`,

@@ -33,7 +33,7 @@ const FavoriteMeter = ({
   const { t: tLayout } = useTranslation('layout');
   const { user } = useUser();
   const { favoriteMeter, setFavoriteMeter } = useFavoriteMeter();
-  const { client } = useUserFilter();
+  const { clients } = useUserFilter();
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
@@ -142,7 +142,7 @@ const FavoriteMeter = ({
   const { data: tableData, isLoading } = useGetAllFavoriteMeters({
     page: page,
     size: pageSize,
-    clientUuid: selectedClientUuid || client?.uuid || '',
+    clientUuid: selectedClientUuid || (clients && clients[0]?.uuid) || '',
     filters: filters,
     sort: sort,
     userId: user ? user?.uuid : null,
