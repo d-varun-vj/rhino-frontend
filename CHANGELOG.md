@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.22.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.21.0...webapp-v1.22.0) (2026-02-11)
+
+
+### Features
+
+* Allow users to select multiple locations and group from the header selector [PRD-3481] ([#218](https://github.com/Rhino-Energy/rhino-frontend/issues/218)) ([addc617](https://github.com/Rhino-Energy/rhino-frontend/commit/addc617fa38ae2bf07c9be7ef52672bf4d137bb9))
+* Allow users to select multiple locations and group from the header selector [PRD-3481] ([#223](https://github.com/Rhino-Energy/rhino-frontend/issues/223)) ([6a291a4](https://github.com/Rhino-Energy/rhino-frontend/commit/6a291a49114373cd52b7ad71a84fe6ed5b2b6a9d))
+
 ## [1.21.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.20.2...webapp-v1.21.0) (2026-01-29)
 
 
