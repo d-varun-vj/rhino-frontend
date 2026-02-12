@@ -22,9 +22,9 @@ export interface MeasurementType {
   displayName: string;
   aggregate: boolean;
   type: string;
-  levelType: NameWithTranslationDto | null;
-  loadType: NameWithTranslationDto | null;
-  endUseArea: NameWithTranslationDto | null;
+  levelTypes: NameWithTranslationDto[] | null;
+  loadTypes: NameWithTranslationDto[] | null;
+  endUseAreas: NameWithTranslationDto[] | null;
   tenants: string;
   locationUuid: string | null;
   locationName: string | null;

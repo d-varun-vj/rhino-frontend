@@ -270,7 +270,11 @@ const MeasurementsWithPaginationTable = ({
       },
       {
         accessorFn: (row) =>
-          row.levelType?.[translationKey as keyof NameWithTranslationDto],
+          row.levelTypes
+            ?.map((lt) => lt[translationKey as keyof NameWithTranslationDto])
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b))
+            .join(', '),
         header: t(translationBaseRoute + 'header.levelType'),
         cell: (info) => info.getValue(),
         meta: {
@@ -286,7 +290,11 @@ const MeasurementsWithPaginationTable = ({
       },
       {
         accessorFn: (row) =>
-          row.loadType?.[translationKey as keyof NameWithTranslationDto],
+          row.loadTypes
+            ?.map((lt) => lt[translationKey as keyof NameWithTranslationDto])
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b))
+            .join(', '),
         header: t(translationBaseRoute + 'header.loadType'),
         cell: (info) => info.getValue(),
         meta: {
@@ -302,7 +310,11 @@ const MeasurementsWithPaginationTable = ({
       },
       {
         accessorFn: (row) =>
-          row.endUseArea?.[translationKey as keyof NameWithTranslationDto],
+          row.endUseAreas
+            ?.map((lt) => lt[translationKey as keyof NameWithTranslationDto])
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b))
+            .join(', '),
         header: t(translationBaseRoute + 'header.endUseArea'),
         cell: (info) => info.getValue(),
         meta: {

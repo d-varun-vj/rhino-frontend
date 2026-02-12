@@ -18,9 +18,9 @@ export type DashboardType = {
   tenant: string | null;
   incremental: boolean | null;
   manual: boolean | null;
-  levelType: NameWithTranslationDto | null;
-  loadType: NameWithTranslationDto | null;
-  endUseArea: NameWithTranslationDto | null;
+  levelTypes: NameWithTranslationDto[] | null;
+  loadTypes: NameWithTranslationDto[] | null;
+  endUseAreas: NameWithTranslationDto[] | null;
   percentageColor?: string | null;
   type: string | null;
   action?: string;

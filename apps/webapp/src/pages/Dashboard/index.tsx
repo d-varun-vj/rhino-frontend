@@ -1,6 +1,7 @@
 import {
   DashboardType,
   Filter,
+  NameWithTranslationDto,
   useGetMetaData,
   useGetTableData,
   VITE_WICKET_BASE_URL,
@@ -66,6 +67,9 @@ const Dashboard = () => {
   const { user } = useUser();
   const { t } = useTranslation('dashboard');
   const translationBaseRoute = 'table.';
+
+  const translationKey =
+    user?.language === 'en' ? 'translationEn' : 'translationPl';
 
   const { data: DashboardDataRes, isLoading: isLoadingTableData } =
     useGetTableData({
@@ -317,14 +321,18 @@ const Dashboard = () => {
       },
       {
         id: 'level-type',
-        accessorFn: (row) => row.levelType?.translationEn,
+        accessorFn: (row) =>
+          row.levelTypes
+            ?.map((lt) => lt[translationKey as keyof NameWithTranslationDto])
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b))
+            .join(', '),
         header: t(translationBaseRoute + 'header.levelType'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'levelType',
-          sortKey: 'levelType',
-          sortDirection: sort.direction,
+          sortKey: null,
           selectionOptions: Options?.levelTypes.map((type) => ({
             label: type.translationEn,
             value: type.translationEn,
@@ -333,14 +341,18 @@ const Dashboard = () => {
       },
       {
         id: 'load-type',
-        accessorFn: (row) => row.loadType?.translationEn,
+        accessorFn: (row) =>
+          row.loadTypes
+            ?.map((lt) => lt[translationKey as keyof NameWithTranslationDto])
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b))
+            .join(', '),
         header: t(translationBaseRoute + 'header.loadType'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'loadType',
-          sortKey: 'loadType',
-          sortDirection: sort.direction,
+          sortKey: null,
           selectionOptions: Options?.loadTypes.map((type) => ({
             label: type.translationEn,
             value: type.translationEn,
@@ -349,14 +361,18 @@ const Dashboard = () => {
       },
       {
         id: 'end-use-area',
-        accessorFn: (row) => row.endUseArea?.translationEn,
+        accessorFn: (row) =>
+          row.endUseAreas
+            ?.map((lt) => lt[translationKey as keyof NameWithTranslationDto])
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b))
+            .join(', '),
         header: t(translationBaseRoute + 'header.endUseArea'),
         cell: (info) => info.getValue(),
         meta: {
           filterVariant: FilterVariant.SELECT,
           filterKey: 'endUseAreaType',
-          sortKey: 'endUseArea',
-          sortDirection: sort.direction,
+          sortKey: null,
           selectionOptions: Options?.endUseAreaTypes?.map((type) => ({
             label: type.translationEn,
             value: type.translationEn,
