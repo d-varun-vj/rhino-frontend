@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.22.0...webapp-v1.23.0) (2026-02-12)
+
+
+### Features
+
+* Allow a single measurement to have multiple tags. [PRD-3465] ([#208](https://github.com/Rhino-Energy/rhino-frontend/issues/208)) ([10a0658](https://github.com/Rhino-Energy/rhino-frontend/commit/10a06582207141775293720ad0645145170d69ed))
+
 ## [1.22.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.21.0...webapp-v1.22.0) (2026-02-11)
 
 
