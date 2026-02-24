@@ -9,20 +9,31 @@ import { useUser } from 'apps/webapp/src/context/user';
 import message from '../../../notifier';
 import Language from './Language';
 
+const TERMS_AND_CONDITIONS_URL = {
+  en: 'terms-of-use/Rhino_Terms_of_Use_EN.pdf',
+  pl: 'terms-of-use/Rhino_Terms_of_Use_PL.pdf',
+};
+
 type Item = {
   label: string;
-  action: ({ url }: { url?: string }) => void;
+  action: ({ url }: { url?: string; language?: string }) => void;
+};
+
+const resolveTermsOfUserUrl = (language: string) => {
+  const termsPath =
+    language === 'en'
+      ? TERMS_AND_CONDITIONS_URL['en']
+      : TERMS_AND_CONDITIONS_URL['pl'];
+  return import.meta.env.VITE_STATIC_ASSET_URL
+    ? (import.meta.env.VITE_STATIC_ASSET_URL as string) + termsPath
+    : '#';
 };
 
 const items: Item[] = [
   {
     label: 'topRibbon.user.terms',
-    action: () => {
-      window.open(
-        import.meta.env.VITE_TERMS_OF_USER_URL
-          ? (import.meta.env.VITE_TERMS_OF_USER_URL as string)
-          : '#'
-      );
+    action: ({ language }) => {
+      window.open(resolveTermsOfUserUrl(language || 'en'));
     },
   },
   {
@@ -102,7 +113,9 @@ const UserDropDown = () => {
               <div className="m-0 h-0 overflow-hidden border-t-[#f3f3f3] border-t-[1px]"></div>
               <button
                 type="button"
-                onClick={() => item.action({ url: pathname })}
+                onClick={() =>
+                  item.action({ url: pathname, language: language })
+                }
                 className="w-full text-start"
               >
                 <div className="cursor-pointer w-full py-[0.75rem] px-[1.5rem] bg-transparent text-[#212529] whitespace-nowrap font-medium block hover:bg-gray-50 hover:text-rhino-indigo-blue">
