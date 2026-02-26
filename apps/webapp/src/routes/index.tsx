@@ -1,10 +1,9 @@
 import { VITE_API_BASE_URL, initHttpClient } from '@rhino/apis';
 import { useEffect, useState } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { Loader } from '@mantine/core';
 import message from '../components/notifier';
-import { paths } from './paths';
 import { ROUTES } from './routes';
 
 const MainRoute = () => {
@@ -29,13 +28,11 @@ const MainRoute = () => {
   }
 
   return (
-    <Router basename={paths.base}>
-      <Routes>
-        {ROUTES.map(({ path, element }) => (
-          <Route key={path} path={path} element={element} />
-        ))}
-      </Routes>
-    </Router>
+    <Routes>
+      {ROUTES.map(({ path, element }) => (
+        <Route key={path} path={path} element={element} />
+      ))}
+    </Routes>
   );
 };
 

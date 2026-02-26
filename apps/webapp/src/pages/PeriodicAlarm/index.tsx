@@ -91,24 +91,23 @@ const PeriodicAlarm = () => {
     (routeLocation.state as never) || {};
 
   useEffect(() => {
-    if (isCreated) {
-      message.success(t('create.success'));
-    }
-    if (isUpdated) {
-      message.success(t('update.success'));
-    }
+    if (isCreated) message.success(t('create.success'));
+    if (isUpdated) message.success(t('update.success'));
     if (isError) {
       message.error(
         t(
           errMessage === API_RESPONSES.forbidden
             ? 'toast.forbidden'
             : 'toast.somethingWentWrong',
-          {
-            ns: 'common',
-          }
+          { ns: 'common' }
         )
       );
     }
+
+    if (isCreated || isUpdated || isError) {
+      navigate(routeLocation.pathname, { replace: true });
+    }
+
     window.scrollTo({ top: 0 });
   }, [isCreated, isUpdated, isError, errMessage, t]);
 

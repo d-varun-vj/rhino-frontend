@@ -109,13 +109,6 @@ const UpdatePeriodicAlarm = () => {
   useEffect(() => {
     if (!alarmDetails?.data) return;
 
-    setClients([
-      {
-        name: alarmDetails.data.client.name,
-        uuid: alarmDetails.data.client.uuid,
-      },
-    ]);
-
     searchParams.set('client', alarmDetails.data.client.uuid);
     setSearchParams(searchParams);
 
