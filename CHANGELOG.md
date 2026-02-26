@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.23.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.23.0...webapp-v1.23.1) (2026-02-26)
+
+
+### Bug Fixes
+
+* Periodic Alarm – Measurements Not Selectable After Page Refresh [PRD-3899] ([#226](https://github.com/Rhino-Energy/rhino-frontend/issues/226)) ([#230](https://github.com/Rhino-Energy/rhino-frontend/issues/230)) ([d7030b5](https://github.com/Rhino-Energy/rhino-frontend/commit/d7030b51c39fbc286d18bb4a3bd5f5388fcc764d))
+* Update 'Terms and Conditions' url for the User drop down [PRD-3902] ([#225](https://github.com/Rhino-Energy/rhino-frontend/issues/225)) ([#228](https://github.com/Rhino-Energy/rhino-frontend/issues/228)) ([c1ab390](https://github.com/Rhino-Energy/rhino-frontend/commit/c1ab3908005c7943f126fe741754e95f8a8f19f6))
+
 ## [1.23.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.22.0...webapp-v1.23.0) (2026-02-12)
 
 
