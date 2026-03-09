@@ -8,9 +8,10 @@ import { RiDeleteBin6Fill } from 'react-icons/ri';
 import IconButton from '../../common/buttons/IconButton';
 import Table from '../../common/Table';
 import ActionCell from '../../common/Table/ActionCell';
+import CustomSortCell from '../../common/Table/CustomSortCell';
 import GoToConsumptionIcon from '../../consumption/GoToConsumptionIcon';
 import { getTranslationOptions } from '../helper';
-import { MeasurementWithConfig } from '../SelectMeasurement/types';
+import { MeasurementWithConfig, SortArrow } from '../SelectMeasurement/types';
 import MeasurementInfoModal from './MeasurementInfoModal';
 import { MeasurementInfoActionProps, MeasurementInfoStateProps } from './types';
 
@@ -19,11 +20,14 @@ interface MeasurementsWithActionsTableProps {
   onRemoveMeasurement: (measurement: MeasurementWithConfig) => void;
   onClearAll?: () => void;
   isReadOnly?: boolean;
+  enableCustomSort?: boolean;
+  onCustomSortMove?: (rowIndex: number, direction: SortArrow) => void;
 }
 
 const initialMeasurementInfoState = {
   openInfo: false,
   selectedMeasurementUuid: '',
+  customSortOrders: [],
 };
 
 const measurementInfoReducer = (
@@ -47,12 +51,21 @@ const MeasurementsWithActionsTable = ({
   onRemoveMeasurement,
   onClearAll,
   isReadOnly = false,
+  enableCustomSort = false,
+  onCustomSortMove,
 }: MeasurementsWithActionsTableProps) => {
   const { t } = useTranslation('components');
   const translationBaseRoute = 'measurement.measurementsWithActionsTable.';
   const [measurementInfoState, dispatch] = useReducer(
     measurementInfoReducer,
     initialMeasurementInfoState
+  );
+
+  const handleCustomSortMove = React.useCallback(
+    (rowIndex: number, direction: SortArrow) => {
+      onCustomSortMove?.(rowIndex, direction);
+    },
+    [onCustomSortMove]
   );
 
   const ActionCellFn = useCallback(
@@ -143,6 +156,25 @@ const MeasurementsWithActionsTable = ({
         header: t(translationBaseRoute + 'header.tenants'),
         cell: (info) => info.getValue(),
       },
+      ...(enableCustomSort
+        ? [
+            {
+              id: 'sort-arrows',
+              accessorFn: (row: MeasurementWithConfig) => row.measurement.uuid,
+              header: () => null,
+              cell: ({ row }: { row: Row<MeasurementWithConfig> }) => (
+                <CustomSortCell
+                  rowIndex={row.index}
+                  totalRows={selectedMeasurements.length}
+                  onMove={(rowId, direction) =>
+                    handleCustomSortMove(rowId, direction)
+                  }
+                  isDisable={isReadOnly}
+                />
+              ),
+            },
+          ]
+        : []),
       {
         id: CONSTANTS.action,
         accessorFn: () => {},
@@ -150,7 +182,14 @@ const MeasurementsWithActionsTable = ({
         cell: ({ row }) => ActionCellFn(row),
       },
     ],
-    [t, ActionCellFn]
+    [
+      t,
+      ActionCellFn,
+      handleCustomSortMove,
+      enableCustomSort,
+      selectedMeasurements.length,
+      isReadOnly,
+    ]
   );
 
   return (

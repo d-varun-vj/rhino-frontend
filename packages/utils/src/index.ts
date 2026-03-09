@@ -1,3 +1,4 @@
+export * from './common';
 export * from './date';
 export * from './get-cookie';
 export * from './hooks';

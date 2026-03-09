@@ -111,3 +111,18 @@ export const getEnumValues = <T extends Record<string, string>>(
 ): T[keyof T][] => {
   return Object.values(enumObject) as T[keyof T][];
 };
+
+export enum MeasurementSortOrder {
+  BY_CONSUMPTION = 'BY_CONSUMPTION',
+  BY_CONSUMPTION_CHANGE = 'BY_CONSUMPTION_CHANGE',
+  BY_MEASUREMENT_NAME = 'BY_MEASUREMENT_NAME',
+  BY_TENANT_NAME = 'BY_TENANT_NAME',
+  BY_LOCATION = 'BY_LOCATION',
+  CUSTOM = 'CUSTOM',
+  DEFAULT = 'DEFAULT',
+}
+
+export enum MeasurementSortDirection {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}

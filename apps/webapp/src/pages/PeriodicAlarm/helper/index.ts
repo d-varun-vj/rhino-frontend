@@ -7,6 +7,7 @@ import { PeriodicAlarmSchema } from '../Create/validation';
 import {
   DataRange,
   ExecutionStatus,
+  MeasurementSortOrder,
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
   PeriodicAlarmStatus,
@@ -144,6 +145,8 @@ export const buildPeriodicAlarmReqForm = (
     }),
     compareWithPeriod: values.compareWithPeriod,
     dataRange: values.dataRange,
+    sortOrder: values.sortOrder || MeasurementSortOrder.DEFAULT,
+    sortDirection: values.sortDirection,
   };
 };
 

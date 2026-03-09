@@ -14,3 +14,5 @@ export type MeasurementWithConfig = {
 export type CustomFilter = {
   mediumMappId?: number | null;
 };
+
+export type SortArrow = 'up' | 'down';

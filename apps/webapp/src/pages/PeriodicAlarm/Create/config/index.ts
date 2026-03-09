@@ -2,6 +2,8 @@ import { Languages } from '@rhino/apis';
 import {
   ComparisonMethod,
   DataRange,
+  MeasurementSortDirection,
+  MeasurementSortOrder,
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
   PeriodicAlarmThresholdType,
@@ -357,3 +359,43 @@ export const VALID_GENERATION_DAY_CONFIG: Record<
     placeholder: tConfigBase + 'generationDay.placeholder.yearly',
   },
 };
+
+export const SORT_BY_OPTIONS: {
+  label: string;
+  value: MeasurementSortOrder;
+}[] = [
+  {
+    label: tConfigBase + 'sortOrder.consumption',
+    value: MeasurementSortOrder.BY_CONSUMPTION,
+  },
+  {
+    label: tConfigBase + 'sortOrder.consumptionChange',
+    value: MeasurementSortOrder.BY_CONSUMPTION_CHANGE,
+  },
+  {
+    label: tConfigBase + 'sortOrder.measurementName',
+    value: MeasurementSortOrder.BY_MEASUREMENT_NAME,
+  },
+  {
+    label: tConfigBase + 'sortOrder.location',
+    value: MeasurementSortOrder.BY_LOCATION,
+  },
+  {
+    label: tConfigBase + 'sortOrder.custom',
+    value: MeasurementSortOrder.CUSTOM,
+  },
+];
+
+export const SORT_DIRECTION_OPTIONS: {
+  label: string;
+  value: MeasurementSortDirection;
+}[] = [
+  {
+    label: tConfigBase + 'sortDirection.asc',
+    value: MeasurementSortDirection.ASC,
+  },
+  {
+    label: tConfigBase + 'sortDirection.desc',
+    value: MeasurementSortDirection.DESC,
+  },
+];

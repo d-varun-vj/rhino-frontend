@@ -16,6 +16,8 @@ import {
 } from '../Create/validation';
 import {
   DataRange,
+  MeasurementSortDirection,
+  MeasurementSortOrder,
   PeriodicAlarmCompareWith,
   PeriodicAlarmThresholdType,
 } from '../types';
@@ -43,6 +45,7 @@ import AdvancedSettings from '../Create/sections/AdvancedSettings';
 import AlarmCriteria from '../Create/sections/AlarmCriteria';
 import BasicInformation from '../Create/sections/BasicInformation';
 import FormFooter from '../Create/sections/FormFooter';
+import MeasurementSorting from '../Create/sections/MeasurementSorting';
 import MomentOfExecution from '../Create/sections/MomentOfExecution';
 import RecipientDetails from '../Create/sections/RecipientDetails';
 import { onError } from '../helper';
@@ -124,6 +127,9 @@ const UpdatePeriodicAlarm = () => {
         dataRange:
           (alarmDetails.data.dataRange as DataRange) || DataRange.YESTERDAY,
         compareWithPeriod: alarmDetails.data.compareWithPeriod,
+        sortOrder: alarmDetails.data.sortOrder,
+        sortDirection:
+          alarmDetails.data.sortDirection || MeasurementSortDirection.ASC,
         timezone: alarmDetails.data.timezone || 'Europe/Warsaw',
         language: alarmDetails.data.configuration.language || Languages.PL,
         isActive: alarmDetails.data.active,
@@ -253,6 +259,8 @@ const UpdatePeriodicAlarm = () => {
         }),
         compareWithPeriod: values.compareWithPeriod,
         dataRange: values.dataRange,
+        sortOrder: values.sortOrder || MeasurementSortOrder.DEFAULT,
+        sortDirection: values.sortDirection,
       };
 
       if (!alarmDetails?.data.hasCreatorAccess) {
@@ -352,6 +360,7 @@ const UpdatePeriodicAlarm = () => {
                         resetThresholdValues={resetThresholdValues}
                       />
                       <MomentOfExecution isReadOnly={isReadOnly} />
+                      <MeasurementSorting isReadOnly={isReadOnly} />
                       <RecipientDetails isReadOnly={isReadOnly} />
                       <AdvancedSettings isReadOnly={isReadOnly} />
                     </div>

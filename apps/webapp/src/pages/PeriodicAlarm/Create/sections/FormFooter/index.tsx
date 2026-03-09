@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { FaPlus } from 'react-icons/fa';
 import { RxCross2 } from 'react-icons/rx';
 import { useNavigate } from 'react-router-dom';
+import { MeasurementSortOrder } from '../../../types';
 import { tFormBase } from '../../config';
 import { PeriodicAlarmSchema } from '../../validation';
 
@@ -23,10 +24,12 @@ const FormFooter = ({
   initialMeasurements,
   isReadOnly = false,
 }: FormFooterProps) => {
-  const { setValue } = useFormContext<PeriodicAlarmSchema>();
+  const { watch, setValue } = useFormContext<PeriodicAlarmSchema>();
   const { t } = useTranslation('periodicAlarm');
   const navigate = useNavigate();
   const { clients, locations, groups } = useUserFilter();
+  const selectedSortOder = watch('sortOrder');
+  const enableCustomSort = selectedSortOder === MeasurementSortOrder.CUSTOM;
 
   return (
     <>
@@ -46,6 +49,7 @@ const FormFooter = ({
           allowSameMeasurementMultipleTimes={false}
           initialMeasurements={initialMeasurements}
           isReadOnly={isReadOnly}
+          enableCustomSort={enableCustomSort}
         />
       </div>
 

@@ -97,6 +97,10 @@ export const buildPeriodicAlarmSchema = (
       readOnly: z.boolean(),
       sharedLocations: z.array(z.string()),
       sharedTenants: z.array(z.string()),
+      sortOrder: z.string().optional(),
+      sortDirection: z
+        .string(t(i18nBase + 'sortDirection'))
+        .min(1, t(i18nBase + 'sortDirection')),
       recipientEmails: z.array(z.email(t(i18nBase + 'recipients'))).optional(),
       phoneNumber: z
         .array(z.string().regex(/^\+\d{11,15}$/, t(i18nBase + 'phoneNumber')))

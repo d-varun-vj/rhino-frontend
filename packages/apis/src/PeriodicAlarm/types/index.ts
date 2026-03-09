@@ -60,6 +60,8 @@ export type PeriodicAlarmReq = {
   sharedTenantUuids?: string[];
   compareWithPeriod: string;
   dataRange: string;
+  sortOrder: string;
+  sortDirection: string;
 };
 
 export type PeriodicAlarmExecutionParam = {
@@ -130,4 +132,6 @@ export interface PeriodicAlarmDetail {
   hasCreatorAccess: boolean;
   timezone: string;
   auditInfo: AuditInfo;
+  sortOrder: string;
+  sortDirection: string;
 }

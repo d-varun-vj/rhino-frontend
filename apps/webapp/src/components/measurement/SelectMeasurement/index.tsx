@@ -1,6 +1,7 @@
 import { Accordion, Button } from '@mantine/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { swapArrayElements } from '@rhino/utils/common';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +10,7 @@ import CustomModal from '../../common/modals/CustomModal';
 import message from '../../notifier';
 import MeasurementsWithActionsTable from '../MeasurementsWithActionsTable';
 import SelectMeasurementModal from '../SelectMeasurementModal';
-import { CustomFilter, MeasurementWithConfig } from './types';
+import { CustomFilter, MeasurementWithConfig, SortArrow } from './types';
 
 interface SelectMeasurementProps {
   onMeasurementsChange?: (measurements: MeasurementWithConfig[]) => void;
@@ -23,6 +24,7 @@ interface SelectMeasurementProps {
   customFilter?: CustomFilter;
   initialMeasurements?: MeasurementWithConfig[];
   isReadOnly?: boolean;
+  enableCustomSort?: boolean;
 }
 
 export const SelectMeasurement = ({
@@ -37,6 +39,7 @@ export const SelectMeasurement = ({
   customFilter,
   initialMeasurements = [],
   isReadOnly = false,
+  enableCustomSort = false,
 }: SelectMeasurementProps) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedMeasurements, setSelectedMeasurements] = useState<
@@ -155,6 +158,26 @@ export const SelectMeasurement = ({
     onMeasurementsChange?.(updatedMeasurements);
   };
 
+  const handleCustomSortMove = useCallback(
+    (rowIndex: number, direction: SortArrow) => {
+      const swapIndex = direction === 'up' ? rowIndex - 1 : rowIndex + 1;
+      const isInvalidMove =
+        swapIndex < 0 || swapIndex >= selectedMeasurements.length;
+
+      if (isInvalidMove) {
+        return;
+      }
+
+      const newMeasurements = [...selectedMeasurements];
+
+      swapArrayElements(newMeasurements, rowIndex, swapIndex);
+
+      setSelectedMeasurements(newMeasurements);
+      onMeasurementsChange?.(newMeasurements);
+    },
+    [selectedMeasurements, onMeasurementsChange]
+  );
+
   const getButtonText = () => {
     if (selectedMeasurements.length === 0) {
       return t(baseRoute + 'add');
@@ -191,6 +214,8 @@ export const SelectMeasurement = ({
                 selectedMeasurements.length > 1 ? handleClearAll : undefined
               }
               isReadOnly={isReadOnly}
+              enableCustomSort={enableCustomSort}
+              onCustomSortMove={handleCustomSortMove}
             />
           </Accordion.Panel>
         </Accordion.Item>

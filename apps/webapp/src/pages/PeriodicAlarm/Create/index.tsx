@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { buildPeriodicAlarmReqForm, onError } from '../helper';
 import {
   DataRange,
+  MeasurementSortDirection,
   PeriodicAlarmCompareWith,
   PeriodicAlarmFrequency,
 } from '../types';
@@ -30,6 +31,7 @@ import AdvancedSettings from './sections/AdvancedSettings';
 import AlarmCriteria from './sections/AlarmCriteria';
 import BasicInformation from './sections/BasicInformation';
 import FormFooter from './sections/FormFooter';
+import MeasurementSorting from './sections/MeasurementSorting';
 import MomentOfExecution from './sections/MomentOfExecution';
 import RecipientDetails from './sections/RecipientDetails';
 import { buildPeriodicAlarmSchema, PeriodicAlarmSchema } from './validation';
@@ -59,6 +61,7 @@ const CreatePeriodicAlarm = () => {
       name: t('create.defaultName', {
         date: getCurrentDateAsString('DD-MM-YYYY HH:mm'),
       }),
+      sortDirection: MeasurementSortDirection.ASC,
       generationTime: '07:00',
       delayInDays: 0,
       sharedLocations: [],
@@ -152,6 +155,7 @@ const CreatePeriodicAlarm = () => {
                       resetThresholdValues={resetThresholdValues}
                     />
                     <MomentOfExecution />
+                    <MeasurementSorting />
                     <RecipientDetails />
                     <AdvancedSettings />
                   </div>
