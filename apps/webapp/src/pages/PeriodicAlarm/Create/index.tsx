@@ -5,9 +5,12 @@ import {
   UserViewPermission,
   ViewPermissionsType,
 } from '@rhino/apis';
+import { useClearOnNavigation, useLocalStorage } from '@rhino/utils';
+import { MeasurementWithConfig } from 'apps/webapp/src/components/measurement/SelectMeasurement/types';
 import message from 'apps/webapp/src/components/notifier';
 import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
 import { GUIDE_LINKS } from 'apps/webapp/src/constant/guide-links';
+import { LOCAL_STORAGE_KEYS } from 'apps/webapp/src/constant/local-storage-keys';
 import { useUser } from 'apps/webapp/src/context/user';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getCurrentDateAsString } from 'apps/webapp/src/helpers/date';
@@ -36,6 +39,9 @@ import MomentOfExecution from './sections/MomentOfExecution';
 import RecipientDetails from './sections/RecipientDetails';
 import { buildPeriodicAlarmSchema, PeriodicAlarmSchema } from './validation';
 
+const MEASUREMENT_STORAGE_KEY =
+  LOCAL_STORAGE_KEYS.PERIODIC_ALARM.CREATE_MEASUREMENTS;
+
 const CreatePeriodicAlarm = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('periodicAlarm');
@@ -43,6 +49,20 @@ const CreatePeriodicAlarm = () => {
   const { user } = useUser();
 
   const { mutate: createAlarm, isPending } = usePostPeriodicAlarm();
+  const { clear } = useLocalStorage<MeasurementWithConfig[]>(
+    MEASUREMENT_STORAGE_KEY
+  );
+
+  useClearOnNavigation({
+    onNavigate: (destinationPath) => {
+      const isStillCreatePage = destinationPath.includes(
+        paths.alarm.periodic.create
+      );
+      if (!isStillCreatePage) {
+        clear();
+      }
+    },
+  });
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -100,22 +120,16 @@ const CreatePeriodicAlarm = () => {
   const onSubmit = (values: PeriodicAlarmSchema) => {
     createAlarm(buildPeriodicAlarmReqForm(values), {
       onSuccess: () => {
+        clear();
         navigate(
           paths.alarm.periodic.base +
-            getRibbonParams({
-              clients,
-              locations,
-              groups,
-            }),
-          {
-            state: { isCreated: true },
-          }
+            getRibbonParams({ clients, locations, groups }),
+          { state: { isCreated: true } }
         );
       },
       onError: (error: Error | { title: string; detail: string }) => {
         const errMessage =
           ('detail' in error ? error.detail : '') || t('create.error');
-
         message.error(
           errMessage ?? t('toast.somethingWentWrong', { ns: 'common' })
         );
@@ -138,7 +152,11 @@ const CreatePeriodicAlarm = () => {
       >
         <FormProvider {...methods}>
           <form
-            onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}
+            onSubmit={(e) => {
+              void handleSubmit(onSubmit, (errors) => {
+                onError(errors);
+              })(e);
+            }}
             data-testid="periodic-alarm-create-form"
           >
             <div className="flex flex-col gap-20 mb-20">
@@ -162,7 +180,7 @@ const CreatePeriodicAlarm = () => {
                 </div>
               </div>
             </div>
-            <FormFooter isPending={isPending} />
+            <FormFooter isPending={isPending} preferLocalStorage />
           </form>
         </FormProvider>
       </MainLayout>

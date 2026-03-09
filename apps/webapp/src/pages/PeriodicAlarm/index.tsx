@@ -7,7 +7,13 @@ import {
   useDeletePeriodicAlarm,
   useGetPeriodicAlarmList,
 } from '@rhino/apis';
-import { Sort, convertToLocalTime, formatListSummary } from '@rhino/utils';
+import {
+  Sort,
+  convertToLocalTime,
+  formatListSummary,
+  useClearOnNavigation,
+  useLocalStorage,
+} from '@rhino/utils';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { FaClock, FaEdit, FaEye, FaPlusCircle } from 'react-icons/fa';
@@ -28,6 +34,7 @@ import message from '../../components/notifier';
 import PageTitle from '../../components/typography/PageTitle';
 import { CONSTANTS } from '../../constant';
 import { GUIDE_LINKS } from '../../constant/guide-links';
+import { LOCAL_STORAGE_KEYS } from '../../constant/local-storage-keys';
 import { useUserFilter } from '../../context/userFilter';
 import { getRibbonParams } from '../../helpers/topribbon';
 import MainLayout from '../../layouts/MainLayout';
@@ -40,6 +47,14 @@ const initialExecutionState = {
   openExecution: false,
   selectedAlarmUuid: '',
   selectedAlarmName: '',
+};
+const INITIAL_FILTERS: PeriodicAlarmFilter = {
+  name: null,
+  author: null,
+  active: null,
+  frequency: null,
+  location: null,
+  shared: null,
 };
 
 function executionReducer(
@@ -68,14 +83,12 @@ const PeriodicAlarm = () => {
     field: '',
     direction: '',
   });
-  const [filters, setFilters] = useState<PeriodicAlarmFilter>({
-    name: null,
-    author: null,
-    active: null,
-    frequency: null,
-    location: null,
-    shared: null,
-  });
+  const { save, load, clear } = useLocalStorage<PeriodicAlarmFilter>(
+    LOCAL_STORAGE_KEYS.PERIODIC_ALARM.LIST_FILTERS
+  );
+  const [filters, setFilters] = useState<PeriodicAlarmFilter>(
+    () => load() ?? INITIAL_FILTERS
+  );
 
   const [executionState, dispatch] = useReducer(
     executionReducer,
@@ -110,6 +123,25 @@ const PeriodicAlarm = () => {
 
     window.scrollTo({ top: 0 });
   }, [isCreated, isUpdated, isError, errMessage, t]);
+
+  const isPeriodicAlarmSectionPath = useCallback(
+    (path: string) => path.includes(paths.alarm.periodic.base),
+    []
+  );
+
+  const clearFiltersStateAndStorage = useCallback(() => {
+    clear();
+    setFilters(INITIAL_FILTERS);
+  }, [clear]);
+
+  useClearOnNavigation({
+    onNavigate: (destinationPath) => {
+      if (!isPeriodicAlarmSectionPath(destinationPath)) {
+        clearFiltersStateAndStorage();
+      }
+    },
+    deps: [isPeriodicAlarmSectionPath],
+  });
 
   const { data: periodicAlarmRes, isLoading: isLoadingData } =
     useGetPeriodicAlarmList({
@@ -344,14 +376,17 @@ const PeriodicAlarm = () => {
     switch (filterVariant) {
       case FilterVariant.TEXT:
         setFilters((prev: PeriodicAlarmFilter) => {
-          return { ...prev, [field]: val };
+          const updated = { ...prev, [field]: val };
+          save(updated);
+          return updated;
         });
         break;
       case FilterVariant.SELECT: {
-        setFilters((prev: PeriodicAlarmFilter) => ({
-          ...prev,
-          [field]: val,
-        }));
+        setFilters((prev: PeriodicAlarmFilter) => {
+          const updated = { ...prev, [field]: val };
+          save(updated);
+          return updated;
+        });
         break;
       }
     }
@@ -391,6 +426,14 @@ const PeriodicAlarm = () => {
         <Table
           columns={columns}
           data={periodicAlarmRes ? periodicAlarmRes.data : []}
+          activeFilters={{
+            name: filters.name,
+            author: filters.author,
+            active: filters.active,
+            frequency: filters.frequency,
+            location: filters.location,
+            shared: filters.shared,
+          }}
           footer={{
             currentPage: page,
             pageSize: pageSize,

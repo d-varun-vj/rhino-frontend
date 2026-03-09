@@ -24,13 +24,18 @@ import {
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from '@mantine/core';
-import { formatLocalDateTime } from '@rhino/utils';
+import {
+  formatLocalDateTime,
+  useClearOnNavigation,
+  useLocalStorage,
+} from '@rhino/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import AuditInfoCard from 'apps/webapp/src/components/common/cards/AuditInfoCard';
 import { MeasurementWithConfig } from 'apps/webapp/src/components/measurement/SelectMeasurement/types';
 import message from 'apps/webapp/src/components/notifier';
 import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
 import { GUIDE_LINKS } from 'apps/webapp/src/constant/guide-links';
+import { LOCAL_STORAGE_KEYS } from 'apps/webapp/src/constant/local-storage-keys';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { getRibbonParams } from 'apps/webapp/src/helpers/topribbon';
 import MainLayout from 'apps/webapp/src/layouts/MainLayout';
@@ -49,17 +54,47 @@ import MeasurementSorting from '../Create/sections/MeasurementSorting';
 import MomentOfExecution from '../Create/sections/MomentOfExecution';
 import RecipientDetails from '../Create/sections/RecipientDetails';
 import { onError } from '../helper';
+import { isValidUpdateMeasurementChanges } from '../helper/measurementDraft';
+
+type MeasurementChanges = {
+  alarmUuid: string;
+  addedMeasurements: MeasurementWithConfig[];
+  removedUuids: string[];
+  orderedUuids?: string[];
+};
 
 const UpdatePeriodicAlarm = () => {
   const navigate = useNavigate();
   const { uuid } = useParams();
   const { t } = useTranslation('periodicAlarm');
+  const { t: tCommon } = useTranslation('common');
 
-  const { clients, locations, groups, setClients } = useUserFilter();
+  const { clients, locations, groups } = useUserFilter();
 
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [isFormInitialized, setIsFormInitialized] = useState(false);
   const queryClient = useQueryClient();
+  const measurementChangesStorageKey = useMemo(
+    () => LOCAL_STORAGE_KEYS.PERIODIC_ALARM.updateMeasurements(uuid ?? ''),
+    [uuid]
+  );
+  const currentUpdatePathToken = useMemo(
+    () => `${paths.alarm.periodic.base}/update/${uuid ?? ''}`,
+    [uuid]
+  );
+
+  const { load, save, clear } = useLocalStorage<MeasurementChanges>(
+    measurementChangesStorageKey
+  );
+  const { clear: clearPeriodicAlarmFilters } = useLocalStorage<unknown>(
+    LOCAL_STORAGE_KEYS.PERIODIC_ALARM.LIST_FILTERS
+  );
+  const [resetMeasurements, setResetMeasurements] = useState<
+    MeasurementWithConfig[] | null
+  >(null);
+  const [draftMeasurements, setDraftMeasurements] = useState<
+    MeasurementWithConfig[] | null
+  >(null);
 
   const { mutate: updateAlarm, isPending } = useUpdatePeriodicAlarm(
     uuid as string
@@ -73,6 +108,18 @@ const UpdatePeriodicAlarm = () => {
   } = useGetAlarmDetails(uuid as string);
 
   const [searchParams, setSearchParams] = useSearchParams();
+
+  useClearOnNavigation({
+    onNavigate: (destinationPath) => {
+      if (!destinationPath.includes(currentUpdatePathToken)) {
+        clear();
+      }
+      if (!destinationPath.includes(paths.alarm.periodic.base)) {
+        clearPeriodicAlarmFilters();
+      }
+    },
+    deps: [currentUpdatePathToken],
+  });
 
   const schema = useMemo(() => buildPeriodicAlarmSchema(t), [t]);
 
@@ -108,6 +155,103 @@ const UpdatePeriodicAlarm = () => {
       },
     })) as MeasurementWithConfig[];
   }, [alarmDetails?.data?.measurements]);
+  const rawMeasurementUuids = useMemo(
+    () =>
+      initialMeasurements.map((measurement) => measurement.measurement.uuid),
+    [initialMeasurements]
+  );
+
+  const buildMeasurementChanges = useCallback(
+    (
+      measurements: MeasurementWithConfig[],
+      currentUuids: string[],
+      dbUuids: string[]
+    ): MeasurementChanges => {
+      const currentSet = new Set(currentUuids);
+      const dbSet = new Set(dbUuids);
+
+      return {
+        alarmUuid: uuid ?? '',
+        addedMeasurements: measurements.filter(
+          (measurement) => !dbSet.has(measurement.measurement.uuid)
+        ),
+        removedUuids: dbUuids.filter((uuid) => !currentSet.has(uuid)),
+        orderedUuids: currentUuids,
+      };
+    },
+    [uuid]
+  );
+
+  const applyMeasurementChanges = useCallback(
+    (
+      rawMeasurements: MeasurementWithConfig[],
+      measurementChanges: MeasurementChanges
+    ): MeasurementWithConfig[] => {
+      const removedSet = new Set(measurementChanges.removedUuids);
+
+      const updatedMeasurements = rawMeasurements
+        .filter((measurement) => !removedSet.has(measurement.measurement.uuid))
+        .map((measurement) => ({
+          ...measurement,
+          config: {
+            ...measurement.config,
+            selectionId:
+              measurement.config.selectionId ??
+              `${Date.now()}-${measurement.measurement.uuid}`,
+          },
+        }));
+
+      const existingUuids = new Set(
+        updatedMeasurements.map((measurement) => measurement.measurement.uuid)
+      );
+
+      measurementChanges.addedMeasurements.forEach((addedMeasurement) => {
+        const uuid = addedMeasurement.measurement.uuid;
+        if (existingUuids.has(uuid)) {
+          return;
+        }
+
+        updatedMeasurements.push({
+          ...addedMeasurement,
+          config: {
+            ...addedMeasurement.config,
+            selectionId:
+              addedMeasurement.config.selectionId ?? `${Date.now()}-${uuid}`,
+          },
+        });
+      });
+
+      const persistedOrder = measurementChanges.orderedUuids;
+      if (!persistedOrder || persistedOrder.length === 0) {
+        return updatedMeasurements;
+      }
+
+      const measurementByUuid = new Map(
+        updatedMeasurements.map((measurement) => [
+          measurement.measurement.uuid,
+          measurement,
+        ])
+      );
+      const orderedMeasurements: MeasurementWithConfig[] = [];
+
+      persistedOrder.forEach((uuid) => {
+        const measurement = measurementByUuid.get(uuid);
+        if (!measurement) {
+          return;
+        }
+
+        orderedMeasurements.push(measurement);
+        measurementByUuid.delete(uuid);
+      });
+
+      measurementByUuid.forEach((measurement) => {
+        orderedMeasurements.push(measurement);
+      });
+
+      return orderedMeasurements;
+    },
+    []
+  );
 
   useEffect(() => {
     if (!alarmDetails?.data) return;
@@ -116,6 +260,33 @@ const UpdatePeriodicAlarm = () => {
     setSearchParams(searchParams);
 
     setIsReadOnly(!alarmDetails?.data?.isManageable);
+
+    let resolvedMeasurements = initialMeasurements;
+    try {
+      const storedMeasurementChanges = load();
+      if (
+        isValidUpdateMeasurementChanges<MeasurementWithConfig>(
+          storedMeasurementChanges
+        )
+      ) {
+        if (storedMeasurementChanges.alarmUuid !== (uuid ?? '')) {
+          clear();
+          resolvedMeasurements = initialMeasurements;
+        } else {
+          resolvedMeasurements = applyMeasurementChanges(
+            initialMeasurements,
+            storedMeasurementChanges
+          );
+        }
+      } else if (storedMeasurementChanges) {
+        clear();
+      }
+    } catch {
+      clear();
+      resolvedMeasurements = initialMeasurements;
+    }
+
+    setDraftMeasurements(resolvedMeasurements);
 
     requestAnimationFrame(() => {
       const formData: PeriodicAlarmSchema = {
@@ -143,10 +314,9 @@ const UpdatePeriodicAlarm = () => {
           alarmDetails.data.sharedTenants?.map((tenant) => tenant.uuid) || [],
         recipientEmails: alarmDetails.data.recipientDetails?.emails || [],
         phoneNumber: alarmDetails.data.recipientDetails?.phoneNumbers || [],
-        measurementUuids:
-          alarmDetails.data.measurements?.map(
-            (measurement) => measurement.uuid
-          ) || [],
+        measurementUuids: resolvedMeasurements.map(
+          (measurement) => measurement.measurement.uuid
+        ),
         sendOnlyWhenExceeded:
           alarmDetails.data.configuration?.sendOnlyWhenExceeded ?? true,
         generationDay: alarmDetails.data.configuration?.generationDay ?? null,
@@ -164,7 +334,16 @@ const UpdatePeriodicAlarm = () => {
       reset(formData);
       setIsFormInitialized(true);
     });
-  }, [alarmDetails?.data, reset, searchParams, setSearchParams, setClients]);
+  }, [
+    alarmDetails?.data,
+    applyMeasurementChanges,
+    clear,
+    initialMeasurements,
+    load,
+    reset,
+    searchParams,
+    setSearchParams,
+  ]);
 
   useEffect(() => {
     if (isError) {
@@ -181,29 +360,72 @@ const UpdatePeriodicAlarm = () => {
     setValue('thresholdEndValue', undefined);
   }, [setValue]);
 
+  const handleResetMeasurements = useCallback(() => {
+    const rawMeasurements = [...initialMeasurements];
+    clear();
+    setValue(
+      'measurementUuids',
+      rawMeasurements.map((measurement) => measurement.measurement.uuid)
+    );
+    setResetMeasurements(rawMeasurements);
+    setDraftMeasurements(rawMeasurements);
+  }, [clear, initialMeasurements, setValue]);
+
+  const handleMeasurementsChange = useCallback(
+    (measurements: MeasurementWithConfig[]) => {
+      const currentUuids = measurements.map(
+        (measurement) => measurement.measurement.uuid
+      );
+
+      const measurementChanges = buildMeasurementChanges(
+        measurements,
+        currentUuids,
+        rawMeasurementUuids
+      );
+      const hasChanges =
+        measurementChanges.addedMeasurements.length > 0 ||
+        measurementChanges.removedUuids.length > 0 ||
+        rawMeasurementUuids.some(
+          (uuid, index) => measurementChanges.orderedUuids?.[index] !== uuid
+        );
+
+      try {
+        if (hasChanges) {
+          save(measurementChanges);
+        } else {
+          clear();
+        }
+      } catch (error) {
+        console.error(
+          '[UpdatePeriodicAlarm] Failed to save measurement changes to local storage',
+          error
+        );
+        message.error(tCommon('toast.somethingWentWrong'));
+      }
+    },
+    [buildMeasurementChanges, clear, rawMeasurementUuids, save]
+  );
+
   const onSubmit = (values: PeriodicAlarmSchema) => {
     updateAlarm(buildPeriodicAlarmUpdateForm(values), {
       onSuccess: () => {
+        clear();
         navigate(
           paths.alarm.periodic.base +
-            getRibbonParams({
-              clients,
-              locations,
-              groups,
-            }),
-          {
-            state: { isUpdated: true },
-          }
+            getRibbonParams({ clients, locations, groups }),
+          { state: { isUpdated: true } }
         );
         void queryClient.invalidateQueries({
           queryKey: [DataQueryKeys.PERIODIC_ALARM_DETAILS],
         });
       },
       onError: (error: Error | { error: string; message: string }) => {
+        console.error(
+          '[UpdatePeriodicAlarm] save failed - localStorage NOT cleared'
+        );
         const errMessage =
           ('error' in error ? error.error : '') +
             ('message' in error ? error.message : '') || t('update.error');
-
         message.error(
           errMessage ?? t('toast.somethingWentWrong', { ns: 'common' })
         );
@@ -336,7 +558,17 @@ const UpdatePeriodicAlarm = () => {
           </div>
         ) : (
           <FormProvider {...methods}>
-            <form onSubmit={(e) => void handleSubmit(onSubmit, onError)(e)}>
+            <form
+              onSubmit={(e) => {
+                void handleSubmit(onSubmit, (errors) => {
+                  console.error(
+                    '[UpdatePeriodicAlarm] validation failed:',
+                    errors
+                  );
+                  onError(errors);
+                })(e);
+              }}
+            >
               <div className="flex flex-col gap-20 mb-20">
                 <div>
                   <PageTitle
@@ -372,8 +604,21 @@ const UpdatePeriodicAlarm = () => {
               </div>
               <FormFooter
                 isPending={isPending}
-                initialMeasurements={initialMeasurements}
+                initialMeasurements={draftMeasurements ?? initialMeasurements}
+                rawMeasurements={initialMeasurements}
                 isReadOnly={isReadOnly}
+                preferLocalStorage={false}
+                resetMeasurements={resetMeasurements}
+                onReset={handleResetMeasurements}
+                onMeasurementsChange={handleMeasurementsChange}
+                onCancel={() => {
+                  clear();
+                  navigate(
+                    paths.alarm.periodic.base +
+                      getRibbonParams({ clients, locations, groups }),
+                    { replace: false }
+                  );
+                }}
               />
             </form>
           </FormProvider>

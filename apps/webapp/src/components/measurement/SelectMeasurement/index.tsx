@@ -1,5 +1,5 @@
 import { Accordion, Button } from '@mantine/core';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { swapArrayElements } from '@rhino/utils/common';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
@@ -23,8 +23,10 @@ interface SelectMeasurementProps {
   disabledTitle?: string | null;
   customFilter?: CustomFilter;
   initialMeasurements?: MeasurementWithConfig[];
+  rawMeasurements?: MeasurementWithConfig[];
   isReadOnly?: boolean;
   enableCustomSort?: boolean;
+  onReset?: () => void;
 }
 
 export const SelectMeasurement = ({
@@ -38,8 +40,10 @@ export const SelectMeasurement = ({
   disabledTitle,
   customFilter,
   initialMeasurements = [],
+  rawMeasurements,
   isReadOnly = false,
   enableCustomSort = false,
+  onReset,
 }: SelectMeasurementProps) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedMeasurements, setSelectedMeasurements] = useState<
@@ -185,6 +189,36 @@ export const SelectMeasurement = ({
     return t(baseRoute + 'addMore');
   };
 
+  const showResetButton = useMemo(() => {
+    if (!onReset || isReadOnly) {
+      return false;
+    }
+
+    const baselineMeasurements = rawMeasurements ?? initialMeasurements;
+    if (selectedMeasurements.length === 0 && baselineMeasurements.length > 0) {
+      return true;
+    }
+
+    const selectedUuids = new Set(
+      selectedMeasurements.map((measurement) => measurement.measurement.uuid)
+    );
+    const baselineUuids = new Set(
+      baselineMeasurements.map((measurement) => measurement.measurement.uuid)
+    );
+
+    if (selectedUuids.size !== baselineUuids.size) {
+      return true;
+    }
+
+    return Array.from(selectedUuids).some((uuid) => !baselineUuids.has(uuid));
+  }, [
+    initialMeasurements,
+    isReadOnly,
+    onReset,
+    rawMeasurements,
+    selectedMeasurements,
+  ]);
+
   return (
     <div className="flex flex-col">
       <Accordion
@@ -213,6 +247,8 @@ export const SelectMeasurement = ({
               onClearAll={
                 selectedMeasurements.length > 1 ? handleClearAll : undefined
               }
+              onReset={onReset}
+              showResetButton={showResetButton}
               isReadOnly={isReadOnly}
               enableCustomSort={enableCustomSort}
               onCustomSortMove={handleCustomSortMove}

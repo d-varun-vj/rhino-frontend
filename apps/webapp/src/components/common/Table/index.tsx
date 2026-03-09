@@ -68,6 +68,7 @@ type TableProps<T> = {
     field: string,
     variant: FilterVariant | null
   ) => void;
+  activeFilters?: Record<string, string | boolean | null>;
   dataTestIdPrefix?: string;
 };
 
@@ -129,6 +130,7 @@ const Table = <T,>({
   textNowarp,
   onSortSelect,
   onFilterChange,
+  activeFilters,
   dataTestIdPrefix,
 }: TableProps<T>) => {
   const { t } = useTranslation();
@@ -162,7 +164,7 @@ const Table = <T,>({
       }
 
       if (onFilterChange) {
-        onFilterChange(val, field, variant);
+        onFilterChange(val?.trim() ?? null, field, variant);
       }
     },
     [onFilterChange, footer]
@@ -259,6 +261,14 @@ const Table = <T,>({
                                   <Filter
                                     column={header.column}
                                     onFilterChange={handleFilterChange}
+                                    defaultFilterValue={
+                                      header.column.columnDef.meta?.filterKey
+                                        ? activeFilters?.[
+                                            header.column.columnDef.meta
+                                              .filterKey
+                                          ] ?? null
+                                        : null
+                                    }
                                   />
                                 </div>
                               ) : null}

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Column } from '@tanstack/react-table';
 import { CONSTANTS } from 'apps/webapp/src/constant';
@@ -11,6 +11,7 @@ import { FilterVariant } from '../types';
 const Filter = <T,>({
   column,
   onFilterChange,
+  defaultFilterValue = null,
 }: {
   column: Column<T, unknown>;
   onFilterChange: (
@@ -18,12 +19,13 @@ const Filter = <T,>({
     field: string,
     variant: FilterVariant | null
   ) => void;
+  defaultFilterValue?: string | boolean | null;
 }) => {
   const { t } = useTranslation('components');
   const columnFilterValue = column.getFilterValue();
 
   const { filterVariant, customFilter } = column.columnDef.meta ?? {};
-  const [selectValue, setSelectValue] = useState<string>('');
+  const [selectValue, setSelectValue] = useState<string | boolean | null>('');
 
   const options = useMemo(
     () => column?.columnDef?.meta?.selectionOptions || [],
@@ -40,6 +42,18 @@ const Filter = <T,>({
     [column.columnDef.meta?.filterKey]
   );
 
+  useEffect(() => {
+    if (filterVariant === FilterVariant.SELECT) {
+      setSelectValue(defaultFilterValue ?? '');
+      column.setFilterValue(defaultFilterValue || null);
+      return;
+    }
+
+    if (filterVariant === FilterVariant.TEXT) {
+      column.setFilterValue(defaultFilterValue || null);
+    }
+  }, [column, defaultFilterValue, filterVariant]);
+
   const handleSelectValueChange = useCallback(
     (value: string | null) => {
       if (!filterKey) {
@@ -48,6 +62,7 @@ const Filter = <T,>({
 
       if (!value) {
         setSelectValue('');
+        column.setFilterValue(null);
         onFilterChange(null, filterKey, FilterVariant.SELECT);
         return;
       }
@@ -73,11 +88,13 @@ const Filter = <T,>({
 
   const handleTextInputChange = useCallback(
     (value: string | number) => {
+      const filterValue = value.toString();
+      column.setFilterValue(filterValue || null);
       if (filterKey) {
-        onFilterChange(value.toString(), filterKey, FilterVariant.TEXT);
+        onFilterChange(filterValue, filterKey, FilterVariant.TEXT);
       }
     },
-    [filterKey, onFilterChange]
+    [column, filterKey, onFilterChange]
   );
 
   const selectPlaceholder = useMemo(() => t('comboBox.select'), [t]);
@@ -122,7 +139,9 @@ const Filter = <T,>({
     return (
       <DebouncedTextField
         onChange={handleTextInputChange}
-        value={(columnFilterValue ?? '') as string}
+        value={
+          ((columnFilterValue ?? defaultFilterValue ?? '') as string) || ''
+        }
       />
     );
   }

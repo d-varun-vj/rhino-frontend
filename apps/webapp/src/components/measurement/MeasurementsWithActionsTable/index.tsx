@@ -19,6 +19,8 @@ interface MeasurementsWithActionsTableProps {
   selectedMeasurements: MeasurementWithConfig[];
   onRemoveMeasurement: (measurement: MeasurementWithConfig) => void;
   onClearAll?: () => void;
+  onReset?: () => void;
+  showResetButton?: boolean;
   isReadOnly?: boolean;
   enableCustomSort?: boolean;
   onCustomSortMove?: (rowIndex: number, direction: SortArrow) => void;
@@ -50,6 +52,8 @@ const MeasurementsWithActionsTable = ({
   selectedMeasurements,
   onRemoveMeasurement,
   onClearAll,
+  onReset,
+  showResetButton = false,
   isReadOnly = false,
   enableCustomSort = false,
   onCustomSortMove,
@@ -194,7 +198,7 @@ const MeasurementsWithActionsTable = ({
 
   return (
     <div>
-      <div className="flex justify-between items-center p-4 ">
+      <div className="flex items-center p-4 ">
         {selectedMeasurements.length > 0 && (
           <div>
             <h1 className="text-2xl font-medium text-rhino-indigo-blue">
@@ -203,11 +207,21 @@ const MeasurementsWithActionsTable = ({
           </div>
         )}
 
-        {selectedMeasurements.length > 0 && onClearAll && !isReadOnly && (
-          <IconButton action={onClearAll} type="secondary">
-            <p className="text-sm font-medium">Clear All</p>
-          </IconButton>
-        )}
+        {(selectedMeasurements.length > 0 || showResetButton) &&
+          !isReadOnly && (
+            <div className="ml-auto flex items-center gap-2">
+              {showResetButton && onReset && (
+                <IconButton action={onReset} type="secondary">
+                  <p className="text-sm font-medium">Reset</p>
+                </IconButton>
+              )}
+              {selectedMeasurements.length > 0 && onClearAll && (
+                <IconButton action={onClearAll} type="secondary">
+                  <p className="text-sm font-medium">Clear All</p>
+                </IconButton>
+              )}
+            </div>
+          )}
       </div>
 
       {selectedMeasurements.length > 0 ? (
