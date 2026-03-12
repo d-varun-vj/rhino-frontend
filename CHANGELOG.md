@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.24.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.23.1...webapp-v1.24.0) (2026-03-09)
+
+
+### Features
+
+* Periodic consumption alarms - add ‘Sort by’ and ‘Direction’ dropdowns to the alarm [PRD-3755] ([#231](https://github.com/Rhino-Energy/rhino-frontend/issues/231)) ([#233](https://github.com/Rhino-Energy/rhino-frontend/issues/233)) ([d79e6d4](https://github.com/Rhino-Energy/rhino-frontend/commit/d79e6d4dc73d52a712f67075c028f6ff7bf352e9))
+
+
+### Bug Fixes
+
+* Periodic alarm measurements are refreshed while switching tab [PRD-3865] ([#227](https://github.com/Rhino-Energy/rhino-frontend/issues/227)) ([#235](https://github.com/Rhino-Energy/rhino-frontend/issues/235)) ([96ab63c](https://github.com/Rhino-Energy/rhino-frontend/commit/96ab63c11829e5d8347eab4505a3bc1b62bfa356))
+
 ## [1.23.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.23.0...webapp-v1.23.1) (2026-02-26)
 
 
