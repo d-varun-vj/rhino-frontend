@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.24.0...webapp-v1.24.1) (2026-03-12)
+
+
+### Bug Fixes
+
+* Periodic alarm measurements are refreshed while switching tab ([#236](https://github.com/Rhino-Energy/rhino-frontend/issues/236)) ([#237](https://github.com/Rhino-Energy/rhino-frontend/issues/237)) ([00767e2](https://github.com/Rhino-Energy/rhino-frontend/commit/00767e24a0f8f3e13bb313976a4becca12b9cba4))
+
 ## [1.24.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.23.1...webapp-v1.24.0) (2026-03-09)
 
 
