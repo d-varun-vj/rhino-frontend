@@ -26,5 +26,6 @@ export const useGetClients = ({ userUuid }: { userUuid: string }) => {
       return response.data;
     },
     enabled: userUuid ? true : false,
+    refetchOnWindowFocus: false,
   });
 };

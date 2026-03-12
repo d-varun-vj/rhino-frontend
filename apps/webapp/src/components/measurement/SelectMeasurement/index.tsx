@@ -55,7 +55,7 @@ export const SelectMeasurement = ({
   );
 
   const { clients } = useUserFilter();
-  const prevClientRef = useRef(clients);
+  const prevClientIdsRef = useRef<string | null>(null);
   const prevCustomFilterRef = useRef(customFilter);
   const hasInitialMeasurementsBeenSet = useRef(false);
   const isInitializingRef = useRef(false);
@@ -91,14 +91,19 @@ export const SelectMeasurement = ({
   }, [customFilter, onMeasurementsChange]);
 
   useEffect(() => {
-    const clientChanged = prevClientRef.current !== clients;
+    const currentClientIds =
+      clients?.map((client) => client.uuid).join(',') || null;
+    const clientChanged =
+      prevClientIdsRef.current !== null &&
+      currentClientIds !== null &&
+      prevClientIdsRef.current !== currentClientIds;
 
     if ((clientChanged || disabled) && !isInitializingRef.current) {
       handleClearAll();
       hasInitialMeasurementsBeenSet.current = false;
     }
 
-    prevClientRef.current = clients;
+    prevClientIdsRef.current = currentClientIds;
   }, [clients, disabled, handleClearAll]);
 
   useEffect(() => {

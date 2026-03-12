@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@rhino/utils';
 import { MeasurementWithConfig } from 'apps/webapp/src/components/measurement/SelectMeasurement/types';
 import { LOCAL_STORAGE_KEYS } from 'apps/webapp/src/constant/local-storage-keys';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isValidCreateMeasurementDraft } from '../helper/measurementDraft';
 
 export type CreateMeasurementDraft = {
@@ -22,41 +22,50 @@ export const useRestoredMeasurements = ({
     CreateMeasurementDraft | MeasurementWithConfig[]
   >(LOCAL_STORAGE_KEYS.PERIODIC_ALARM.CREATE_MEASUREMENTS);
 
-  const [restoredMeasurements] = useState<MeasurementWithConfig[]>(() => {
+  const [restoredMeasurements, setRestoredMeasurements] = useState<
+    MeasurementWithConfig[]
+  >([]);
+
+  useEffect(() => {
     if (!preferLocalStorage) {
-      return [];
+      setRestoredMeasurements([]);
+      return;
     }
 
     try {
       const storedData = load();
       if (!storedData) {
-        return [];
+        setRestoredMeasurements([]);
+        return;
       }
 
       if (Array.isArray(storedData)) {
-        return storedData;
+        setRestoredMeasurements(storedData);
+        return;
       }
 
       if (!isValidCreateMeasurementDraft<MeasurementWithConfig>(storedData)) {
         clear();
-        return [];
+        setRestoredMeasurements([]);
+        return;
       }
 
-      if (
-        currentClientUuid &&
-        storedData.clientUuid &&
-        storedData.clientUuid !== currentClientUuid
-      ) {
+      const storedClientUuid = storedData.clientUuid;
+      const isDifferentClient =
+        !!currentClientUuid && storedClientUuid !== currentClientUuid;
+
+      if (isDifferentClient) {
         clear();
-        return [];
+        setRestoredMeasurements([]);
+        return;
       }
 
-      return storedData.measurements;
+      setRestoredMeasurements(storedData.measurements);
     } catch {
       clear();
-      return [];
+      setRestoredMeasurements([]);
     }
-  });
+  }, [preferLocalStorage, currentClientUuid, load, clear]);
 
   const saveMeasurementsDraft = (draft: CreateMeasurementDraft) => {
     save(draft);
