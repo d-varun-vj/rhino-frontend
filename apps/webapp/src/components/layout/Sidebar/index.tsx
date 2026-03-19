@@ -61,7 +61,11 @@ const canViewMenuItem = ({
   hasUserTypeAccess({ menuItem, user }) ||
   hasRoleAccess({ menuItem, user });
 
-const SideBar = () => {
+export type SideBarOptions = {
+  customLabel?: string;
+};
+
+const SideBar = ({ options }: { options?: SideBarOptions }) => {
   const VITE_STATIC_ASSET_URL: string = import.meta.env
     .VITE_STATIC_ASSET_URL as string;
   const [minimize, setMinimize] = useState<{
@@ -159,6 +163,7 @@ const SideBar = () => {
                   ...minimize,
                   setItem: setMinimize,
                 }}
+                sideBarOptions={options}
               />
             ) : null
           )}

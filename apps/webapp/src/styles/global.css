@@ -130,3 +130,19 @@ tbody tr:nth-child(odd) td:last-child {
   background: #555;
   cursor: grabbing;
 }
+
+/* Subtle blink for the flash screen logo */
+@keyframes flash-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.flash-blink {
+  animation: flash-blink 1.1s ease-in-out infinite;
+}

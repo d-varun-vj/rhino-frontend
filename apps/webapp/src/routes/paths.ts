@@ -3,9 +3,13 @@ export const paths = {
   base: '/v1',
   notAllowed: '/not-allowed',
   notFound: '*',
+  serverError: '/500',
 
   // Pages.
-  dashboard: '/dashboard',
+  dashboards: {
+    dashboard: '/dashboard',
+    asset: '/asset-dashboard',
+  },
   consumption: '/consumption',
   alarm: {
     periodic: {

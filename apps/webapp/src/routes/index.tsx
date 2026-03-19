@@ -2,7 +2,7 @@ import { VITE_API_BASE_URL, initHttpClient } from '@rhino/apis';
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Loader } from '@mantine/core';
+import FlashScreen from '../components/common/FlashScreen';
 import message from '../components/notifier';
 import { ROUTES } from './routes';
 
@@ -20,11 +20,7 @@ const MainRoute = () => {
   }, []);
 
   if (isFullScreenLoading) {
-    return (
-      <div className="flex h-screen justify-center items-center ">
-        <Loader color="var(--color-rhino-energy-green)" />
-      </div>
-    );
+    return <FlashScreen />;
   }
 
   return (

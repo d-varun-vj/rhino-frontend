@@ -399,13 +399,16 @@ const PeriodicAlarm = () => {
     >
       <MainLayout
         title={t('sideMenu.periodicAlarm', { ns: 'layout' })}
-        topRibbon={{
+        topRibbonOptions={{
           group: {
             hidden: true,
           },
           favoriteMeter: {
             hidden: true,
           },
+        }}
+        pageOptions={{
+          featureFlag: 'ENABLE_PERIODIC_ALARM',
         }}
       >
         <div className="flex justify-between items-end py-4">

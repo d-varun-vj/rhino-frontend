@@ -9,6 +9,7 @@ import {
 import { Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
+import { SideBarOptions } from '..';
 import { MenuItemType, MenuKeys } from '../config';
 import MinimizePopup from '../MinimizePopup';
 import './MenuItem.css';
@@ -25,9 +26,10 @@ export type MenuItemProps = {
       }>
     >;
   };
+  sideBarOptions?: SideBarOptions;
 };
 
-const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
+const MenuItem = ({ menuItem, minimize, sideBarOptions }: MenuItemProps) => {
   const { t } = useTranslation('layout');
   const { features } = useFeatureFlags();
   const { user } = useUser();
@@ -96,7 +98,7 @@ const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
                           className={`${isActive ? 'nav-active' : ''}`}
                           data-testid={`${subItem.key}-sub-menu-label`}
                         >
-                          {t(subItem.label)}
+                          {t(subItem.label(sideBarOptions?.customLabel))}
                         </span>
                       </p>
                     </li>
@@ -108,7 +110,7 @@ const MenuItem = ({ menuItem, minimize }: MenuItemProps) => {
         </ul>
       )}
       {minimize.isMinimize && minimize.item === menuItem.key && (
-        <MinimizePopup menuItem={menuItem} />
+        <MinimizePopup menuItem={menuItem} sideBarOptions={sideBarOptions} />
       )}
     </li>
   );

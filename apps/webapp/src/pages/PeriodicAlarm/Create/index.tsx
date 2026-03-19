@@ -144,10 +144,13 @@ const CreatePeriodicAlarm = () => {
     >
       <MainLayout
         title={t('create.mainHeader')}
-        topRibbon={{
+        topRibbonOptions={{
           favoriteMeter: {
             hidden: true,
           },
+        }}
+        pageOptions={{
+          featureFlag: 'ENABLE_PERIODIC_ALARM',
         }}
       >
         <FormProvider {...methods}>

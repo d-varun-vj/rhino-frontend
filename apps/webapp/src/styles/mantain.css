@@ -80,3 +80,8 @@
   align-items: center;
   border-left: 1px solid var(--color-rhino-indigo-blue-light) !important;
 }
+
+.mantine-Breadcrumbs-separator {
+  color: var(--color-rhino-grey);
+  opacity: 70%;
+}

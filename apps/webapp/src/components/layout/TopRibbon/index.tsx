@@ -20,7 +20,7 @@ type Config = {
   multiple?: boolean;
 };
 
-export type TopRibbonProps = {
+export type TopRibbonOptions = {
   client?: Omit<Config, 'hidden' | 'multiple'>;
   location?: Config;
   group?: Config;
@@ -32,7 +32,7 @@ const TopRibbon = ({
   location,
   group,
   favoriteMeter: favMeter,
-}: TopRibbonProps) => {
+}: TopRibbonOptions) => {
   const { t } = useTranslation('layout');
   const { user } = useUser();
   const [disableDropdown, setDisableDropdown] = useState<boolean>(false);
@@ -157,7 +157,7 @@ const TopRibbon = ({
           onSelect={onFilterChange}
           disableDropdown={disableDropdown || client?.disabled}
           clients={clients}
-          selectedClients={selectedClients}
+          selectedClients={client?.disabled ? null : selectedClients}
         />
       ),
       dataTestId: 'ribbon-client-label',
@@ -171,7 +171,9 @@ const TopRibbon = ({
                 onSelect={onFilterChange}
                 locations={locations}
                 disabled={isComboboxDisabled || location?.disabled}
-                selectedLocations={selectedLocations}
+                selectedLocations={
+                  location?.disabled ? null : selectedLocations
+                }
                 multiple={location?.multiple}
               />
             ),
@@ -188,7 +190,7 @@ const TopRibbon = ({
                 onSelect={onFilterChange}
                 locations={locations}
                 disabled={isComboboxDisabled || group?.disabled}
-                selectedGroups={selectedGroups}
+                selectedGroups={location?.disabled ? null : selectedGroups}
                 selectedLocations={selectedLocations}
                 multiple={group?.multiple}
               />

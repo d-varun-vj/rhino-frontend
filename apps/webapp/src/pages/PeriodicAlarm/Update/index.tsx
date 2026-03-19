@@ -543,13 +543,16 @@ const UpdatePeriodicAlarm = () => {
         title={
           isReadOnly ? t('update.mainHeaderReadOnly') : t('update.mainHeader')
         }
-        topRibbon={{
+        topRibbonOptions={{
           client: {
             disabled: true,
           },
           favoriteMeter: {
             hidden: true,
           },
+        }}
+        pageOptions={{
+          featureFlag: 'ENABLE_PERIODIC_ALARM',
         }}
       >
         {!shouldShowForm ? (

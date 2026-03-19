@@ -8,6 +8,7 @@ import {
   ViewPermissionsType,
   VITE_WICKET_BASE_URL,
 } from '@rhino/apis';
+import { paths } from 'apps/webapp/src/routes/paths';
 import { AiFillTool } from 'react-icons/ai';
 import { BiSolidNetworkChart } from 'react-icons/bi';
 import {
@@ -30,7 +31,7 @@ import { IoSettingsSharp } from 'react-icons/io5';
 import { IconType } from 'react-icons/lib';
 
 export type SubItemType = {
-  label: string; // label from i18n translation (check src/i18n/...json)
+  label: (label?: string) => string; // label from i18n translation (check src/i18n/...json)
   icon: IconType;
   key: string; // This is for identifying which item is active (label in lowercase, connected with hyphens).
   wicketLink?: string;
@@ -70,10 +71,10 @@ export const MenuItems: MenuItemType[] = [
     key: MenuKeys.DASHBOARD,
     subItems: [
       {
-        label: 'sideMenu.dashboard',
+        label: () => 'sideMenu.dashboard',
         icon: FaTable,
         key: 'dashboard',
-        route: '/dashboard',
+        route: paths.dashboards.dashboard,
         viewPermissionType: ViewPermissionsType.UserTypeBased,
         allowedUserTypes: [
           UserType.SuperAdmin,
@@ -85,7 +86,7 @@ export const MenuItems: MenuItemType[] = [
         ],
       },
       {
-        label: 'sideMenu.energyDashboard',
+        label: () => 'sideMenu.energyDashboard',
         icon: FaTable,
         key: 'energy-dashboard',
         wicketLink: VITE_WICKET_BASE_URL + 'energyDashboard',
@@ -98,6 +99,22 @@ export const MenuItems: MenuItemType[] = [
           UserType.RegularUser,
           UserType.PartnerAdmin,
         ],
+      },
+      {
+        label: () => 'sideMenu.assetDashboard',
+        icon: FaTable,
+        key: 'asset-dashboard',
+        route: paths.dashboards.asset,
+        viewPermissionType: ViewPermissionsType.UserTypeBased,
+        allowedUserTypes: [
+          UserType.SuperAdmin,
+          UserType.ClientAdmin,
+          UserType.LocalisationAdmin,
+          UserType.Tenant,
+          UserType.RegularUser,
+          UserType.PartnerAdmin,
+        ],
+        featureFlag: 'ENABLE_ASSET_DASHBOARD',
       },
     ],
     viewPermissionType: ViewPermissionsType.UserTypeBased,
@@ -117,7 +134,7 @@ export const MenuItems: MenuItemType[] = [
     key: MenuKeys.ANALYSIS_AND_REPORTS,
     subItems: [
       {
-        label: 'sideMenu.consumptionChart',
+        label: () => 'sideMenu.consumptionChart',
         icon: FaChartLine,
         key: 'consumption',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionChart',
@@ -125,7 +142,7 @@ export const MenuItems: MenuItemType[] = [
         viewPermissions: [UserViewPermission.CONSUMPTION_CHART_ROLE],
       },
       {
-        label: 'sideMenu.consumptionProfileChart',
+        label: () => 'sideMenu.consumptionProfileChart',
         icon: FaChartBar,
         key: 'profile',
         wicketLink: VITE_WICKET_BASE_URL + 'consumptionProfileChart',
@@ -133,7 +150,7 @@ export const MenuItems: MenuItemType[] = [
         viewPermissions: [UserViewPermission.CONSUMPTION_PROFILE_CHART_ROLE],
       },
       {
-        label: 'sideMenu.heatMap',
+        label: () => 'sideMenu.heatMap',
         icon: FaLightbulb,
         key: 'load-chart',
         wicketLink: VITE_WICKET_BASE_URL + 'heatmap',
@@ -141,7 +158,7 @@ export const MenuItems: MenuItemType[] = [
         viewPermissions: [UserViewPermission.HEAT_MAP_ROLE],
       },
       {
-        label: 'sideMenu.measurementStructures',
+        label: () => 'sideMenu.measurementStructures',
         icon: BiSolidNetworkChart,
         key: 'structures',
         wicketLink: VITE_WICKET_BASE_URL + 'measurementStructures',
@@ -149,7 +166,7 @@ export const MenuItems: MenuItemType[] = [
         viewPermissions: [UserViewPermission.MEASUREMENT_STRUCTURE_ROLE],
       },
       {
-        label: 'sideMenu.balanceModule',
+        label: () => 'sideMenu.balanceModule',
         icon: FaBalanceScale,
         key: 'balance',
         wicketLink: VITE_WICKET_BASE_URL + 'balanceModule',
@@ -157,7 +174,7 @@ export const MenuItems: MenuItemType[] = [
         viewPermissions: [UserViewPermission.BALANCE_MODULE_ROLE],
       },
       {
-        label: 'sideMenu.report',
+        label: () => 'sideMenu.report',
         icon: FaFile,
         key: 'reports',
         wicketLink: VITE_WICKET_BASE_URL + 'reports',
@@ -171,7 +188,7 @@ export const MenuItems: MenuItemType[] = [
         ],
       },
       {
-        label: 'sideMenu.utilityCosts',
+        label: () => 'sideMenu.utilityCosts',
         icon: FaWallet,
         key: 'utils-cost',
         wicketLink: VITE_WICKET_BASE_URL + 'utilityCosts',
@@ -189,7 +206,7 @@ export const MenuItems: MenuItemType[] = [
     key: MenuKeys.ALARMS_AND_NOTIFICATIONS,
     subItems: [
       {
-        label: 'sideMenu.immediateAlarm',
+        label: () => 'sideMenu.immediateAlarm',
         icon: FaBell,
         key: 'immediate-alarm',
         wicketLink: VITE_WICKET_BASE_URL + 'alarms/immediate',
@@ -197,10 +214,10 @@ export const MenuItems: MenuItemType[] = [
         viewPermissions: [UserViewPermission.IMMEDIATE_ALARM_ROLE],
       },
       {
-        label: 'sideMenu.periodicAlarm',
+        label: () => 'sideMenu.periodicAlarm',
         icon: FaBell,
         key: 'periodic-alarm',
-        route: '/alarm/periodic',
+        route: paths.alarm.periodic.base,
         viewPermissionType: ViewPermissionsType.ViewRoleBased,
         viewPermissions: [UserViewPermission.PERIODIC_ALARM_ROLE],
         featureFlag: 'ENABLE_PERIODIC_ALARM',
@@ -216,7 +233,7 @@ export const MenuItems: MenuItemType[] = [
     key: MenuKeys.CONFIGURATION,
     subItems: [
       {
-        label: 'sideMenu.measurements',
+        label: () => 'sideMenu.measurements',
         icon: FaTachometerAlt,
         key: 'measurements',
         wicketLink: VITE_WICKET_BASE_URL + 'measurements',
@@ -224,7 +241,7 @@ export const MenuItems: MenuItemType[] = [
         viewPermissions: [UserViewPermission.MEASUREMENT_ROLE],
       },
       {
-        label: 'sideMenu.externalServiceConfiguration',
+        label: () => 'sideMenu.externalServiceConfiguration',
         icon: IoSettingsSharp,
         key: 'external-upcs-configuration',
         wicketLink: VITE_WICKET_BASE_URL + 'externalServicesConfiguration',
@@ -232,7 +249,7 @@ export const MenuItems: MenuItemType[] = [
         allowedUserTypes: [UserType.SuperAdmin, UserType.PartnerAdmin],
       },
       {
-        label: 'sideMenu.technicalView',
+        label: () => 'sideMenu.technicalView',
         icon: AiFillTool,
         key: 'technical-view',
         wicketLink: VITE_WICKET_BASE_URL + 'technical',
@@ -244,7 +261,7 @@ export const MenuItems: MenuItemType[] = [
         ],
       },
       {
-        label: 'sideMenu.inputManagement',
+        label: () => 'sideMenu.inputManagement',
         icon: IoSettingsSharp,
         key: 'input-management',
         wicketLink: VITE_WICKET_BASE_URL + 'inputManagement',
@@ -252,7 +269,7 @@ export const MenuItems: MenuItemType[] = [
         allowedUserTypes: [UserType.SuperAdmin],
       },
       {
-        label: 'sideMenu.maintenanceReport',
+        label: () => 'sideMenu.maintenanceReport',
         icon: FaFile,
         key: 'system-maintenance-report',
         wicketLink: VITE_WICKET_BASE_URL + 'reports/maintenance',
@@ -260,7 +277,7 @@ export const MenuItems: MenuItemType[] = [
         allowedUserTypes: [UserType.SuperAdmin],
       },
       {
-        label: 'sideMenu.meterStates',
+        label: () => 'sideMenu.meterStates',
         icon: FaFile,
         key: 'meter-values',
         wicketLink: VITE_WICKET_BASE_URL + 'metersValues',
@@ -268,7 +285,7 @@ export const MenuItems: MenuItemType[] = [
         viewPermissions: [UserViewPermission.METER_STATES_ROLE],
       },
       {
-        label: 'sideMenu.favoriteMeters',
+        label: () => 'sideMenu.favoriteMeters',
         icon: FaStar,
         key: 'favorite-meters',
         wicketLink: VITE_WICKET_BASE_URL + 'favoritemeters',
@@ -301,7 +318,7 @@ export const MenuItems: MenuItemType[] = [
     key: MenuKeys.ADMINISTRATION,
     subItems: [
       {
-        label: 'sideMenu.clients',
+        label: () => 'sideMenu.clients',
         icon: FaSuitcase,
         key: 'clients',
         wicketLink: VITE_WICKET_BASE_URL + 'clients',
@@ -313,7 +330,7 @@ export const MenuItems: MenuItemType[] = [
         ],
       },
       {
-        label: 'sideMenu.users',
+        label: () => 'sideMenu.users',
         icon: FaUser,
         key: 'users-management',
         wicketLink: VITE_WICKET_BASE_URL + 'users',
@@ -325,7 +342,7 @@ export const MenuItems: MenuItemType[] = [
         ],
       },
       {
-        label: 'sideMenu.tenants',
+        label: () => 'sideMenu.tenants',
         icon: FaBuilding,
         key: 'tenants',
         wicketLink: VITE_WICKET_BASE_URL + 'tenants',

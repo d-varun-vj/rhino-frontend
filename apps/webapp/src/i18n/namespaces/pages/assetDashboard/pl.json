@@ -1,0 +1,12 @@
+{
+  "mainHeader": {
+    "asset": "Asset dashboard",
+    "portfolio": "Portfolio dashboard"
+  },
+  "breadCrumbs": {
+    "client": "Klient",
+    "localisation": "Lokalizacja",
+    "group": "Grupa",
+    "measurement": "Liczniki"
+  }
+}

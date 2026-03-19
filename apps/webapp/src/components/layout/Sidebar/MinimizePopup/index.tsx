@@ -6,9 +6,16 @@ import { canViewItem, getToNavLink } from 'apps/webapp/src/helpers/sidebar';
 import { useTranslation } from 'react-i18next';
 import { VscTriangleLeft } from 'react-icons/vsc';
 import { NavLink } from 'react-router-dom';
+import { SideBarOptions } from '..';
 import { MenuItemType } from '../config';
 
-const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
+const MinimizePopup = ({
+  menuItem,
+  sideBarOptions,
+}: {
+  menuItem: MenuItemType;
+  sideBarOptions?: SideBarOptions;
+}) => {
   const { t } = useTranslation('layout');
   const { features } = useFeatureFlags();
   const { user } = useUser();
@@ -56,7 +63,9 @@ const MinimizePopup = ({ menuItem }: { menuItem: MenuItemType }) => {
                     <i className={`${isActive ? 'nav-active' : ''}`}>
                       <subItem.icon className="text-[15px]" />
                     </i>
-                    <span className={``}>{t(subItem.label)}</span>
+                    <span className={``}>
+                      {t(subItem.label(sideBarOptions?.customLabel))}
+                    </span>
                   </p>
                 </li>
               )}

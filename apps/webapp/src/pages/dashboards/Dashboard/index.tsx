@@ -4,30 +4,35 @@ import {
   NameWithTranslationDto,
   useGetMetaData,
   useGetTableData,
+  UserType,
   VITE_WICKET_BASE_URL,
 } from '@rhino/apis';
 import { ColumnDef, Row } from '@tanstack/react-table';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FaChartBar } from 'react-icons/fa';
 
 import { convertToLocalTime, Sort } from '@rhino/utils';
+import FlashScreen from 'apps/webapp/src/components/common/FlashScreen';
+import { getFeature } from 'apps/webapp/src/helpers/featureFlag';
+import { paths } from 'apps/webapp/src/routes/paths';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import Table from '../../components/common/Table';
-import ActionCell from '../../components/common/Table/ActionCell';
-import { FilterVariant } from '../../components/common/Table/types';
-import IconButton from '../../components/common/buttons/IconButton';
-import GoToConsumptionIcon from '../../components/consumption/GoToConsumptionIcon';
-import PageSubTitle from '../../components/typography/PageSubTitle';
-import PageTitle from '../../components/typography/PageTitle';
-import { CONSTANTS } from '../../constant';
-import { GUIDE_LINKS } from '../../constant/guide-links';
-import { useFavoriteMeter } from '../../context/favoriteMeter';
-import { useFeatureFlags } from '../../context/featureFlag';
-import { useUser } from '../../context/user';
-import { useUserFilter } from '../../context/userFilter';
-import { getRibbonParams } from '../../helpers/topribbon';
-import MainLayout from '../../layouts/MainLayout';
+import { useNavigate } from 'react-router-dom';
+import Table from '../../../components/common/Table';
+import ActionCell from '../../../components/common/Table/ActionCell';
+import { FilterVariant } from '../../../components/common/Table/types';
+import IconButton from '../../../components/common/buttons/IconButton';
+import GoToConsumptionIcon from '../../../components/consumption/GoToConsumptionIcon';
+import PageSubTitle from '../../../components/typography/PageSubTitle';
+import PageTitle from '../../../components/typography/PageTitle';
+import { CONSTANTS } from '../../../constant';
+import { GUIDE_LINKS } from '../../../constant/guide-links';
+import { useFavoriteMeter } from '../../../context/favoriteMeter';
+import { useFeatureFlags } from '../../../context/featureFlag';
+import { useUser } from '../../../context/user';
+import { useUserFilter } from '../../../context/userFilter';
+import { getRibbonParams } from '../../../helpers/topribbon';
+import MainLayout from '../../../layouts/MainLayout';
 
 type ColorMap = {
   [key: string]: string;
@@ -40,6 +45,8 @@ const PERCENTAGE_COLORS: ColorMap = {
   RED: 'text-red-500',
   DEFAULT: 'text-black',
 };
+
+const FEATURE_FLAG_TIMEOUT_MS = 10000;
 
 const Dashboard = () => {
   const { features } = useFeatureFlags();
@@ -66,6 +73,7 @@ const Dashboard = () => {
   const { favoriteMeter } = useFavoriteMeter();
   const { user } = useUser();
   const { t } = useTranslation('dashboard');
+  const navigate = useNavigate();
   const translationBaseRoute = 'table.';
 
   const translationKey =
@@ -397,13 +405,44 @@ const Dashboard = () => {
       sort.direction,
       t,
       user?.language,
+      translationKey,
     ]
   );
+
+  const isFeatureEnabled =
+    user == null
+      ? null
+      : features
+        ? user.userType === UserType.SuperAdmin
+          ? getFeature(features, 'ENABLE_REACT_DASHBOARD_FOR_SUPER_ADMIN')
+          : getFeature(features, 'ENABLE_REACT_DASHBOARD')
+        : null;
+
+  useEffect(() => {
+    if (isFeatureEnabled !== null) return;
+
+    const timeoutId = window.setTimeout(() => {
+      navigate(paths.serverError);
+    }, FEATURE_FLAG_TIMEOUT_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isFeatureEnabled, navigate]);
+
+  if (isFeatureEnabled === false) {
+    window.location.href = VITE_WICKET_BASE_URL + 'dashboard';
+    return null;
+  }
+
+  if (isFeatureEnabled === null) {
+    return <FlashScreen />;
+  }
 
   return (
     <MainLayout
       title={t('sideMenu.dashboard', { ns: 'layout' })}
-      topRibbon={{
+      topRibbonOptions={{
         location: {
           multiple: hasMultiselectorEnabled,
         },
