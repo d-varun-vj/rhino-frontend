@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.24.1...webapp-v1.25.0) (2026-03-19)
+
+
+### Features
+
+* Asset dashboard base setup [PRD-3692] ([#244](https://github.com/Rhino-Energy/rhino-frontend/issues/244)) ([038c585](https://github.com/Rhino-Energy/rhino-frontend/commit/038c5852b141168c96b9d15c21fca46ea6f7dd01))
+
 ## [1.24.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.24.0...webapp-v1.24.1) (2026-03-12)
 
 
