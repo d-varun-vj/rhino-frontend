@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.25.0...webapp-v1.25.1) (2026-03-23)
+
+
+### Bug Fixes
+
+* The periodic alarm 'select measurements' table filtering is broken [PRD-3985] ([#248](https://github.com/Rhino-Energy/rhino-frontend/issues/248)) ([7e39406](https://github.com/Rhino-Energy/rhino-frontend/commit/7e39406c3de888a71889fe4062ef91688d5b388f))
+
 ## [1.25.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.24.1...webapp-v1.25.0) (2026-03-19)
 
 
