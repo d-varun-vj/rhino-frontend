@@ -157,7 +157,7 @@ const TopRibbon = ({
           onSelect={onFilterChange}
           disableDropdown={disableDropdown || client?.disabled}
           clients={clients}
-          selectedClients={client?.disabled ? null : selectedClients}
+          selectedClients={selectedClients}
         />
       ),
       dataTestId: 'ribbon-client-label',
@@ -171,9 +171,7 @@ const TopRibbon = ({
                 onSelect={onFilterChange}
                 locations={locations}
                 disabled={isComboboxDisabled || location?.disabled}
-                selectedLocations={
-                  location?.disabled ? null : selectedLocations
-                }
+                selectedLocations={selectedLocations}
                 multiple={location?.multiple}
               />
             ),
@@ -190,7 +188,7 @@ const TopRibbon = ({
                 onSelect={onFilterChange}
                 locations={locations}
                 disabled={isComboboxDisabled || group?.disabled}
-                selectedGroups={location?.disabled ? null : selectedGroups}
+                selectedGroups={selectedGroups}
                 selectedLocations={selectedLocations}
                 multiple={group?.multiple}
               />

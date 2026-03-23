@@ -11,7 +11,7 @@ import { FilterVariant } from '../types';
 const Filter = <T,>({
   column,
   onFilterChange,
-  defaultFilterValue = null,
+  defaultFilterValue = undefined,
 }: {
   column: Column<T, unknown>;
   onFilterChange: (
@@ -43,6 +43,10 @@ const Filter = <T,>({
   );
 
   useEffect(() => {
+    if (defaultFilterValue === undefined) {
+      return;
+    }
+
     if (filterVariant === FilterVariant.SELECT) {
       setSelectValue(defaultFilterValue ?? '');
       column.setFilterValue(defaultFilterValue || null);

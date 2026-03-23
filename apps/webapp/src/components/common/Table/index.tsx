@@ -262,12 +262,13 @@ const Table = <T,>({
                                     column={header.column}
                                     onFilterChange={handleFilterChange}
                                     defaultFilterValue={
-                                      header.column.columnDef.meta?.filterKey
-                                        ? activeFilters?.[
+                                      header.column.columnDef.meta?.filterKey &&
+                                      activeFilters !== undefined
+                                        ? activeFilters[
                                             header.column.columnDef.meta
                                               .filterKey
                                           ] ?? null
-                                        : null
+                                        : undefined
                                     }
                                   />
                                 </div>
