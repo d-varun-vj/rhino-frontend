@@ -126,7 +126,8 @@
       "last30Days": "Ostatnie 30 dni",
       "thisMonth": "Ten miesiąc",
       "lastMonth": "Poprzedni miesiąc"
-    }
+    },
+    "chooseDate": "Wybierz zakres dat"
   },
   "auditInfo": {
     "author": "Autor",

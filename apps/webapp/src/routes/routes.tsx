@@ -3,6 +3,7 @@ import NotFound from '../pages/common/NotFound';
 import ServerError from '../pages/common/ServerError';
 import Consumption from '../pages/Consumption';
 import AssetDashboard from '../pages/dashboards/AssetDashboard';
+import { SelectedDateRangeProvider } from '../pages/dashboards/AssetDashboard/context/selectedDateRange/selected-date-range-provider';
 import Dashboard from '../pages/dashboards/Dashboard';
 import PeriodicAlarm from '../pages/PeriodicAlarm';
 import CreatePeriodicAlarm from '../pages/PeriodicAlarm/Create';
@@ -17,7 +18,14 @@ export const ROUTES: { path: string; element: JSX.Element }[] = [
 
   // Pages
   { path: paths.dashboards.dashboard, element: <Dashboard /> },
-  { path: paths.dashboards.asset, element: <AssetDashboard /> },
+  {
+    path: paths.dashboards.asset,
+    element: (
+      <SelectedDateRangeProvider>
+        <AssetDashboard />
+      </SelectedDateRangeProvider>
+    ),
+  },
   { path: paths.consumption, element: <Consumption /> },
   { path: paths.alarm.periodic.base, element: <PeriodicAlarm /> },
   { path: paths.alarm.periodic.create, element: <CreatePeriodicAlarm /> },

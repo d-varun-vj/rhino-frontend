@@ -27,5 +27,6 @@
     "languageChanged": {
       "success": "Zmieniono język"
     }
-  }
+  },
+  "internalServerError": "Coś poszło nie tak, spróbuj ponownie później."
 }

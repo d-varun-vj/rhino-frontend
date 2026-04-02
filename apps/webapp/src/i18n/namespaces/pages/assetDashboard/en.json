@@ -8,5 +8,21 @@
     "localisation": "Localisation",
     "group": "Group",
     "measurement": "Measurement"
-  }
+  },
+  "common": {
+    "mediums": {
+      "electricity": "Electricity",
+      "gas": "Gas",
+      "water": "Water",
+      "heat": "Heat",
+      "cooling": "Cooling",
+      "co2": "CO2"
+    },
+    "noData": "No data available",
+    "selectState": {
+      "withClient": "Select a client and date range",
+      "withoutClient": "Select a date range"
+    }
+  },
+  "totalConsumptionCard": "Total consumption"
 }

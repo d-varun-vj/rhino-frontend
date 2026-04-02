@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FaChartBar } from 'react-icons/fa';
 
 import { convertToLocalTime, Sort } from '@rhino/utils';
-import FlashScreen from 'apps/webapp/src/components/common/FlashScreen';
+import SplashScreen from 'apps/webapp/src/components/common/SplashScreen';
 import { getFeature } from 'apps/webapp/src/helpers/featureFlag';
 import { paths } from 'apps/webapp/src/routes/paths';
 import { format } from 'date-fns';
@@ -436,7 +436,7 @@ const Dashboard = () => {
   }
 
   if (isFeatureEnabled === null) {
-    return <FlashScreen />;
+    return <SplashScreen />;
   }
 
   return (

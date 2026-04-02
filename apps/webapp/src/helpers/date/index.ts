@@ -52,7 +52,7 @@ export const getDateRangePresets = ({
     {
       value: [
         today.subtract(1, 'month').startOf('month').format('YYYY-MM-DD'),
-        today.subtract(1, 'month').endOf('month').format('YYYY-MM-DD'),
+        today.startOf('month').format('YYYY-MM-DD'),
       ],
       label: t('datePicker.presets.lastMonth'),
     },

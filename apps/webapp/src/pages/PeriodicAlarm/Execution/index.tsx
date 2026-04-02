@@ -143,10 +143,14 @@ const Execution = ({ modalProps, alarmConfig }: ExecutionProps) => {
               onChange={(val) => {
                 setFilters((prev: ExecutionFilter) => ({
                   ...prev,
-                  startDate: val.startDate
-                    ? val.startDate + ' ' + val.startTime
-                    : null,
-                  endDate: val.endDate ? val.endDate + ' ' + val.endTime : null,
+                  startDate:
+                    val?.startDate && val?.startTime
+                      ? val.startDate + ' ' + val.startTime
+                      : null,
+                  endDate:
+                    val?.endDate && val?.endTime
+                      ? val.endDate + ' ' + val.endTime
+                      : null,
                 }));
               }}
               size="xs"

@@ -1,5 +1,5 @@
 import rhinoLogo from '../../../assets/logo-small.svg';
-const FlashScreen = () => {
+const SplashScreen = () => {
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="flash-blink">
@@ -13,4 +13,4 @@ const FlashScreen = () => {
   );
 };
 
-export default FlashScreen;
+export default SplashScreen;

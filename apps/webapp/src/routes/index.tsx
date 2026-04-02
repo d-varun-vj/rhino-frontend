@@ -2,7 +2,7 @@ import { VITE_API_BASE_URL, initHttpClient } from '@rhino/apis';
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import FlashScreen from '../components/common/FlashScreen';
+import SplashScreen from '../components/common/SplashScreen';
 import message from '../components/notifier';
 import { ROUTES } from './routes';
 
@@ -20,7 +20,7 @@ const MainRoute = () => {
   }, []);
 
   if (isFullScreenLoading) {
-    return <FlashScreen />;
+    return <SplashScreen />;
   }
 
   return (

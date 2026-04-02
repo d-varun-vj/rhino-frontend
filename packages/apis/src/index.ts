@@ -1,3 +1,4 @@
+export * from './AssetDashboard';
 export * from './Clients';
 export * from './Common';
 export * from './constants';

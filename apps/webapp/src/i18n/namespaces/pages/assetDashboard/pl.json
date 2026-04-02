@@ -8,5 +8,21 @@
     "localisation": "Lokalizacja",
     "group": "Grupa",
     "measurement": "Liczniki"
-  }
+  },
+  "common": {
+    "mediums": {
+      "electricity": "Energia elektryczna",
+      "gas": "Gaz",
+      "water": "Woda",
+      "heat": "Ogrzewanie",
+      "cooling": "Chłodzenie",
+      "co2": "CO2"
+    },
+    "noData": "Brak danych",
+    "selectState": {
+      "withClient": "Wybierz klienta i zakres dat",
+      "withoutClient": "Wybierz zakres dat"
+    }
+  },
+  "totalConsumptionCard": "Całkowite zużycie"
 }

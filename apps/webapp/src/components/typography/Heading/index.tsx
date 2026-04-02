@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 type Heading = {
   content: string;
-  variant?: 'sm' | 'lg' | 'xl';
+  variant?: 'sm' | 'lg' | 'xl' | '2xl';
   font?:
     | 'thin'
     | 'extralight'
@@ -32,6 +32,7 @@ const Heading = ({
           'text-lg': variant == 'lg',
           'text-sm': variant == 'sm',
           'text-xl': variant == 'xl',
+          'text-2xl': variant == '2xl',
         }
       )}
     >

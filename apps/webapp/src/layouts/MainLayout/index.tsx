@@ -2,7 +2,7 @@ import { Flag } from '@rhino/apis';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import FlashScreen from '../../components/common/FlashScreen';
+import SplashScreen from '../../components/common/SplashScreen';
 import SideBar from '../../components/layout/Sidebar';
 import TopRibbon, { TopRibbonOptions } from '../../components/layout/TopRibbon';
 import { useFeatureFlags } from '../../context/featureFlag';
@@ -73,7 +73,7 @@ const MainLayout = ({
   if (isFeatureEnabled === null) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
-        <FlashScreen />
+        <SplashScreen />
       </div>
     );
   }
