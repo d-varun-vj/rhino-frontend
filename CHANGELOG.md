@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.25.1...webapp-v1.26.0) (2026-04-02)
+
+
+### Features
+
+* Total consumption cards section [PRD-3693] ([#255](https://github.com/Rhino-Energy/rhino-frontend/issues/255)) ([77731ca](https://github.com/Rhino-Energy/rhino-frontend/commit/77731cac015bcb35a4bb2cb4cf41b89e5e9ef2ee))
+
 ## [1.25.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.25.0...webapp-v1.25.1) (2026-03-23)
 
 
