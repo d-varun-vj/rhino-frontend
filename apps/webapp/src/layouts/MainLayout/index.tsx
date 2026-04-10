@@ -1,10 +1,11 @@
 import { Flag } from '@rhino/apis';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import SplashScreen from '../../components/common/SplashScreen';
 import SideBar from '../../components/layout/Sidebar';
 import TopRibbon, { TopRibbonOptions } from '../../components/layout/TopRibbon';
+import { FEATURE_FLAG_TIMEOUT_MS } from '../../constant';
 import { useFeatureFlags } from '../../context/featureFlag';
 import { useUser } from '../../context/user';
 import { useUserFilter } from '../../context/userFilter';
@@ -29,33 +30,43 @@ const MainLayout = ({
   children,
   title,
   topRibbonOptions,
-  pageOptions: pageOptions = { hideTopRibbon: false },
+  pageOptions = { hideTopRibbon: false },
 }: MainLayoutProps) => {
   const { user } = useUser();
   const { clients, setClients } = useUserFilter();
   const { features } = useFeatureFlags();
   const navigate = useNavigate();
 
-  const isFeatureEnabled = pageOptions?.featureFlag
-    ? features
-      ? getFeature(features, pageOptions.featureFlag)
-      : null
-    : true;
+  const isFeatureEnabled = useMemo(() => {
+    if (!user) return null;
+    if (!pageOptions?.featureFlag) return true;
+    if (!features) return null;
+    return getFeature(features, pageOptions.featureFlag);
+  }, [user, features, pageOptions?.featureFlag]);
+
+  useEffect(() => {
+    if (!user || isFeatureEnabled !== null) return;
+
+    const timeoutId = window.setTimeout(() => {
+      navigate(paths.serverError);
+    }, FEATURE_FLAG_TIMEOUT_MS);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [user, isFeatureEnabled, navigate]);
+
+  useEffect(() => {
+    if (isFeatureEnabled === false) {
+      navigate(paths.notFound, { replace: true });
+    }
+  }, [isFeatureEnabled, navigate]);
 
   useEffect(() => {
     if (!user || !shouldSetInitialClient(user)) return;
-
-    const isClientAlreadySet = clients && clients.length > 0;
-    if (isClientAlreadySet) return;
+    if (clients && clients.length > 0) return;
 
     setClients(
       user.clients
-        ? [
-            {
-              name: user.clients[0].name,
-              uuid: user.clients[0].uuid,
-            },
-          ]
+        ? [{ name: user.clients[0].name, uuid: user.clients[0].uuid }]
         : []
     );
   }, [user, clients, setClients]);
@@ -63,12 +74,6 @@ const MainLayout = ({
   useEffect(() => {
     document.title = title;
   }, [title]);
-
-  useEffect(() => {
-    if (isFeatureEnabled === false) {
-      navigate(paths.notFound, { replace: true });
-    }
-  }, [isFeatureEnabled, navigate]);
 
   if (isFeatureEnabled === null) {
     return (
@@ -83,12 +88,8 @@ const MainLayout = ({
   return (
     <div className="flex items-stretch flex-auto w-full min-h-screen">
       <ToastContainer theme="colored" />
-      <SideBar
-        options={{
-          customLabel: pageOptions.dynamicSideBarLabel,
-        }}
-      />
-      <div className="bg-rhino-white flex items-stretch flex-auto p-0 basis-full flex-col w-0 max-w-full relative ">
+      <SideBar options={{ customLabel: pageOptions.dynamicSideBarLabel }} />
+      <div className="bg-rhino-white flex items-stretch flex-auto p-0 basis-full flex-col w-0 max-w-full relative">
         {!pageOptions?.hideTopRibbon && <TopRibbon {...topRibbonOptions} />}
         <div className="py-[1.5rem] px-[2rem]">{children}</div>
       </div>

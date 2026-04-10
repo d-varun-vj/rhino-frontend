@@ -25,7 +25,7 @@ import IconButton from '../../../components/common/buttons/IconButton';
 import GoToConsumptionIcon from '../../../components/consumption/GoToConsumptionIcon';
 import PageSubTitle from '../../../components/typography/PageSubTitle';
 import PageTitle from '../../../components/typography/PageTitle';
-import { CONSTANTS } from '../../../constant';
+import { CONSTANTS, FEATURE_FLAG_TIMEOUT_MS } from '../../../constant';
 import { GUIDE_LINKS } from '../../../constant/guide-links';
 import { useFavoriteMeter } from '../../../context/favoriteMeter';
 import { useFeatureFlags } from '../../../context/featureFlag';
@@ -45,8 +45,6 @@ const PERCENTAGE_COLORS: ColorMap = {
   RED: 'text-red-500',
   DEFAULT: 'text-black',
 };
-
-const FEATURE_FLAG_TIMEOUT_MS = 10000;
 
 const Dashboard = () => {
   const { features } = useFeatureFlags();

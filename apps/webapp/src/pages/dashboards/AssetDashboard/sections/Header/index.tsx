@@ -4,17 +4,29 @@ import CustomBreadcrumbs, {
 import DateRangeWithTimePickerField from 'apps/webapp/src/components/common/datetime/DateRangeWithTimePickerField';
 import PageTitle from 'apps/webapp/src/components/typography/PageTitle';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
+import { FilterData } from 'apps/webapp/src/context/userFilter/user-filter-context';
 import { useTranslation } from 'react-i18next';
 import { FaHome } from 'react-icons/fa';
 import { useSelectedDateRange } from '../../context/selectedDateRange';
 
 const Header = () => {
-  const { clients } = useUserFilter();
+  const { clients, locations, groups, setLocations, setGroups } =
+    useUserFilter();
   const { t } = useTranslation('assetDashboard');
   const { dateRange: selectedDateRange, setDateRange: onSelectDate } =
     useSelectedDateRange();
 
   const isClientSelected = !!(clients && clients.length > 0);
+  const isLocationSelected = !!(locations && locations.length > 0);
+  const isGroupSelected = !!(groups && groups.length > 0);
+
+  const resolveTitle = (data: FilterData[]) => {
+    if (data.length <= 1) {
+      return data[0].name;
+    }
+
+    return data[0].name + ` ...+${data.length - 1}`;
+  };
 
   const breadcrumbsItems: BreadcrumbsItem[] = [
     {
@@ -23,23 +35,46 @@ const Header = () => {
       disabled: false,
     },
     {
-      key: 'portfolio',
+      key: 'clients',
       title: isClientSelected ? clients[0].name : t('breadCrumbs.client'),
       disabled: !isClientSelected,
     },
     {
-      key: 'asset',
-      title: t('breadCrumbs.localisation'),
+      key: 'locations',
+      title: isLocationSelected
+        ? resolveTitle(locations)
+        : t('breadCrumbs.localisation'),
+      disabled: !isLocationSelected,
+      popoverData: locations?.map((loc) => loc.name),
     },
     {
-      key: 'group',
-      title: t('breadCrumbs.group'),
+      key: 'groups',
+      title: isGroupSelected ? resolveTitle(groups) : t('breadCrumbs.group'),
+      disabled: !isGroupSelected,
+      popoverData: groups?.map((group) => group.name),
     },
     {
-      key: 'measurement',
+      key: 'measurements',
       title: t('breadCrumbs.measurement'),
     },
   ];
+
+  const handleBreadcrumbsItemClick = (key: string) => {
+    switch (key) {
+      case 'home':
+      case 'clients':
+        setLocations([]);
+        setGroups([]);
+        break;
+      case 'locations':
+        setGroups([]);
+        break;
+      case 'groups':
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <header className="pt-4 px-2 shadow-[0_4px_2px_-2px_rgba(0,0,0,0.05)] rounded mb-5">
@@ -48,9 +83,7 @@ const Header = () => {
           <CustomBreadcrumbs
             items={breadcrumbsItems}
             separatorMargin={'sm'}
-            onItemClick={(key) => {
-              console.log(key);
-            }}
+            onItemClick={handleBreadcrumbsItemClick}
           />
           <PageTitle title={t('mainHeader.portfolio')} className="!mb-0" />
         </div>

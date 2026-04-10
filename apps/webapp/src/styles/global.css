@@ -131,6 +131,21 @@ tbody tr:nth-child(odd) td:last-child {
   cursor: grabbing;
 }
 
+/* Thin scrollbar variant for compact popovers */
+.custom-thin-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.custom-thin-scrollbar::-webkit-scrollbar-track {
+  background: '#f1f1f1';
+  cursor: pointer;
+}
+
+.custom-thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border: 3px solid transparent;
+}
+
 /* Subtle blink for the flash screen logo */
 @keyframes flash-blink {
   0%,

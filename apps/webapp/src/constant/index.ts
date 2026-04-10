@@ -7,3 +7,5 @@ export const CONSTANTS = {
   },
   SELECT: { DEFAULT: 'select', ALL_OPTION: 'all' },
 };
+
+export const FEATURE_FLAG_TIMEOUT_MS = 10000;
