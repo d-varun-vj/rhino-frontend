@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.26.0...webapp-v1.27.0) (2026-04-10)
+
+
+### Features
+
+* Add user role visibility and breadcrumb functionalities for asset dashboard [PRD-4027] ([#257](https://github.com/Rhino-Energy/rhino-frontend/issues/257)) ([#258](https://github.com/Rhino-Energy/rhino-frontend/issues/258)) ([d5e6ab7](https://github.com/Rhino-Energy/rhino-frontend/commit/d5e6ab794a68f19b3df95d07616e389aabe94b56))
+
 ## [1.26.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.25.1...webapp-v1.26.0) (2026-04-02)
 
 
