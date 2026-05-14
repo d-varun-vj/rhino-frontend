@@ -291,14 +291,16 @@ const ConsumptionTable = () => {
     ) => {
       if (checked) {
         const currentlyVisible = tableContext
-          .getRowModel()
+          .getCoreRowModel()
           .rows.map((row) => row.original);
         const map = new Map(selectedRows.map((m) => [m.assetUuid, m]));
         currentlyVisible.forEach((m) => map.set(m.assetUuid, m));
         setSelectedRows(Array.from(map.values()));
       } else {
         const currentlyVisibleIds = new Set(
-          tableContext.getRowModel().rows.map((row) => row.original.assetUuid)
+          tableContext
+            .getCoreRowModel()
+            .rows.map((row) => row.original.assetUuid)
         );
         setSelectedRows(
           selectedRows.filter((m) => !currentlyVisibleIds.has(m.assetUuid))
@@ -309,7 +311,7 @@ const ConsumptionTable = () => {
     const isAllVisibleSelected = (
       tableContext: Table<AssetConsumptionTableData>
     ) => {
-      const visible = tableContext.getRowModel().rows;
+      const visible = tableContext.getCoreRowModel().rows;
       return (
         visible.length > 0 &&
         visible.every((row) =>
@@ -395,6 +397,7 @@ const ConsumptionTable = () => {
     onSortSelect: handleSortSelect,
     enableNoSortState: false,
   });
+  const tableRows = table.getCoreRowModel().rows;
   const hasActiveSearch = searchValue.toString().trim().length > 0;
   const hasNoRows = (assetConsumptionTableData?.data.length ?? 0) === 0;
 
@@ -587,7 +590,7 @@ const ConsumptionTable = () => {
                   </td>
                 </tr>
               ) : (
-                table.getRowModel().rows.map((row) => (
+                tableRows.map((row) => (
                   <tr
                     key={row.id}
                     className="border-b border-gray-200 text-sm last:border-0"

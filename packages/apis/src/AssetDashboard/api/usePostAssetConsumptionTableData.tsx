@@ -13,9 +13,12 @@ export const usePostAssetConsumptionTableData = () => {
       body: AssetDashboardFilter;
       meta: { page: number | null; size: number | null; sort: Sort };
     }) => {
+      const hasPage = page !== null && page !== undefined;
+      const hasSize = size !== null && size !== undefined;
+
       const queryParams = {
-        ...(!!page && { page }),
-        ...(!!size && { size }),
+        ...(hasPage && { page }),
+        ...(hasSize && { size }),
         ...((sort.field || sort.direction) && {
           sort:
             sort.field && sort.direction
