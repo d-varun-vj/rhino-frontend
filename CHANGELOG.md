@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.27.0...webapp-v1.28.0) (2026-05-14)
+
+
+### Features
+
+* Asset table with search functionality [PRD-3694] ([#265](https://github.com/Rhino-Energy/rhino-frontend/issues/265)) ([6c39264](https://github.com/Rhino-Energy/rhino-frontend/commit/6c3926422bdff1533cad6a4eb6a012d38827ffef))
+
 ## [1.27.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.26.0...webapp-v1.27.0) (2026-04-10)
 
 
