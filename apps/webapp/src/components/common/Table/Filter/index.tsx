@@ -4,7 +4,6 @@ import { Column } from '@tanstack/react-table';
 import { CONSTANTS } from 'apps/webapp/src/constant';
 import { useTranslation } from 'react-i18next';
 import CustomComboBox from '../../comboboxes/CustomComboBox';
-import CheckBox from '../../input/Checkbox';
 import DebouncedTextField from '../../input/TextField/DebouncedTextField';
 import { FilterVariant } from '../types';
 
@@ -108,9 +107,11 @@ const Filter = <T,>({
 
     return (
       <div className="flex items-center ml-3 mt-2 w-fit min-w-8">
-        <CheckBox
+        <input
+          type="checkbox"
           checked={selectAllChecked || false}
           onChange={(e) => onSelectAll?.(e.target.checked)}
+          className="w-4 h-4 cursor-pointer accent-rhino-indigo-blue rounded border-gray-300"
         />
       </div>
     );

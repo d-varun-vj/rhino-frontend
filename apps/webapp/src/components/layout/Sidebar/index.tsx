@@ -129,7 +129,7 @@ const SideBar = ({ options }: { options?: SideBarOptions }) => {
 
       {/* LOGO */}
       <div
-        className={`${minimize.isMinimize ? 'opacity-0' : 'opacity-100'} flex h-[38px] my-[1rem] justify-center flex-row `}
+        className={`${minimize.isMinimize ? 'opacity-0' : 'opacity-100'} flex my-[1.5rem] justify-center flex-row `}
       >
         <img
           src={
@@ -138,7 +138,7 @@ const SideBar = ({ options }: { options?: SideBarOptions }) => {
               : rhinoLogo
           }
           alt="Rhino Logo"
-          className="object-contain max-w-full h-auto"
+          className="object-contain max-w-full max-h-[38px]"
         />
       </div>
 

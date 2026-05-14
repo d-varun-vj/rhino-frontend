@@ -5,7 +5,7 @@
   },
   "breadCrumbs": {
     "client": "Client",
-    "localisation": "Localisation",
+    "location": "Location",
     "group": "Group",
     "measurement": "Measurement"
   },
@@ -18,10 +18,21 @@
       "cooling": "Cooling",
       "co2": "CO2"
     },
+    "assetTypes": {
+      "client": "Client",
+      "location": "Location",
+      "group": "Group",
+      "measurement": "Measurement"
+    },
     "noData": "No data available",
     "selectState": {
       "withClient": "Select a client and date range",
       "withoutClient": "Select a date range"
+    },
+    "search": {
+      "location": "Search locations",
+      "group": "Search groups",
+      "measurement": "Search measurements"
     }
   },
   "totalConsumptionCard": "Total consumption"

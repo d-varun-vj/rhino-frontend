@@ -1,4 +1,4 @@
-import { AssetDashboardMedium } from '@rhino/apis';
+import { AssetDashboardMedium, AssetType } from '@rhino/apis';
 import { TopRibbonOptions } from 'apps/webapp/src/components/layout/TopRibbon';
 import { CiCloud, CiTempHigh } from 'react-icons/ci';
 import { FiWind } from 'react-icons/fi';
@@ -59,4 +59,17 @@ export const T_MEDIUM_LABELS: Record<AssetDashboardMedium, string> = {
   HEAT: 'common.mediums.heat',
   COOLING: 'common.mediums.cooling',
   CO2: 'common.mediums.co2',
+};
+
+export const T_ASSET_LABELS: Record<AssetType, string> = {
+  CLIENT: 'common.assetTypes.client',
+  LOCATION: 'common.assetTypes.location',
+  GROUP: 'common.assetTypes.group',
+  MEASUREMENT: 'common.assetTypes.measurement',
+};
+
+export const T_ASSET_SEARCH: Partial<Record<AssetType, string>> = {
+  LOCATION: 'common.search.location',
+  GROUP: 'common.search.group',
+  MEASUREMENT: 'common.search.measurement',
 };

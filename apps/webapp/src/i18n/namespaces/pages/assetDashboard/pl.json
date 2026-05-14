@@ -5,7 +5,7 @@
   },
   "breadCrumbs": {
     "client": "Klient",
-    "localisation": "Lokalizacja",
+    "location": "Lokalizacja",
     "group": "Grupa",
     "measurement": "Liczniki"
   },
@@ -18,10 +18,21 @@
       "cooling": "Chłodzenie",
       "co2": "CO2"
     },
+    "assetTypes": {
+      "client": "Klient",
+      "location": "Lokalizacja",
+      "group": "Grupa",
+      "measurement": "Licznik"
+    },
     "noData": "Brak danych",
     "selectState": {
       "withClient": "Wybierz klienta i zakres dat",
       "withoutClient": "Wybierz zakres dat"
+    },
+    "search": {
+      "location": "Szukaj lokalizacji",
+      "group": "Szukaj grupy",
+      "measurement": "Szukaj liczniki"
     }
   },
   "totalConsumptionCard": "Całkowite zużycie"

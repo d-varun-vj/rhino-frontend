@@ -4,12 +4,13 @@ import TextField from '..';
 const DebouncedTextField = ({
   value: initialValue,
   onChange,
-  debounce = 500,
+  debounce = 700,
+  ...props
 }: {
   value: string | number;
   onChange: (value: string | number) => void;
   debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) => {
+} & Omit<React.ComponentProps<typeof TextField>, 'value' | 'onChange'>) => {
   const [value, setValue] = useState(initialValue);
   const onChangeRef = useRef(onChange);
   const shouldEmitRef = useRef(false);
@@ -37,6 +38,7 @@ const DebouncedTextField = ({
 
   return (
     <TextField
+      {...props}
       value={value}
       onChange={(e) => {
         shouldEmitRef.current = true;

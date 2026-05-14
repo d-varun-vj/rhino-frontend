@@ -14,9 +14,10 @@
   --color-rhino-energy-green-light: #66e3a0;
   --color-rhino-yellow: oklch(79.5% 0.184 86.047);
   --color-rhino-red: #b91c1b;
+  --color-grey-light: #cbd5e1;
 
   /* Asset Dashboard */
-  --color-medium-electricity: #1c4670;
+  --color-medium-electricity: #00cf60;
   --color-medium-gas: #1c4670;
   --color-medium-water: #278ab0;
   --color-medium-heat: #f57c00;

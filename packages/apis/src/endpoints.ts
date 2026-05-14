@@ -17,6 +17,7 @@ const API_URLS = {
 
   getAssetDashboardTotalConsumptionCardData: () =>
     `asset-dashboard/total-consumption`,
+  getAssetTotalConsumptionTableData: () => `asset-dashboard/table`,
 
   // FavoriteMeter
   getAllFavoriteMeters: () => `favoritemeter`,

@@ -62,14 +62,6 @@ select:disabled {
   cursor: crosshair;
 }
 
-tbody tr:nth-child(even) td:last-child {
-  background-color: white;
-}
-
-tbody tr:nth-child(odd) td:last-child {
-  background-color: #fafafb;
-}
-
 /* Custom Modal Styles */
 .modal-title-custom {
   font-size: 2rem !important;

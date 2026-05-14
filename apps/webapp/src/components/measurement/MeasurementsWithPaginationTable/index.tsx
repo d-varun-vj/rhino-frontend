@@ -7,13 +7,11 @@ import {
 } from '@rhino/apis';
 import React, { useCallback, useState } from 'react';
 
-import { Radio } from '@mantine/core';
 import { Sort } from '@rhino/utils';
 import { ColumnDef } from '@tanstack/react-table';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../../../context/user';
-import CheckBox from '../../common/input/Checkbox';
 import Table from '../../common/Table';
 import { FilterVariant } from '../../common/Table/types';
 import { getTranslationOptions } from '../helper';
@@ -182,22 +180,29 @@ const MeasurementsWithPaginationTable = ({
         cell: ({ row }) => {
           if (selectionMode === 'single') {
             return (
-              <Radio
-                checked={isSelected(row.original)}
-                onChange={(e) =>
-                  handleRowSelect(row.original, e.target.checked)
-                }
-                color="var(--color-rhino-indigo-blue-highlight)"
-              />
+              <div className="flex h-full items-center">
+                <input
+                  type="radio"
+                  checked={isSelected(row.original)}
+                  onChange={(e) =>
+                    handleRowSelect(row.original, e.target.checked)
+                  }
+                  className="w-4 h-4 cursor-pointer accent-rhino-indigo-blue rounded-full border-gray-300"
+                />
+              </div>
             );
           } else {
             return (
-              <CheckBox
-                checked={isSelected(row.original)}
-                onChange={(e) =>
-                  handleRowSelect(row.original, e.target.checked)
-                }
-              />
+              <div className="flex h-full items-center">
+                <input
+                  type="checkbox"
+                  checked={isSelected(row.original)}
+                  onChange={(e) =>
+                    handleRowSelect(row.original, e.target.checked)
+                  }
+                  className="w-4 h-4 cursor-pointer accent-rhino-indigo-blue rounded border-gray-300"
+                />
+              </div>
             );
           }
         },

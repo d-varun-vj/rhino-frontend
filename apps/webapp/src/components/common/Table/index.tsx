@@ -1,26 +1,15 @@
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  Header,
-  RowData,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import React, { useCallback, useState } from 'react';
+import { RowData, flexRender } from '@tanstack/react-table';
+import React from 'react';
 
-import { SortDirection } from '@rhino/utils';
-import { ColumnMeta } from '@tanstack/table-core';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { CONSTANTS } from '../../../constant';
 import CustomLoader from '../Loader';
-import Filter from './Filter';
 import TableFooter from './Footer';
 import { FilterVariant } from './types';
+
+import { DefaultTableHeaderCell } from './DefaultTableHeaderCell';
+import { TableLogicProps, useTableLogic } from './hooks/useTableLogic';
 
 interface CustomColumnMeta {
   selectionOptions?: { label: string; value: string }[];
@@ -43,79 +32,14 @@ declare module '@tanstack/react-table' {
   }
 }
 
-export type FooterType = {
-  totalCount: number;
-  currentPage: number;
-  totalPages?: number;
-  setPageSize: React.Dispatch<React.SetStateAction<number>>;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  pageSize: number;
-};
-
-type TableProps<T> = {
-  columns: ColumnDef<T, unknown>[];
-  data: T[];
-  footer?: FooterType;
+type TableProps<T> = TableLogicProps<T> & {
   variant?: 'default' | 'compact' | 'minimal';
   isLoading?: boolean;
   extraStyles?: string;
   emptyText?: string;
   size?: 'sm';
   textNowarp?: boolean;
-  onSortSelect?: (field: string, direction: string) => void;
-  onFilterChange?: (
-    val: string | null,
-    field: string,
-    variant: FilterVariant | null
-  ) => void;
-  activeFilters?: Record<string, string | boolean | null>;
   dataTestIdPrefix?: string;
-};
-
-const getSortDirection = <T,>(
-  meta?: ColumnMeta<T, unknown>
-): SortDirection | '' => {
-  switch (meta?.sortDirection) {
-    case SortDirection.ASC:
-      return SortDirection.DESC;
-    case SortDirection.DESC:
-      return '';
-    default:
-      return SortDirection.ASC;
-  }
-};
-
-const handleSortClick = <T,>(
-  header: Header<T, unknown>,
-  onSortSelect?: (field: string, direction: SortDirection | string) => void
-) => {
-  const sortKey = header.column.columnDef?.meta?.sortKey;
-  if (!onSortSelect || sortKey === undefined || sortKey === null) return;
-
-  onSortSelect(sortKey, getSortDirection(header.column.columnDef?.meta));
-};
-
-const getSortIndicator = (
-  meta?: {
-    sortDirection?: SortDirection | string;
-    sortKey: string | null | undefined;
-  },
-  selectedSortKey?: string | null
-): string => {
-  if (!meta?.sortDirection) {
-    return CONSTANTS.sortIndicator.noSort;
-  }
-
-  const direction = meta.sortDirection as SortDirection;
-  if (meta.sortKey === selectedSortKey) {
-    switch (direction) {
-      case SortDirection.ASC:
-        return CONSTANTS.sortIndicator.asc;
-      case SortDirection.DESC:
-        return CONSTANTS.sortIndicator.desc;
-    }
-  }
-  return CONSTANTS.sortIndicator.noSort;
 };
 
 const Table = <T,>({
@@ -132,43 +56,19 @@ const Table = <T,>({
   onFilterChange,
   activeFilters,
   dataTestIdPrefix,
+  enableNoSortState = true,
 }: TableProps<T>) => {
   const { t } = useTranslation();
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [selectedSortKey, setSelectedSortKey] = useState<string | null>(null);
 
-  const table = useReactTable({
-    data,
-    columns,
-    filterFns: {},
-    state: {
-      columnFilters,
-      pagination: {
-        pageIndex: 0,
-        pageSize: footer?.pageSize ?? 5,
-      },
-    },
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
-
-  const handleFilterChange = useCallback(
-    (val: string | null, field: string, variant: FilterVariant | null) => {
-      if (footer) {
-        footer.setCurrentPage(0);
-      }
-
-      if (onFilterChange) {
-        onFilterChange(val?.trim() ?? null, field, variant);
-      }
-    },
-    [onFilterChange, footer]
-  );
+  const { table, selectedSortKey, handleSortChange, handleFilterChange } =
+    useTableLogic({
+      columns,
+      data,
+      footer,
+      onSortSelect,
+      onFilterChange,
+      enableNoSortState,
+    });
 
   return (
     <div className="overflow-hidden relative w-full flex flex-col">
@@ -187,96 +87,18 @@ const Table = <T,>({
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header, index) => {
                     return (
-                      <th
+                      <DefaultTableHeaderCell
                         key={header.id}
-                        colSpan={header.colSpan}
-                        className={clsx(
-                          `font-thin align-top pr-1.5 w-fit ${header.column.columnDef.meta?.styles?.maxWidth} ${header.column.columnDef.meta?.styles?.minWidth ?? 'min-w-32'}`,
-                          {
-                            'sticky bg-rhino-white -right-5 pl-2 z-10':
-                              header.id === CONSTANTS.action,
-                            '!w-8 !min-w-0':
-                              header.id === (FilterVariant.SELECT as string),
-                            'text-nowrap w-auto': textNowarp,
-                            'first:pl-[.7rem]': variant === 'compact',
-                            'min-w-min text-nowrap':
-                              variant === 'compact' || variant === 'minimal',
-                          }
-                        )}
-                      >
-                        {header.isPlaceholder ? null : (
-                          <div className="flex flex-col justify-end w-full ">
-                            <div
-                              {...{
-                                className: `${clsx(
-                                  'select-none text-rhino-indigo-blue flex text-[13px] pr-[1.2rem] whitespace-wrap gap-2 justify-start',
-                                  {
-                                    'min-h-[50px] cursor-pointer':
-                                      variant === 'default',
-                                    'min-h-[20px] font-bold':
-                                      variant === 'minimal' ||
-                                      variant === 'compact',
-                                  }
-                                )}`,
-                                onClick: () => {
-                                  setSelectedSortKey(
-                                    header.column.columnDef.meta?.sortKey ??
-                                      null
-                                  );
-                                  handleSortClick(header, onSortSelect);
-                                },
-                              }}
-                              data-testid={`test-col-${index}`}
-                            >
-                              <div
-                                className="text-start line-clamp-none max-h-[calc(2_*_1.5rem)]  break-words leading-snug"
-                                data-testid="label"
-                              >
-                                {flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}{' '}
-                              </div>
-                              <div
-                                className={`${clsx('text-[#808080]', {
-                                  hidden:
-                                    !header.column.columnDef.meta ||
-                                    header.column.columnDef.meta?.sortKey ===
-                                      null,
-                                })}`}
-                                data-testid="sort-indicator"
-                              >
-                                {getSortIndicator(
-                                  header.column.columnDef.meta,
-                                  selectedSortKey
-                                )}
-                              </div>
-                            </div>
-                            <div className="flex justify-start w-full">
-                              {header.column.getCanFilter() ? (
-                                <div
-                                  className={`text-rhino-indigo-blue flex w-full`}
-                                  data-testid={`test-col-filter-${index}`}
-                                >
-                                  <Filter
-                                    column={header.column}
-                                    onFilterChange={handleFilterChange}
-                                    defaultFilterValue={
-                                      header.column.columnDef.meta?.filterKey &&
-                                      activeFilters !== undefined
-                                        ? activeFilters[
-                                            header.column.columnDef.meta
-                                              .filterKey
-                                          ] ?? null
-                                        : undefined
-                                    }
-                                  />
-                                </div>
-                              ) : null}
-                            </div>
-                          </div>
-                        )}
-                      </th>
+                        header={header}
+                        index={index}
+                        variant={variant}
+                        textNowarp={textNowarp}
+                        selectedSortKey={selectedSortKey}
+                        enableNoSortState={enableNoSortState}
+                        onHeaderSortClick={handleSortChange}
+                        onFilterChange={handleFilterChange}
+                        activeFilters={activeFilters}
+                      />
                     );
                   })}
                 </tr>
@@ -289,13 +111,13 @@ const Table = <T,>({
                 <>
                   {table.getCoreRowModel().rows.map((row) => {
                     return (
-                      <tr key={row.id} className={`odd:bg-[#03030405]`}>
+                      <tr key={row.id} className="odd:bg-[#03030405] group">
                         {row.getVisibleCells().map((cell) => {
                           return (
                             <td
                               key={cell.id}
                               className={clsx('align-top relative pl-0', {
-                                'sticky -right-5 bg-white !align-middle':
+                                'sticky -right-5 bg-white group-odd:bg-[#f5f5f6] !align-middle z-10':
                                   cell.column.id === CONSTANTS.action,
                                 'p-[.75rem]': variant === 'default',
                                 'first:pl-[.7rem]':

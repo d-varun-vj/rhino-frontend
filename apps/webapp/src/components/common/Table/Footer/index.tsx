@@ -1,8 +1,8 @@
 import { getPagePositions } from '@rhino/utils';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FooterType } from '..';
 import { useUserFilter } from '../../../../context/userFilter';
+import { FooterType } from '../hooks/useTableLogic';
 
 type Footer = {
   pagination: FooterType;
@@ -83,7 +83,7 @@ const TableFooter = ({ pagination, dataTestIdPrefix }: Footer) => {
 
   return (
     <div
-      className="flex justify-between my-5 flex-col gap-5 mt-10 lg:flex-row lg:items-center"
+      className="flex justify-between my-5 flex-col gap-5 lg:flex-row lg:items-center"
       data-testid={`${dataTestIdPrefix}-table-footer`}
     >
       {/* Page size selector */}

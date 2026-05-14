@@ -9,8 +9,9 @@ import AccessAuthorizer from 'apps/webapp/src/wrappers/AccessAuthorizer';
 import { useTranslation } from 'react-i18next';
 import { ripponOptions } from './config';
 import { useSelectedDateRange } from './context/selectedDateRange';
+import ConsumptionTable from './sections/ConsumptionTable';
 import Header from './sections/Header';
-import TotalConsumption from './sections/TotalConsumption';
+import TotalConsumptionCards from './sections/TotalConsumptionCards';
 
 const AssetDashboard = () => {
   const { features } = useFeatureFlags();
@@ -54,7 +55,8 @@ const AssetDashboard = () => {
             <SubTitle content={requiredFieldEmptyText} className="ml-5 mt-10" />
           ) : (
             <>
-              <TotalConsumption />
+              <TotalConsumptionCards />
+              <ConsumptionTable />
             </>
           )}
         </div>

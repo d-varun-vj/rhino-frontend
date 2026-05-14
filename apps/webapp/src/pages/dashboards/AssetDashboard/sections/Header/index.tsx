@@ -43,7 +43,7 @@ const Header = () => {
       key: 'locations',
       title: isLocationSelected
         ? resolveTitle(locations)
-        : t('breadCrumbs.localisation'),
+        : t('breadCrumbs.location'),
       disabled: !isLocationSelected,
       popoverData: locations?.map((loc) => loc.name),
     },
