@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.28.0...webapp-v1.28.1) (2026-05-14)
+
+
+### Bug Fixes
+
+* Resolve asset dashboard pagination issue [PRD-3694] ([#267](https://github.com/Rhino-Energy/rhino-frontend/issues/267)) ([#268](https://github.com/Rhino-Energy/rhino-frontend/issues/268)) ([a32521e](https://github.com/Rhino-Energy/rhino-frontend/commit/a32521e82ccfd51750a9ba7fa37569d0fac5ca21))
+
 ## [1.28.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.27.0...webapp-v1.28.0) (2026-05-14)
 
 
