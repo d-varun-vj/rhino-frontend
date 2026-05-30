@@ -20,13 +20,28 @@ const ConsumptionCard = ({
   const { features } = useFeatureFlags();
 
   const MediumIcon = MEDIUM_ICONS[medium];
-  const PercentageChangeIcon = percentageChange > 0 ? FaArrowUp : FaArrowDown;
+  const hasPercentageChange = Number.isFinite(percentageChange);
+  const isPositivePercentageChange =
+    hasPercentageChange && percentageChange > 0;
+  const isNegativePercentageChange =
+    hasPercentageChange && percentageChange < 0;
+  const showPercentageChangeIcon =
+    isPositivePercentageChange || isNegativePercentageChange;
+  const PercentageChangeIcon = isPositivePercentageChange
+    ? FaArrowUp
+    : FaArrowDown;
 
   const mediumColor = MEDIUM_TW_COLORS[medium];
-  const percentageChangeColors = {
-    'text-rhino-energy-green': percentageChange < 0,
-    'text-red-500': percentageChange > 0,
-  };
+  const percentageChangeColor = isNegativePercentageChange
+    ? 'text-rhino-energy-green'
+    : isPositivePercentageChange
+      ? 'text-red-500'
+      : 'text-black';
+  const isPercentageChangeEnabled =
+    !!features?.ENABLE_ASSET_DASHBOARD_PERCENTAGE_CHANGE;
+  const formattedPercentageChange = isPositivePercentageChange
+    ? `+${percentageChange}%`
+    : `${percentageChange}%`;
 
   const formatNumberWithSpaces = (value: number) =>
     value
@@ -57,23 +72,20 @@ const ConsumptionCard = ({
           <span className={`text-lg ${mediumColor}`}>{unit}</span>
         </div>
       </div>
-      {features?.ENABLE_ASSET_DASHBOARD_PERCENTAGE_CHANGE && (
-        <div className="w-full flex justify-end">
-          <div className="flex items-center gap-1">
-            {percentageChange !== 0 && (
-              <PercentageChangeIcon
-                className={clsx(
-                  'text-[14px] text-black',
-                  percentageChangeColors
-                )}
-              />
-            )}
-            <span
-              className={clsx('text-[14px] text-black', percentageChangeColors)}
-            >
-              {percentageChange}%
-            </span>
-          </div>
+      {isPercentageChangeEnabled && (
+        <div className="w-full h-5 flex justify-end items-center">
+          {hasPercentageChange && (
+            <div className="flex items-center gap-1">
+              {showPercentageChangeIcon && (
+                <PercentageChangeIcon
+                  className={clsx('text-[14px]', percentageChangeColor)}
+                />
+              )}
+              <span className={clsx('text-[14px]', percentageChangeColor)}>
+                {formattedPercentageChange}
+              </span>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -389,6 +389,10 @@ const ConsumptionTable = () => {
   const handleSortSelect = (field: string, direction: string) => {
     setSort({ field, direction });
   };
+  const handleSearch = (value: string | number) => {
+    setSearchValue(value);
+    setCurrentPage(0);
+  };
 
   const { table, selectedSortKey, handleSortChange } = useTableLogic({
     columns,
@@ -477,7 +481,7 @@ const ConsumptionTable = () => {
           setSelectedRows={setSelectedRows}
           setCompareMode={setCompareMode}
           searchValue={searchValue}
-          onSearch={setSearchValue}
+          onSearch={handleSearch}
           searchPlaceholder={tableSearchLabel}
         />
 

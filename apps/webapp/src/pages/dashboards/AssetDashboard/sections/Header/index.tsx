@@ -78,8 +78,8 @@ const Header = () => {
 
   return (
     <header className="pt-4 px-2 shadow-[0_4px_2px_-2px_rgba(0,0,0,0.05)] rounded mb-5">
-      <div className="flex justify-between items-center">
-        <div>
+      <div className="flex justify-between items-center gap-4">
+        <div className="min-w-0 flex-1">
           <CustomBreadcrumbs
             items={breadcrumbsItems}
             separatorMargin={'sm'}
@@ -87,7 +87,7 @@ const Header = () => {
           />
           <PageTitle title={t('mainHeader.portfolio')} className="!mb-0" />
         </div>
-        <div className="w-80">
+        <div className="w-80 shrink-0">
           <DateRangeWithTimePickerField
             onChange={(val) => {
               onSelectDate(val);
