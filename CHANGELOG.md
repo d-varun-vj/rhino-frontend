@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.0](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.28.1...webapp-v1.29.0) (2026-05-30)
+
+
+### Features
+
+* Enhance total consumption widget and fix asset search issues [PRD-4081] ([#270](https://github.com/Rhino-Energy/rhino-frontend/issues/270)) ([#271](https://github.com/Rhino-Energy/rhino-frontend/issues/271)) ([22b9e15](https://github.com/Rhino-Energy/rhino-frontend/commit/22b9e15be4ff54dfd4eaf748fd52c0f1c3801b89))
+
 ## [1.28.1](https://github.com/Rhino-Energy/rhino-frontend/compare/webapp-v1.28.0...webapp-v1.28.1) (2026-05-14)
 
 
