@@ -3,7 +3,7 @@ import {
   DateReturndProps,
 } from 'apps/webapp/src/components/common/datetime/DateRangeWithTimePickerField';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { isValidTime, normalizeTime } from '../../helper';
 import { SelectedDateRangeContext } from './selected-date-range-context';
@@ -92,8 +92,13 @@ export const SelectedDateRangeProvider = ({
     });
   }, [parseDateRangeFromParams]);
 
+  const contextValue = useMemo(
+    () => ({ dateRange, setDateRange }),
+    [dateRange, setDateRange]
+  );
+
   return (
-    <SelectedDateRangeContext.Provider value={{ dateRange, setDateRange }}>
+    <SelectedDateRangeContext.Provider value={contextValue}>
       {children}
     </SelectedDateRangeContext.Provider>
   );

@@ -17,7 +17,7 @@ import {
 } from 'apps/webapp/src/components/common/Table/hooks/useTableLogic';
 import { useUserFilter } from 'apps/webapp/src/context/userFilter';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   MEDIUM_COLORS,
@@ -103,9 +103,8 @@ const ConsumptionTable = () => {
   const assetSelectionKey = `${asset.assetType}:${[...asset.uuids]
     .sort()
     .join(',')}`;
-  const previousAssetSelectionKeyRef = useRef(assetSelectionKey);
-  const isAssetSelectionChanged =
-    previousAssetSelectionKeyRef.current !== assetSelectionKey;
+  const [processedAssetKey, setProcessedAssetKey] = useState(assetSelectionKey);
+  const isAssetSelectionChanged = processedAssetKey !== assetSelectionKey;
 
   const [pageSize, setPageSize] = useState(5);
   const [sort, setSort] = useState<Sort>({
@@ -118,6 +117,8 @@ const ConsumptionTable = () => {
   const [selectedRows, setSelectedRows] = useState<AssetConsumptionTableData[]>(
     []
   );
+  const selectedRowsRef = React.useRef<AssetConsumptionTableData[]>([]);
+  selectedRowsRef.current = selectedRows;
   const [tableAssetType, setTableAssetType] = useState<AssetType>(
     getNextTableAssetType(asset.assetType)
   );
@@ -150,7 +151,7 @@ const ConsumptionTable = () => {
         : { field: ASSET_COLUMN_SORT_KEY, direction: SortDirection.ASC }
     );
 
-    previousAssetSelectionKeyRef.current = assetSelectionKey;
+    setProcessedAssetKey(assetSelectionKey);
   }, [asset.assetType, assetSelectionKey, isAssetSelectionChanged]);
 
   useEffect(() => {
@@ -293,7 +294,7 @@ const ConsumptionTable = () => {
         const currentlyVisible = tableContext
           .getCoreRowModel()
           .rows.map((row) => row.original);
-        const map = new Map(selectedRows.map((m) => [m.assetUuid, m]));
+        const map = new Map(selectedRowsRef.current.map((m) => [m.assetUuid, m]));
         currentlyVisible.forEach((m) => map.set(m.assetUuid, m));
         setSelectedRows(Array.from(map.values()));
       } else {
@@ -303,7 +304,7 @@ const ConsumptionTable = () => {
             .rows.map((row) => row.original.assetUuid)
         );
         setSelectedRows(
-          selectedRows.filter((m) => !currentlyVisibleIds.has(m.assetUuid))
+          selectedRowsRef.current.filter((m) => !currentlyVisibleIds.has(m.assetUuid))
         );
       }
     };
@@ -315,7 +316,7 @@ const ConsumptionTable = () => {
       return (
         visible.length > 0 &&
         visible.every((row) =>
-          selectedRows.some((m) => m.assetUuid === row.original.assetUuid)
+          selectedRowsRef.current.some((m) => m.assetUuid === row.original.assetUuid)
         )
       );
     };
@@ -336,7 +337,7 @@ const ConsumptionTable = () => {
         sortKey: null,
       },
       cell: ({ row }) => {
-        const isSelected = selectedRows.some(
+        const isSelected = selectedRowsRef.current.some(
           (m) => m.assetUuid === row.original.assetUuid
         );
         return (
@@ -346,10 +347,10 @@ const ConsumptionTable = () => {
               checked={isSelected}
               onChange={(e) => {
                 if (e.target.checked) {
-                  setSelectedRows([...selectedRows, row.original]);
+                  setSelectedRows([...selectedRowsRef.current, row.original]);
                 } else {
                   setSelectedRows(
-                    selectedRows.filter(
+                    selectedRowsRef.current.filter(
                       (m) => m.assetUuid !== row.original.assetUuid
                     )
                   );
@@ -366,7 +367,6 @@ const ConsumptionTable = () => {
     return compareMode ? [checkboxColumn, ...baseColumns] : baseColumns;
   }, [
     compareMode,
-    selectedRows,
     tableAssetTypeLabel,
     setLocations,
     setGroups,

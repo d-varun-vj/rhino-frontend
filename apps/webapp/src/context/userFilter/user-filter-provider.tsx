@@ -1,6 +1,6 @@
 import { useGetClients, useGetLocations } from '@rhino/apis';
 import { useUser } from 'apps/webapp/src/context/user';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FilterData, UserFilterContext } from './user-filter-context';
 
@@ -26,8 +26,9 @@ export const UserFilterProvider = ({
   const parseParamToArray = (param: string | null) =>
     param ? param.split(',') : [];
 
-  const paramClientUuids = parseParamToArray(paramClient);
-  const selectedClientId = paramClientUuids[0] || clients?.[0]?.uuid || null;
+  const selectedClientId = paramClient
+    ? paramClient.split(',')[0]
+    : clients?.[0]?.uuid || null;
 
   const { data: locationsData } = useGetLocations({
     clientId: selectedClientId,
@@ -35,7 +36,8 @@ export const UserFilterProvider = ({
   });
 
   useEffect(() => {
-    if (clientsData && paramClientUuids.length > 0) {
+    if (clientsData && paramClient) {
+      const paramClientUuids = paramClient.split(',');
       const matchedClients = clientsData
         .filter((c) => paramClientUuids.includes(c.uuid))
         .map((c) => ({
@@ -50,7 +52,7 @@ export const UserFilterProvider = ({
         return prevUuids !== newUuids ? matchedClients : prev;
       });
     }
-  }, [clientsData, paramClient, paramClientUuids]);
+  }, [clientsData, paramClient]);
 
   useEffect(() => {
     if (locationsData) {
@@ -84,24 +86,27 @@ export const UserFilterProvider = ({
     }
   }, [locationsData, paramLocation, paramGroup]);
 
-  const clearAll = () => {
+  const clearAll = useCallback(() => {
     setClients(null);
     setLocations(null);
     setGroups(null);
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({
+      clients,
+      locations,
+      groups,
+      setClients,
+      setLocations,
+      setGroups,
+      clearAll,
+    }),
+    [clients, locations, groups, clearAll]
+  );
 
   return (
-    <UserFilterContext.Provider
-      value={{
-        clients,
-        locations,
-        groups,
-        setClients,
-        setLocations,
-        setGroups,
-        clearAll,
-      }}
-    >
+    <UserFilterContext.Provider value={contextValue}>
       {children}
     </UserFilterContext.Provider>
   );
