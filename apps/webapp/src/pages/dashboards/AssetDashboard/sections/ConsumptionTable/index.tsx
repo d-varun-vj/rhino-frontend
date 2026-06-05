@@ -117,7 +117,7 @@ const ConsumptionTable = () => {
   const [selectedRows, setSelectedRows] = useState<AssetConsumptionTableData[]>(
     []
   );
-  const selectedRowsRef = React.useRef(selectedRows);
+  const selectedRowsRef = React.useRef<AssetConsumptionTableData[]>([]);
   selectedRowsRef.current = selectedRows;
   const [tableAssetType, setTableAssetType] = useState<AssetType>(
     getNextTableAssetType(asset.assetType)
